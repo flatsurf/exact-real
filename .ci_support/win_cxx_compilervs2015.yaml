@@ -1,0 +1,11 @@
+boost_cpp:
+- 1.68.0
+channel_sources:
+- conda-forge,defaults
+channel_targets:
+- saraedum main
+cxx_compiler:
+- vs2015
+pin_run_as_build:
+  boost-cpp:
+    max_pin: x.x.x

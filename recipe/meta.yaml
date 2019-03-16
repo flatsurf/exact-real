@@ -1,0 +1,60 @@
+# conda-smithy assumes that the build number is >= 1000 when building with the new anaconda compilers,
+# this probably is not important but make_build_number otherwise complains during the build
+{% set version = environ.get('GIT_DESCRIBE_TAG')|string %}
+{% set build_number = (environ.get('GIT_DESCRIBE_NUMBER')|int + 1000)|string %}
+{% set build_string = "master_" + build_number %}
+{% set flavour = environ.get('FLAVOUR', 'build')|string %}
+
+package:
+  name: exact-real
+  version: {{ version }}
+
+source:
+  git_url: {{ environ.get('FEEDSTOCK_ROOT', '..') }}
+
+build:
+  number: {{ build_number }}
+  string: {{ build_string }}
+  script:
+    - source ./recipe/cflags.sh
+    - ./recipe/build-{{ flavour }}.sh
+
+requirements:
+  build:
+    - libtool
+    - automake
+    - {{ compiler('cxx') }}
+  host:
+    - boost-cpp
+    - e-antic
+    # requirement of make check which also runs benchmarks
+    - gtest
+    - benchmark
+
+test:
+  commands:
+    - recipe/test-{{ flavour }}.sh
+  requires:
+    # test-vagrind.sh needs valgrind
+    - valgrind
+
+outputs:
+  - name: libexactreal
+    build:
+      run_exports:
+        - {{ pin_subpackage("libexactreal", exact=True) }}
+    files:
+      - lib/*.dylib    # [osx]
+      - lib/*.so*      # [linux]
+      - include/exact-real/*.h
+
+about:
+  home: https://github.com/polygon-tbd/exact-real
+  license: GPL2
+  license_file: COPYING
+  summary: Finite Real Submodules powered by E-ANTIC
+
+extra:
+  recipe-maintainers:
+    - saraedum
+    - videlec
