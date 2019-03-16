@@ -18,91 +18,90 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <boost/random/linear_congruential.hpp>
-#include <boost/random/uniform_int_distribution.hpp>
-#include <boost/numeric/conversion/cast.hpp>
-#include <sstream>
 #include <arb.h>
 #include <gmpxx.h>
+#include <boost/numeric/conversion/cast.hpp>
+#include <boost/random/linear_congruential.hpp>
+#include <boost/random/uniform_int_distribution.hpp>
+#include <sstream>
 
-#include "exact-real/real_number.hpp"
 #include "exact-real/arb.hpp"
 #include "exact-real/arf.hpp"
+#include "exact-real/real_number.hpp"
 
 using namespace exactreal;
-using std::unique_ptr;
-using std::make_unique;
-using boost::random::rand48;
-using std::string;
-using std::ostream;
-using std::stringstream;
 using boost::numeric_cast;
+using boost::random::rand48;
+using std::make_unique;
+using std::ostream;
+using std::string;
+using std::stringstream;
+using std::unique_ptr;
 
 namespace {
 unsigned int nextSeed = 1337;
 
 // A random real number in [0, 1]
 struct RandomRealNumber final : RealNumber {
-	RandomRealNumber(): seed(nextSeed++) {}
+  RandomRealNumber() : seed(nextSeed++) {}
 
-	// Creates a random Arf from digits in base 2.
-	// We could speed this up by caching numbers to some precision but let's wait
-	// with this until this shows up in the profiler…
-	virtual Arf arf(long prec) const override {
-		if (prec < 1) {
-			prec = 1;
-		}
+  // Creates a random Arf from digits in base 2.
+  // We could speed this up by caching numbers to some precision but let's wait
+  // with this until this shows up in the profiler…
+  virtual Arf arf(long prec) const override {
+    if (prec < 1) {
+      prec = 1;
+    }
 
-		// We could work with a bigger base than 2 to speed things up here but it's
-		// probably not worth it.
-		const string chars = "01";
+    // We could work with a bigger base than 2 to speed things up here but it's
+    // probably not worth it.
+    const string chars = "01";
 
-		auto rnd = rng();
-    boost::random::uniform_int_distribution<size_t> index_dist(0, chars.size() - 1);
+    auto rnd = rng();
+    boost::random::uniform_int_distribution<size_t> index_dist(
+        0, chars.size() - 1);
 
-		long exp = 0;
-		stringstream os;
-		for(long digits = 0; digits < prec; digits++, exp--){
-			char c = chars[index_dist(rnd)];
-			if (digits == 0 && c == '0') {
-				digits--;
-				continue;
-			}
-			os << c;
-		}
+    long exp = 0;
+    stringstream os;
+    for (long digits = 0; digits < prec; digits++, exp--) {
+      char c = chars[index_dist(rnd)];
+      if (digits == 0 && c == '0') {
+        digits--;
+        continue;
+      }
+      os << c;
+    }
 
-		return Arf(os.str(), 2, exp);
-	}
+    return Arf(os.str(), 2, exp);
+  }
 
-	bool operator==(const RealNumber& rhs) const override {
-		if (typeid(rhs) == typeid(*this)) {
-			return this->seed == static_cast<const RandomRealNumber*>(&rhs)->seed;
-		} else {
-			return false;
-		}
-	}
+  bool operator==(const RealNumber& rhs) const override {
+    if (typeid(rhs) == typeid(*this)) {
+      return this->seed == static_cast<const RandomRealNumber*>(&rhs)->seed;
+    } else {
+      return false;
+    }
+  }
 
-	RealNumber const & operator>>(ostream& out) const override {
-		out << arf(64) << "…" << seed;
-		return *this;
-	}
+  RealNumber const& operator>>(ostream& out) const override {
+    out << arf(64) << "…" << seed;
+    return *this;
+  }
 
  private:
-	unsigned int seed;
-	// We use a Random Number Generator that is fast and has a small memory
-	// footprint as we need to create it frequently. It might have some
-	// cryptographically undesirable properties but this should not matter for
-	// our purposes.  Note that technically this does not produce a
-	// transcendental number due to a pseudo-random number generator's
-	// periodicity.
-  rand48 rng() const {
-		return rand48(seed);
-	}
+  unsigned int seed;
+  // We use a Random Number Generator that is fast and has a small memory
+  // footprint as we need to create it frequently. It might have some
+  // cryptographically undesirable properties but this should not matter for
+  // our purposes.  Note that technically this does not produce a
+  // transcendental number due to a pseudo-random number generator's
+  // periodicity.
+  rand48 rng() const { return rand48(seed); }
 };
-}
+}  // namespace
 
 namespace exactreal {
 unique_ptr<RealNumber> RealNumber::random() {
-	return make_unique<RandomRealNumber>();
+  return make_unique<RandomRealNumber>();
 }
-}
+}  // namespace exactreal

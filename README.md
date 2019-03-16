@@ -87,7 +87,11 @@ conda create -n exact-real-test --use-local libexactreal
 source activate exact-real-test
 ```
 
-TODO: Mention for testing you might to run something like `make check TESTS=module GTEST_REPEAT=1024`
+## Run Tests and Benchmark
+
+`make check` runs all tests and benchmarks. During development `make check TESTS=module`
+only runs the tests for `module`. For randomized tests, you might want to add
+`GTEST_REPEAT=1024` to run such tests repeatedly.
 
 ## Maintainers
 

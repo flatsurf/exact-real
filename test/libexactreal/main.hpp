@@ -32,9 +32,6 @@ int main(int argc, char** argv) {
 		return result;
 	}
 
-	// TODO: Inject some environment variable into benchmark's argv so we can run
-	// with output being saved as JSON.
-	// TODO: How can we disable benchmarks for make check?
   benchmark::Initialize(&argc, argv);
   benchmark::RunSpecifiedBenchmarks();
 

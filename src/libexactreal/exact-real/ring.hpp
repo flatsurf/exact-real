@@ -27,14 +27,13 @@
 
 namespace exactreal {
 
-template<class Ring, class = std::void_t<> >
-struct has_parameters : std::false_type { };
- 
-template< class Ring >
-struct has_parameters<Ring, std::void_t<typename Ring::Parameters>> : std::true_type { };
+template <class Ring, class = std::void_t<>>
+struct has_parameters : std::false_type {};
 
-}
+template <class Ring>
+struct has_parameters<Ring, std::void_t<typename Ring::Parameters>>
+    : std::true_type {};
 
+}  // namespace exactreal
 
 #endif
-

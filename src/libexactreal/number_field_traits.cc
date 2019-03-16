@@ -18,23 +18,9 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBMODEANTIC_RATIONAL_FIELD_HPP
-#define LIBMODEANTIC_RATIONAL_FIELD_HPP
-
-#include <gmpxx.h>
-
-#include "exact-real/exact-real.hpp"
-#include "exact-real/real_number.hpp"
+#include "exact-real/number_field_traits.hpp"
+#include "exact-real/arb.hpp"
 
 namespace exactreal {
-
-struct RationalField {
-	typedef mpq_class ElementClass;
-	static constexpr bool isField = true;
-	static Arb arb(const ElementClass& x, long prec);
-};
-
-}
-
-#endif
-
+Arb NumberFieldTraits::arb(const ElementClass& x, long) { return Arb(x); }
+}  // namespace exactreal

@@ -20,48 +20,47 @@
 
 #include <gmpxx.h>
 
-#include "exact-real/real_number.hpp"
 #include "exact-real/arf.hpp"
+#include "exact-real/real_number.hpp"
 
 using namespace exactreal;
 using std::make_unique;
-using std::unique_ptr;
 using std::ostream;
+using std::unique_ptr;
 
 namespace {
 
 // An exact rational number
 struct RationalRealNumber final : RealNumber {
-	RationalRealNumber(const mpq_class& value) : value(value) {}
+  explicit RationalRealNumber(const mpq_class& value) : value(value) {}
 
-	virtual Arf arf(long prec) const override {
-		Arf num(value.get_num(), 0);
-		Arf den(value.get_den(), 0);
-		num.idiv(den, prec);
-		return num;
-	}
+  virtual Arf arf(long prec) const override {
+    Arf num(value.get_num(), 0);
+    Arf den(value.get_den(), 0);
+    num.idiv(den, prec);
+    return num;
+  }
 
-	bool operator==(const RealNumber& rhs) const override {
-		if (typeid(rhs) == typeid(*this)) {
-			return this->value == static_cast<const RationalRealNumber*>(&rhs)->value;
-		} else {
-			return false;
-		}
-	}
+  bool operator==(const RealNumber& rhs) const override {
+    if (typeid(rhs) == typeid(*this)) {
+      return this->value == static_cast<const RationalRealNumber*>(&rhs)->value;
+    } else {
+      return false;
+    }
+  }
 
-	RealNumber const & operator>>(ostream& out) const override {
-		out << value;
-		return *this;
-	}
+  RealNumber const& operator>>(ostream& out) const override {
+    out << value;
+    return *this;
+  }
 
  private:
-	mpq_class value;
+  mpq_class value;
 };
-}
+}  // namespace
 
 namespace exactreal {
 unique_ptr<RealNumber> RealNumber::rational(const mpq_class& value) {
-	return make_unique<RationalRealNumber>(value);
+  return make_unique<RationalRealNumber>(value);
 }
-}
-
+}  // namespace exactreal

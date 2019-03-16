@@ -19,81 +19,106 @@
  *********************************************************************/
 
 #include "exact-real/module.hpp"
-#include "exact-real/real_number.hpp"
 #include "exact-real/element.hpp"
+#include "exact-real/real_number.hpp"
 
 using namespace exactreal;
-using std::vector;
 using std::shared_ptr;
+using std::vector;
 
-// TODO: Use the same pattern in libpolygon
 namespace {
-template<typename Ring>
+template <typename Ring>
 struct ModuleImplementation {
-	using Basis = vector<shared_ptr<RealNumber>>;
+  using Basis = vector<shared_ptr<RealNumber>>;
 
-	explicit ModuleImplementation(const Basis& basis, long precision) : basis(basis), precision(precision) {}
+  explicit ModuleImplementation(const Basis& basis, long precision)
+      : basis(basis), precision(precision) {}
 
-	Basis basis;
-	long precision;
+  Basis basis;
+  long precision;
 };
 
-template<typename Ring>
+template <typename Ring>
 struct ModuleImplementationWithoutParameters : ModuleImplementation<Ring> {
-	using ModuleImplementation<Ring>::ModuleImplementation;
+  using ModuleImplementation<Ring>::ModuleImplementation;
 };
 
-template<typename Ring>
+template <typename Ring>
 struct ModuleImplementationWithParameters : ModuleImplementation<Ring> {
-	explicit ModuleImplementationWithParameters(const typename ModuleImplementation<Ring>::Basis& basis, const typename Ring::Parameters& parameters, long precision) : ModuleImplementation<Ring>(basis, precision), parameters(parameters) {}
+  explicit ModuleImplementationWithParameters(
+      const typename ModuleImplementation<Ring>::Basis& basis,
+      const typename Ring::Parameters& parameters, long precision)
+      : ModuleImplementation<Ring>(basis, precision), parameters(parameters) {}
 
-	const typename Ring::Parameters& parameters;
+  const typename Ring::Parameters& parameters;
 };
-}
+}  // namespace
 
 namespace exactreal {
-template<typename Ring>
-struct Module<Ring>::Implementation : std::conditional_t<has_parameters<Ring>::value, ModuleImplementationWithParameters<Ring>, ModuleImplementationWithoutParameters<Ring>> {
-	using std::conditional_t<has_parameters<Ring>::value, ModuleImplementationWithParameters<Ring>, ModuleImplementationWithoutParameters<Ring>>::conditional_t;
+template <typename Ring>
+struct Module<Ring>::Implementation
+    : std::conditional_t<has_parameters<Ring>::value,
+                         ModuleImplementationWithParameters<Ring>,
+                         ModuleImplementationWithoutParameters<Ring>> {
+  using std::conditional_t<
+      has_parameters<Ring>::value, ModuleImplementationWithParameters<Ring>,
+      ModuleImplementationWithoutParameters<Ring>>::conditional_t;
 };
-}
+}  // namespace exactreal
 
 namespace exactreal {
-template<typename Ring>
-template<typename RingWithoutParameters, typename std::enable_if_t<std::is_same_v<Ring, RingWithoutParameters> && !has_parameters<RingWithoutParameters>::value, int>>
-Module<Ring>::Module(const vector<shared_ptr<RealNumber>>& basis, long precision) : impl(spimpl::make_unique_impl<Module<Ring>::Implementation>(basis, precision)) {
-}
+template <typename Ring>
+template <
+    typename RingWithoutParameters,
+    typename std::enable_if_t<std::is_same_v<Ring, RingWithoutParameters> &&
+                                  !has_parameters<RingWithoutParameters>::value,
+                              int>>
+Module<Ring>::Module(const vector<shared_ptr<RealNumber>>& basis,
+                     long precision)
+    : impl(spimpl::make_unique_impl<Module<Ring>::Implementation>(basis,
+                                                                  precision)) {}
 
-template<typename Ring>
-template<typename RingWithParameters, typename std::enable_if_t<std::is_same_v<Ring, RingWithParameters> && has_parameters<RingWithParameters>::value, int>>
-Module<Ring>::Module(const vector<shared_ptr<RealNumber>>& basis, const typename RingWithParameters::Parameters& parameters, long precision) : impl(spimpl::make_unique_impl<Module<Ring>::Implementation>(basis, parameters, precision)) {
-}
+template <typename Ring>
+template <
+    typename RingWithParameters,
+    typename std::enable_if_t<std::is_same_v<Ring, RingWithParameters> &&
+                                  has_parameters<RingWithParameters>::value,
+                              int>>
+Module<Ring>::Module(const vector<shared_ptr<RealNumber>>& basis,
+                     const typename RingWithParameters::Parameters& parameters,
+                     long precision)
+    : impl(spimpl::make_unique_impl<Module<Ring>::Implementation>(
+          basis, parameters, precision)) {}
 
-template<typename Ring>
+template <typename Ring>
 size_t Module<Ring>::rank() const {
-	return impl->basis.size();
+  return impl->basis.size();
 }
 
-template<typename Ring>
+template <typename Ring>
 Element<Ring> Module<Ring>::zero() const {
-	return Element<Ring>(*this, vector<typename Ring::ElementClass>(rank()));
+  return Element<Ring>(*this, vector<typename Ring::ElementClass>(rank()));
 }
 
-template<typename Ring>
-vector<shared_ptr<RealNumber>> const & Module<Ring>::gens() const {
-	return impl->basis;
+template <typename Ring>
+vector<shared_ptr<RealNumber>> const& Module<Ring>::gens() const {
+  return impl->basis;
 }
-}
+}  // namespace exactreal
 
-// Explicit instantiations of templates so that code is generated for the linker.
-#include "exact-real/integer_ring.hpp"
-#include "exact-real/rational_field.hpp"
-#include "exact-real/number_field.hpp"
+// Explicit instantiations of templates so that code is generated for the
+// linker.
+#include "exact-real/integer_ring_traits.hpp"
+#include "exact-real/number_field_traits.hpp"
+#include "exact-real/rational_field_traits.hpp"
 
-// TODO: constructor(ZZ or QQ or NumberField or Ideal, std::vector<RealNumber>)
-template struct exactreal::Module<IntegerRing>;
-template exactreal::Module<IntegerRing>::Module(const vector<shared_ptr<RealNumber>>&, long);
-template struct exactreal::Module<RationalField>;
-template exactreal::Module<RationalField>::Module(const vector<shared_ptr<RealNumber>>&, long);
-template struct exactreal::Module<NumberField>;
-template exactreal::Module<NumberField>::Module(const vector<shared_ptr<RealNumber>>&, const NumberField::Parameters&, long);
+template struct exactreal::Module<IntegerRingTraits>;
+template exactreal::Module<IntegerRingTraits>::Module(
+    const vector<shared_ptr<RealNumber>>&, long);
+template struct exactreal::Module<RationalFieldTraits>;
+template exactreal::Module<RationalFieldTraits>::Module(
+    const vector<shared_ptr<RealNumber>>&, long);
+template struct exactreal::Module<NumberFieldTraits>;
+template exactreal::Module<NumberFieldTraits>::Module(
+    const vector<shared_ptr<RealNumber>>&, const NumberFieldTraits::Parameters&,
+    long);

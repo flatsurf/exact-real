@@ -25,10 +25,9 @@ if [ -n "$ASV_SECRET_KEY" ];then
   rm -rf .asv/results
   git clone git@github.com:polygon-tbd/exact-real-asv.git .asv/results
 
-  # TODO: Actually benchmark and convert the benchmark output into a format that asv understands to render its web pages.
   make check
   
-  # We publish test results as an Airspeed Velocity database
+  # We publish test results as an Airspeed Velocity database; actually we don't see #1
   pushd .asv/results
   git add .
   git commit -m "Added benchmark run"

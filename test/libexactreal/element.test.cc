@@ -23,9 +23,9 @@
 
 #include <exact-real/module.hpp>
 #include <exact-real/element.hpp>
-#include <exact-real/integer_ring.hpp>
-#include <exact-real/rational_field.hpp>
-#include <exact-real/number_field.hpp>
+#include <exact-real/integer_ring_traits.hpp>
+#include <exact-real/rational_field_traits.hpp>
+#include <exact-real/number_field_traits.hpp>
 
 using namespace exactreal;
 using std::vector;
@@ -33,7 +33,7 @@ using std::make_shared;
 using std::shared_ptr;
 
 TEST(ElementZZ, Generators) {
-	auto m = Module<IntegerRing>({ RealNumber::rational(1), RealNumber::random() });
+	auto m = Module<IntegerRingTraits>({ RealNumber::rational(1), RealNumber::random() });
 	
 	auto one = Element(m, 0);
 	auto x = Element(m, 1);
@@ -46,9 +46,9 @@ TEST(ElementZZ, Generators) {
 }
 
 TEST(ElementZZ, Additive) {
-	auto m = Module<IntegerRing>({ RealNumber::rational(1), RealNumber::random() });
+	auto m = Module<IntegerRingTraits>({ RealNumber::rational(1), RealNumber::random() });
 	
-	Element<IntegerRing> elements[] { Element(m, 0), Element(m, 1) };
+	Element<IntegerRingTraits> elements[] { Element(m, 0), Element(m, 1) };
 
 	for (size_t i = 0; i<sizeof(elements)/sizeof(elements[0]); i++){
 		auto x = elements[i];
@@ -59,9 +59,9 @@ TEST(ElementZZ, Additive) {
 }
 
 TEST(ElementZZ, Scalars) {
-	auto m = Module<IntegerRing>({ RealNumber::rational(1), RealNumber::random() });
+	auto m = Module<IntegerRingTraits>({ RealNumber::rational(1), RealNumber::random() });
 	
-	Element<IntegerRing> elements[] { Element(m, 0), Element(m, 1) };
+	Element<IntegerRingTraits> elements[] { Element(m, 0), Element(m, 1) };
 
 	for (size_t i = 0; i<sizeof(elements)/sizeof(elements[0]); i++){
 		auto x = elements[i];
@@ -86,9 +86,9 @@ TEST(ElementZZ, Scalars) {
 }
 
 TEST(ElementQQ, Scalars) {
-	auto m = Module<RationalField>({ RealNumber::rational(1), RealNumber::random() });
+	auto m = Module<RationalFieldTraits>({ RealNumber::rational(1), RealNumber::random() });
 	
-	Element<RationalField> elements[] { Element(m, 0), Element(m, 1) };
+	Element<RationalFieldTraits> elements[] { Element(m, 0), Element(m, 1) };
 
 	for (size_t i = 0; i<sizeof(elements)/sizeof(elements[0]); i++){
 		auto x = elements[i];
@@ -123,9 +123,9 @@ TEST(ElementQQ, Scalars) {
 
 TEST(ElementNF, Scalars) {
   renf_class K("a^2 - 2", "a", "1.41 +/- 0.1", 64);
-	auto m = Module<NumberField>({ RealNumber::rational(1), RealNumber::random() }, K);
+	auto m = Module<NumberFieldTraits>({ RealNumber::rational(1), RealNumber::random() }, K);
 	
-	Element<NumberField> elements[] { Element(m, 0), Element(m, 1) };
+	Element<NumberFieldTraits> elements[] { Element(m, 0), Element(m, 1) };
 
 	for (size_t i = 0; i<sizeof(elements)/sizeof(elements[0]); i++){
 		auto x = elements[i];

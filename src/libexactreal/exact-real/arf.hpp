@@ -33,41 +33,41 @@ namespace exactreal {
 // Arb author, it seems that 64 and 128 are good default precisions. After that
 // there is a more noticeable decline in performance.
 struct Arf : boost::field_operators<Arf>, boost::field_operators<Arf, long> {
-	Arf();
-	Arf(const Arf&);
-	Arf(Arf&&);
-	Arf(const std::string& mantissa, int base, long exponent);
-	Arf(const mpz_class& mantissa, long exponent);
-	explicit Arf(const long value);
-	~Arf();
+  Arf();
+  Arf(const Arf&);
+  Arf(Arf&&);
+  Arf(const std::string& mantissa, int base, long exponent);
+  Arf(const mpz_class& mantissa, long exponent);
+  explicit Arf(const long value);
+  ~Arf();
 
-	Arf abs() const;
+  Arf abs() const;
 
-	operator double() const;
-	Arf& operator=(const Arf&);
-	Arf& operator=(Arf&&);
+  operator double() const;
+  Arf& operator=(const Arf&);
+  Arf& operator=(Arf&&);
 
-	Arf& iadd(const Arf& rhs, const mp_limb_signed_t precision = 64);
-	Arf& operator+=(const Arf& rhs) { return iadd(rhs); }
-	Arf& isub(const Arf& rhs, const mp_limb_signed_t precision = 64);
-	Arf& operator-=(const Arf& rhs) { return isub(rhs); }
-	Arf& imul(const Arf& rhs, const mp_limb_signed_t precision = 64);
-	Arf& operator*=(const Arf& rhs) { return imul(rhs); }
-	Arf& idiv(const Arf& rhs, const mp_limb_signed_t precision = 64);
-	Arf& operator/=(const Arf& rhs) { return idiv(rhs); }
+  Arf& iadd(const Arf& rhs, const mp_limb_signed_t precision = 64);
+  Arf& operator+=(const Arf& rhs) { return iadd(rhs); }
+  Arf& isub(const Arf& rhs, const mp_limb_signed_t precision = 64);
+  Arf& operator-=(const Arf& rhs) { return isub(rhs); }
+  Arf& imul(const Arf& rhs, const mp_limb_signed_t precision = 64);
+  Arf& operator*=(const Arf& rhs) { return imul(rhs); }
+  Arf& idiv(const Arf& rhs, const mp_limb_signed_t precision = 64);
+  Arf& operator/=(const Arf& rhs) { return idiv(rhs); }
 
-	Arf& iadd(const long rhs, const mp_limb_signed_t precision = 64);
-	Arf& operator+=(const long rhs) { return iadd(rhs); }
-	Arf& isub(const long rhs, const mp_limb_signed_t precision = 64);
-	Arf& operator-=(const long rhs) { return isub(rhs); }
-	Arf& imul(const long rhs, const mp_limb_signed_t precision = 64);
-	Arf& operator*=(const long rhs) { return imul(rhs); }
-	Arf& idiv(const long rhs, const mp_limb_signed_t precision = 64);
-	Arf& operator/=(const long rhs) { return idiv(rhs); }
+  Arf& iadd(const long rhs, const mp_limb_signed_t precision = 64);
+  Arf& operator+=(const long rhs) { return iadd(rhs); }
+  Arf& isub(const long rhs, const mp_limb_signed_t precision = 64);
+  Arf& operator-=(const long rhs) { return isub(rhs); }
+  Arf& imul(const long rhs, const mp_limb_signed_t precision = 64);
+  Arf& operator*=(const long rhs) { return imul(rhs); }
+  Arf& idiv(const long rhs, const mp_limb_signed_t precision = 64);
+  Arf& operator/=(const long rhs) { return idiv(rhs); }
 
-	arf_t t;
+  arf_t t;
 };
 
-}
+}  // namespace exactreal
 
 #endif

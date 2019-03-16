@@ -3,10 +3,10 @@ set -exo pipefail
 
 # Create Makefiles
 ./bootstrap
-./configure --prefix="$PREFIX" CXXFLAGS="$CXXFLAGS" CXX=$CXX || (cat config.log; exit 1)
+./configure --prefix="$PREFIX" CXXFLAGS="$CXXFLAGS" CXX=$CXX LDFLAGS="-L$PREFIX/lib $LDFLAGS" CPPFLAGS="-isystem $PREFIX/include $CPPFLAGS" || (cat config.log; exit 1)
 
 # Only pass if some static checks go through
-./recipe/build-distcheck.sh
+LD_LIBRARY_PATH="$PREFIX/lib:$LD_LIBRARY_PATH" ./recipe/build-distcheck.sh
 ./recipe/build-cppcheck.sh
 ./recipe/build-clang-format.sh
 ./recipe/build-todo.sh

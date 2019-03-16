@@ -22,7 +22,7 @@
 #define LIBMODEANTIC_MODULE_HPP
 
 #include <vector>
-#include "external/spimpl/spimpl.h"
+#include "exact-real/external/spimpl/spimpl.h"
 
 #include "exact-real/exact-real.hpp"
 #include "exact-real/ring.hpp"
@@ -31,42 +31,48 @@ namespace exactreal {
 
 struct RealNumber;
 
-template<typename Ring>
+template <typename Ring>
 struct Element;
 
-template<typename Ring>
+template <typename Ring>
 struct Module {
-	// TODO: Move all the 64 in the same place
-	template<
-		typename RingWithoutParameters = Ring,
-		typename std::enable_if_t<std::is_same_v<Ring, RingWithoutParameters> && !has_parameters<RingWithoutParameters>::value, int> = 0>
-	explicit Module(const std::vector<std::shared_ptr<RealNumber>>& basis, long precision = 64);
+  template <typename RingWithoutParameters = Ring,
+            typename std::enable_if_t<
+                std::is_same_v<Ring, RingWithoutParameters> &&
+                    !has_parameters<RingWithoutParameters>::value,
+                int> = 0>
+  explicit Module(const std::vector<std::shared_ptr<RealNumber>>& basis,
+                  long precision = 64);
 
-	template<
-		typename RingWithParameters = Ring,
-		typename std::enable_if_t<std::is_same_v<Ring, RingWithParameters> && has_parameters<RingWithParameters>::value, int> = 0>
-	///	typename std::enable_if_t<has_parameters<Ring>::value>>
-	explicit Module(const std::vector<std::shared_ptr<RealNumber>>&, const typename RingWithParameters::Parameters& ring, long precision = 64);
+  template <
+      typename RingWithParameters = Ring,
+      typename std::enable_if_t<std::is_same_v<Ring, RingWithParameters> &&
+                                    has_parameters<RingWithParameters>::value,
+                                int> = 0>
+  ///	typename std::enable_if_t<has_parameters<Ring>::value>>
+  explicit Module(const std::vector<std::shared_ptr<RealNumber>>&,
+                  const typename RingWithParameters::Parameters& ring,
+                  long precision = 64);
 
-	// Return the specific ring (e.g., the number field); only enabled if the
-	// ring has such data, e.g., not for the integers or the rationals.
-	template<class RingWithParameters = Ring>
-	std::enable_if_t<std::is_same_v<Ring, RingWithParameters> && has_parameters<RingWithParameters>::value, typename RingWithParameters::Parameters>&
-	ring();
+  // Return the specific ring (e.g., the number field); only enabled if the
+  // ring has such data, e.g., not for the integers or the rationals.
+  template <class RingWithParameters = Ring>
+  std::enable_if_t<std::is_same_v<Ring, RingWithParameters> &&
+                       has_parameters<RingWithParameters>::value,
+                   typename RingWithParameters::Parameters>&
+  ring();
 
-	size_t rank() const;
+  size_t rank() const;
 
-	std::vector<std::shared_ptr<RealNumber>> const & gens() const;
-	Element<Ring> zero() const;
-	Element<Ring> one() const;
+  std::vector<std::shared_ptr<RealNumber>> const& gens() const;
+  Element<Ring> zero() const;
+  Element<Ring> one() const;
 
-	private:
-	struct Implementation;
-	spimpl::unique_impl_ptr<Implementation> impl;
+ private:
+  struct Implementation;
+  spimpl::unique_impl_ptr<Implementation> impl;
 };
 
-}
+}  // namespace exactreal
 
 #endif
-
-

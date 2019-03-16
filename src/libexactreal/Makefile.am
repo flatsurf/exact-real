@@ -7,23 +7,25 @@ libexactreal_la_SOURCES =               \
     element.cc                          \
     module.cc                           \
     arb.cc                              \
-    integer_ring.cc                     \
-    rational_field.cc                   \
-    number_field.cc                     \
+    integer_ring_traits.cc              \
+    rational_field_traits.cc            \
+    number_field_traits.cc              \
     arf.cc
 
 libexactreal_la_LDFLAGS = -version-info $(libexactreal_version_info)
 
-nobase_include_HEADERS =                \
-    exact-real/real_number.hpp         \
-    exact-real/element.hpp             \
-    exact-real/module.hpp              \
-    exact-real/integer_ring.hpp        \
-    exact-real/rational_field.hpp      \
-    exact-real/number_field.hpp        \
-    exact-real/number_field_ideal.hpp  \
-    exact-real/ring.hpp                \
-    exact-real/arb.hpp
+nobase_include_HEADERS =                      \
+    exact-real/real_number.hpp                \
+    exact-real/element.hpp                    \
+    exact-real/module.hpp                     \
+    exact-real/integer_ring_traits.hpp        \
+    exact-real/rational_field_traits.hpp      \
+    exact-real/number_field_traits.hpp        \
+    exact-real/number_field_ideal_traits.hpp  \
+    exact-real/ring.hpp                       \
+    exact-real/arf.hpp                        \
+    exact-real/arb.hpp                        \
+    exact-real/external/spimpl/spimpl.h
 
 $(builddir)/exact-real/exact-real.hpp: $(srcdir)/exact-real/exact-real.hpp.in Makefile
 	mkdir -p $(builddir)/libexactreal

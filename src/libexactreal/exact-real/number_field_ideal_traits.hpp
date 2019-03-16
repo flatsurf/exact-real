@@ -18,11 +18,18 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include "exact-real/rational_field.hpp"
-#include "exact-real/arb.hpp"
+#ifndef LIBMODEANTIC_NUMBER_FIELD_IDEAL_HPP
+#define LIBMODEANTIC_NUMBER_FIELD_IDEAL_HPP
+
+#include "exact-real/exact-real.hpp"
+#include "exact-real/real_number.hpp"
 
 namespace exactreal {
-	Arb RationalField::arb(const ElementClass& x, long) {
-		return Arb(x);
-	}
-}
+
+struct NumberFieldIdealTraits {
+  // No support for this in E-ANTIC yet
+};
+
+}  // namespace exactreal
+
+#endif

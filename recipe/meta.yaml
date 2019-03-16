@@ -15,6 +15,7 @@ source:
 build:
   number: {{ build_number }}
   string: {{ build_string }}
+  skip: True  # [win]
   script:
     - source ./recipe/cflags.sh
     - ./recipe/build-{{ flavour }}.sh
@@ -30,6 +31,7 @@ requirements:
     # requirement of make check which also runs benchmarks
     - gtest
     - benchmark
+    - valgrind
 
 test:
   commands:

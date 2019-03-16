@@ -34,14 +34,16 @@ AC_LANG([C++])
 dnl We use some C++17 features such as std::optional
 AX_CXX_COMPILE_STDCXX_17()
 
-AC_CHECK_LIB([eantic], [renf_init], , AC_MSG_ERROR([e-antic library not found]))
-AC_CHECK_LIB([arb], [arb_init], , AC_MSG_ERROR([arb library not found]))
-AC_CHECK_HEADERS([arb.h], , AC_MSG_ERROR([arb headers not found]))
+AC_CHECK_LIB([gmp], [__gmpz_init], , AC_MSG_ERROR([GMP library not found]))
+AC_CHECK_LIB([flint], [fmpz_init], , AC_MSG_ERROR([FLINT library not found]))
+AC_CHECK_LIB([eantic], [renf_init], , AC_MSG_ERROR([E-ANTIC library not found]))
+
+AC_CHECK_HEADERS([arb.h], , AC_MSG_ERROR([Arb headers not found]))
+AC_CHECK_LIB([mpfr], [mpfr_init], , AC_MSG_ERROR([MPFR library not found]))
+AC_CHECK_LIB([arb], [arb_init], , AC_MSG_ERROR([Arb library not found]))
 
 AC_CHECK_HEADERS([gtest/gtest.h], , AC_MSG_ERROR([googletest headers for make check not found]))
-# TODO: Check for libgtest but do not link everything against it
 AC_CHECK_HEADERS([benchmark/benchmark.h], , AC_MSG_ERROR([googletest headers for make check not found]))
-# TODO: Check for lbenchmark but do not link everything against it
 
 AC_CONFIG_HEADERS([src/libexactreal/exact-real/config.h])
 AC_CONFIG_FILES([Makefile src/Makefile src/libexactreal/Makefile test/Makefile test/libexactreal/Makefile])

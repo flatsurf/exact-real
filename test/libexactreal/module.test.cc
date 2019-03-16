@@ -23,7 +23,7 @@
 
 #include <exact-real/module.hpp>
 #include <exact-real/element.hpp>
-#include <exact-real/integer_ring.hpp>
+#include <exact-real/integer_ring_traits.hpp>
 
 using namespace exactreal;
 using std::vector;
@@ -31,10 +31,10 @@ using std::make_shared;
 using std::shared_ptr;
 
 TEST(ModuleZZ, Create) {
-	auto trivial = Module<IntegerRing>({});
+	auto trivial = Module<IntegerRingTraits>({});
 	EXPECT_EQ(trivial.rank(), 0);
 
-	auto m = Module<IntegerRing>({ RealNumber::random(), RealNumber::random() });
+	auto m = Module<IntegerRingTraits>({ RealNumber::random(), RealNumber::random() });
 	EXPECT_EQ(m.rank(), 2);
 }
 

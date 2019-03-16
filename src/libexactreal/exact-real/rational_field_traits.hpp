@@ -18,25 +18,22 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBMODEANTIC_NUMBER_FIELD_HPP
-#define LIBMODEANTIC_NUMBER_FIELD_HPP
+#ifndef LIBMODEANTIC_RATIONAL_FIELD_HPP
+#define LIBMODEANTIC_RATIONAL_FIELD_HPP
 
-#include <e-antic/renfxx.h>
+#include <gmpxx.h>
 
 #include "exact-real/exact-real.hpp"
 #include "exact-real/real_number.hpp"
 
 namespace exactreal {
 
-// TODO: Rename this and its friend to make clear that this is a traits class.
-struct NumberField {
-	typedef renf_elem_class ElementClass;
-	static constexpr bool isField = true;
-	typedef renf_class Parameters;
-	static Arb arb(const ElementClass& x, long prec);
+struct RationalFieldTraits {
+  typedef mpq_class ElementClass;
+  static constexpr bool isField = true;
+  static Arb arb(const ElementClass& x, long prec);
 };
 
-}
+}  // namespace exactreal
 
 #endif
-

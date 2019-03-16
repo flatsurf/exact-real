@@ -21,13 +21,13 @@
 #ifndef LIBMODEANTIC_ELEMENT_HPP
 #define LIBMODEANTIC_ELEMENT_HPP
 
-#include <boost/operators.hpp>
+#include <gmpxx.h>
 #include <boost/blank.hpp>
+#include <boost/operators.hpp>
 #include <optional>
 #include <type_traits>
 #include <vector>
-#include <gmpxx.h>
-#include "external/spimpl/spimpl.h"
+#include "exact-real/external/spimpl/spimpl.h"
 
 #include "exact-real/exact-real.hpp"
 
@@ -35,57 +35,64 @@ namespace exactreal {
 
 struct Arb;
 
-template<typename Ring>
+template <typename Ring>
 struct Module;
 
 struct RealNumber;
 
-template<typename Ring>
-struct Element :
-		boost::additive<Element<Ring>>,
-		boost::totally_ordered<Element<Ring>>,
-		boost::totally_ordered<Element<Ring>, RealNumber>,
-		boost::multiplicative<Element<Ring>, typename Ring::ElementClass>,
-		std::conditional_t<std::is_same<typename Ring::ElementClass, mpz_class>::value, boost::blank, boost::multiplicative<Element<Ring>, mpz_class>>,
-		boost::multiplicative<Element<Ring>, int> {
-	explicit Element(const Module<Ring>& parent);
-  Element(const Module<Ring>& parent, const std::vector<typename Ring::ElementClass>& coefficients);
-	Element(const Module<Ring>& parent, const size_t gen);
+template <typename Ring>
+struct Element
+    : boost::additive<Element<Ring>>,
+      boost::totally_ordered<Element<Ring>>,
+      boost::totally_ordered<Element<Ring>, RealNumber>,
+      boost::multiplicative<Element<Ring>, typename Ring::ElementClass>,
+      std::conditional_t<
+          std::is_same<typename Ring::ElementClass, mpz_class>::value,
+          boost::blank, boost::multiplicative<Element<Ring>, mpz_class>>,
+      boost::multiplicative<Element<Ring>, int> {
+  explicit Element(const Module<Ring>& parent);
+  Element(const Module<Ring>& parent,
+          const std::vector<typename Ring::ElementClass>& coefficients);
+  Element(const Module<Ring>& parent, const size_t gen);
 
-	typename Ring::ElementClass operator[](const size_t) const;
-	std::conditional<Ring::isField, mpq_class, mpz_class> operator[](const std::pair<size_t, size_t>&) const;
+  typename Ring::ElementClass operator[](const size_t) const;
+  std::conditional<Ring::isField, mpq_class, mpz_class> operator[](
+      const std::pair<size_t, size_t>&) const;
 
-	Arb arb(long prec) const;
-	
-	Element& operator+=(const Element&);
-	Element& operator-=(const Element&);
-	Element operator-() const;
-	Element& operator*=(const typename Ring::ElementClass&);
-	// Define a operator*=(const mpz_class&) if Ring::ElementClass != mpz_class
-	// TODO: Does this need to be so complicated? Have a look at the int = 0 example.
-	template<typename mpz = mpz_class>
-	Element& operator*=(const typename std::enable_if_t<std::is_same_v<mpz, mpz_class> && !std::is_same_v<typename Ring::ElementClass, mpz_class>, mpz>&);
-	Element& operator*=(const int&);
-	// Define a operator/=(const Ring::ElementClass&) if Ring is a field
-	// TODO: Does this need to be so complicated? Have a look at the int = 0 example.
-	template<typename element = typename Ring::ElementClass>
-	Element& operator/=(const typename std::enable_if_t<std::is_same_v<element, typename Ring::ElementClass> && Ring::isField, element>&);
-	bool operator==(const Element&) const;
-	bool operator<(const Element&) const;
+  Arb arb(long prec) const;
 
-	bool operator==(const RealNumber&) const;
-	bool operator<(const RealNumber&) const;
+  Element& operator+=(const Element&);
+  Element& operator-=(const Element&);
+  Element operator-() const;
+  Element& operator*=(const typename Ring::ElementClass&);
+  // Define a operator*=(const mpz_class&) if Ring::ElementClass != mpz_class
+  template <typename mpz = mpz_class>
+  Element& operator*=(
+      const typename std::enable_if_t<
+          std::is_same_v<mpz, mpz_class> &&
+              !std::is_same_v<typename Ring::ElementClass, mpz_class>,
+          mpz>&);
+  Element& operator*=(const int&);
+  // Define a operator/=(const Ring::ElementClass&) if Ring is a field
+  template <typename element = typename Ring::ElementClass>
+  Element& operator/=(
+      const typename std::enable_if_t<
+          std::is_same_v<element, typename Ring::ElementClass> && Ring::isField,
+          element>&);
+  bool operator==(const Element&) const;
+  bool operator<(const Element&) const;
 
-	template<typename R>
-	friend std::ostream& operator<<(std::ostream&, const Element<R>&);
+  bool operator==(const RealNumber&) const;
+  bool operator<(const RealNumber&) const;
 
-	private:
-	struct Implementation;
-	spimpl::impl_ptr<Implementation> impl;
+  template <typename R>
+  friend std::ostream& operator<<(std::ostream&, const Element<R>&);
+
+ private:
+  struct Implementation;
+  spimpl::impl_ptr<Implementation> impl;
 };
 
-}
+}  // namespace exactreal
 
 #endif
-
-

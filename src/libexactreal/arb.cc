@@ -30,37 +30,33 @@ using std::ostream;
 namespace exactreal {
 Arb::Arb() { arb_init(t); }
 
-Arb::Arb(const slong x) : Arb() {
-  arb_set_si(t, x);
-}
+Arb::Arb(const slong x) : Arb() { arb_set_si(t, x); }
 
-Arb::Arb(const Arb& arb) : Arb() {
-  arb_set(t, arb.t);
-}
+Arb::Arb(const Arb& arb) : Arb() { arb_set(t, arb.t); }
 
-Arb::Arb(Arb&& arb) : Arb() {
-  arb_swap(t, arb.t);
-}
+Arb::Arb(Arb&& arb) : Arb() { arb_swap(t, arb.t); }
 
-Arb::Arb(const Arf& lower, const Arf& upper, const mp_limb_signed_t precision) : Arb() {
-	arb_set_interval_arf(t, lower.t, upper.t, precision);	
+Arb::Arb(const Arf& lower, const Arf& upper, const mp_limb_signed_t precision)
+    : Arb() {
+  arb_set_interval_arf(t, lower.t, upper.t, precision);
 }
 
 Arb::Arb(const mpq_class& rat, const mp_limb_signed_t precision) : Arb() {
-	fmpq_t x;
-	fmpq_init_set_readonly(x, rat.get_mpq_t());
-	arb_set_fmpq(t, x, precision);
-	fmpq_clear_readonly(x);
+  fmpq_t x;
+  fmpq_init_set_readonly(x, rat.get_mpq_t());
+  arb_set_fmpq(t, x, precision);
+  fmpq_clear_readonly(x);
 }
 
 Arb::Arb(const mpz_class& value) : Arb() {
-	fmpz_t x;
-	fmpz_init_set_readonly(x, value.get_mpz_t());
-	arb_set_fmpz(t, x);
-	fmpz_clear_readonly(x);
+  fmpz_t x;
+  fmpz_init_set_readonly(x, value.get_mpz_t());
+  arb_set_fmpz(t, x);
+  fmpz_clear_readonly(x);
 }
 
-Arb::Arb(const renf_elem_class& renf, const mp_limb_signed_t precision) : Arb() {
+Arb::Arb(const renf_elem_class& renf, const mp_limb_signed_t precision)
+    : Arb() {
   if (renf.is_fmpq()) {
     arb_set_fmpq(t, renf.get_fmpq(), precision);
   } else {
@@ -71,9 +67,9 @@ Arb::Arb(const renf_elem_class& renf, const mp_limb_signed_t precision) : Arb() 
 Arb::~Arb() { arb_clear(t); }
 
 Arb Arb::any() {
-	Arb ret;
-	arb_zero_pm_inf(ret.t);
-	return ret;
+  Arb ret;
+  arb_zero_pm_inf(ret.t);
+  return ret;
 }
 
 bool Arb::isExact() const { return arb_is_exact(t); }
@@ -124,9 +120,9 @@ Arb& Arb::operator=(const Arb& rhs) {
 }
 
 std::pair<Arf, Arf> Arb::arf() const {
-	std::pair<Arf, Arf> ret;
-	arb_get_interval_arf(ret.first.t, ret.second.t, t, arb_bits(t));
-	return ret;	
+  std::pair<Arf, Arf> ret;
+  arb_get_interval_arf(ret.first.t, ret.second.t, t, arb_bits(t));
+  return ret;
 }
 
 ostream& operator<<(ostream& os, const Arb& self) {

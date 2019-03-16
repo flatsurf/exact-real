@@ -18,22 +18,15 @@ Current build status
 <table><tr>
     <td>CircleCI</td>
     <td>
-      <a href="https://circleci.com/gh/conda-forge/exactreal-feedstock">
-        <img alt="Linux" src="https://img.shields.io/circleci/project/github/conda-forge/exactreal-feedstock/master.svg?label=Linux">
+      <a href="https://circleci.com/gh/conda-forge/exact-real-feedstock">
+        <img alt="Linux" src="https://img.shields.io/circleci/project/github/conda-forge/exact-real-feedstock/master.svg?label=Linux">
       </a>
     </td>
   </tr><tr>
     <td>Travis</td>
     <td>
-      <a href="https://travis-ci.org/conda-forge/exactreal-feedstock">
-        <img alt="macOS" src="https://img.shields.io/travis/conda-forge/exactreal-feedstock/master.svg?label=macOS">
-      </a>
-    </td>
-  </tr><tr>
-    <td>Appveyor</td>
-    <td>
-      <a href="https://ci.appveyor.com/project/conda-forge/exactreal-feedstock/branch/master">
-        <img alt="windows" src="https://img.shields.io/appveyor/ci/conda-forge/exactreal-feedstock/master.svg?label=Windows">
+      <a href="https://travis-ci.org/conda-forge/exact-real-feedstock">
+        <img alt="macOS" src="https://img.shields.io/travis/conda-forge/exact-real-feedstock/master.svg?label=macOS">
       </a>
     </td>
   </tr>
@@ -44,7 +37,7 @@ Current build status
       <details>
         <summary>
           <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=&branchName=master">
-            <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/exactreal-feedstock?branchName=master">
+            <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/exact-real-feedstock?branchName=master">
           </a>
         </summary>
         <table>
@@ -53,34 +46,26 @@ Current build status
               <td>linux</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/exactreal-feedstock?branchName=master&jobName=linux&configuration=linux_" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/exact-real-feedstock?branchName=master&jobName=linux&configuration=linux_" alt="variant">
                 </a>
               </td>
             </tr><tr>
               <td>osx</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/exactreal-feedstock?branchName=master&jobName=osx&configuration=osx_" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>win_cxx_compilervs2008</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/exactreal-feedstock?branchName=master&jobName=win&configuration=win_cxx_compilervs2008" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>win_cxx_compilervs2015</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/exactreal-feedstock?branchName=master&jobName=win&configuration=win_cxx_compilervs2015" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/exact-real-feedstock?branchName=master&jobName=osx&configuration=osx_" alt="variant">
                 </a>
               </td>
             </tr>
           </tbody>
         </table>
       </details>
+    </td>
+  </tr>
+  <tr>
+    <td>Windows</td>
+    <td>
+      <img src="https://img.shields.io/badge/Windows-disabled-lightgrey.svg" alt="Windows disabled">
     </td>
   </tr>
 </table>

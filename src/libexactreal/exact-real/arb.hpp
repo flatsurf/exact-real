@@ -22,9 +22,9 @@
 #define LIBMODEANTIC_ARB_HPP
 
 #include <arb.h>
+#include <gmpxx.h>
 #include <boost/operators.hpp>
 #include <optional>
-#include <gmpxx.h>
 
 #include "exact-real/exact-real.hpp"
 
@@ -43,18 +43,18 @@ struct Arb : boost::additive<Arb>,
   Arb();
   Arb(const Arb&);
   Arb(Arb&&);
-	explicit Arb(const mpz_class& rat);
-	explicit Arb(const mpq_class& rat,
-			         const mp_limb_signed_t precision = 64);
+  explicit Arb(const mpz_class& rat);
+  explicit Arb(const mpq_class& rat, const mp_limb_signed_t precision = 64);
   explicit Arb(const renf_elem_class& renf,
                const mp_limb_signed_t precision = 64);
-	Arb(const Arf& lower, const Arf& upper, const mp_limb_signed_t precision = 64);
+  Arb(const Arf& lower, const Arf& upper,
+      const mp_limb_signed_t precision = 64);
   // cppcheck-suppress noExplicitConstructor
   explicit Arb(slong x);
   ~Arb();
 
-	// Returns the who extended real line [-∞,∞]
-	static Arb any();
+  // Returns the who extended real line [-∞,∞]
+  static Arb any();
 
   bool isExact() const;
 
@@ -77,9 +77,9 @@ struct Arb : boost::additive<Arb>,
   std::optional<int> cmp(const long long) const;
   std::optional<int> cmp(const Arb& rhs) const;
 
-	std::pair<Arf, Arf> arf() const;
+  std::pair<Arf, Arf> arf() const;
 
-	explicit operator double();
+  explicit operator double();
 
   friend std::ostream& operator<<(std::ostream&, const Arb&);
 

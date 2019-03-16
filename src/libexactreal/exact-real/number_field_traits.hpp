@@ -18,11 +18,23 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include "exact-real/number_field.hpp"
-#include "exact-real/arb.hpp"
+#ifndef LIBMODEANTIC_NUMBER_FIELD_HPP
+#define LIBMODEANTIC_NUMBER_FIELD_HPP
+
+#include <e-antic/renfxx.h>
+
+#include "exact-real/exact-real.hpp"
+#include "exact-real/real_number.hpp"
 
 namespace exactreal {
-	Arb NumberField::arb(const ElementClass& x, long) {
-		return Arb(x);
-	}
-}
+
+struct NumberFieldTraits {
+  typedef renf_elem_class ElementClass;
+  static constexpr bool isField = true;
+  typedef renf_class Parameters;
+  static Arb arb(const ElementClass& x, long prec);
+};
+
+}  // namespace exactreal
+
+#endif
