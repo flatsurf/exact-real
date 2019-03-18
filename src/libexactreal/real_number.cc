@@ -30,7 +30,7 @@ using std::ostream;
 namespace exactreal {
 RealNumber::~RealNumber() {}
 
-RealNumber::operator double() const { return static_cast<double>(arf(53)); }
+RealNumber::operator double() const { return static_cast<double>(arf(54)); }
 
 int RealNumber::cmp(const Arb& arb) const {
   auto interval = arb.arf();

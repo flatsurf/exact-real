@@ -10,6 +10,7 @@ libexactreal_la_SOURCES =               \
     integer_ring_traits.cc              \
     rational_field_traits.cc            \
     number_field_traits.cc              \
+    constraint_random_real_number.cc    \
     arf.cc
 
 libexactreal_la_LDFLAGS = -version-info $(libexactreal_version_info)
@@ -22,7 +23,7 @@ nobase_include_HEADERS =                      \
     exact-real/rational_field_traits.hpp      \
     exact-real/number_field_traits.hpp        \
     exact-real/number_field_ideal_traits.hpp  \
-    exact-real/ring.hpp                       \
+    exact-real/ring_traits.hpp                \
     exact-real/arf.hpp                        \
     exact-real/arb.hpp                        \
     exact-real/external/spimpl/spimpl.h
@@ -37,6 +38,6 @@ VPATH = $(srcdir) $(builddir)
 BUILT_SOURCES = exact-real/exact-real.hpp
 # Distribute exact-real.hpp.in as part of the tarball, but not exact-real.hpp
 EXTRA_DIST = exact-real/exact-real.hpp.in
-nodist_include_HEADERS = exact-real/exact-real.hpp
+nodist_pkginclude_HEADERS = exact-real/exact-real.hpp
 
 CLEANFILES = exact-real/exact-real.hpp

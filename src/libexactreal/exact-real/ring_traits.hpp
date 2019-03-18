@@ -18,8 +18,8 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBMODEANTIC_RING_HPP
-#define LIBMODEANTIC_RING_HPP
+#ifndef LIBMODEANTIC_RING_TRAITS_HPP
+#define LIBMODEANTIC_RING_TRAITS_HPP
 
 #include <type_traits>
 
@@ -27,11 +27,11 @@
 
 namespace exactreal {
 
-template <class Ring, class = std::void_t<>>
+template <class RingTraits, class = std::void_t<>>
 struct has_parameters : std::false_type {};
 
-template <class Ring>
-struct has_parameters<Ring, std::void_t<typename Ring::Parameters>>
+template <class RingTraits>
+struct has_parameters<RingTraits, std::void_t<typename RingTraits::Parameters>>
     : std::true_type {};
 
 }  // namespace exactreal

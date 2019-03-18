@@ -20,7 +20,6 @@
 
 #include <arb.h>
 #include <gmpxx.h>
-#include <boost/numeric/conversion/cast.hpp>
 #include <boost/random/linear_congruential.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
 #include <sstream>
@@ -30,7 +29,6 @@
 #include "exact-real/real_number.hpp"
 
 using namespace exactreal;
-using boost::numeric_cast;
 using boost::random::rand48;
 using std::make_unique;
 using std::ostream;
@@ -50,7 +48,7 @@ struct RandomRealNumber final : RealNumber {
   // with this until this shows up in the profiler…
   virtual Arf arf(long prec) const override {
     if (prec < 1) {
-      prec = 1;
+      prec = 0;
     }
 
     // We could work with a bigger base than 2 to speed things up here but it's
@@ -63,7 +61,9 @@ struct RandomRealNumber final : RealNumber {
 
     long exp = 0;
     stringstream os;
-    for (long digits = 0; digits < prec; digits++, exp--) {
+    // With d binary digits, we get a relative error at most 2^(1-d). Since we
+    // want it to be at most 2^-prec, we need prec + 1 digits.
+    for (long digits = 0; digits < prec + 1; digits++, exp--) {
       char c = chars[index_dist(rnd)];
       if (digits == 0 && c == '0') {
         digits--;
@@ -84,7 +84,7 @@ struct RandomRealNumber final : RealNumber {
   }
 
   RealNumber const& operator>>(ostream& out) const override {
-    out << arf(64) << "…" << seed;
+    out << "ℝ(" << static_cast<double>(*this) << ", seed=" << seed << ")";
     return *this;
   }
 

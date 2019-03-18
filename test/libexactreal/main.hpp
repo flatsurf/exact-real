@@ -21,7 +21,8 @@
 // Include this file once at the end of your .test.cc file to get a main that
 // runs unit tests and benchmarks.
 
-#include <iostream>
+#include <gtest/gtest.h>
+#include <benchmark/benchmark.h>
 
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);

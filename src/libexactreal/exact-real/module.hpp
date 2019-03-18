@@ -25,7 +25,7 @@
 #include "exact-real/external/spimpl/spimpl.h"
 
 #include "exact-real/exact-real.hpp"
-#include "exact-real/ring.hpp"
+#include "exact-real/ring_traits.hpp"
 
 namespace exactreal {
 
@@ -49,7 +49,6 @@ struct Module {
       typename std::enable_if_t<std::is_same_v<Ring, RingWithParameters> &&
                                     has_parameters<RingWithParameters>::value,
                                 int> = 0>
-  ///	typename std::enable_if_t<has_parameters<Ring>::value>>
   explicit Module(const std::vector<std::shared_ptr<RealNumber>>&,
                   const typename RingWithParameters::Parameters& ring,
                   long precision = 64);
@@ -66,7 +65,6 @@ struct Module {
 
   std::vector<std::shared_ptr<RealNumber>> const& gens() const;
   Element<Ring> zero() const;
-  Element<Ring> one() const;
 
  private:
   struct Implementation;

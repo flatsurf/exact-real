@@ -64,6 +64,9 @@ struct RealNumber : boost::totally_ordered<RealNumber> {
   static std::unique_ptr<RealNumber> random();
   // A random real in the range [a, b]
   static std::unique_ptr<RealNumber> random(const Arf& a, const Arf& b);
+  // A random real number, close to d; mostly useful to port code from doubles
+  // that are meant to ressemble random reals
+  static std::unique_ptr<RealNumber> random(const double d);
   static std::unique_ptr<RealNumber> rational(const mpq_class&);
   static std::unique_ptr<RealNumber> liouville(size_t base = 2);
   static std::unique_ptr<RealNumber> pi();

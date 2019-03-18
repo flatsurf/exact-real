@@ -37,6 +37,7 @@
 /module
 /element
 /rational_real_number
+/constraint_random_real_number
 
 ### Autotools Generated Files
 /.deps

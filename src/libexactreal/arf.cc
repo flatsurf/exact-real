@@ -22,6 +22,7 @@
 
 #include <arf.h>
 
+using std::ostream;
 using std::string;
 
 namespace exactreal {
@@ -55,7 +56,11 @@ Arf::Arf(const mpz_class& mantissa, long exponent) : Arf() {
 
 Arf::Arf(const long value) : Arf() { arf_set_si(t, value); }
 
+Arf::Arf(const int value) : Arf(static_cast<long>(value)) {}
+
 Arf::Arf(const Arf& value) : Arf() { arf_set(t, value.t); }
+
+Arf::Arf(const double value) : Arf() { arf_set_d(t, value); }
 
 Arf::Arf(Arf&& value) : Arf() { this->operator=(std::move(value)); }
 
@@ -73,49 +78,134 @@ Arf& Arf::operator=(Arf&& rhs) {
   return *this;
 }
 
-Arf& Arf::iadd(const Arf& rhs, mp_limb_signed_t precision) {
-  arf_add(t, t, rhs.t, precision, ARF_RND_NEAR);
+Arf& Arf::iadd(const Arf& rhs, mp_limb_signed_t precision, arf_rnd_t rnd) {
+  arf_add(t, t, rhs.t, precision, rnd);
   return *this;
 }
 
-Arf& Arf::isub(const Arf& rhs, mp_limb_signed_t precision) {
-  arf_sub(t, t, rhs.t, precision, ARF_RND_NEAR);
+Arf& Arf::isub(const Arf& rhs, mp_limb_signed_t precision, arf_rnd_t rnd) {
+  arf_sub(t, t, rhs.t, precision, rnd);
   return *this;
 }
 
-Arf& Arf::imul(const Arf& rhs, mp_limb_signed_t precision) {
-  arf_mul(t, t, rhs.t, precision, ARF_RND_NEAR);
+Arf& Arf::imul(const Arf& rhs, mp_limb_signed_t precision, arf_rnd_t rnd) {
+  arf_mul(t, t, rhs.t, precision, rnd);
   return *this;
 }
 
-Arf& Arf::idiv(const Arf& rhs, mp_limb_signed_t precision) {
-  arf_div(t, t, rhs.t, precision, ARF_RND_NEAR);
+Arf& Arf::idiv(const Arf& rhs, mp_limb_signed_t precision, arf_rnd_t rnd) {
+  arf_div(t, t, rhs.t, precision, rnd);
   return *this;
 }
 
-Arf& Arf::iadd(const long rhs, mp_limb_signed_t precision) {
-  arf_add_si(t, t, rhs, precision, ARF_RND_NEAR);
+Arf& Arf::iadd(const long rhs, mp_limb_signed_t precision, arf_rnd_t rnd) {
+  arf_add_si(t, t, rhs, precision, rnd);
   return *this;
 }
 
-Arf& Arf::isub(const long rhs, mp_limb_signed_t precision) {
-  arf_sub_si(t, t, rhs, precision, ARF_RND_NEAR);
+Arf& Arf::isub(const long rhs, mp_limb_signed_t precision, arf_rnd_t rnd) {
+  arf_sub_si(t, t, rhs, precision, rnd);
   return *this;
 }
 
-Arf& Arf::imul(const long rhs, mp_limb_signed_t precision) {
-  arf_mul_si(t, t, rhs, precision, ARF_RND_NEAR);
+Arf& Arf::imul(const long rhs, mp_limb_signed_t precision, arf_rnd_t rnd) {
+  arf_mul_si(t, t, rhs, precision, rnd);
   return *this;
 }
 
-Arf& Arf::idiv(const long rhs, mp_limb_signed_t precision) {
-  arf_div_si(t, t, rhs, precision, ARF_RND_NEAR);
+Arf& Arf::idiv(const long rhs, mp_limb_signed_t precision, arf_rnd_t rnd) {
+  arf_div_si(t, t, rhs, precision, rnd);
   return *this;
 }
+
+Arf& Arf::operator<<=(const long rhs) {
+  arf_mul_2exp_si(t, t, rhs);
+  return *this;
+}
+
+Arf& Arf::operator>>=(const long rhs) { return this->operator<<=(-rhs); }
+
+bool Arf::operator<(const Arf& rhs) const { return arf_cmp(t, rhs.t) < 0; }
+
+bool Arf::operator==(const Arf& rhs) const { return arf_equal(t, rhs.t); }
+
+bool Arf::operator<(long rhs) const { return arf_cmp_si(t, rhs) < 0; }
+
+bool Arf::operator>(long rhs) const { return arf_cmp_si(t, rhs) > 0; }
+
+bool Arf::operator==(long rhs) const { return arf_equal_si(t, rhs); }
 
 Arf Arf::abs() const {
   Arf ret;
   arf_abs(ret.t, t);
   return ret;
+}
+
+mpz_class Arf::mantissa() const {
+  fmpz_t mantissa;
+  fmpz_t exponent;
+  fmpz_init(mantissa);
+  fmpz_init(exponent);
+
+  arf_get_fmpz_2exp(mantissa, exponent, t);
+
+  mpz_class m;
+  fmpz_get_mpz(m.get_mpz_t(), mantissa);
+
+  fmpz_clear(mantissa);
+  fmpz_clear(exponent);
+
+  return m;
+}
+
+mpz_class Arf::exponent() const {
+  fmpz_t mantissa;
+  fmpz_t exponent;
+  fmpz_init(mantissa);
+  fmpz_init(exponent);
+
+  arf_get_fmpz_2exp(mantissa, exponent, t);
+
+  mpz_class e;
+  fmpz_get_mpz(e.get_mpz_t(), exponent);
+
+  fmpz_clear(mantissa);
+  fmpz_clear(exponent);
+
+  return e;
+}
+
+long Arf::logb() const {
+  Arf _;
+  fmpz_t e;
+  fmpz_init(e);
+  arf_frexp(_.t, e, t);
+  long ret = fmpz_get_si(e) - 1;
+  fmpz_clear(e);
+  return ret;
+}
+
+ostream& operator<<(ostream& os, const Arf& self) {
+  if (arf_is_zero(self.t)) {
+    os << 0;
+  } else if (arf_is_pos_inf(self.t)) {
+    os << "+∞";
+  } else if (arf_is_neg_inf(self.t)) {
+    os << "-∞";
+  } else if (arf_is_nan(self.t)) {
+    os << "NaN";
+  }
+
+  os << self.mantissa();
+
+  if (self.exponent() != 0) {
+    os << "p" << self.exponent();
+  }
+
+  if (self.exponent() < 0) {
+    os << "[∼" << static_cast<double>(self) << "]";
+  }
+
+  return os;
 }
 }  // namespace exactreal

@@ -40,6 +40,7 @@ struct Arf;
 struct Arb : boost::additive<Arb>,
              boost::additive<renf_elem_class>,
              boost::multipliable<Arb> {
+  // An exact zero element
   Arb();
   Arb(const Arb&);
   Arb(Arb&&);

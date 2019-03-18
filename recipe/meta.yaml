@@ -48,7 +48,8 @@ outputs:
     files:
       - lib/*.dylib    # [osx]
       - lib/*.so*      # [linux]
-      - include/exact-real/*.h
+      - include/exact-real/*.hpp
+      - include/exact-real/external/spimpl/spimpl.h
 
 about:
   home: https://github.com/polygon-tbd/exact-real

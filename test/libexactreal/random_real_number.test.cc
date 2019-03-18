@@ -25,6 +25,8 @@
 #include <exact-real/arb.hpp>
 #include <exact-real/arf.hpp>
 
+#include "arf.test.hpp"
+
 using namespace exactreal;
 
 TEST(RandomRealNumberTest, Equality) {
@@ -41,28 +43,7 @@ TEST(RandomRealNumberTest, Double) {
 }
 
 TEST(RandomRealNumberTest, arf) {
-	auto rnd = RealNumber::random();
-	Arf prev = Arf();
-	Arf approx = Arf();
-	for (unsigned int prec = 1; prec <= 1024; prec*=2){
-		prev = approx;
-		approx = rnd->arf(prec);
-		EXPECT_EQ(approx, rnd->arf(prec));
-		EXPECT_GE(approx, Arf());
-		EXPECT_LE(approx, Arf(1));
-
-		// arf_bits(approx.t) >= prec might not be true because trailing zeros in
-		// the floating point representation are not stored explicitly:
-		// EXPECT_GE(arf_bits(approx.t), prec);
-		// Instead we check that at least the precision does not decrease:
-		EXPECT_GE(arf_bits(approx.t), arf_bits(prev.t));
-
-		Arf diff = (approx - rnd->arf(prec * 2)).abs();
-		for (auto i = 0u; i < prec; i++){
-			EXPECT_LE(diff, 1);
-			diff *= 2;
-		}
-	}
+	testArf(RealNumber::random());
 }
 
 TEST(RandomRealNumberTest, refine) {
