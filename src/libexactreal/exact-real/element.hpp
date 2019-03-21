@@ -85,6 +85,8 @@ struct Element
   bool operator==(const RealNumber&) const;
   bool operator<(const RealNumber&) const;
 
+  operator bool() const;
+
   template <typename R>
   friend std::ostream& operator<<(std::ostream&, const Element<R>&);
 

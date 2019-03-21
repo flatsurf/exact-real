@@ -205,6 +205,12 @@ bool Element<Ring>::operator==(const RealNumber& rhs) const {
 }
 
 template <typename Ring>
+Element<Ring>::operator bool() const {
+  return std::any_of(impl->coefficients.begin(), impl->coefficients.end(),
+                     [](auto c) { return c != 0; });
+}
+
+template <typename Ring>
 ostream& operator<<(ostream& out, const Element<Ring>& self) {
   bool empty = true;
   for (size_t i = 0; i < self.impl->parent.rank(); i++) {

@@ -32,7 +32,10 @@ struct ModuleImplementation {
   using Basis = vector<shared_ptr<RealNumber>>;
 
   explicit ModuleImplementation(const Basis& basis, long precision)
-      : basis(basis), precision(precision) {}
+      : basis(basis), precision(precision) {
+    // See https://github.com/flatsurf/exact-real/issues/5 for missing input
+    // checks.
+  }
 
   Basis basis;
   long precision;
