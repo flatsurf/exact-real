@@ -18,17 +18,27 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
-#define LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
+#ifndef EXACTREAL_TEST_ARF_HPP
+#define EXACTREAL_TEST_ARF_HPP
 
-#include "exact-real/exact-real.hpp"
+#include <flint/flintxx/frandxx.h>
+#include <cassert>
+#include <exact-real/arf.hpp>
+#include <memory>
 
-namespace exactreal {
+using namespace exactreal;
+using std::make_unique;
+using std::unique_ptr;
 
-struct NumberFieldIdealTraits {
-  // No support for this in E-ANTIC yet
+struct ArfTester {
+  unique_ptr<flint::frandxx> flint_rand;
+
+  void reset() { flint_rand = make_unique<flint::frandxx>(); }
+
+  Arf random(prec prec = 53, size mag = 10) {
+    assert(prec != 0);
+    return Arf::randtest(*flint_rand, prec, mag);
+  }
 };
-
-}  // namespace exactreal
 
 #endif

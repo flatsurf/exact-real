@@ -18,17 +18,21 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
-#define LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
+#ifndef LIBEXACTREAL_YAP_PREC_TRANSFORMATION_HPP
+#define LIBEXACTREAL_YAP_PREC_TRANSFORMATION_HPP
 
 #include "exact-real/exact-real.hpp"
+#include "exact-real/yap/forward.hpp"
+#include "exact-real/yap/params_transformation.hpp"
 
 namespace exactreal {
-
-struct NumberFieldIdealTraits {
-  // No support for this in E-ANTIC yet
+namespace yap {
+// A transformation to determine to precision than an expression has been
+// bound to. This is usually done by an explicit call, such as (x + y)(64).
+struct PrecTransformation : ParamsTransformation<prec> {
+  using ParamsTransformation<prec>::operator();
 };
-
+}  // namespace yap
 }  // namespace exactreal
 
 #endif

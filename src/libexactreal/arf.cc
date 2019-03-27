@@ -25,8 +25,28 @@
 using std::ostream;
 using std::string;
 
+namespace {
+std::pair<mpz_class, mpz_class> mantissa_exponent(const arf_t arf) {
+  fmpz_t mantissa;
+  fmpz_t exponent;
+  fmpz_init(mantissa);
+  fmpz_init(exponent);
+
+  arf_get_fmpz_2exp(mantissa, exponent, arf);
+
+  mpz_class m, e;
+  fmpz_get_mpz(m.get_mpz_t(), mantissa);
+  fmpz_get_mpz(e.get_mpz_t(), exponent);
+
+  fmpz_clear(mantissa);
+  fmpz_clear(exponent);
+
+  return std::make_pair(m, e);
+}
+}  // namespace
+
 namespace exactreal {
-Arf::Arf() { arf_init(t); }
+Arf::Arf() noexcept { arf_init(t); }
 
 Arf::Arf(const string& mantissa, int base, long exponent) : Arf() {
   fmpz_t m, e;
@@ -41,7 +61,7 @@ Arf::Arf(const string& mantissa, int base, long exponent) : Arf() {
   fmpz_clear(m);
 }
 
-Arf::Arf(const mpz_class& mantissa, long exponent) : Arf() {
+Arf::Arf(const mpz_class& mantissa, long exponent) noexcept : Arf() {
   fmpz_t m, e;
   fmpz_init(m);
   fmpz_init(e);
@@ -54,128 +74,72 @@ Arf::Arf(const mpz_class& mantissa, long exponent) : Arf() {
   fmpz_clear(m);
 }
 
-Arf::Arf(const long value) : Arf() { arf_set_si(t, value); }
+Arf::Arf(const long value) noexcept : Arf() { arf_set_si(t, value); }
 
-Arf::Arf(const int value) : Arf(static_cast<long>(value)) {}
+Arf::Arf(const int value) noexcept : Arf(static_cast<long>(value)) {}
 
-Arf::Arf(const Arf& value) : Arf() { arf_set(t, value.t); }
+Arf::Arf(const Arf& value) noexcept : Arf() { arf_set(t, value.t); }
 
-Arf::Arf(const double value) : Arf() { arf_set_d(t, value); }
+Arf::Arf(const double value) noexcept : Arf() { arf_set_d(t, value); }
 
-Arf::Arf(Arf&& value) : Arf() { this->operator=(std::move(value)); }
+Arf::Arf(Arf&& value) noexcept : Arf() { this->operator=(std::move(value)); }
 
-Arf::~Arf() { arf_clear(t); }
+Arf::~Arf() noexcept { arf_clear(t); }
 
-Arf::operator double() const { return arf_get_d(t, ARF_RND_NEAR); }
+arf_t& Arf::arf_t() noexcept { return t; }
 
-Arf& Arf::operator=(const Arf& rhs) {
+const arf_t& Arf::arf_t() const noexcept { return t; }
+
+Arf::operator double() const noexcept { return arf_get_d(t, ARF_RND_NEAR); }
+
+Arf& Arf::operator=(const Arf& rhs) noexcept {
   arf_set(t, rhs.t);
   return *this;
 }
 
-Arf& Arf::operator=(Arf&& rhs) {
+Arf& Arf::operator=(Arf&& rhs) noexcept {
   arf_swap(t, rhs.t);
   return *this;
 }
 
-Arf& Arf::iadd(const Arf& rhs, mp_limb_signed_t precision, arf_rnd_t rnd) {
-  arf_add(t, t, rhs.t, precision, rnd);
+Arf& Arf::operator=(int rhs) noexcept {
+  arf_set_si(t, rhs);
   return *this;
 }
 
-Arf& Arf::isub(const Arf& rhs, mp_limb_signed_t precision, arf_rnd_t rnd) {
-  arf_sub(t, t, rhs.t, precision, rnd);
+Arf& Arf::operator=(long rhs) noexcept {
+  arf_set_si(t, rhs);
   return *this;
 }
 
-Arf& Arf::imul(const Arf& rhs, mp_limb_signed_t precision, arf_rnd_t rnd) {
-  arf_mul(t, t, rhs.t, precision, rnd);
-  return *this;
-}
-
-Arf& Arf::idiv(const Arf& rhs, mp_limb_signed_t precision, arf_rnd_t rnd) {
-  arf_div(t, t, rhs.t, precision, rnd);
-  return *this;
-}
-
-Arf& Arf::iadd(const long rhs, mp_limb_signed_t precision, arf_rnd_t rnd) {
-  arf_add_si(t, t, rhs, precision, rnd);
-  return *this;
-}
-
-Arf& Arf::isub(const long rhs, mp_limb_signed_t precision, arf_rnd_t rnd) {
-  arf_sub_si(t, t, rhs, precision, rnd);
-  return *this;
-}
-
-Arf& Arf::imul(const long rhs, mp_limb_signed_t precision, arf_rnd_t rnd) {
-  arf_mul_si(t, t, rhs, precision, rnd);
-  return *this;
-}
-
-Arf& Arf::idiv(const long rhs, mp_limb_signed_t precision, arf_rnd_t rnd) {
-  arf_div_si(t, t, rhs, precision, rnd);
-  return *this;
-}
-
-Arf& Arf::operator<<=(const long rhs) {
+Arf& Arf::operator<<=(const long rhs) noexcept {
   arf_mul_2exp_si(t, t, rhs);
   return *this;
 }
 
-Arf& Arf::operator>>=(const long rhs) { return this->operator<<=(-rhs); }
+Arf& Arf::operator>>=(const long rhs) noexcept { return this->operator<<=(-rhs); }
 
-bool Arf::operator<(const Arf& rhs) const { return arf_cmp(t, rhs.t) < 0; }
+bool Arf::operator<(const Arf& rhs) const noexcept { return arf_cmp(t, rhs.t) < 0; }
 
-bool Arf::operator==(const Arf& rhs) const { return arf_equal(t, rhs.t); }
+bool Arf::operator==(const Arf& rhs) const noexcept { return arf_equal(t, rhs.t); }
 
-bool Arf::operator<(long rhs) const { return arf_cmp_si(t, rhs) < 0; }
+bool Arf::operator<(long rhs) const noexcept { return arf_cmp_si(t, rhs) < 0; }
 
-bool Arf::operator>(long rhs) const { return arf_cmp_si(t, rhs) > 0; }
+bool Arf::operator>(long rhs) const noexcept { return arf_cmp_si(t, rhs) > 0; }
 
-bool Arf::operator==(long rhs) const { return arf_equal_si(t, rhs); }
+bool Arf::operator==(long rhs) const noexcept { return arf_equal_si(t, rhs); }
 
-Arf Arf::abs() const {
+Arf Arf::abs() const noexcept {
   Arf ret;
   arf_abs(ret.t, t);
   return ret;
 }
 
-mpz_class Arf::mantissa() const {
-  fmpz_t mantissa;
-  fmpz_t exponent;
-  fmpz_init(mantissa);
-  fmpz_init(exponent);
+mpz_class Arf::mantissa() const noexcept { return mantissa_exponent(t).first; }
 
-  arf_get_fmpz_2exp(mantissa, exponent, t);
+mpz_class Arf::exponent() const noexcept { return mantissa_exponent(t).second; }
 
-  mpz_class m;
-  fmpz_get_mpz(m.get_mpz_t(), mantissa);
-
-  fmpz_clear(mantissa);
-  fmpz_clear(exponent);
-
-  return m;
-}
-
-mpz_class Arf::exponent() const {
-  fmpz_t mantissa;
-  fmpz_t exponent;
-  fmpz_init(mantissa);
-  fmpz_init(exponent);
-
-  arf_get_fmpz_2exp(mantissa, exponent, t);
-
-  mpz_class e;
-  fmpz_get_mpz(e.get_mpz_t(), exponent);
-
-  fmpz_clear(mantissa);
-  fmpz_clear(exponent);
-
-  return e;
-}
-
-long Arf::logb() const {
+long Arf::logb() const noexcept {
   Arf _;
   fmpz_t e;
   fmpz_init(e);
@@ -185,22 +149,26 @@ long Arf::logb() const {
   return ret;
 }
 
+Arf Arf::randtest(flint::frandxx& state, prec precision, prec magbits) noexcept {
+  Arf ret;
+  arf_randtest(ret.arf_t(), state._data(), precision, magbits);
+  return ret;
+}
+
 ostream& operator<<(ostream& os, const Arf& self) {
   if (arf_is_zero(self.t)) {
-    os << 0;
+    return os << 0;
   } else if (arf_is_pos_inf(self.t)) {
-    os << "+∞";
+    return os << "+∞";
   } else if (arf_is_neg_inf(self.t)) {
-    os << "-∞";
+    return os << "-∞";
   } else if (arf_is_nan(self.t)) {
-    os << "NaN";
+    return os << "NaN";
+  } else if (self.exponent() >= 0) {
+    return os << static_cast<double>(self);
   }
 
-  os << self.mantissa();
-
-  if (self.exponent() != 0) {
-    os << "p" << self.exponent();
-  }
+  os << self.mantissa() << "p" << self.exponent();
 
   if (self.exponent() < 0) {
     os << "[∼" << static_cast<double>(self) << "]";

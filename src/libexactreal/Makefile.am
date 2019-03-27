@@ -26,6 +26,8 @@ nobase_include_HEADERS =                      \
     exact-real/ring_traits.hpp                \
     exact-real/arf.hpp                        \
     exact-real/arb.hpp                        \
+    exact-real/forward.hpp                    \
+    exact-real/yap/arb.hpp                    \
     exact-real/external/spimpl/spimpl.h
 
 $(builddir)/exact-real/exact-real.hpp: $(srcdir)/exact-real/exact-real.hpp.in Makefile

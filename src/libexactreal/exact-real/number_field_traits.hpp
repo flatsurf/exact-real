@@ -18,13 +18,13 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBMODEANTIC_NUMBER_FIELD_HPP
-#define LIBMODEANTIC_NUMBER_FIELD_HPP
-
-#include <e-antic/renfxx.h>
+#ifndef LIBEXACTREAL_NUMBER_FIELD_HPP
+#define LIBEXACTREAL_NUMBER_FIELD_HPP
 
 #include "exact-real/exact-real.hpp"
-#include "exact-real/real_number.hpp"
+
+struct renf_class;
+struct renf_elem_class;
 
 namespace exactreal {
 

@@ -18,17 +18,38 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
-#define LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
+#include <gtest/gtest.h>
+#include <boost/lexical_cast.hpp>
 
-#include "exact-real/exact-real.hpp"
+#include <exact-real/arf.hpp>
 
-namespace exactreal {
+using namespace exactreal;
+using boost::lexical_cast;
+using std::string;
 
-struct NumberFieldIdealTraits {
-  // No support for this in E-ANTIC yet
-};
+TEST(ArbTest, CreateDestroy) { delete new Arf(); }
 
-}  // namespace exactreal
+TEST(ArbTest, Relations) {
+  Arf x(-1), y(1);
 
-#endif
+  ASSERT_TRUE((x < y));
+  ASSERT_TRUE((y > x));
+  ASSERT_TRUE((x <= y));
+  ASSERT_TRUE((y >= x));
+  ASSERT_TRUE((x == x));
+  ASSERT_TRUE((x != y));
+  ASSERT_TRUE(!(y < x));
+  ASSERT_TRUE(!(x > y));
+  ASSERT_TRUE(!(y <= x));
+  ASSERT_TRUE(!(x >= y));
+  ASSERT_TRUE(!(x == y));
+  ASSERT_TRUE(!(x != x));
+}
+
+TEST(ArbTest, Printing) {
+  EXPECT_EQ(lexical_cast<string>(Arf()), "0");
+  EXPECT_EQ(lexical_cast<string>(Arf(1337)), "1337");
+  EXPECT_EQ(lexical_cast<string>(Arf(13.37)), "7526640877242941p-49[∼13.37]");
+}
+
+#include "main.hpp"

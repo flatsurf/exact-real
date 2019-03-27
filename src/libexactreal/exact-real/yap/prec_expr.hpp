@@ -18,17 +18,22 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
-#define LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
+#ifndef LIBEXACTREAL_YAP_PREC_EXPR_HPP
+#define LIBEXACTREAL_YAP_PREC_EXPR_HPP
 
 #include "exact-real/exact-real.hpp"
+#include "exact-real/yap/forward.hpp"
 
 namespace exactreal {
+namespace yap {
 
-struct NumberFieldIdealTraits {
-  // No support for this in E-ANTIC yet
+struct PrecExpr {
+  static boost::yap::expr_kind const kind = boost::yap::expr_kind::terminal;
+
+  boost::hana::tuple<prec> elements;
 };
 
+}  // namespace yap
 }  // namespace exactreal
 
 #endif

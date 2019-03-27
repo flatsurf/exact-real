@@ -1,8 +1,12 @@
-check_PROGRAMS = arb random_real_number rational_real_number module element constraint_random_real_number
+check_PROGRAMS = arb arb_yap arb_benchmark random_real_number rational_real_number module element constraint_random_real_number arf_yap arf
 
 TESTS = $(check_PROGRAMS)
 
-arb_SOURCES = arb.test.cc main.hpp
+arb_SOURCES = arb.test.cc arb.hpp main.hpp
+arf_SOURCES = arf.test.cc arf.hpp main.hpp
+arb_yap_SOURCES = arb.yap.test.cc arb.hpp main.hpp
+arf_yap_SOURCES = arf.yap.test.cc arf.hpp main.hpp
+arb_benchmark_SOURCES = arb.benchmark.cc arb.hpp main.hpp
 random_real_number_SOURCES = random_real_number.test.cc main.hpp arf.test.hpp
 rational_real_number_SOURCES = rational_real_number.test.cc main.hpp
 module_SOURCES = module.test.cc main.hpp

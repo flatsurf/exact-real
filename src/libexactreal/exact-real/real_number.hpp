@@ -18,8 +18,8 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBMODEANTIC_REAL_NUMBER_HPP
-#define LIBMODEANTIC_REAL_NUMBER_HPP
+#ifndef LIBEXACTREAL_REAL_NUMBER_HPP
+#define LIBEXACTREAL_REAL_NUMBER_HPP
 
 #include <gmpxx.h>
 #include <boost/operators.hpp>

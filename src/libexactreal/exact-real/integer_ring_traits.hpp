@@ -18,13 +18,13 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBMODEANTIC_INTEGER_RING_HPP
-#define LIBMODEANTIC_INTEGER_RING_HPP
+#ifndef LIBEXACTREAL_INTEGER_RING_HPP
+#define LIBEXACTREAL_INTEGER_RING_HPP
 
 #include <gmpxx.h>
 
 #include "exact-real/exact-real.hpp"
-#include "exact-real/real_number.hpp"
+#include "exact-real/forward.hpp"
 
 namespace exactreal {
 

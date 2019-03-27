@@ -18,8 +18,8 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBMODEANTIC_RING_TRAITS_HPP
-#define LIBMODEANTIC_RING_TRAITS_HPP
+#ifndef LIBEXACTREAL_RING_TRAITS_HPP
+#define LIBEXACTREAL_RING_TRAITS_HPP
 
 #include <type_traits>
 
@@ -27,12 +27,17 @@
 
 namespace exactreal {
 
-template <class RingTraits, class = std::void_t<>>
-struct has_parameters : std::false_type {};
+// true_type iff Ring is the traits class of a ring that needs additional
+// parameters to function, e.g., a number field which has a "renf_class" which
+// singles out the specific ring.
+template <typename Ring, typename = std::void_t<>>
+struct is_parametrized : std::false_type {};
 
-template <class RingTraits>
-struct has_parameters<RingTraits, std::void_t<typename RingTraits::Parameters>>
-    : std::true_type {};
+template <typename Ring>
+struct is_parametrized<Ring, std::void_t<typename Ring::Parameters>> : std::true_type {};
+
+template <typename Ring>
+inline constexpr bool is_parametrized_v = is_parametrized<Ring>::value;
 
 }  // namespace exactreal
 

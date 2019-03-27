@@ -41,15 +41,16 @@ cd exact-real
 make
 ```
 
-For best performance run `CXXFLAGS="-O3 -flto" CXX="g++
--fno-semantic-interposition" ./configure` instead of `./configure` as this code
-greatly benefits from flto inlining. (Unfortunately, libtool filters out
-`-fno-semantic-interposition` as of early 2019 so we can not pass it as part of
-`CXXFLAGS`. If you are using clang, `-fno-semantic-interposition` does not seem
-to be necessary.) You might want to add `-g3` to the `CXXFLAGS` which does not
-hurt performance but gives a better debugging experience. For the best
-debugging experience, you might want to replace `-O3` with `-Og` or even `-O0`
-but the latter results in very poor performance.
+For best performance run `CXXFLAGS="-O3 -flto -march=native -mtune=native"
+CXX="g++ -fno-semantic-interposition" ./configure` instead of `./configure` as
+this code greatly benefits from flto inlining. (Unfortunately, libtool filters
+out `-fno-semantic-interposition` as of early 2019 so we can not pass it as
+part of `CXXFLAGS`. If you are using clang, `-fno-semantic-interposition` does
+not seem to be necessary.) Do not use `-Ofast` or `-ffast-math` as parts of our
+code rely on IEEE compliance. You might want to add `-g3` to the `CXXFLAGS`
+which does not hurt performance but gives a better debugging experience. For
+the best debugging experience, you might want to replace `-O3` with `-Og` or
+even `-O0` but the latter results in very poor performance.
 
 Additionally, you might want to run with configure with ` --disable-static`
 which improves the build time.
@@ -91,7 +92,10 @@ source activate exact-real-test
 
 `make check` runs all tests and benchmarks. During development `make check TESTS=module`
 only runs the tests for `module`. For randomized tests, you might want to add
-`GTEST_REPEAT=1024` to run such tests repeatedly.
+`GTEST_REPEAT=1024` to run such tests repeatedly. Note that the environment
+variable `EXACTREAL_CHECK` is passed on to the tests and benchmarks, i.e., you
+could add `EXACTREAL_CHECK="--benchmark_min_time=.02"` to not let the
+benchmarks run as long as they would usually.
 
 ## Maintainers
 

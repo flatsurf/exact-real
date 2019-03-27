@@ -18,16 +18,37 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
-#define LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
+/*
+ * Forward declarations of all our classes. Loaded by every other header file
+ * for convenience and also to get consistent defaults for template parameters.
+ */
+
+#ifndef LIBEXACTREAL_FORWARD_HPP
+#define LIBEXACTREAL_FORWARD_HPP
+
+#include <boost/yap/algorithm_fwd.hpp>
 
 #include "exact-real/exact-real.hpp"
 
 namespace exactreal {
 
-struct NumberFieldIdealTraits {
-  // No support for this in E-ANTIC yet
-};
+namespace yap {
+template <boost::yap::expr_kind Kind, typename Tuple>
+struct ArfExpr;
+template <boost::yap::expr_kind Kind, typename Tuple>
+struct ArbExpr;
+}
+
+struct Arb;
+struct Arf;
+
+struct RealNumber;
+
+template <typename Ring>
+struct Element;
+
+template <typename Ring>
+struct Module;
 
 }  // namespace exactreal
 

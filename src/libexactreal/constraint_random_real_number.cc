@@ -26,8 +26,8 @@
 #include <boost/random/uniform_int_distribution.hpp>
 #include <sstream>
 
-#include "exact-real/arf.hpp"
 #include "exact-real/real_number.hpp"
+#include "exact-real/yap/arf.hpp"
 
 using namespace exactreal;
 using boost::lexical_cast;
@@ -44,9 +44,8 @@ unsigned int nextSeed = 1337;
 
 // A random real number in [a, b]
 struct ConstraintRandomRealNumber final : RealNumber {
-  ConstraintRandomRealNumber(const Arf& a, const Arf& b)
-      : inner(RealNumber::random()) {
-    if (arf_cmp(a.t, b.t) >= 0) {
+  ConstraintRandomRealNumber(const Arf& a, const Arf& b) : inner(RealNumber::random()) {
+    if (a >= b) {
       throw std::logic_error("interval must have an interior");
     }
 
@@ -66,15 +65,13 @@ struct ConstraintRandomRealNumber final : RealNumber {
 
     if (a_exponent < b_exponent) {
       mpz_class delta = b_exponent - a_exponent;
-      mpz_mul_2exp(b_mantissa.get_mpz_t(), b_mantissa.get_mpz_t(),
-                   delta.get_si());
+      mpz_mul_2exp(b_mantissa.get_mpz_t(), b_mantissa.get_mpz_t(), delta.get_si());
       b_exponent = a_exponent;
     }
 
     if (b_exponent < a_exponent) {
       mpz_class delta = a_exponent - b_exponent;
-      mpz_mul_2exp(a_mantissa.get_mpz_t(), a_mantissa.get_mpz_t(),
-                   delta.get_si());
+      mpz_mul_2exp(a_mantissa.get_mpz_t(), a_mantissa.get_mpz_t(), delta.get_si());
       a_exponent = b_exponent;
     }
 
@@ -103,8 +100,7 @@ struct ConstraintRandomRealNumber final : RealNumber {
     long necessary_digits = prec + 1;
 
     Arf ret(initial);
-    long initial_digits =
-        initial == 0 ? 0 : (mpz_sizeinbase(initial.mantissa().get_mpz_t(), 2));
+    long initial_digits = initial == 0 ? 0 : (mpz_sizeinbase(initial.mantissa().get_mpz_t(), 2));
     long missing_digits = necessary_digits - initial_digits;
 
     // initial does not have enough valid digits, we need to ask inner for more
@@ -115,20 +111,17 @@ struct ConstraintRandomRealNumber final : RealNumber {
       // them away below anyway.)
       Arf additional(inner->arf(missing_digits - 1));
       additional <<= (e - 1);
-      ret.iadd(additional, prec + 1);
+      ret += additional(prec + 1)(Arf::Round::NEAR);
     }
 
-    arf_set_round(ret.t, ret.t, prec + 1, ARF_RND_NEAR);
+    arf_set_round(ret.arf_t(), ret.arf_t(), prec + 1, ARF_RND_NEAR);
     return ret;
   }
 
   bool operator==(const RealNumber& rhs) const override {
     if (typeid(rhs) == typeid(*this)) {
-      return this->initial ==
-                 static_cast<const ConstraintRandomRealNumber*>(&rhs)
-                     ->initial &&
-             *(this->inner) ==
-                 *(static_cast<const ConstraintRandomRealNumber*>(&rhs)->inner);
+      return this->initial == static_cast<const ConstraintRandomRealNumber*>(&rhs)->initial &&
+             *(this->inner) == *(static_cast<const ConstraintRandomRealNumber*>(&rhs)->inner);
     } else {
       return false;
     }
@@ -136,8 +129,7 @@ struct ConstraintRandomRealNumber final : RealNumber {
 
   RealNumber const& operator>>(ostream& out) const override {
     out << "ℝ(" << initial << " + " << *inner << "p" << e << ")";
-    if (lexical_cast<string>(static_cast<double>(initial))
-            .compare(lexical_cast<string>(static_cast<double>(*this)))) {
+    if (lexical_cast<string>(static_cast<double>(initial)).compare(lexical_cast<string>(static_cast<double>(*this)))) {
       out << "[∼" << static_cast<double>(*this) << "]";
     }
     return *this;
@@ -161,8 +153,7 @@ unique_ptr<RealNumber> RealNumber::random(const Arf& lower, const Arf& upper) {
 
 unique_ptr<RealNumber> RealNumber::random(const double x) {
   if (!isfinite(x)) {
-    throw std::logic_error(
-        "not implemented - random number close to non-finite");
+    throw std::logic_error("not implemented - random number close to non-finite");
   }
 
   // We rewrite x as a small interval such that any element of that interval
@@ -175,8 +166,8 @@ unique_ptr<RealNumber> RealNumber::random(const double x) {
 
   // … and shrink it so it only contains midpoint.
   // We use 64 bits of precision, more than a double can possibly have:
-  lower = (lower + 2l * midpoint) / 3l;
-  upper = (2l * midpoint + upper) / 3l;
+  lower = ((lower + 2 * midpoint) / 3)(64, Arf::Round::NEAR);
+  upper = ((2 * midpoint + upper) / 3)(64, Arf::Round::NEAR);
 
   // Check that x is the nearest double to [lower, upper]
   assert(static_cast<double>(lower) == x);

@@ -18,17 +18,33 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
-#define LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
+#ifndef LIBEXACTREAL_YAP_FORWARD_HPP
+#define LIBEXACTREAL_YAP_FORWARD_HPP
 
-#include "exact-real/exact-real.hpp"
+#include <boost/hana/fwd/all.hpp>
+#include <boost/yap/expression.hpp>
 
 namespace exactreal {
+namespace yap {
+template <boost::yap::expr_kind Kind, typename Tuple>
+struct ArbExpr;
 
-struct NumberFieldIdealTraits {
-  // No support for this in E-ANTIC yet
-};
+template <boost::yap::expr_kind Kind, typename Tuple>
+struct ArfExpr;
 
+struct PrecExpr;
+
+struct RoundExpr;
+
+struct PrecTransformation;
+struct RoundTransformation;
+
+template <bool precisionBound = false>
+struct ArbAssignTransformation;
+
+template <bool precisionBound = false, bool roundBound = false>
+struct ArfAssignTransformation;
+}  // namespace yap
 }  // namespace exactreal
 
 #endif

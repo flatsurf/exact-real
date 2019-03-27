@@ -22,5 +22,5 @@
 #include "exact-real/arb.hpp"
 
 namespace exactreal {
-Arb NumberFieldTraits::arb(const ElementClass& x, long) { return Arb(x); }
+Arb NumberFieldTraits::arb(const ElementClass& x, mp_limb_signed_t prec) { return Arb(x, prec); }
 }  // namespace exactreal

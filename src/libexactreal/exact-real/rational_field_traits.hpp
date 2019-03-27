@@ -18,13 +18,13 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBMODEANTIC_RATIONAL_FIELD_HPP
-#define LIBMODEANTIC_RATIONAL_FIELD_HPP
+#ifndef LIBEXACTREAL_RATIONAL_FIELD_HPP
+#define LIBEXACTREAL_RATIONAL_FIELD_HPP
 
 #include <gmpxx.h>
 
 #include "exact-real/exact-real.hpp"
-#include "exact-real/real_number.hpp"
+#include "exact-real/forward.hpp"
 
 namespace exactreal {
 

@@ -27,6 +27,33 @@
 #ifndef LIBMODEANTIC_MODEANTIC_HPP
 #define LIBMODEANTIC_MODEANTIC_HPP
 
+#include <arb.h>
+#include "forward.hpp"
+
+namespace exactreal {
+// We use the same type that Arb uses to specify precisions. This is a signed
+// integer type defined by FLINT as mp_limb_signed_t which in turn is defined
+// by GMP.
+using prec = slong;
+
+// We use signed integers to denote size, count, and such things. Mainstream
+// opinion seems to be that such things should be signed these days though
+// STL does for historical reasons not do so, see minute 63 of
+// https://channel9.msdn.com/Events/GoingNative/2013/Interactive-Panel-Ask-Us-Anything
+// Assuming that prec is big enough to denote the number of digits something
+// could reasonably have, that should also be the length that some data
+// should reasonably have, so let's just use the same here.
+using size = prec;
+
+// A templatized constant that is false. This helps to use static_assert in
+// branches of constexpr-if. Just using a plain false leads to compile errors
+// so we must make sure the compiler tries not to instantiate this if it's not
+// on an active branch.
+template <auto = 0> constexpr bool false_v = false;
+template <typename = void> constexpr bool false_t = false;
+
+}  // namespace exactreal
+
 #ifdef __CLING__
 
 #pragma cling add_library_path("@libdir@")

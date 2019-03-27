@@ -20,6 +20,8 @@
 
 #include <arb.h>
 #include <e-antic/renfxx.h>
+#include <algorithm>
+#include <boost/lexical_cast.hpp>
 #include <ostream>
 
 #include "exact-real/arb.hpp"
@@ -27,109 +29,172 @@
 
 using std::ostream;
 
+namespace {
+struct X {
+  arb_t x;
+};
+}  // namespace
+
 namespace exactreal {
-Arb::Arb() { arb_init(t); }
+Arb::Arb() noexcept { arb_init(arb_t()); }
 
-Arb::Arb(const slong x) : Arb() { arb_set_si(t, x); }
+Arb::Arb(const slong x) noexcept : Arb() { arb_set_si(arb_t(), x); }
 
-Arb::Arb(const Arb& arb) : Arb() { arb_set(t, arb.t); }
+Arb::Arb(const int x) noexcept : Arb() { arb_set_si(arb_t(), x); }
 
-Arb::Arb(Arb&& arb) : Arb() { arb_swap(t, arb.t); }
+Arb::Arb(const long long x) noexcept : Arb(mpz_class(boost::lexical_cast<std::string>(x))) {}
 
-Arb::Arb(const Arf& lower, const Arf& upper, const mp_limb_signed_t precision)
-    : Arb() {
-  arb_set_interval_arf(t, lower.t, upper.t, precision);
+Arb::Arb(const Arb& arb) noexcept : Arb() { arb_set(arb_t(), arb.arb_t()); }
+
+Arb::Arb(Arb&& arb) noexcept {
+  *t = *arb.t;
+  arb_init(arb.t);
 }
 
-Arb::Arb(const mpq_class& rat, const mp_limb_signed_t precision) : Arb() {
+Arb::Arb(const std::pair<Arf, Arf>& bounds, const mp_limb_signed_t precision) : Arb() {
+  arb_set_interval_arf(arb_t(), bounds.first.arf_t(), bounds.second.arf_t(), precision);
+}
+
+Arb::Arb(const mpq_class& rat, const mp_limb_signed_t precision) noexcept : Arb() {
   fmpq_t x;
   fmpq_init_set_readonly(x, rat.get_mpq_t());
-  arb_set_fmpq(t, x, precision);
+  arb_set_fmpq(arb_t(), x, precision);
   fmpq_clear_readonly(x);
 }
 
-Arb::Arb(const mpz_class& value) : Arb() {
+Arb::Arb(const mpz_class& value) noexcept : Arb() {
   fmpz_t x;
   fmpz_init_set_readonly(x, value.get_mpz_t());
-  arb_set_fmpz(t, x);
+  arb_set_fmpz(arb_t(), x);
   fmpz_clear_readonly(x);
 }
 
-Arb::Arb(const renf_elem_class& renf, const mp_limb_signed_t precision)
-    : Arb() {
+Arb::Arb(const std::string& value, const prec precision) : Arb() { arb_set_str(arb_t(), value.c_str(), precision); }
+
+Arb::Arb(const renf_elem_class& renf, const mp_limb_signed_t precision) noexcept : Arb() {
   if (renf.is_fmpq()) {
-    arb_set_fmpq(t, renf.get_fmpq(), precision);
+    arb_set_fmpq(arb_t(), renf.get_fmpq(), precision);
   } else {
-    arb_set(t, renf.get_renf_elem()->emb);
+    std::cout << "WARNING: refinement of renf_elem_class has not been implemented properly yet." << std::endl;
+    renf_refine_embedding(renf.parent().get_renf(), precision);
+    renf_elem_set_evaluation(renf.get_renf_elem(), renf.parent().get_renf(), precision);
+    arb_set(arb_t(), renf.get_renf_elem()->emb);
   }
 }
 
-Arb::~Arb() { arb_clear(t); }
+Arb::~Arb() noexcept { arb_clear(arb_t()); }
 
-Arb Arb::any() {
+Arb Arb::randtest_exact(flint::frandxx& state, prec precision, prec magbits) noexcept {
   Arb ret;
-  arb_zero_pm_inf(ret.t);
+  arb_randtest_exact(ret.arb_t(), state._data(), precision, magbits);
   return ret;
 }
 
-bool Arb::isExact() const { return arb_is_exact(t); }
-
-Arb& Arb::iadd(const renf_elem_class& rhs, const mp_limb_signed_t precision) {
-  arb_add(t, t, Arb(rhs).t, precision);
-  return *this;
+Arb Arb::randtest(flint::frandxx& state, prec precision, prec magbits) noexcept {
+  Arb ret;
+  arb_randtest(ret.arb_t(), state._data(), precision, magbits);
+  return ret;
 }
 
-Arb& Arb::imul(const Arb& rhs, const mp_limb_signed_t precision) {
-  arb_mul(t, t, rhs.t, precision);
-  return *this;
+Arb Arb::zero_pm_inf() noexcept {
+  Arb ret;
+  arb_zero_pm_inf(ret.arb_t());
+  return ret;
 }
 
-std::optional<int> Arb::cmp(const Arb& rhs) const {
-  if (arb_gt(t, rhs.t)) {
-    return 1;
-  } else if (arb_lt(t, rhs.t)) {
-    return -1;
-  } else if (arb_eq(t, rhs.t)) {
-    return 0;
+arb_t& Arb::arb_t() noexcept { return t; }
+
+const arb_t& Arb::arb_t() const noexcept { return t; }
+
+bool Arb::is_exact() const noexcept { return arb_is_exact(arb_t()); }
+
+bool Arb::is_finite() const noexcept { return arb_is_finite(arb_t()); }
+
+std::optional<bool> Arb::operator<(const Arb& rhs) const noexcept {
+  if (arb_lt(arb_t(), rhs.arb_t())) {
+    return true;
+  } else if (arb_ge(arb_t(), rhs.arb_t())) {
+    return false;
   } else {
     return {};
   }
 }
 
-std::optional<int> Arb::cmp(const long long rhs_) const {
-  Arb rhs(rhs_);
-  if (arb_gt(t, rhs.t)) {
-    return 1;
-  } else if (arb_lt(t, rhs.t)) {
-    return -1;
-  } else if (arb_eq(t, rhs.t)) {
-    return 0;
+std::optional<bool> Arb::operator>(const Arb& rhs) const noexcept {
+  if (arb_gt(arb_t(), rhs.arb_t())) {
+    return true;
+  } else if (arb_le(arb_t(), rhs.arb_t())) {
+    return false;
   } else {
     return {};
   }
 }
 
-Arb& Arb::iadd(const Arb& rhs, const mp_limb_signed_t precision) {
-  arb_add(t, t, rhs.t, precision);
+std::optional<bool> Arb::operator<=(const Arb& rhs) const noexcept {
+  auto gt = *this > rhs;
+  if (gt.has_value()) {
+    return !*gt;
+  } else {
+    return {};
+  }
+}
+
+std::optional<bool> Arb::operator>=(const Arb& rhs) const noexcept {
+  auto lt = *this < rhs;
+  if (lt.has_value()) {
+    return !*lt;
+  } else {
+    return {};
+  }
+}
+
+std::optional<bool> Arb::operator==(const Arb& rhs) const noexcept {
+  if (arb_eq(arb_t(), rhs.arb_t())) {
+    return true;
+  } else if (arb_ne(arb_t(), rhs.arb_t())) {
+    return false;
+  } else {
+    return {};
+  }
+}
+
+std::optional<bool> Arb::operator!=(const Arb& rhs) const noexcept {
+  auto eq = this->operator==(rhs);
+  if (eq) {
+    return !*eq;
+  } else {
+    return {};
+  }
+}
+
+bool Arb::equal(const Arb& rhs) const noexcept { return arb_equal(arb_t(), rhs.arb_t()); }
+
+std::optional<bool> Arb::operator<(const long long rhs) const noexcept { return *this < Arb(rhs); }
+
+std::optional<bool> Arb::operator>(const long long rhs) const noexcept { return *this > Arb(rhs); }
+
+std::optional<bool> Arb::operator<=(const long long rhs) const noexcept { return *this <= Arb(rhs); }
+
+std::optional<bool> Arb::operator>=(const long long rhs) const noexcept { return *this >= Arb(rhs); }
+
+Arb& Arb::operator=(const Arb& rhs) noexcept {
+  arb_set(arb_t(), rhs.arb_t());
   return *this;
 }
 
-Arb& Arb::operator=(const Arb& rhs) {
-  arb_set(t, rhs.t);
+Arb& Arb::operator=(Arb&& rhs) noexcept {
+  arb_swap(arb_t(), rhs.arb_t());
   return *this;
 }
 
-std::pair<Arf, Arf> Arb::arf() const {
+Arb::operator std::pair<Arf, Arf>() const noexcept {
   std::pair<Arf, Arf> ret;
-  arb_get_interval_arf(ret.first.t, ret.second.t, t, arb_bits(t));
+  arb_get_interval_arf(ret.first.arf_t(), ret.second.arf_t(), arb_t(), arb_bits(arb_t()));
   return ret;
 }
 
-ostream& operator<<(ostream& os, const Arb& self) {
-  char* out = arb_get_str(self.t, 64, ARB_STR_CONDENSE);
-  os << out;
-  delete (out);
-  return os;
-}
+Arb::operator double() const noexcept { return arf_get_d(arb_midref(arb_t()), ARF_RND_NEAR); }
+
+ostream& operator<<(ostream& os, const Arb& self) { return os << arb_get_str(self.arb_t(), os.precision(), 0); }
 
 }  // namespace exactreal

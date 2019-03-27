@@ -56,8 +56,7 @@ struct RandomRealNumber final : RealNumber {
     const string chars = "01";
 
     auto rnd = rng();
-    boost::random::uniform_int_distribution<size_t> index_dist(
-        0, chars.size() - 1);
+    boost::random::uniform_int_distribution<size_t> index_dist(0, chars.size() - 1);
 
     long exp = 0;
     stringstream os;
@@ -101,7 +100,5 @@ struct RandomRealNumber final : RealNumber {
 }  // namespace
 
 namespace exactreal {
-unique_ptr<RealNumber> RealNumber::random() {
-  return make_unique<RandomRealNumber>();
-}
+unique_ptr<RealNumber> RealNumber::random() { return make_unique<RandomRealNumber>(); }
 }  // namespace exactreal
