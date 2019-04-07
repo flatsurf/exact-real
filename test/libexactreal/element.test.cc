@@ -33,6 +33,8 @@ using namespace exactreal;
 using std::make_shared;
 using std::shared_ptr;
 using std::vector;
+using eantic::renf_class;
+using eantic::renf_elem_class;
 
 TEST(ElementZZ, Generators) {
   auto m = Module<IntegerRingTraits>({RealNumber::rational(1), RealNumber::random()}, 64);
@@ -162,7 +164,7 @@ TEST(ElementNF, Scalars) {
     EXPECT_GT(2 * x, renf_elem_class(K, "a") * x);
 
     EXPECT_EQ((x + x) / x, 2);
-    EXPECT_EQ((x + x) / elements[!i], std::optional<bool>{});
+    EXPECT_EQ((x + x) / elements[!i], std::optional<renf_elem_class>{});
   }
 }
 

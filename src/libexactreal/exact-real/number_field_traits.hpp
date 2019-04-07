@@ -22,16 +22,14 @@
 #define LIBEXACTREAL_NUMBER_FIELD_HPP
 
 #include "exact-real/exact-real.hpp"
-
-struct renf_class;
-struct renf_elem_class;
+#include "e-antic/renfxx_fwd.h"
 
 namespace exactreal {
 
 struct NumberFieldTraits {
-  typedef renf_elem_class ElementClass;
+  typedef eantic::renf_elem_class ElementClass;
   static constexpr bool isField = true;
-  typedef renf_class Parameters;
+  typedef eantic::renf_class Parameters;
   static Arb arb(const ElementClass& x, long prec);
 };
 

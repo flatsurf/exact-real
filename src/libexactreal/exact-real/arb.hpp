@@ -23,14 +23,13 @@
 
 #include <arb.h>
 #include <flint/flintxx/frandxx.h>
+#include <e-antic/renfxx_fwd.h>
 #include <gmpxx.h>
 #include <boost/yap/algorithm_fwd.hpp>
 #include <optional>
 
 #include "exact-real/arf.hpp"
 #include "exact-real/exact-real.hpp"
-
-struct renf_elem_class;
 
 namespace exactreal {
 // After some discussion with the Arb author, it seems that 64 and 128 are good
@@ -73,7 +72,7 @@ struct Arb : yap::Terminal<Arb, yap::ArbExpr> {
   Arb(Arb&&) noexcept;
   explicit Arb(const mpz_class&) noexcept;
   explicit Arb(const mpq_class&, const prec) noexcept;
-  explicit Arb(const renf_elem_class&, const prec) noexcept;
+  explicit Arb(const eantic::renf_elem_class&, const prec) noexcept;
   explicit Arb(const std::pair<Arf, Arf>&, const prec = ARF_PREC_EXACT);
   explicit Arb(const Arf& midpoint);
   explicit Arb(slong) noexcept;

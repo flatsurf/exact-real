@@ -28,6 +28,7 @@
 #include "exact-real/arf.hpp"
 
 using std::ostream;
+using eantic::renf_elem_class;
 
 namespace {
 struct X {
@@ -73,12 +74,11 @@ Arb::Arb(const std::string& value, const prec precision) : Arb() { arb_set_str(a
 
 Arb::Arb(const renf_elem_class& renf, const mp_limb_signed_t precision) noexcept : Arb() {
   if (renf.is_fmpq()) {
-    arb_set_fmpq(arb_t(), renf.get_fmpq(), precision);
+    arb_set_fmpq(arb_t(), renf.fmpq_t(), precision);
   } else {
-    std::cout << "WARNING: refinement of renf_elem_class has not been implemented properly yet." << std::endl;
-    renf_refine_embedding(renf.parent().get_renf(), precision);
-    renf_elem_set_evaluation(renf.get_renf_elem(), renf.parent().get_renf(), precision);
-    arb_set(arb_t(), renf.get_renf_elem()->emb);
+    renf_refine_embedding(renf.parent().renf_t(), precision);
+    renf_elem_set_evaluation(renf.renf_elem_t(), renf.parent().renf_t(), precision);
+    arb_set(arb_t(), renf.renf_elem_t()->emb);
   }
 }
 

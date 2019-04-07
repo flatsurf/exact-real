@@ -16,8 +16,7 @@ constraint_random_real_number_SOURCES = constraint_random_real_number.test.cc ma
 @VALGRIND_CHECK_RULES@
 
 AM_CPPFLAGS = -I $(srcdir)/../../src/libexactreal -I $(builddir)/../../src/libexactreal
-AM_LDFLAGS = $(builddir)/../../src/libexactreal/libexactreal.la -lgtest -lbenchmark -lpthread -lrt -lgmpxx
+AM_LDFLAGS = $(builddir)/../../src/libexactreal/libexactreal.la -lgtest -lbenchmark -lrt
 
 # Run tests serially so we can see the output without having to check the log file explicitly.
-# We might want to change this once the tests take a substantial amount of time.
-AUTOMAKE_OPTIONS = serial-tests
+# AUTOMAKE_OPTIONS = serial-tests
