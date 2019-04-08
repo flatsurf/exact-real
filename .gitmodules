@@ -1,3 +1,6 @@
 [submodule "src/libexactreal/exact-real/external/spimpl"]
 	path = src/libexactreal/exact-real/external/spimpl
 	url = https://github.com/oliora/samples.git
+[submodule "src/libexactreal/exact-real/external/boolinq"]
+	path = src/libexactreal/exact-real/external/boolinq
+	url = https://github.com/k06a/boolinq.git

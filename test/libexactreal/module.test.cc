@@ -32,7 +32,7 @@ using std::shared_ptr;
 using std::vector;
 
 TEST(ModuleZZ, Create) {
-  auto trivial = Module<IntegerRingTraits>({}, 64);
+  auto trivial = Module<IntegerRingTraits>();
   EXPECT_EQ(trivial.rank(), 0);
 
   auto m = Module<IntegerRingTraits>({RealNumber::random(), RealNumber::random()}, 64);

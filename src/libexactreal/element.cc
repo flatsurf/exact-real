@@ -23,6 +23,7 @@
 #include <cmath>
 
 #include "exact-real/element.hpp"
+#include "exact-real/external/boolinq/include/boolinq/boolinq.h"
 #include "exact-real/module.hpp"
 #include "exact-real/real_number.hpp"
 #include "exact-real/yap/arb.hpp"
@@ -37,41 +38,33 @@ using std::vector;
 namespace {
 template <typename Ring>
 struct ElementImplementation {
-  ElementImplementation() = delete;
+  ElementImplementation() : ElementImplementation(Module<Ring>::trivial) {}
 
-  explicit ElementImplementation(const Module<Ring>& parent)
-      : ElementImplementation(parent, vector<typename Ring::ElementClass>(parent.rank())) {}
+  explicit ElementImplementation(const std::shared_ptr<const Module<Ring>>& parent)
+      : ElementImplementation(parent, vector<typename Ring::ElementClass>(parent->rank())) {}
 
-  ElementImplementation(const Module<Ring>& parent, const vector<typename Ring::ElementClass>& coefficients)
+  ElementImplementation(const std::shared_ptr<const Module<Ring>>& parent, const vector<typename Ring::ElementClass>& coefficients)
       : parent(parent), coefficients(coefficients) {
-    assert(size(coefficients.size()) == parent.rank());
+    assert(size(coefficients.size()) == parent->rank());
   }
 
-  ElementImplementation(const ElementImplementation& rhs) : ElementImplementation(rhs.parent, rhs.coefficients) {}
-
-  ElementImplementation(const ElementImplementation&& rhs) =
-      delete;  //: ElementImplementation(rhs.parent, rhs.coefficients) {}
-
-  ElementImplementation& operator=(ElementImplementation&&) = delete;
-  ElementImplementation& operator=(const ElementImplementation&) = delete;
-
-  const Module<Ring>& parent;
+	std::shared_ptr<const Module<Ring>> parent;
   vector<typename Ring::ElementClass> coefficients;
 };
-}  // namespace
 
 template <typename LHS, typename RHS>
 bool lt_assuming_ne(const LHS& lhs, const RHS& rhs) {
   for (long prec = 64;; prec *= 2) {
     Arb self = lhs.arb(prec);
     Arb other = rhs.arb(prec);
-    if (self < other) {
-      return true;
-    } else if (self > other) {
-      return false;
-    }
+		auto lt = self < other;
+		if (lt.has_value()) {
+			return *lt;
+		}
   }
 }
+
+}  // namespace
 
 namespace exactreal {
 template <typename Ring>
@@ -80,34 +73,41 @@ struct Element<Ring>::Implementation : ElementImplementation<Ring> {
 };
 
 template <typename Ring>
-Element<Ring>::Element(const Module<Ring>& parent) : impl(spimpl::make_impl<Element<Ring>::Implementation>(parent)) {}
+Element<Ring>::Element() : impl(spimpl::make_impl<Element<Ring>::Implementation>()) {}
 
 template <typename Ring>
-Element<Ring>::Element(const Module<Ring>& parent, const vector<typename Ring::ElementClass>& coefficients)
+Element<Ring>::Element(const std::shared_ptr<const Module<Ring>>& parent) : impl(spimpl::make_impl<Element<Ring>::Implementation>(parent)) {}
+
+template <typename Ring>
+Element<Ring>::Element(const std::shared_ptr<const Module<Ring>>& parent, const vector<typename Ring::ElementClass>& coefficients)
     : impl(spimpl::make_impl<Element<Ring>::Implementation>(parent, coefficients)) {}
 
 template <typename Ring>
-Element<Ring>::Element(const Module<Ring>& parent, const size gen)
+Element<Ring>::Element(const std::shared_ptr<const Module<Ring>>& parent, const size gen)
     : impl(spimpl::make_impl<Element<Ring>::Implementation>(parent)) {
-  impl->coefficients[gen] = 1;
+  impl->coefficients[numeric_cast<size_t>(gen)] = 1;
 }
 
 template <typename Ring>
 Arb Element<Ring>::arb(long prec) const {
-  prec += numeric_cast<long>(ceil(log2(numeric_cast<double>(impl->parent.rank()))));
+	if (!*this) {
+		return Arb();
+	}
+  prec += numeric_cast<long>(ceil(log2(numeric_cast<double>(impl->parent->rank()))));
   Arb ret;
-  for (size i = 0; i < impl->parent.rank(); i++) {
-    ret += (impl->parent.gens()[i]->arb(prec) * Ring::arb(impl->coefficients[i], prec))(prec);
+  for (size_t i = 0; i < impl->parent->rank(); i++) {
+    ret += (impl->parent->gens()[i]->arb(prec) * Ring::arb(impl->coefficients[i], prec))(prec);
   }
   return ret;
 }
 
 template <typename Ring>
 Element<Ring>& Element<Ring>::operator+=(const Element<Ring>& rhs) {
-  if (&impl->parent != &rhs.impl->parent) {
-    throw logic_error("not implemented - addition of Element with unrelated Element");
+  if (impl->parent != rhs.impl->parent) {
+		auto parent = Module<Ring>::span(this->impl->parent, rhs.impl->parent);
+		return promote(parent) += Element<Ring>(rhs).promote(parent);
   }
-  for (size i = 0; i < impl->parent.rank(); i++) {
+  for (size_t i = 0; i < impl->parent->rank(); i++) {
     impl->coefficients[i] += rhs.impl->coefficients[i];
   }
   return *this;
@@ -162,7 +162,7 @@ template <typename Ring>
 std::optional<typename Ring::ElementClass> Element<Ring>::operator/(const Element<Ring>& rhs) const {
   std::optional<typename Ring::ElementClass> ret;
 
-  for (size i = 0; i < impl->parent.rank(); i++) {
+  for (size i = 0; i < impl->parent->rank(); i++) {
     const auto& other = rhs.impl->coefficients[i];
     const auto& self = impl->coefficients[i];
     if (other == 0) {
@@ -202,17 +202,22 @@ bool Element<Ring>::operator<(const RealNumber& rhs) const {
 
 template <typename Ring>
 bool Element<Ring>::operator==(const Element<Ring>& rhs) const {
-  return &impl->parent == &rhs.impl->parent && impl->coefficients == rhs.impl->coefficients;
+	if (impl->parent != rhs.impl->parent) {
+		auto parent = Module<Ring>::span(impl->parent, rhs.impl->parent);
+		return Element<Ring>(*this).promote(parent) == Element<Ring>(rhs).promote(parent);
+	}
+	
+	return impl->coefficients == rhs.impl->coefficients;
 }
 
 template <typename Ring>
 bool Element<Ring>::operator==(const RealNumber& rhs) const {
-  auto gens = impl->parent.gens();
+  auto gens = impl->parent->gens();
   auto it = find_if(gens.begin(), gens.end(), [&](auto other) { return other.operator*() == rhs; });
   if (it == gens.end()) {
     throw logic_error("not implemented - equality of Element with unrelated RealNumber");
   }
-  for (size i = 0; i < impl->parent.rank(); i++) {
+  for (size i = 0; i < impl->parent->rank(); i++) {
     if (impl->coefficients[i] == 0) {
       if (i == (it - gens.begin())) {
         return false;
@@ -240,15 +245,36 @@ Element<Ring>::operator double() const {
 }
 
 template <typename Ring>
+Element<Ring>& Element<Ring>::promote(const std::shared_ptr<const Module<Ring>>& parent) {
+	if (this->impl->parent == parent) {
+		return *this;
+	}
+	if (!*this) {
+		return *this = Element(parent);
+	}
+	// TODO: assert that our parent is a submodule of parent
+	auto our_gens = impl->parent->gens();
+	return *this = Element<Ring>(parent, boolinq::from(parent->gens())
+			.select([&](const auto& gen) {
+					auto our_gen = std::find(our_gens.begin(), our_gens.end(), gen);	
+					if (our_gen == our_gens.end()) {
+						return typename Ring::ElementClass();
+					} else {
+						return impl->coefficients[our_gen - our_gens.begin()];
+					}
+			}).toVector());
+}
+
+template <typename Ring>
 ostream& operator<<(ostream& out, const Element<Ring>& self) {
   bool empty = true;
-  for (size i = 0; i < self.impl->parent.rank(); i++) {
+  for (size i = 0; i < self.impl->parent->rank(); i++) {
     if (self.impl->coefficients[i] != 0) {
       if (!empty) {
         out << " + ";
       }
       empty = false;
-      out << self.impl->coefficients[i] << "*" << *self.impl->parent.gens()[i];
+      out << self.impl->coefficients[i] << "*" << *self.impl->parent->gens()[i];
     }
   }
   if (empty) {

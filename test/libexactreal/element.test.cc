@@ -37,7 +37,7 @@ using eantic::renf_class;
 using eantic::renf_elem_class;
 
 TEST(ElementZZ, Generators) {
-  auto m = Module<IntegerRingTraits>({RealNumber::rational(1), RealNumber::random()}, 64);
+	auto m = make_shared<Module<IntegerRingTraits>>(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()}, 64);
 
   auto one = Element(m, 0);
   auto x = Element(m, 1);
@@ -45,12 +45,12 @@ TEST(ElementZZ, Generators) {
   EXPECT_EQ(one, one);
   EXPECT_EQ(x, x);
   EXPECT_NE(one, x);
-  EXPECT_GT(x, m.zero());
+  EXPECT_GT(x, Element(m));
   EXPECT_LT(x, one);
 }
 
 TEST(ElementZZ, Additive) {
-  auto m = Module<IntegerRingTraits>({RealNumber::rational(1), RealNumber::random()}, 64);
+  auto m = make_shared<Module<IntegerRingTraits>>(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()}, 64);
 
   Element<IntegerRingTraits> elements[]{Element(m, 0), Element(m, 1)};
 
@@ -58,12 +58,28 @@ TEST(ElementZZ, Additive) {
     auto x = elements[i];
     EXPECT_GT(x + elements[0], x);
     EXPECT_GT(x + elements[0], elements[0]);
-    EXPECT_EQ(x - elements[i], m.zero());
+    EXPECT_EQ(x - elements[i], Element(m));
   }
 }
 
+TEST(ElementZZ, PromotionFromTrivial) {
+  auto m = make_shared<Module<IntegerRingTraits>>(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()}, 64);
+
+	auto gen = Element(m, 1);
+	auto zero = Element(m);
+	auto trivial = Element<IntegerRingTraits>();
+
+	EXPECT_EQ(zero, trivial);
+	EXPECT_NE(gen, trivial);
+
+	EXPECT_EQ(gen + trivial, gen);
+	EXPECT_EQ(zero + trivial, zero);
+	EXPECT_EQ(0 * gen, trivial);
+	EXPECT_GE(gen, trivial);
+}
+
 TEST(ElementZZ, Scalars) {
-  auto m = Module<IntegerRingTraits>({RealNumber::rational(1), RealNumber::random()}, 64);
+  auto m = make_shared<Module<IntegerRingTraits>>(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()}, 64);
 
   Element<IntegerRingTraits> elements[]{Element(m, 0), Element(m, 1)};
 
@@ -73,7 +89,7 @@ TEST(ElementZZ, Scalars) {
     EXPECT_EQ(x - x, 0 * x);
     EXPECT_EQ(-1 * x, -x);
     EXPECT_EQ(1 * x, x);
-    EXPECT_EQ(0 * x, m.zero());
+    EXPECT_EQ(0 * x, Element(m));
   }
 
   for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
@@ -83,14 +99,14 @@ TEST(ElementZZ, Scalars) {
     EXPECT_EQ(x - x, mpz_class(0) * x);
     EXPECT_EQ(mpz_class(-1) * x, -x);
     EXPECT_LT(mpz_class(-1) * x, x);
-    EXPECT_LT(mpz_class(-1) * x, m.zero());
+    EXPECT_LT(mpz_class(-1) * x, Element(m));
     EXPECT_EQ(mpz_class(1) * x, x);
-    EXPECT_EQ(mpz_class(0) * x, m.zero());
+    EXPECT_EQ(mpz_class(0) * x, Element(m));
   }
 }
 
 TEST(ElementQQ, Scalars) {
-  auto m = Module<RationalFieldTraits>({RealNumber::rational(1), RealNumber::random()}, 64);
+  auto m = make_shared<Module<RationalFieldTraits>>(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()}, 64);
 
   Element<RationalFieldTraits> elements[]{Element(m, 0), Element(m, 1)};
 
@@ -100,7 +116,7 @@ TEST(ElementQQ, Scalars) {
     EXPECT_EQ(x - x, 0 * x);
     EXPECT_EQ(-1 * x, -x);
     EXPECT_EQ(1 * x, x);
-    EXPECT_EQ(0 * x, m.zero());
+    EXPECT_EQ(0 * x, Element(m));
   }
 
   for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
@@ -110,9 +126,9 @@ TEST(ElementQQ, Scalars) {
     EXPECT_EQ(x - x, mpz_class(0) * x);
     EXPECT_EQ(mpz_class(-1) * x, -x);
     EXPECT_LT(mpz_class(-1) * x, x);
-    EXPECT_LT(mpz_class(-1) * x, m.zero());
+    EXPECT_LT(mpz_class(-1) * x, Element(m));
     EXPECT_EQ(mpz_class(1) * x, x);
-    EXPECT_EQ(mpz_class(0) * x, m.zero());
+    EXPECT_EQ(mpz_class(0) * x, Element(m));
   }
 
   for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
@@ -121,13 +137,13 @@ TEST(ElementQQ, Scalars) {
     EXPECT_EQ(x - x, mpq_class(0) * x);
     EXPECT_EQ(mpq_class(-1) * x, -x);
     EXPECT_EQ(mpq_class(1) * x, x);
-    EXPECT_EQ(mpq_class(0) * x, m.zero());
+    EXPECT_EQ(mpq_class(0) * x, Element(m));
   }
 }
 
 TEST(ElementNF, Scalars) {
   renf_class K("a^2 - 2", "a", "1.41 +/- 0.1", 64);
-  auto m = Module<NumberFieldTraits>({RealNumber::rational(1), RealNumber::random()}, K, 64);
+  auto m = make_shared<Module<NumberFieldTraits>>(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()}, K, 64);
 
   Element<NumberFieldTraits> elements[]{Element(m, 0), Element(m, 1)};
 
@@ -137,7 +153,7 @@ TEST(ElementNF, Scalars) {
     EXPECT_EQ(x - x, 0 * x);
     EXPECT_EQ(-1 * x, -x);
     EXPECT_EQ(1 * x, x);
-    EXPECT_EQ(0 * x, m.zero());
+    EXPECT_EQ(0 * x, Element(m));
   }
 
   for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
@@ -147,9 +163,9 @@ TEST(ElementNF, Scalars) {
     EXPECT_EQ(x - x, mpz_class(0) * x);
     EXPECT_EQ(mpz_class(-1) * x, -x);
     EXPECT_LT(mpz_class(-1) * x, x);
-    EXPECT_LT(mpz_class(-1) * x, m.zero());
+    EXPECT_LT(mpz_class(-1) * x, Element(m));
     EXPECT_EQ(mpz_class(1) * x, x);
-    EXPECT_EQ(mpz_class(0) * x, m.zero());
+    EXPECT_EQ(mpz_class(0) * x, Element(m));
   }
 
   for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
@@ -158,7 +174,7 @@ TEST(ElementNF, Scalars) {
     EXPECT_EQ(x - x, renf_elem_class(K, 0) * x);
     EXPECT_EQ(renf_elem_class(K, -1) * x, -x);
     EXPECT_EQ(renf_elem_class(K, 1) * x, x);
-    EXPECT_EQ(renf_elem_class(K, 0) * x, m.zero());
+    EXPECT_EQ(renf_elem_class(K, 0) * x, Element(m));
     EXPECT_EQ(-(renf_elem_class(K, "a") * x), renf_elem_class(K, "-a") * x);
     EXPECT_GT(renf_elem_class(K, "a") * x, x);
     EXPECT_GT(2 * x, renf_elem_class(K, "a") * x);

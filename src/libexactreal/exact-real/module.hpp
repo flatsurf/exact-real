@@ -29,8 +29,10 @@
 
 namespace exactreal {
 template <typename Ring>
-struct Module {
+struct Module : std::enable_shared_from_this<Module<Ring>> {
   using Basis = std::vector<std::shared_ptr<RealNumber>>;
+
+	Module();
 
   template <typename RingWithoutParameters = Ring>
   explicit Module(const Basis&, prec);
@@ -46,10 +48,13 @@ struct Module {
   size rank() const;
 
   const Basis& gens() const;
-  Element<Ring> zero() const;
+
+	static const std::shared_ptr<const Module> trivial;
 
   template <typename R>
   friend std::ostream& operator<<(std::ostream&, const Module<R>&);
+
+	static std::shared_ptr<const Module<Ring>> span(const std::shared_ptr<const Module<Ring>>&, const std::shared_ptr<const Module<Ring>>&);
 
  private:
   struct Implementation;
