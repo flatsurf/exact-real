@@ -15,21 +15,7 @@ Current build status
 ====================
 
 
-<table><tr>
-    <td>CircleCI</td>
-    <td>
-      <a href="https://circleci.com/gh/conda-forge/exact-real-feedstock">
-        <img alt="Linux" src="https://img.shields.io/circleci/project/github/conda-forge/exact-real-feedstock/master.svg?label=Linux">
-      </a>
-    </td>
-  </tr><tr>
-    <td>Travis</td>
-    <td>
-      <a href="https://travis-ci.org/conda-forge/exact-real-feedstock">
-        <img alt="macOS" src="https://img.shields.io/travis/conda-forge/exact-real-feedstock/master.svg?label=macOS">
-      </a>
-    </td>
-  </tr>
+<table>
     
   <tr>
     <td>Azure</td>
