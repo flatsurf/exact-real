@@ -252,8 +252,9 @@ Element<Ring>& Element<Ring>::promote(const std::shared_ptr<const Module<Ring>>&
 	if (!*this) {
 		return *this = Element(parent);
 	}
-	// TODO: assert that our parent is a submodule of parent
 	auto our_gens = impl->parent->gens();
+	assert(std::all_of(our_gens.begin(), our_gens.end(), [&] (const auto& gen) { return std::find(parent->gens().begin(), parent->gens().end(), gen) != parent->gens().end(); }) &&
+			"can not promote to new parent since our parent is not a submodule");
 	return *this = Element<Ring>(parent, boolinq::from(parent->gens())
 			.select([&](const auto& gen) {
 					auto our_gen = std::find(our_gens.begin(), our_gens.end(), gen);	
