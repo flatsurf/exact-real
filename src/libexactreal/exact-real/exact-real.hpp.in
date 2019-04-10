@@ -28,7 +28,6 @@
 #define LIBMODEANTIC_MODEANTIC_HPP
 
 #include <arb.h>
-#include "forward.hpp"
 
 namespace exactreal {
 // We use the same type that Arb uses to specify precisions. This is a signed

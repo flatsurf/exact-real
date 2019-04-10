@@ -27,12 +27,15 @@ dnl We run the valgrind test-suite in make check-valgrind
 AX_VALGRIND_DFLT([sgcheck], [off])
 AX_VALGRIND_DFLT([drd], [off])
 AX_VALGRIND_DFLT([helgrind], [off])
-AX_VALGRIND_CHECK
+AX_VALGRIND_CHECK()
 
 dnl Check for required libraries
 AC_LANG([C++])
+
 dnl We use some C++17 features such as std::optional
-AX_CXX_COMPILE_STDCXX_17()
+AX_CXX_COMPILE_STDCXX(17)
+
+ACX_PTHREAD([], [AC_MSG_ERROR([pthread not supported])])
 
 AC_CHECK_HEADERS([arb.h], , AC_MSG_ERROR([Arb headers not found]))
 AC_CHECK_LIB([arb], [arb_init], , AC_MSG_ERROR([Arb library not found]), [-lgmp -lmpfr -lflint])

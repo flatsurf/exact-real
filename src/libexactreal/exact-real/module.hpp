@@ -25,6 +25,7 @@
 #include "exact-real/external/spimpl/spimpl.h"
 
 #include "exact-real/exact-real.hpp"
+#include "exact-real/forward.hpp"
 #include "exact-real/ring_traits.hpp"
 
 namespace exactreal {

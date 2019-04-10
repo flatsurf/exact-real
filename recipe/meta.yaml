@@ -11,11 +11,15 @@ package:
 
 source:
   git_url: {{ environ.get('FEEDSTOCK_ROOT', '..') }}
+  patches:
+    - detect17.patch  # [osx]
 
 build:
   number: {{ build_number }}
   string: {{ build_string }}
+  # e-antic is not built for Windows & macOS
   skip: True  # [win]
+  skip: True  # [osx]
   script:
     - source ./recipe/cflags.sh
     - ./recipe/build-{{ flavour }}.sh
@@ -27,7 +31,7 @@ requirements:
     - {{ compiler('cxx') }}
   host:
     - boost-cpp
-    - e-antic
+    - e-antic 1.*
     # requirement of make check which also runs benchmarks
     - gtest
     - benchmark
@@ -52,7 +56,7 @@ outputs:
       - include/exact-real/external/spimpl/spimpl.h
 
 about:
-  home: https://github.com/polygon-tbd/exact-real
+  home: https://github.com/flatsurf/exact-real
   license: GPL2
   license_file: COPYING
   summary: Finite Real Submodules powered by E-ANTIC

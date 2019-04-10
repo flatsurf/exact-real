@@ -22,6 +22,7 @@
 #define LIBEXACTREAL_NUMBER_FIELD_HPP
 
 #include "exact-real/exact-real.hpp"
+#include "exact-real/forward.hpp"
 #include "e-antic/renfxx_fwd.h"
 
 namespace exactreal {

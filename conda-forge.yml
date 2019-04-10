@@ -1,16 +1,13 @@
 # We need to define the channel here and in conda_build_config.yaml, see https://github.com/conda-forge/conda-smithy/issues/996
 channels:
   targets:
-  - [saraedum, main]
-travis:
-  secure:
-    BINSTAR_TOKEN: kG/7Z9dIxxmyeVeOwYs7+CkTXfDIqXtMbon66h99hAP/JSOBrNNGTPEN5/t6bL8gfyfivSojQMG5LWEbdRNbzJCdoWZtu8+eOqxNKXcOXDYaB8ajlYctS0gHjaqLcjSSwu2svFJOgdBDCETkdFYvg9jaNutQybOlWq42K+RiAvAFNGGAo8RLxLhYgbGZpVYqTggVcby8uIS6rxiC2KYR2+2+niJTI2y2Jo7Rqdgp5XBWpWrDod8Yns8idUgjPbll09fD4DyY1OYZlhMmhSCFcAGLjHQsCiGq3FGk3jPs3QaMC9w71U7xijdXpR4yUAuBHIEZCFrcTM5eRn+d2bbJX4rdoAGCUOvRSLPaP5WYYzyi30+wmwpArC4ZHjMDPaPPJ6yxQroJeiBZAfWe8L5FLwq0jxkH1w+EE2a3q1U6bzyePy85VQu4i42cLCNqfksJDAaR6sXcMpko15fOIX+lbqoPjvoE+3NhbqIpSEaCoxm3Hd/TQMqDw/CRn9pYRviVXfF7ofyGtXlEyIne8IrcgV66+fyxfEw+vNhqrRxchh4aOZzreJ7hxfSIxZvstW9K8oRoz4W+H896EL3WUGu40Dc2LbEytXyc0Dl8HdZsbEYm1xdzVM4aHUZ879ElbiiLy5PzWPoSUCschuvrUe24IJiQJ5wuMB6XaTl6Ry38uQs=
-appveyor:
-  secure:
-    BINSTAR_TOKEN: O9RFhjYTxE0/srVKIhat+OeNtTfuIdr1XiSlPcZz9pcsq6okfmgg3Ty1XK7/AJaj
-compiler_stack: comp7
-circle:
+  - [flatsurf, main]
+  sources: [flatsurf, conda-forge, defaults]
+azure:
+  user_or_org: flatsurf
+  project_name: conda
   flavours:
     - build
     - valgrind
     - coverage
+channel_name: flatsurf

@@ -1,9 +1,8 @@
-[![Linux](https://img.shields.io/circleci/project/github/polygon-tbd/exact-real/master.svg?label=Linux)](https://circleci.com/gh/polygon-tbd/exact-real)
-[![OSX](https://img.shields.io/travis/polygon-tbd/exact-real/master.svg?label=macOS)](https://travis-ci.org/polygon-tbd/exact-real)
+[![Linux](https://dev.azure.com/flatsurf/conda/_apis/build/status/exact-real-feedstock?branchName=master&jobName=linux&configuration=linux_)](https://dev.azure.com/flatsurf/conda/_build/latest?definitionId=&branchName=master)
+[![OSX](https://dev.azure.com/flatsurf/conda/_apis/build/status/exact-real-feedstock?branchName=master&jobName=osx&configuration=osx_)](https://dev.azure.com/flatsurf/conda/_build/latest?definitionId=&branchName=master)
 ![Windows disabled](https://img.shields.io/badge/Windows-disabled-lightgrey.svg)
-[![Coverage Status](https://coveralls.io/repos/github/polygon-tbd/exact-real/badge.svg?branch=_conda_cache_origin_head)](https://coveralls.io/github/polygon-tbd/exact-real?branch=_conda_cache_origin_head)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/polygon-tbd/exact-real/master?filepath=binder%2FSample.ipynb)
-[![asv](http://img.shields.io/badge/benchmarked%20by-asv-blue.svg?style=flat)](https://polygon-tbd.github.io/exact-real-asv/)
+[![Coverage Status](https://coveralls.io/repos/github/flatsurf/exact-real/badge.svg?branch=_conda_cache_origin_head)](https://coveralls.io/github/flatsurf/exact-real?branch=_conda_cache_origin_head)
+[![asv](http://img.shields.io/badge/benchmarked%20by-asv-blue.svg?style=flat)](https://flatsurf.github.io/exact-real-asv/)
 
 ## Current Release Info
 
@@ -12,7 +11,7 @@ experimental. There are no stable releases yet.
 
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
-| [![Nightly Build](https://img.shields.io/badge/experimental-libexactreal-green.svg)](https://anaconda.org/saraedum/libexactreal) | [![Conda Downloads](https://img.shields.io/conda/dn/saraedum/libexactreal.svg)](https://anaconda.org/saraedum/libexactreal) | [![Conda Version](https://img.shields.io/conda/vn/saraedum/libexactreal.svg)](https://anaconda.org/saraedum/libexactreal) | [![Conda Platforms](https://img.shields.io/conda/pn/saraedum/libexactreal.svg)](https://anaconda.org/saraedum/libexactreal) |
+| [![Nightly Build](https://img.shields.io/badge/recipe-libexactreal-green.svg)](https://anaconda.org/flatsurf/libexactreal) | [![Conda Downloads](https://img.shields.io/conda/dn/flatsurf/libexactreal.svg)](https://anaconda.org/flatsurf/libexactreal) | [![Conda Version](https://img.shields.io/conda/vn/flatsurf/libexactreal.svg)](https://anaconda.org/flatsurf/libexactreal) | [![Conda Platforms](https://img.shields.io/conda/pn/flatsurf/libexactreal.svg)](https://anaconda.org/flatsurf/libexactreal) |
 
 ## Install with Conda
 
@@ -20,13 +19,8 @@ You can install this package with conda. Download and install [Miniconda](https:
 
 ```
 conda config --add channels conda-forge
-conda install -c saraedum libexactreal
+conda install -c flatsurf libexactreal
 ```
-
-## Run with binder in the Cloud
-
-You can try out this library in a very limited environment online by clicking
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/polygon-tbd/exact-real/master?filepath=binder%2FSample.ipynb)
 
 ## Build from the Source Code Repository
 
@@ -34,7 +28,7 @@ We are following a standard autoconf setup, i.e., you can create the library
 `src/libexactreal` with the following:
 
 ```
-git clone https://github.com/polygon-tbd/exact-real.git
+git clone https://github.com/flatsurf/exact-real.git
 cd exact-real
 ./bootstrap
 ./configure
@@ -52,8 +46,8 @@ which does not hurt performance but gives a better debugging experience. For
 the best debugging experience, you might want to replace `-O3` with `-Og` or
 even `-O0` but the latter results in very poor performance.
 
-Additionally, you might want to run with configure with ` --disable-static`
-which improves the build time.
+Additionally, you might want to run configure with ` --disable-static` which
+improves the build time.
 
 [perf](https://perf.wiki.kernel.org/index.php/Main_Page) works well to profile
 when you make sure that `CXXFLAGS` contains `-fno-omit-framepointer`. You can
@@ -69,7 +63,7 @@ Integration. If you want to build the recipe manually, something like the
 following should work:
 
 ```
-git clone https://github.com/polygon-tbd/exact-real.git
+git clone https://github.com/flatsurf/exact-real.git
 cd exact-real
 source activate root
 conda config --add channels conda-forge
