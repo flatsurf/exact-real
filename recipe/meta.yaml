@@ -11,8 +11,6 @@ package:
 
 source:
   git_url: {{ environ.get('FEEDSTOCK_ROOT', '..') }}
-  patches:
-    - detect17.patch  # [osx]
 
 build:
   number: {{ build_number }}

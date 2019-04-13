@@ -1,5 +1,5 @@
 [![Linux](https://dev.azure.com/flatsurf/conda/_apis/build/status/exact-real-feedstock?branchName=master&jobName=linux&configuration=linux_)](https://dev.azure.com/flatsurf/conda/_build/latest?definitionId=&branchName=master)
-[![OSX](https://dev.azure.com/flatsurf/conda/_apis/build/status/exact-real-feedstock?branchName=master&jobName=osx&configuration=osx_)](https://dev.azure.com/flatsurf/conda/_build/latest?definitionId=&branchName=master)
+![OSX disabled](https://img.shields.io/badge/OSX-disabled-lightgrey.svg)
 ![Windows disabled](https://img.shields.io/badge/Windows-disabled-lightgrey.svg)
 [![Coverage Status](https://coveralls.io/repos/github/flatsurf/exact-real/badge.svg?branch=_conda_cache_origin_head)](https://coveralls.io/github/flatsurf/exact-real?branch=_conda_cache_origin_head)
 [![asv](http://img.shields.io/badge/benchmarked%20by-asv-blue.svg?style=flat)](https://flatsurf.github.io/exact-real-asv/)
