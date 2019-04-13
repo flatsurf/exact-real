@@ -41,7 +41,8 @@ struct ArbBenchmark : public benchmark::Fixture {
   ArbTester tester;
 };
 
-BENCHMARK_DEFINE_F(ArbBenchmark, Create)(benchmark::State& state) {
+BENCHMARK_DEFINE_F(ArbBenchmark, Create)
+(benchmark::State& state) {
   for (auto _ : state) {
     // interestingly, this is not optimized away by GCC -O3
     Arb x;
@@ -49,7 +50,8 @@ BENCHMARK_DEFINE_F(ArbBenchmark, Create)(benchmark::State& state) {
 }
 BENCHMARK_REGISTER_F(ArbBenchmark, Create);
 
-BENCHMARK_DEFINE_F(ArbBenchmark, CreateMove)(benchmark::State& state) {
+BENCHMARK_DEFINE_F(ArbBenchmark, CreateMove)
+(benchmark::State& state) {
   flint::frandxx rand;
   Arb x = random(state), y = random(state);
   Arb z = x;
@@ -70,7 +72,8 @@ BENCHMARK_DEFINE_F(ArbBenchmark, CreateMove)(benchmark::State& state) {
 }
 BENCHMARK_REGISTER_F(ArbBenchmark, CreateMove)->Apply(ArbBenchmark::BenchmarkedSizes);
 
-BENCHMARK_DEFINE_F(ArbBenchmark, CreateCopy)(benchmark::State& state) {
+BENCHMARK_DEFINE_F(ArbBenchmark, CreateCopy)
+(benchmark::State& state) {
   Arb x = random(state);
   for (auto _ : state) {
     Arb y(x);
@@ -79,7 +82,8 @@ BENCHMARK_DEFINE_F(ArbBenchmark, CreateCopy)(benchmark::State& state) {
 BENCHMARK_REGISTER_F(ArbBenchmark, CreateCopy)->Apply(ArbBenchmark::BenchmarkedSizes);
 
 // For comparison, assignments with the C API
-BENCHMARK_DEFINE_F(ArbBenchmark, Assign_C)(benchmark::State& state) {
+BENCHMARK_DEFINE_F(ArbBenchmark, Assign_C)
+(benchmark::State& state) {
   Arb x = random(state), y = random(state);
 
   arb_t x_, y_;
@@ -96,7 +100,8 @@ BENCHMARK_DEFINE_F(ArbBenchmark, Assign_C)(benchmark::State& state) {
 }
 BENCHMARK_REGISTER_F(ArbBenchmark, Assign_C)->Apply(ArbBenchmark::BenchmarkedSizes);
 
-BENCHMARK_DEFINE_F(ArbBenchmark, Assign)(benchmark::State& state) {
+BENCHMARK_DEFINE_F(ArbBenchmark, Assign)
+(benchmark::State& state) {
   Arb x = random(state), y = random(state);
 
   for (auto _ : state) {
@@ -107,7 +112,8 @@ BENCHMARK_DEFINE_F(ArbBenchmark, Assign)(benchmark::State& state) {
 }
 BENCHMARK_REGISTER_F(ArbBenchmark, Assign)->Apply(ArbBenchmark::BenchmarkedSizes);
 
-BENCHMARK_DEFINE_F(ArbBenchmark, AssignMove)(benchmark::State& state) {
+BENCHMARK_DEFINE_F(ArbBenchmark, AssignMove)
+(benchmark::State& state) {
   Arb x = random(state), y = random(state);
 
   Arb z = y;
@@ -121,7 +127,8 @@ BENCHMARK_DEFINE_F(ArbBenchmark, AssignMove)(benchmark::State& state) {
 }
 BENCHMARK_REGISTER_F(ArbBenchmark, AssignMove)->Apply(ArbBenchmark::BenchmarkedSizes);
 
-BENCHMARK_DEFINE_F(ArbBenchmark, Addition_Inplace_Yap)(benchmark::State& state) {
+BENCHMARK_DEFINE_F(ArbBenchmark, Addition_Inplace_Yap)
+(benchmark::State& state) {
   Arb x = random(state), y = random(state);
 
   for (auto _ : state) {
@@ -131,7 +138,8 @@ BENCHMARK_DEFINE_F(ArbBenchmark, Addition_Inplace_Yap)(benchmark::State& state) 
 }
 BENCHMARK_REGISTER_F(ArbBenchmark, Addition_Inplace_Yap)->Apply(ArbBenchmark::BenchmarkedSizes);
 
-BENCHMARK_DEFINE_F(ArbBenchmark, Addition_Yap)(benchmark::State& state) {
+BENCHMARK_DEFINE_F(ArbBenchmark, Addition_Yap)
+(benchmark::State& state) {
   Arb x = random(state), y = random(state);
 
   for (auto _ : state) {
@@ -142,7 +150,8 @@ BENCHMARK_DEFINE_F(ArbBenchmark, Addition_Yap)(benchmark::State& state) {
 BENCHMARK_REGISTER_F(ArbBenchmark, Addition_Yap)->Apply(ArbBenchmark::BenchmarkedSizes);
 
 // For comparison, arithmetic with the C API
-BENCHMARK_DEFINE_F(ArbBenchmark, Addition_C)(benchmark::State& state) {
+BENCHMARK_DEFINE_F(ArbBenchmark, Addition_C)
+(benchmark::State& state) {
   Arb x = random(state), y = random(state);
 
   for (auto _ : state) {
@@ -152,7 +161,8 @@ BENCHMARK_DEFINE_F(ArbBenchmark, Addition_C)(benchmark::State& state) {
 }
 BENCHMARK_REGISTER_F(ArbBenchmark, Addition_C)->Apply(ArbBenchmark::BenchmarkedSizes);
 
-BENCHMARK_DEFINE_F(ArbBenchmark, Arithmetic_Yap)(benchmark::State& state) {
+BENCHMARK_DEFINE_F(ArbBenchmark, Arithmetic_Yap)
+(benchmark::State& state) {
   Arb x = random(state), y = random(state), z = random(state);
 
   for (auto _ : state) {
@@ -163,7 +173,8 @@ BENCHMARK_DEFINE_F(ArbBenchmark, Arithmetic_Yap)(benchmark::State& state) {
 BENCHMARK_REGISTER_F(ArbBenchmark, Arithmetic_Yap)->Apply(ArbBenchmark::BenchmarkedSizes);
 
 // For comparison, the same, naively with the C API
-BENCHMARK_DEFINE_F(ArbBenchmark, Arithmetic_C)(benchmark::State& state) {
+BENCHMARK_DEFINE_F(ArbBenchmark, Arithmetic_C)
+(benchmark::State& state) {
   Arb x = random(state), y = random(state), z = random(state);
 
   for (auto _ : state) {
@@ -178,7 +189,8 @@ BENCHMARK_DEFINE_F(ArbBenchmark, Arithmetic_C)(benchmark::State& state) {
 BENCHMARK_REGISTER_F(ArbBenchmark, Arithmetic_C)->Apply(ArbBenchmark::BenchmarkedSizes);
 
 // For comparison, the same, optimized with the C API
-BENCHMARK_DEFINE_F(ArbBenchmark, Arithmetic_C_optimized)(benchmark::State& state) {
+BENCHMARK_DEFINE_F(ArbBenchmark, Arithmetic_C_optimized)
+(benchmark::State& state) {
   Arb x = random(state), y = random(state), z = random(state);
 
   for (auto _ : state) {

@@ -22,8 +22,8 @@
 #define LIBEXACTREAL_ARB_HPP
 
 #include <arb.h>
-#include <flint/flintxx/frandxx.h>
 #include <e-antic/renfxx_fwd.h>
+#include <flint/flintxx/frandxx.h>
 #include <gmpxx.h>
 #include <boost/yap/algorithm_fwd.hpp>
 #include <optional>
@@ -143,10 +143,10 @@ struct Arb : yap::Terminal<Arb, yap::ArbExpr> {
 
   // Construction from evaluating a Yap expression
   template <boost::yap::expr_kind Kind, typename Tuple>
-	// cppcheck-suppress  noExplicitConstructor
+  // cppcheck-suppress  noExplicitConstructor
   Arb(const yap::ArbExpr<Kind, Tuple>&) noexcept;
   template <boost::yap::expr_kind Kind, typename Tuple>
-	// cppcheck-suppress  noExplicitConstructor
+  // cppcheck-suppress  noExplicitConstructor
   Arb(yap::ArbExpr<Kind, Tuple>&&) noexcept;
 
   // Assignment from evaluating a Yap expression

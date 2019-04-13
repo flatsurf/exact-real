@@ -52,11 +52,11 @@ struct ArfExpr {
   static const boost::yap::expr_kind kind = Kind;
   Tuple elements;
 
-	template <typename T, typename S>
-	decltype(auto) operator()(T t, S s) const&& {
-		return std::move(*this)(t)(s);
-	}
-		
+  template <typename T, typename S>
+  decltype(auto) operator()(T t, S s) const&& {
+    return std::move(*this)(t)(s);
+  }
+
   decltype(auto) operator()(Arf::Round round) const&& {
     return boost::yap::make_expression<ArfExpr, boost::yap::expr_kind::call>(std::move(*this), RoundExpr{{round}});
   }

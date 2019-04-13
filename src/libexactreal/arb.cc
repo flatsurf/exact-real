@@ -27,8 +27,8 @@
 #include "exact-real/arb.hpp"
 #include "exact-real/arf.hpp"
 
-using std::ostream;
 using eantic::renf_elem_class;
+using std::ostream;
 
 namespace {
 struct X {

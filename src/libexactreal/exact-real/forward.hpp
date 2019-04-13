@@ -37,7 +37,7 @@ template <boost::yap::expr_kind Kind, typename Tuple>
 struct ArfExpr;
 template <boost::yap::expr_kind Kind, typename Tuple>
 struct ArbExpr;
-}
+}  // namespace yap
 
 struct Arb;
 struct Arf;

@@ -117,10 +117,10 @@ struct Arf : yap::Terminal<Arf, yap::ArfExpr>, boost::totally_ordered<Arf>, boos
 
   // Construction from evaluating a Yap expression
   template <boost::yap::expr_kind Kind, typename Tuple>
-	// cppcheck-suppress  noExplicitConstructor
+  // cppcheck-suppress  noExplicitConstructor
   Arf(const yap::ArfExpr<Kind, Tuple>&) noexcept;
   template <boost::yap::expr_kind Kind, typename Tuple>
-	// cppcheck-suppress  noExplicitConstructor
+  // cppcheck-suppress  noExplicitConstructor
   Arf(yap::ArfExpr<Kind, Tuple>&&) noexcept;
 
   // Assignment from evaluating a Yap expression

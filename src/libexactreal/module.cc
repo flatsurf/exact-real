@@ -44,7 +44,7 @@ template <typename Ring>
 struct ModuleImplementation {
   using Basis = vector<shared_ptr<RealNumber>>;
 
-	ModuleImplementation() : basis({}), precision(0) {}
+  ModuleImplementation() : basis({}), precision(0) {}
 
   explicit ModuleImplementation(const Basis& basis, long precision) : basis(basis), precision(precision) {
     // See https://github.com/flatsurf/exact-real/issues/5 for missing input
@@ -62,15 +62,15 @@ struct ModuleImplementationWithoutParameters : ModuleImplementation<Ring> {
 
 template <typename Ring>
 struct ModuleImplementationWithParameters : ModuleImplementation<Ring> {
-	ModuleImplementationWithParameters() : ModuleImplementation<Ring>(), parameters(&trivial) {}
+  ModuleImplementationWithParameters() : ModuleImplementation<Ring>(), parameters(&trivial) {}
 
-	static typename Ring::Parameters trivial;
+  static typename Ring::Parameters trivial;
 
   explicit ModuleImplementationWithParameters(const typename ModuleImplementation<Ring>::Basis& basis,
                                               const typename Ring::Parameters& parameters, long precision)
       : ModuleImplementation<Ring>(basis, precision), parameters(&parameters) {}
 
-  typename Ring::Parameters const * parameters;
+  typename Ring::Parameters const* parameters;
 };
 
 template <typename Ring>
@@ -129,31 +129,31 @@ const typename RingWithParameters::Parameters& Module<Ring>::ring() const {
 
 template <typename Ring>
 std::shared_ptr<const Module<Ring>> Module<Ring>::span(const std::shared_ptr<const Module<Ring>>& m, const std::shared_ptr<const Module<Ring>>& n) {
-	const prec prec = std::max(m->impl->precision, n->impl->precision);
-	if (m->gens() == n->gens()) {
-		bool parameters_match = true;
-		if constexpr (is_parametrized_v<Ring>) {
-			if (m->impl->parameters != n->impl->parameters) {
-				parameters_match = false;
-			}
-		}
-		if (parameters_match) {
-			if (m->impl->precision == prec) {
-				return m;
-			} else if (n->impl->precision == prec) {
-				return n;
-			}
-		}
-	}
-	if (m->gens().size() == 0) {
-		if (n->impl->precision == prec) {
-			return n;
-		}
-	}
-	if (n->gens().size() == 0) {
-		return span(n, m);
-	}
-	throw std::logic_error("Module::span() not implemented for non-trivial cases");
+  const prec prec = std::max(m->impl->precision, n->impl->precision);
+  if (m->gens() == n->gens()) {
+    bool parameters_match = true;
+    if constexpr (is_parametrized_v<Ring>) {
+      if (m->impl->parameters != n->impl->parameters) {
+        parameters_match = false;
+      }
+    }
+    if (parameters_match) {
+      if (m->impl->precision == prec) {
+        return m;
+      } else if (n->impl->precision == prec) {
+        return n;
+      }
+    }
+  }
+  if (m->gens().size() == 0) {
+    if (n->impl->precision == prec) {
+      return n;
+    }
+  }
+  if (n->gens().size() == 0) {
+    return span(n, m);
+  }
+  throw std::logic_error("Module::span() not implemented for non-trivial cases");
 }
 
 template <typename Ring>

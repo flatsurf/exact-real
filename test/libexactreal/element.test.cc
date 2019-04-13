@@ -30,14 +30,14 @@
 #include <exact-real/real_number.hpp>
 
 using namespace exactreal;
+using eantic::renf_class;
+using eantic::renf_elem_class;
 using std::make_shared;
 using std::shared_ptr;
 using std::vector;
-using eantic::renf_class;
-using eantic::renf_elem_class;
 
 TEST(ElementZZ, Generators) {
-	auto m = make_shared<Module<IntegerRingTraits>>(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()}, 64);
+  auto m = make_shared<Module<IntegerRingTraits>>(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()}, 64);
 
   auto one = Element(m, 0);
   auto x = Element(m, 1);
@@ -65,17 +65,17 @@ TEST(ElementZZ, Additive) {
 TEST(ElementZZ, PromotionFromTrivial) {
   auto m = make_shared<Module<IntegerRingTraits>>(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()}, 64);
 
-	auto gen = Element(m, 1);
-	auto zero = Element(m);
-	auto trivial = Element<IntegerRingTraits>();
+  auto gen = Element(m, 1);
+  auto zero = Element(m);
+  auto trivial = Element<IntegerRingTraits>();
 
-	EXPECT_EQ(zero, trivial);
-	EXPECT_NE(gen, trivial);
+  EXPECT_EQ(zero, trivial);
+  EXPECT_NE(gen, trivial);
 
-	EXPECT_EQ(gen + trivial, gen);
-	EXPECT_EQ(zero + trivial, zero);
-	EXPECT_EQ(0 * gen, trivial);
-	EXPECT_GE(gen, trivial);
+  EXPECT_EQ(gen + trivial, gen);
+  EXPECT_EQ(zero + trivial, zero);
+  EXPECT_EQ(0 * gen, trivial);
+  EXPECT_GE(gen, trivial);
 }
 
 TEST(ElementZZ, Scalars) {

@@ -79,13 +79,15 @@ struct RandomRealNumberFixture : benchmark::Fixture {
   std::unique_ptr<RealNumber> rnd = RealNumber::random();
 };
 
-BENCHMARK_F(RandomRealNumberFixture, Double)(benchmark::State& state) {
+BENCHMARK_F(RandomRealNumberFixture, Double)
+(benchmark::State& state) {
   for (auto _ : state) {
     benchmark::DoNotOptimize(static_cast<double>(*rnd));
   }
 }
 
-BENCHMARK_DEFINE_F(RandomRealNumberFixture, arf)(benchmark::State& state) {
+BENCHMARK_DEFINE_F(RandomRealNumberFixture, arf)
+(benchmark::State& state) {
   for (auto _ : state) {
     benchmark::DoNotOptimize(rnd->arf(static_cast<unsigned int>(state.range(0))));
   }

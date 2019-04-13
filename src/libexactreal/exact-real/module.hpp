@@ -33,7 +33,7 @@ template <typename Ring>
 struct Module : std::enable_shared_from_this<Module<Ring>> {
   using Basis = std::vector<std::shared_ptr<RealNumber>>;
 
-	Module();
+  Module();
 
   template <typename RingWithoutParameters = Ring>
   explicit Module(const Basis&, prec);
@@ -50,12 +50,12 @@ struct Module : std::enable_shared_from_this<Module<Ring>> {
 
   const Basis& gens() const;
 
-	static const std::shared_ptr<const Module> trivial;
+  static const std::shared_ptr<const Module> trivial;
 
   template <typename R>
   friend std::ostream& operator<<(std::ostream&, const Module<R>&);
 
-	static std::shared_ptr<const Module<Ring>> span(const std::shared_ptr<const Module<Ring>>&, const std::shared_ptr<const Module<Ring>>&);
+  static std::shared_ptr<const Module<Ring>> span(const std::shared_ptr<const Module<Ring>>&, const std::shared_ptr<const Module<Ring>>&);
 
  private:
   struct Implementation;

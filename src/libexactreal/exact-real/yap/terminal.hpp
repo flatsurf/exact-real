@@ -28,33 +28,32 @@ namespace exactreal {
 namespace yap {
 template <typename T, template <boost::yap::expr_kind, typename> typename Expr>
 class Terminal {
-template <boost::yap::expr_kind Kind, typename Tuple>
-friend T& operator+=(T& self, Expr<Kind, Tuple>&& expr) noexcept {
-  return inplace_binop(self, std::move(expr), [](auto&& a, auto&& b) -> decltype(auto) {
-    return std::forward<decltype(a)>(a) + std::forward<decltype(b)>(b);
-  });
-}
-template <boost::yap::expr_kind Kind, typename Tuple>
-friend T& operator-=(T& self, Expr<Kind, Tuple>&& expr) noexcept {
-  return inplace_binop(self, std::move(expr), [](auto&& a, auto&& b) -> decltype(auto) {
-    return std::forward<decltype(a)>(a) - std::forward<decltype(b)>(b);
-  });
-}
-template <boost::yap::expr_kind Kind, typename Tuple>
-friend T& operator*=(T& self, Expr<Kind, Tuple>&& expr) noexcept {
-  return inplace_binop(self, std::move(expr), [](auto&& a, auto&& b) -> decltype(auto) {
-    return std::forward<decltype(a)>(a) * std::forward<decltype(b)>(b);
-  });
-}
-template <boost::yap::expr_kind Kind, typename Tuple>
-friend T& operator/=(T& self, Expr<Kind, Tuple>&& expr) noexcept {
-  return inplace_binop(self, std::move(expr), [](auto&& a, auto&& b) -> decltype(auto) {
-    return std::forward<decltype(a)>(a) / std::forward<decltype(b)>(b);
-  });
-}
-
+  template <boost::yap::expr_kind Kind, typename Tuple>
+  friend T& operator+=(T& self, Expr<Kind, Tuple>&& expr) noexcept {
+    return inplace_binop(self, std::move(expr), [](auto&& a, auto&& b) -> decltype(auto) {
+      return std::forward<decltype(a)>(a) + std::forward<decltype(b)>(b);
+    });
+  }
+  template <boost::yap::expr_kind Kind, typename Tuple>
+  friend T& operator-=(T& self, Expr<Kind, Tuple>&& expr) noexcept {
+    return inplace_binop(self, std::move(expr), [](auto&& a, auto&& b) -> decltype(auto) {
+      return std::forward<decltype(a)>(a) - std::forward<decltype(b)>(b);
+    });
+  }
+  template <boost::yap::expr_kind Kind, typename Tuple>
+  friend T& operator*=(T& self, Expr<Kind, Tuple>&& expr) noexcept {
+    return inplace_binop(self, std::move(expr), [](auto&& a, auto&& b) -> decltype(auto) {
+      return std::forward<decltype(a)>(a) * std::forward<decltype(b)>(b);
+    });
+  }
+  template <boost::yap::expr_kind Kind, typename Tuple>
+  friend T& operator/=(T& self, Expr<Kind, Tuple>&& expr) noexcept {
+    return inplace_binop(self, std::move(expr), [](auto&& a, auto&& b) -> decltype(auto) {
+      return std::forward<decltype(a)>(a) / std::forward<decltype(b)>(b);
+    });
+  }
 };
-}
-}
+}  // namespace yap
+}  // namespace exactreal
 
 #endif

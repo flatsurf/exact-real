@@ -48,7 +48,7 @@ struct ElementImplementation {
     assert(size(coefficients.size()) == parent->rank());
   }
 
-	std::shared_ptr<const Module<Ring>> parent;
+  std::shared_ptr<const Module<Ring>> parent;
   vector<typename Ring::ElementClass> coefficients;
 };
 
@@ -57,10 +57,10 @@ bool lt_assuming_ne(const LHS& lhs, const RHS& rhs) {
   for (long prec = 64;; prec *= 2) {
     Arb self = lhs.arb(prec);
     Arb other = rhs.arb(prec);
-		auto lt = self < other;
-		if (lt.has_value()) {
-			return *lt;
-		}
+    auto lt = self < other;
+    if (lt.has_value()) {
+      return *lt;
+    }
   }
 }
 
@@ -90,9 +90,9 @@ Element<Ring>::Element(const std::shared_ptr<const Module<Ring>>& parent, const 
 
 template <typename Ring>
 Arb Element<Ring>::arb(long prec) const {
-	if (!*this) {
-		return Arb();
-	}
+  if (!*this) {
+    return Arb();
+  }
   prec += numeric_cast<long>(ceil(log2(numeric_cast<double>(impl->parent->rank()))));
   Arb ret;
   for (size_t i = 0; i < impl->parent->rank(); i++) {
@@ -104,8 +104,8 @@ Arb Element<Ring>::arb(long prec) const {
 template <typename Ring>
 Element<Ring>& Element<Ring>::operator+=(const Element<Ring>& rhs) {
   if (impl->parent != rhs.impl->parent) {
-		auto parent = Module<Ring>::span(this->impl->parent, rhs.impl->parent);
-		return promote(parent) += Element<Ring>(rhs).promote(parent);
+    auto parent = Module<Ring>::span(this->impl->parent, rhs.impl->parent);
+    return promote(parent) += Element<Ring>(rhs).promote(parent);
   }
   for (size_t i = 0; i < impl->parent->rank(); i++) {
     impl->coefficients[i] += rhs.impl->coefficients[i];
@@ -202,12 +202,12 @@ bool Element<Ring>::operator<(const RealNumber& rhs) const {
 
 template <typename Ring>
 bool Element<Ring>::operator==(const Element<Ring>& rhs) const {
-	if (impl->parent != rhs.impl->parent) {
-		auto parent = Module<Ring>::span(impl->parent, rhs.impl->parent);
-		return Element<Ring>(*this).promote(parent) == Element<Ring>(rhs).promote(parent);
-	}
-	
-	return impl->coefficients == rhs.impl->coefficients;
+  if (impl->parent != rhs.impl->parent) {
+    auto parent = Module<Ring>::span(impl->parent, rhs.impl->parent);
+    return Element<Ring>(*this).promote(parent) == Element<Ring>(rhs).promote(parent);
+  }
+
+  return impl->coefficients == rhs.impl->coefficients;
 }
 
 template <typename Ring>
@@ -246,24 +246,25 @@ Element<Ring>::operator double() const {
 
 template <typename Ring>
 Element<Ring>& Element<Ring>::promote(const std::shared_ptr<const Module<Ring>>& parent) {
-	if (this->impl->parent == parent) {
-		return *this;
-	}
-	if (!*this) {
-		return *this = Element(parent);
-	}
-	auto our_gens = impl->parent->gens();
-	assert(std::all_of(our_gens.begin(), our_gens.end(), [&] (const auto& gen) { return std::find(parent->gens().begin(), parent->gens().end(), gen) != parent->gens().end(); }) &&
-			"can not promote to new parent since our parent is not a submodule");
-	return *this = Element<Ring>(parent, boolinq::from(parent->gens())
-			.select([&](const auto& gen) {
-					auto our_gen = std::find(our_gens.begin(), our_gens.end(), gen);	
-					if (our_gen == our_gens.end()) {
-						return typename Ring::ElementClass();
-					} else {
-						return impl->coefficients[our_gen - our_gens.begin()];
-					}
-			}).toVector());
+  if (this->impl->parent == parent) {
+    return *this;
+  }
+  if (!*this) {
+    return *this = Element(parent);
+  }
+  auto our_gens = impl->parent->gens();
+  assert(std::all_of(our_gens.begin(), our_gens.end(), [&](const auto& gen) { return std::find(parent->gens().begin(), parent->gens().end(), gen) != parent->gens().end(); }) &&
+         "can not promote to new parent since our parent is not a submodule");
+  return *this = Element<Ring>(parent, boolinq::from(parent->gens())
+                                           .select([&](const auto& gen) {
+                                             auto our_gen = std::find(our_gens.begin(), our_gens.end(), gen);
+                                             if (our_gen == our_gens.end()) {
+                                               return typename Ring::ElementClass();
+                                             } else {
+                                               return impl->coefficients[our_gen - our_gens.begin()];
+                                             }
+                                           })
+                                           .toVector());
 }
 
 template <typename Ring>

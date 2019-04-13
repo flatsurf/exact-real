@@ -48,7 +48,7 @@ struct Element : boost::additive<Element<Ring>>,
                  std::conditional_t<std::is_same<typename Ring::ElementClass, mpz_class>::value, boost::blank,
                                     boost::multiplicative<Element<Ring>, mpz_class>>,
                  boost::multiplicative<Element<Ring>, int> {
-	Element();
+  Element();
   explicit Element(const std::shared_ptr<const Module<Ring>>& parent);
   Element(const std::shared_ptr<const Module<Ring>>& parent, const std::vector<typename Ring::ElementClass>& coefficients);
   Element(const std::shared_ptr<const Module<Ring>>& parent, const size gen);
@@ -82,7 +82,7 @@ struct Element : boost::additive<Element<Ring>>,
   explicit operator bool() const;
   explicit operator double() const;
 
-	Element& promote(const std::shared_ptr<const Module<Ring>>& module);
+  Element& promote(const std::shared_ptr<const Module<Ring>>& module);
 
   template <typename R>
   friend std::ostream& operator<<(std::ostream&, const Element<R>&);
@@ -92,11 +92,11 @@ struct Element : boost::additive<Element<Ring>>,
   spimpl::impl_ptr<Implementation> impl;
 };
 
-template <typename Ring, typename ...Args>
-Element(const std::shared_ptr<const Module<Ring>>&, Args...) -> Element<Ring>;
+template <typename Ring, typename... Args>
+Element(const std::shared_ptr<const Module<Ring>>&, Args...)->Element<Ring>;
 
-template <typename Ring, typename ...Args>
-Element(const std::shared_ptr<Module<Ring>>&, Args...) -> Element<Ring>;
+template <typename Ring, typename... Args>
+Element(const std::shared_ptr<Module<Ring>>&, Args...)->Element<Ring>;
 
 }  // namespace exactreal
 
