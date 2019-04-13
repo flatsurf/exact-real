@@ -143,8 +143,10 @@ struct Arb : yap::Terminal<Arb, yap::ArbExpr> {
 
   // Construction from evaluating a Yap expression
   template <boost::yap::expr_kind Kind, typename Tuple>
+	// cppcheck-suppress  noExplicitConstructor
   Arb(const yap::ArbExpr<Kind, Tuple>&) noexcept;
   template <boost::yap::expr_kind Kind, typename Tuple>
+	// cppcheck-suppress  noExplicitConstructor
   Arb(yap::ArbExpr<Kind, Tuple>&&) noexcept;
 
   // Assignment from evaluating a Yap expression
