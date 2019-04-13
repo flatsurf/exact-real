@@ -95,7 +95,7 @@ Arb Element<Ring>::arb(long prec) const {
   }
   prec += numeric_cast<long>(ceil(log2(numeric_cast<double>(impl->parent->rank()))));
   Arb ret;
-  for (size_t i = 0; i < impl->parent->rank(); i++) {
+  for (int i = 0; i < impl->parent->rank(); i++) {
     ret += (impl->parent->gens()[i]->arb(prec) * Ring::arb(impl->coefficients[i], prec))(prec);
   }
   return ret;
@@ -107,7 +107,7 @@ Element<Ring>& Element<Ring>::operator+=(const Element<Ring>& rhs) {
     auto parent = Module<Ring>::span(this->impl->parent, rhs.impl->parent);
     return promote(parent) += Element<Ring>(rhs).promote(parent);
   }
-  for (size_t i = 0; i < impl->parent->rank(); i++) {
+  for (int i = 0; i < impl->parent->rank(); i++) {
     impl->coefficients[i] += rhs.impl->coefficients[i];
   }
   return *this;

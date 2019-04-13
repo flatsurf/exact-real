@@ -32,7 +32,7 @@ AX_VALGRIND_CHECK()
 dnl Check for required libraries
 AC_LANG([C++])
 
-dnl We use some C++17 features such as std::optional
+dnl We use some C++17 features, such as if constexpr
 AX_CXX_COMPILE_STDCXX(17)
 
 ACX_PTHREAD([], [AC_MSG_ERROR([pthread not supported])])
