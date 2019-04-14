@@ -51,8 +51,8 @@ improves the build time.
 
 [perf](https://perf.wiki.kernel.org/index.php/Main_Page) works well to profile
 when you make sure that `CXXFLAGS` contains `-fno-omit-framepointer`. You can
-then for example run our test suite with `perf record -g make check`
-Apart from perf itself there are several ways to analyze the output,
+then for example run our test suite with `perf record --call-graph dwarf make
+check` Apart from perf itself there are several ways to analyze the output,
 [hotspot](https://github.com/KDAB/hotspot) might be the most convenient one at
 the time of this writing.
 
@@ -65,8 +65,9 @@ following should work:
 ```
 git clone https://github.com/flatsurf/exact-real.git
 cd exact-real
-source activate root
+conda activate root
 conda config --add channels conda-forge
+conda config --add channels flatsurf # if you want to pull in the latest version of dependencies
 conda install conda-build conda-forge-ci-setup=2
 export FEEDSTOCK_ROOT=`pwd`
 export RECIPE_ROOT=${FEEDSTOCK_ROOT}/recipe
@@ -79,7 +80,7 @@ conda build "${RECIPE_ROOT}" -m "${CI_SUPPORT}/${CONFIG}.yaml" --clobber-file "$
 You can then try out the package that you just built with:
 ```
 conda create -n exact-real-test --use-local libexactreal
-source activate exact-real-test
+conda activate exact-real-test
 ```
 
 ## Run Tests and Benchmark
