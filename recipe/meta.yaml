@@ -1,12 +1,13 @@
 # conda-smithy assumes that the build number is >= 1000 when building with the new anaconda compilers,
 # this probably is not important but make_build_number otherwise complains during the build
-{% set version = environ.get('GIT_DESCRIBE_TAG')|string %}
+# See https://github.com/conda/conda-build/issues/2666 for the missing tag
+{% set version = environ.get('GIT_DESCRIBE_TAG', 'untagged')|string %}
 {% set build_number = (environ.get('GIT_DESCRIBE_NUMBER')|int + 1000)|string %}
 {% set build_string = "master_" + build_number %}
 {% set flavour = environ.get('FLAVOUR', 'build')|string %}
 
 package:
-  name: exact-real
+  name: libexactreal
   version: {{ version }}
 
 source:
@@ -30,28 +31,27 @@ requirements:
   host:
     - boost-cpp
     - e-antic 1.*
+    - arb
+    - gmp
     # requirement of make check which also runs benchmarks
     - gtest
     - benchmark
     - valgrind
+  run_exports:
+    - libexactreal {{ version }}
 
 test:
   commands:
-    - recipe/test-{{ flavour }}.sh
+    - ./test-{{ flavour }}.sh
+  files:
+    - test-{{ flavour }}.sh
+  source_files:
+    - Makefile
+    - Makefile.am
+    - test
   requires:
     # test-vagrind.sh needs valgrind
     - valgrind
-
-outputs:
-  - name: libexactreal
-    build:
-      run_exports:
-        - {{ pin_subpackage("libexactreal", exact=True) }}
-    files:
-      - lib/*.dylib    # [osx]
-      - lib/*.so*      # [linux]
-      - include/exact-real/*.hpp
-      - include/exact-real/external/spimpl/spimpl.h
 
 about:
   home: https://github.com/flatsurf/exact-real
