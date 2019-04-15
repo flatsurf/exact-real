@@ -1,0 +1,10 @@
+name: binder
+channels:
+  - flatsurf
+  - conda-forge
+  - defaults
+dependencies:
+  - libexactreal
+  - boost-cpp
+  - notebook
+  - xeus-cling

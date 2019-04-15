@@ -22,6 +22,11 @@ conda config --add channels conda-forge
 conda install -c flatsurf libexactreal
 ```
 
+## Run with binder in the Cloud
+
+You can try out this library in a very limited environment online by clicking
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/exact-real/master?filepath=binder%2FSample.ipynb)
+
 ## Build from the Source Code Repository
 
 We are following a standard autoconf setup, i.e., you can create the library
