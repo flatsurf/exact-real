@@ -22,12 +22,16 @@ build:
   script:
     - source ./recipe/cflags.sh
     - ./recipe/build-{{ flavour }}.sh
+    - ./recipe/test-{{ flavour }}.sh
+    - make install
 
 requirements:
   build:
     - libtool
     - automake
     - {{ compiler('cxx') }}
+    # test-valgrind.sh needs valgrind
+    - valgrind
   host:
     - boost-cpp
     - e-antic 1.*
@@ -39,19 +43,6 @@ requirements:
     - valgrind
   run_exports:
     - libexactreal {{ version }}
-
-test:
-  commands:
-    - ./test-{{ flavour }}.sh
-  files:
-    - test-{{ flavour }}.sh
-  source_files:
-    - Makefile
-    - Makefile.am
-    - test
-  requires:
-    # test-vagrind.sh needs valgrind
-    - valgrind
 
 about:
   home: https://github.com/flatsurf/exact-real
