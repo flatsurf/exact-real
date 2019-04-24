@@ -1,12 +1,13 @@
 # conda-smithy assumes that the build number is >= 1000 when building with the new anaconda compilers,
 # this probably is not important but make_build_number otherwise complains during the build
-{% set version = environ.get('GIT_DESCRIBE_TAG')|string %}
+# See https://github.com/conda/conda-build/issues/2666 for the missing tag
+{% set version = environ.get('GIT_DESCRIBE_TAG', 'untagged')|string %}
 {% set build_number = (environ.get('GIT_DESCRIBE_NUMBER')|int + 1000)|string %}
 {% set build_string = "master_" + build_number %}
 {% set flavour = environ.get('FLAVOUR', 'build')|string %}
 
 package:
-  name: exact-real
+  name: libexactreal
   version: {{ version }}
 
 source:
@@ -15,43 +16,36 @@ source:
 build:
   number: {{ build_number }}
   string: {{ build_string }}
+  # e-antic is not built for Windows & macOS
   skip: True  # [win]
+  skip: True  # [osx]
   script:
     - source ./recipe/cflags.sh
     - ./recipe/build-{{ flavour }}.sh
+    - ./recipe/test-{{ flavour }}.sh
+    - make install
 
 requirements:
   build:
     - libtool
     - automake
     - {{ compiler('cxx') }}
+    # test-valgrind.sh needs valgrind
+    - valgrind
   host:
     - boost-cpp
-    - e-antic
+    - e-antic 1.*
+    - arb
+    - gmp
     # requirement of make check which also runs benchmarks
     - gtest
     - benchmark
     - valgrind
-
-test:
-  commands:
-    - recipe/test-{{ flavour }}.sh
-  requires:
-    # test-vagrind.sh needs valgrind
-    - valgrind
-
-outputs:
-  - name: libexactreal
-    build:
-      run_exports:
-        - {{ pin_subpackage("libexactreal", exact=True) }}
-    files:
-      - lib/*.dylib    # [osx]
-      - lib/*.so*      # [linux]
-      - include/exact-real/*.h
+  run_exports:
+    - libexactreal {{ version }}
 
 about:
-  home: https://github.com/polygon-tbd/exact-real
+  home: https://github.com/flatsurf/exact-real
   license: GPL2
   license_file: COPYING
   summary: Finite Real Submodules powered by E-ANTIC

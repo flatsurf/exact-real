@@ -1,0 +1,121 @@
+/**********************************************************************
+ *  This file is part of exact-real.
+ *
+ *        Copyright (C) 2019 Vincent Delecroix
+ *        Copyright (C) 2019 Julian Rüth
+ *
+ *  exact-real is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  exact-real is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
+ *********************************************************************/
+
+#include <benchmark/benchmark.h>
+#include <gtest/gtest.h>
+
+#include <exact-real/yap/arb.hpp>
+#include "arb.hpp"
+
+using namespace exactreal;
+
+ArbTester tester;
+
+TEST(ArbYapTest, Arithmetic) {
+  tester.reset();
+  Arb x = tester.random(), y = tester.random(), z, z_;
+  const prec prec = 64;
+
+  z = (x + y)(prec);
+  arb_add(z_.arb_t(), x.arb_t(), y.arb_t(), prec);
+  ASSERT_TRUE(z.equal(z_));
+
+  z = (x - y)(prec);
+  arb_sub(z_.arb_t(), x.arb_t(), y.arb_t(), prec);
+  ASSERT_TRUE(z.equal(z_));
+
+  z = (x * y)(prec);
+  arb_mul(z_.arb_t(), x.arb_t(), y.arb_t(), prec);
+  ASSERT_TRUE(z.equal(z_));
+
+  z = (x / y)(prec);
+  arb_div(z_.arb_t(), x.arb_t(), y.arb_t(), prec);
+  ASSERT_TRUE(z.equal(z_));
+
+  z = -x;
+  arb_neg(z_.arb_t(), x.arb_t());
+  ASSERT_TRUE(z.equal(z_));
+}
+
+TEST(ArbYapTest, Expressions) {
+  Arb x2(2), x3(3), x5(5), x7(7), x11(11);
+
+  // Some random expressions generated with
+  // def e():
+  //     if random() > .5: return ['x2', 'x3', 'x5', 'x7', 'x11'][randrange(0, 5)]
+  //     return "(%s %s %s)"%(e(), "+-*/"[randint(0,3)], e())
+
+  Arb a;
+  double d;
+
+  a = ((((x7 / x5) + (x2 - x3)) / x3) + x2)(64);
+  d = ((((7. / 5.) + (2. - 3.)) / 3.) + 2.);
+  ASSERT_DOUBLE_EQ(static_cast<double>(a), d);  // 2.13333
+
+  a = (x2 - (x11 * (x2 / ((x2 / (x5 * ((x7 * x2) * x2))) / x2))))(64);
+  d = 2. - (11. * (2. / ((2. / (5. * ((7. * 2.) * 2.))) / 2.)));
+  ASSERT_DOUBLE_EQ(static_cast<double>(a), d);  // -3078
+
+  a = ((x3 + x11) / ((x5 - x2) + (((((x7 * x2) / (x11 / x5)) * x2) + (x2 - x11)) - (x5 - (x7 + x5)))))(64);
+  d = ((3. + 11.) / ((5. - 2.) + (((((7. * 2.) / (11. / 5.)) * 2.) + (2. - 11.)) - (5. - (7. + 5.)))));
+  ASSERT_DOUBLE_EQ(static_cast<double>(a), d);  // 1.01987
+
+  /*
+  // adds one second to the compilation time [2019]
+  a = (((x3 + x3) - x11) + (x5 / (((x5 * x3) - x3) / (x5 + ((x2 + (x5 + (((x7 / x11) * x5) - (x3 * (x7 * x3))))) +
+  x5)))))(64); d = (((3. + 3.) - 11.) + (5. / (((5. * 3.) - 3.) / (5. + ((2. + (5. + (((7. / 11.) * 5.) - (3. * (7.
+  * 3.))))) + 5.))))); ASSERT_DOUBLE_EQ(static_cast<double>(a), d); // -22.8409
+
+  // adds one second to the compilation time [2019]
+  a = (x5 / ((((((x2 / (x7 + ((x11 * x11) - (x7 / x11)))) - x7) * x7) - x11) / x5) + (x2 + (((x3 - (x11 * x11)) + x5) -
+  (x3 * ((x11 - (x2 + x7)) - x3))))))(64); d = (5. / ((((((2. / (7. + ((11. * 11.) - (7. / 11.)))) - 7.) * 7.) - 11.)
+  / 5.) + (2. + (((3. - (11. * 11.)) + 5.) - (3. * ((11. - (2. + 7.)) - 3.))))));
+  ASSERT_DOUBLE_EQ(static_cast<double>(a), d); // -0.0416743
+
+  // adds 10s to the compilation time [2019]
+  a = (((x7 / (((((x3 + ((x3 / (x7 / ((x11 / (x5 + ((x11 + (x3 * (((x7 * x7) + x5) / x3))) - (x2 * x7)))) / (x3 * (x7 /
+  x11))))) + x3)) - x5) / (x3 - (x3 / x2))) * x2) + ((x7 + x7) + ((x5 * ((((x2 * x3) - (x3 * (((x3 + x3) - x3) + x3))) *
+  ((x11 - ((x11 / x3) / (x3 * x7))) + x3)) - (x7 * x5))) - x7)))) * (((x2 / ((x5 / x3) + ((x2 / (((x2 / (x2 * x7)) -
+  (((x5 * (x3 / x3)) / x7) * ((x11 * (x2 - ((x3 / (x5 / x5)) * ((x5 * x3) - x5)))) / x3))) + ((((x11 / ((((x2 + x2) +
+  (x2 / x7)) * x7) * x5)) / x11) + (((((x3 - (x7 * x11)) + x7) / (((x2 * (x5 * ((x11 * x5) + x3))) + x7) + ((x3 / x2) /
+  x11))) / x11) / (x2 - x11))) * x3))) / x7))) / x7) + x7)) - ((x2 * x3) + x11))(64); d = (((7. / (((((3. + ((3. / (7. /
+  ((11. / (5. + ((11. + (3. * (((7. * 7.) + 5.) / 3.))) - (2. * 7.)))) / (3. * (7. / 11.))))) + 3.)) - 5.) / (3. - (3.
+  / 2.))) * 2.) + ((7. + 7.) + ((5. * ((((2. * 3.) - (3. * (((3. + 3.) - 3.) + 3.))) * ((11. - ((11. / 3.) / (3. * 7.)))
+  + 3.)) - (7. * 5.))) - 7.)))) * (((2. / ((5. / 3.) + ((2. / (((2. / (2. * 7.)) - (((5. * (3. / 3.)) / 7.) * ((11. *
+  (2. - ((3. / (5. / 5.)) * ((5. * 3.) - 5.)))) / 3.))) + ((((11. / ((((2. + 2.) + (2. / 7.)) * 7.) * 5.)) / 11.) +
+  (((((3. - (7. * 11.)) + 7.) / (((2. * (5. * ((11. * 5.) + 3.))) + 7.) + ((3. / 2.) / 11.))) / 11.) / (2. - 11.)))
+  * 3.))) / 7.))) / 7.) + 7.)) - ((2. * 3.) + 11.));
+
+  ASSERT_DOUBLE_EQ(static_cast<double>(a), d); // -17.0504
+  */
+}
+
+TEST(ArbYapTest, ArithmeticInplace) {
+  tester.reset();
+  Arb x = tester.random(), y, z;
+  const prec prec = 64;
+
+  ASSERT_TRUE(((z = Arb(1337)) += x(prec)).equal((Arb(1337) + x)(prec)));
+  ASSERT_TRUE(((z = Arb(1337)) -= x(prec)).equal((Arb(1337) - x)(prec)));
+  ASSERT_TRUE(((z = Arb(1337)) *= x(prec)).equal((Arb(1337) * x)(prec)));
+  ASSERT_TRUE(((z = Arb(1337)) /= x(prec)).equal((Arb(1337) / x)(prec)));
+}
+
+#include "main.hpp"

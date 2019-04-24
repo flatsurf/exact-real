@@ -1,9 +1,9 @@
 boost_cpp:
 - 1.68.0
 channel_sources:
-- conda-forge,defaults
+- flatsurf,conda-forge,defaults
 channel_targets:
-- saraedum main
+- flatsurf main
 cxx_compiler:
 - gxx
 cxx_compiler_version:

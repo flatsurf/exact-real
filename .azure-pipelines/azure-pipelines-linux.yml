@@ -10,9 +10,18 @@ jobs:
   strategy:
     maxParallel: 8
     matrix:
-      linux_:
+      build_linux_:
         CONFIG: linux_
-        UPLOAD_PACKAGES: False
+        FLAVOUR: build
+        UPLOAD_PACKAGES: True
+      valgrind_linux_:
+        CONFIG: linux_
+        FLAVOUR: valgrind
+        UPLOAD_PACKAGES: "False"
+      coverage_linux_:
+        CONFIG: linux_
+        FLAVOUR: coverage
+        UPLOAD_PACKAGES: "False"
   steps:
   - script: |
       sudo pip install --upgrade pip

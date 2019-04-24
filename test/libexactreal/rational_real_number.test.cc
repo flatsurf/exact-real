@@ -18,54 +18,48 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <gtest/gtest.h>
 #include <benchmark/benchmark.h>
+#include <gtest/gtest.h>
 
-#include <exact-real/real_number.hpp>
 #include <exact-real/arb.hpp>
 #include <exact-real/arf.hpp>
+#include <exact-real/real_number.hpp>
 
 using namespace exactreal;
 
 TEST(RationalRealNumberTest, Equality) {
-	std::unique_ptr<RealNumber> numbers[] {
-		RealNumber::rational(0),
-		RealNumber::rational(1),
-		RealNumber::rational(mpq_class(1, 2)),
-		RealNumber::rational(mpq_class(4, 3)) };
+  std::unique_ptr<RealNumber> numbers[]{RealNumber::rational(0), RealNumber::rational(1),
+                                        RealNumber::rational(mpq_class(1, 2)), RealNumber::rational(mpq_class(4, 3))};
 
-	const size_t length = sizeof(numbers) / sizeof(numbers[0]);
-	for (size_t i = 0; i < length; i++) {
-		for (size_t j = 0; j < length; j++) {
-			if (i == j) {
-				EXPECT_EQ(*numbers[i], *numbers[j]);
-			} else {
-				EXPECT_NE(*numbers[i], *numbers[j]);
-			}
-		}
-	}
+  const size_t length = sizeof(numbers) / sizeof(numbers[0]);
+  for (size_t i = 0; i < length; i++) {
+    for (size_t j = 0; j < length; j++) {
+      if (i == j) {
+        EXPECT_EQ(*numbers[i], *numbers[j]);
+      } else {
+        EXPECT_NE(*numbers[i], *numbers[j]);
+      }
+    }
+  }
 }
 
 TEST(RationalRealNumberTest, Comparison) {
-	std::unique_ptr<RealNumber> numbers[] {
-		RealNumber::rational(0),
-		RealNumber::rational(mpq_class(1, 2)),
-		RealNumber::rational(1),
-		RealNumber::rational(mpq_class(4, 3)) };
+  std::unique_ptr<RealNumber> numbers[]{RealNumber::rational(0), RealNumber::rational(mpq_class(1, 2)),
+                                        RealNumber::rational(1), RealNumber::rational(mpq_class(4, 3))};
 
-	const size_t length = sizeof(numbers) / sizeof(numbers[0]);
-	for (size_t i = 0; i < length; i++) {
-		for (size_t j = 0; j < length; j++) {
-			if (i == j) {
-				EXPECT_LE(*numbers[i], *numbers[j]);
-				EXPECT_GE(*numbers[i], *numbers[j]);
-			} else if (i < j) {
-				EXPECT_LT(*numbers[i], *numbers[j]);
-			} else {
-				EXPECT_GT(*numbers[i], *numbers[j]);
-			}
-		}
-	}
+  const size_t length = sizeof(numbers) / sizeof(numbers[0]);
+  for (size_t i = 0; i < length; i++) {
+    for (size_t j = 0; j < length; j++) {
+      if (i == j) {
+        EXPECT_LE(*numbers[i], *numbers[j]);
+        EXPECT_GE(*numbers[i], *numbers[j]);
+      } else if (i < j) {
+        EXPECT_LT(*numbers[i], *numbers[j]);
+      } else {
+        EXPECT_GT(*numbers[i], *numbers[j]);
+      }
+    }
+  }
 }
 
 #include "main.hpp"

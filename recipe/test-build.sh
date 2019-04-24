@@ -23,7 +23,7 @@ if [ -n "$ASV_SECRET_KEY" ];then
 
   # Clone performance data of previous runs
   rm -rf .asv/results
-  git clone git@github.com:polygon-tbd/exact-real-asv.git .asv/results
+  git clone git@github.com:flatsurf/exact-real-asv.git .asv/results
 
   make check
   
@@ -36,5 +36,5 @@ if [ -n "$ASV_SECRET_KEY" ];then
   popd
 
   asv gh-pages --no-push
-  git push git@github.com:polygon-tbd/exact-real-asv.git gh-pages:gh-pages -f
+  git push git@github.com:flatsurf/exact-real-asv.git gh-pages:gh-pages -f
 fi

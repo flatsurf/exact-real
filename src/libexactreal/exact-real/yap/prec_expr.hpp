@@ -18,22 +18,22 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBMODEANTIC_RING_HPP
-#define LIBMODEANTIC_RING_HPP
-
-#include <type_traits>
+#ifndef LIBEXACTREAL_YAP_PREC_EXPR_HPP
+#define LIBEXACTREAL_YAP_PREC_EXPR_HPP
 
 #include "exact-real/exact-real.hpp"
+#include "exact-real/yap/forward.hpp"
 
 namespace exactreal {
+namespace yap {
 
-template <class Ring, class = std::void_t<>>
-struct has_parameters : std::false_type {};
+struct PrecExpr {
+  static boost::yap::expr_kind const kind = boost::yap::expr_kind::terminal;
 
-template <class Ring>
-struct has_parameters<Ring, std::void_t<typename Ring::Parameters>>
-    : std::true_type {};
+  boost::hana::tuple<prec> elements;
+};
 
+}  // namespace yap
 }  // namespace exactreal
 
 #endif

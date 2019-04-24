@@ -22,5 +22,5 @@
 #include "exact-real/arb.hpp"
 
 namespace exactreal {
-Arb RationalFieldTraits::arb(const ElementClass& x, long) { return Arb(x); }
+Arb RationalFieldTraits::arb(const ElementClass& x, prec prec) { return Arb(x, prec); }
 }  // namespace exactreal

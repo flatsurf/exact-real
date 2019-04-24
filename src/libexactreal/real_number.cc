@@ -30,13 +30,13 @@ using std::ostream;
 namespace exactreal {
 RealNumber::~RealNumber() {}
 
-RealNumber::operator double() const { return static_cast<double>(arf(53)); }
+RealNumber::operator double() const { return static_cast<double>(arf(54)); }
 
 int RealNumber::cmp(const Arb& arb) const {
-  auto interval = arb.arf();
+  auto interval = static_cast<std::pair<Arf, Arf>>(arb);
   auto a = interval.first, b = interval.second;
 
-  auto approx = arf(max(arf_bits(a.t), arf_bits(b.t)) + 1);
+  auto approx = arf(max(arf_bits(a.arf_t()), arf_bits(b.arf_t())) + 1);
   if (approx < a) {
     return -1;
   } else if (approx > b) {
@@ -50,18 +50,17 @@ void RealNumber::refine(Arb& arb, long prec) const {
   // Since we refine, arb must contain this real number.
   assert(this->operator==(arb));
 
-  if (arb_rel_accuracy_bits(arb.t) >= prec) {
+  if (arb_rel_accuracy_bits(arb.arb_t()) >= prec) {
     return;
   }
 
   Arf midpoint = arf(prec);
-  arb_set_arf(arb.t, midpoint.t);
-  arb_add_error_2exp_si(arb.t,
-                        (fmpz_get_si(&midpoint.t[0].exp) - 1) - (prec + 1));
+  arb_set_arf(arb.arb_t(), midpoint.arf_t());
+  arb_add_error_2exp_si(arb.arb_t(), (fmpz_get_si(&midpoint.arf_t()[0].exp) - 1) - (prec + 1));
 }
 
 Arb RealNumber::arb(long prec) const {
-  Arb ret = Arb::any();
+  Arb ret = Arb::zero_pm_inf();
   refine(ret, prec);
   return ret;
 }
@@ -70,19 +69,14 @@ bool RealNumber::operator<(const RealNumber& rhs) const {
   if (this->operator==(rhs)) {
     return false;
   }
-  Arb self = Arb::any();
-  Arb other = Arb::any();
+  Arb self = Arb::zero_pm_inf();
+  Arb other = Arb::zero_pm_inf();
   for (long prec = 2;; prec *= 2) {
     refine(self, prec);
     rhs.refine(other, prec);
-    auto cmp = self.cmp(other);
-    if (cmp.has_value()) {
-      if (cmp.value() < 0) {
-        return true;
-      }
-      if (cmp.value() > 0) {
-        return false;
-      }
+    auto lt = self < other;
+    if (lt.has_value()) {
+      return *lt;
     }
   }
 }

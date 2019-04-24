@@ -18,25 +18,25 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <gtest/gtest.h>
 #include <benchmark/benchmark.h>
+#include <gtest/gtest.h>
 
-#include <exact-real/module.hpp>
 #include <exact-real/element.hpp>
 #include <exact-real/integer_ring_traits.hpp>
+#include <exact-real/module.hpp>
+#include <exact-real/real_number.hpp>
 
 using namespace exactreal;
-using std::vector;
 using std::make_shared;
 using std::shared_ptr;
+using std::vector;
 
 TEST(ModuleZZ, Create) {
-	auto trivial = Module<IntegerRingTraits>({});
-	EXPECT_EQ(trivial.rank(), 0);
+  auto trivial = Module<IntegerRingTraits>();
+  EXPECT_EQ(trivial.rank(), 0);
 
-	auto m = Module<IntegerRingTraits>({ RealNumber::random(), RealNumber::random() });
-	EXPECT_EQ(m.rank(), 2);
+  auto m = Module<IntegerRingTraits>({RealNumber::random(), RealNumber::random()}, 64);
+  EXPECT_EQ(m.rank(), 2);
 }
 
 #include "main.hpp"
-

@@ -18,11 +18,10 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBMODEANTIC_NUMBER_FIELD_IDEAL_HPP
-#define LIBMODEANTIC_NUMBER_FIELD_IDEAL_HPP
+#ifndef LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
+#define LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
 
 #include "exact-real/exact-real.hpp"
-#include "exact-real/real_number.hpp"
 
 namespace exactreal {
 

@@ -18,55 +18,44 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBMODEANTIC_MODULE_HPP
-#define LIBMODEANTIC_MODULE_HPP
+#ifndef LIBEXACTREAL_MODULE_HPP
+#define LIBEXACTREAL_MODULE_HPP
 
 #include <vector>
 #include "exact-real/external/spimpl/spimpl.h"
 
 #include "exact-real/exact-real.hpp"
-#include "exact-real/ring.hpp"
+#include "exact-real/forward.hpp"
+#include "exact-real/ring_traits.hpp"
 
 namespace exactreal {
-
-struct RealNumber;
-
 template <typename Ring>
-struct Element;
+struct Module : std::enable_shared_from_this<Module<Ring>> {
+  using Basis = std::vector<std::shared_ptr<RealNumber>>;
 
-template <typename Ring>
-struct Module {
-  template <typename RingWithoutParameters = Ring,
-            typename std::enable_if_t<
-                std::is_same_v<Ring, RingWithoutParameters> &&
-                    !has_parameters<RingWithoutParameters>::value,
-                int> = 0>
-  explicit Module(const std::vector<std::shared_ptr<RealNumber>>& basis,
-                  long precision = 64);
+  Module();
 
-  template <
-      typename RingWithParameters = Ring,
-      typename std::enable_if_t<std::is_same_v<Ring, RingWithParameters> &&
-                                    has_parameters<RingWithParameters>::value,
-                                int> = 0>
-  ///	typename std::enable_if_t<has_parameters<Ring>::value>>
-  explicit Module(const std::vector<std::shared_ptr<RealNumber>>&,
-                  const typename RingWithParameters::Parameters& ring,
-                  long precision = 64);
+  template <typename RingWithoutParameters = Ring>
+  explicit Module(const Basis&, prec);
+
+  template <typename RingWithParameters = Ring>
+  explicit Module(const Basis&, const typename RingWithParameters::Parameters&, prec);
 
   // Return the specific ring (e.g., the number field); only enabled if the
   // ring has such data, e.g., not for the integers or the rationals.
   template <class RingWithParameters = Ring>
-  std::enable_if_t<std::is_same_v<Ring, RingWithParameters> &&
-                       has_parameters<RingWithParameters>::value,
-                   typename RingWithParameters::Parameters>&
-  ring();
+  const typename RingWithParameters::Parameters& ring() const;
 
-  size_t rank() const;
+  size rank() const;
 
-  std::vector<std::shared_ptr<RealNumber>> const& gens() const;
-  Element<Ring> zero() const;
-  Element<Ring> one() const;
+  const Basis& gens() const;
+
+  static const std::shared_ptr<const Module> trivial;
+
+  template <typename R>
+  friend std::ostream& operator<<(std::ostream&, const Module<R>&);
+
+  static std::shared_ptr<const Module<Ring>> span(const std::shared_ptr<const Module<Ring>>&, const std::shared_ptr<const Module<Ring>>&);
 
  private:
   struct Implementation;
