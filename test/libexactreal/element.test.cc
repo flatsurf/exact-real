@@ -21,6 +21,7 @@
 #include <benchmark/benchmark.h>
 #include <e-antic/renfxx.h>
 #include <gtest/gtest.h>
+#include <boost/lexical_cast.hpp>
 
 #include <exact-real/element.hpp>
 #include <exact-real/integer_ring_traits.hpp>
@@ -30,10 +31,12 @@
 #include <exact-real/real_number.hpp>
 
 using namespace exactreal;
+using boost::lexical_cast;
 using eantic::renf_class;
 using eantic::renf_elem_class;
 using std::make_shared;
 using std::shared_ptr;
+using std::string;
 using std::vector;
 
 TEST(ElementZZ, Generators) {
@@ -78,6 +81,14 @@ TEST(ElementZZ, PromotionFromTrivial) {
   EXPECT_GE(gen, trivial);
 }
 
+TEST(ElementZZ, PromotionFromSubmodule) {
+  auto m = make_shared<Module<IntegerRingTraits>>(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1)}, 64);
+  auto n = make_shared<Module<IntegerRingTraits>>(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()}, 64);
+
+  EXPECT_EQ(Element(m, 0), Element(n, 0));
+  EXPECT_NE(Element(m, 0), Element(n, 1));
+}
+
 TEST(ElementZZ, Scalars) {
   auto m = make_shared<Module<IntegerRingTraits>>(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()}, 64);
 
@@ -100,9 +111,23 @@ TEST(ElementZZ, Scalars) {
     EXPECT_EQ(mpz_class(-1) * x, -x);
     EXPECT_LT(mpz_class(-1) * x, x);
     EXPECT_LT(mpz_class(-1) * x, Element(m));
+    auto one = RealNumber::rational(1);
+    EXPECT_LT(mpz_class(-1) * x, *one);
+    if (i == 0)
+      EXPECT_EQ(x, *one);
+    else
+      EXPECT_NE(x, *one);
     EXPECT_EQ(mpz_class(1) * x, x);
     EXPECT_EQ(mpz_class(0) * x, Element(m));
   }
+}
+
+TEST(ElementZZ, Printing) {
+  auto m = make_shared<Module<IntegerRingTraits>>(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()}, 64);
+
+  EXPECT_EQ(lexical_cast<string>(Element(m, 0)), "1");
+  EXPECT_EQ(lexical_cast<string>(Element(m, 1)), "ℝ(0.621222, seed=1342)");
+  EXPECT_EQ(lexical_cast<string>(Element(m, 0) + Element(m, 1)), "1 + ℝ(0.621222, seed=1342)");
 }
 
 TEST(ElementQQ, Scalars) {
@@ -127,6 +152,12 @@ TEST(ElementQQ, Scalars) {
     EXPECT_EQ(mpz_class(-1) * x, -x);
     EXPECT_LT(mpz_class(-1) * x, x);
     EXPECT_LT(mpz_class(-1) * x, Element(m));
+    auto one = RealNumber::rational(1);
+    EXPECT_LT(mpz_class(-1) * x, *one);
+    if (i == 0)
+      EXPECT_EQ(x, *one);
+    else
+      EXPECT_NE(x, *one);
     EXPECT_EQ(mpz_class(1) * x, x);
     EXPECT_EQ(mpz_class(0) * x, Element(m));
   }
@@ -164,6 +195,12 @@ TEST(ElementNF, Scalars) {
     EXPECT_EQ(mpz_class(-1) * x, -x);
     EXPECT_LT(mpz_class(-1) * x, x);
     EXPECT_LT(mpz_class(-1) * x, Element(m));
+    auto one = RealNumber::rational(1);
+    EXPECT_LT(mpz_class(-1) * x, *one);
+    if (i == 0)
+      EXPECT_EQ(x, *one);
+    else
+      EXPECT_NE(x, *one);
     EXPECT_EQ(mpz_class(1) * x, x);
     EXPECT_EQ(mpz_class(0) * x, Element(m));
   }
@@ -179,8 +216,12 @@ TEST(ElementNF, Scalars) {
     EXPECT_GT(renf_elem_class(K, "a") * x, x);
     EXPECT_GT(2 * x, renf_elem_class(K, "a") * x);
 
-    EXPECT_EQ((x + x) / x, 2);
-    EXPECT_EQ((x + x) / elements[!i], std::optional<renf_elem_class>{});
+    for (size_t j = 0; j < sizeof(elements) / sizeof(elements[0]); j++) {
+      if (i == j)
+        EXPECT_EQ((x + x) / elements[j], 2);
+      else
+        EXPECT_EQ((x + x) / elements[j], std::optional<renf_elem_class>{});
+    }
   }
 }
 

@@ -20,6 +20,7 @@
 
 #include <benchmark/benchmark.h>
 #include <gtest/gtest.h>
+#include <boost/lexical_cast.hpp>
 
 #include <exact-real/element.hpp>
 #include <exact-real/integer_ring_traits.hpp>
@@ -27,16 +28,20 @@
 #include <exact-real/real_number.hpp>
 
 using namespace exactreal;
+using boost::lexical_cast;
 using std::make_shared;
 using std::shared_ptr;
+using std::string;
 using std::vector;
 
 TEST(ModuleZZ, Create) {
   auto trivial = Module<IntegerRingTraits>();
   EXPECT_EQ(trivial.rank(), 0);
+  EXPECT_EQ(lexical_cast<string>(trivial), "ℤ-Module()");
 
   auto m = Module<IntegerRingTraits>({RealNumber::random(), RealNumber::random()}, 64);
   EXPECT_EQ(m.rank(), 2);
+  EXPECT_EQ(lexical_cast<string>(m), "ℤ-Module(ℝ(0.303644, seed=1337), ℝ(0.120809, seed=1338))");
 }
 
 #include "main.hpp"

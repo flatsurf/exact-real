@@ -19,6 +19,9 @@
  *********************************************************************/
 
 #include <e-antic/renfxx.h>
+#include <boost/algorithm/string/join.hpp>
+#include <boost/range/adaptor/transformed.hpp>
+#include <set>
 
 #include "exact-real/element.hpp"
 #include "exact-real/integer_ring_traits.hpp"
@@ -28,8 +31,11 @@
 #include "exact-real/real_number.hpp"
 
 using namespace exactreal;
+using boost::adaptors::transformed;
 using std::is_same_v;
+using std::set;
 using std::shared_ptr;
+using std::string;
 using std::vector;
 
 namespace {
@@ -79,13 +85,19 @@ class ModuleImplementationWithParameters : public ModuleImplementation<Ring> {
 template <typename Ring>
 typename Ring::Parameters ModuleImplementationWithParameters<Ring>::trivial = typename Ring::Parameters();
 
+struct CompareGenerators {
+  bool operator()(const shared_ptr<RealNumber>& lhs, const shared_ptr<RealNumber>& rhs) const {
+    return *lhs < *rhs;
+  }
+};
+
 }  // namespace
 
 namespace exactreal {
 template <typename Ring>
 class Module<Ring>::Implementation
     : public std::conditional_t<is_parametrized_v<Ring>, ModuleImplementationWithParameters<Ring>,
-                         ModuleImplementationWithoutParameters<Ring>> {
+                                ModuleImplementationWithoutParameters<Ring>> {
  public:
   using std::conditional_t<is_parametrized_v<Ring>, ModuleImplementationWithParameters<Ring>,
                            ModuleImplementationWithoutParameters<Ring>>::conditional_t;
@@ -132,23 +144,10 @@ const typename RingWithParameters::Parameters& Module<Ring>::ring() const {
 }
 
 template <typename Ring>
-std::shared_ptr<const Module<Ring>> Module<Ring>::span(const std::shared_ptr<const Module<Ring>>& m, const std::shared_ptr<const Module<Ring>>& n) {
+shared_ptr<const Module<Ring>> Module<Ring>::span(const shared_ptr<const Module<Ring>>& m, const shared_ptr<const Module<Ring>>& n) {
   const prec prec = std::max(m->impl->precision, n->impl->precision);
-  if (m->gens() == n->gens()) {
-    bool parameters_match = true;
-    if constexpr (is_parametrized_v<Ring>) {
-      if (m->impl->parameters != n->impl->parameters) {
-        parameters_match = false;
-      }
-    }
-    if (parameters_match) {
-      if (m->impl->precision == prec) {
-        return m;
-      } else if (n->impl->precision == prec) {
-        return n;
-      }
-    }
-  }
+
+  // When one of the modules is trivial, we do not need to worry about the parameters but just return the other
   if (m->gens().size() == 0) {
     if (n->impl->precision == prec) {
       return n;
@@ -157,11 +156,43 @@ std::shared_ptr<const Module<Ring>> Module<Ring>::span(const std::shared_ptr<con
   if (n->gens().size() == 0) {
     return span(n, m);
   }
-  throw std::logic_error("Module::span() not implemented for non-trivial cases");
+
+  bool parameters_match = true;
+  if constexpr (is_parametrized_v<Ring>) {
+    if (m->impl->parameters != n->impl->parameters) {
+      parameters_match = false;
+    }
+  }
+
+  using Set = set<shared_ptr<RealNumber>, CompareGenerators>;
+  Set mgens = Set(m->gens().begin(), m->gens().end());
+  Set ngens = Set(n->gens().begin(), n->gens().end());
+  Set gens = Set(mgens);
+  for (auto gen : ngens) gens.insert(gen);
+
+  // Note that we cannot use a std::set.operator== with a custom Compare() here
+  // since equality of sets relies on the operator== of the elements as well
+  // which is not what we want (the shared_ptr.operator== does not do the right
+  // thing.)
+  auto eq = [](const Set& lhs, const Set& rhs) { return std::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), [](const auto& x, const auto& y) { return *x == *y; }); };
+
+  if (eq(gens, mgens)) {
+    if (parameters_match && m->impl->precision == prec) {
+      return m;
+    }
+  }
+
+  if (eq(gens, ngens)) {
+    if (parameters_match && n->impl->precision == prec) {
+      return n;
+    }
+  }
+
+  throw std::logic_error("Module::span() not implemented when a new module would need to be constructed");
 }
 
 template <typename Ring>
-const std::shared_ptr<const Module<Ring>> Module<Ring>::trivial = std::make_shared<const Module<Ring>>();
+const shared_ptr<const Module<Ring>> Module<Ring>::trivial = std::make_shared<const Module<Ring>>();
 
 template <typename R>
 std::ostream& operator<<(std::ostream& os, const Module<R>& self) {
@@ -172,9 +203,9 @@ std::ostream& operator<<(std::ostream& os, const Module<R>& self) {
   } else {
     os << "K" /* self.ring() */ << "-Module(";
   }
-  for (const auto& b : self.gens()) {
-    os << *b << ", ";
-  }
+  os << boost::algorithm::join(self.gens() | transformed(
+                                                 [](auto& gen) { return boost::lexical_cast<string>(*gen); }),
+                               ", ");
   return os << ")";
 }
 

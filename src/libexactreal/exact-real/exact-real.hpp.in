@@ -48,8 +48,10 @@ using size = prec;
 // branches of constexpr-if. Just using a plain false leads to compile errors
 // so we must make sure the compiler tries not to instantiate this if it's not
 // on an active branch.
-template <auto = 0> constexpr bool false_v = false;
-template <typename = void> constexpr bool false_t = false;
+template <auto = 0>
+constexpr bool false_v = false;
+template <typename = void>
+constexpr bool false_t = false;
 
 }  // namespace exactreal
 
