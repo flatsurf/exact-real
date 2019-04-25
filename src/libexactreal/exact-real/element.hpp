@@ -36,12 +36,12 @@ namespace exactreal {
 
 template <typename Ring>
 class Element : boost::additive<Element<Ring>>,
-                 boost::totally_ordered<Element<Ring>>,
-                 boost::totally_ordered<Element<Ring>, RealNumber>,
-                 boost::multiplicative<Element<Ring>, typename Ring::ElementClass>,
-                 std::conditional_t<std::is_same<typename Ring::ElementClass, mpz_class>::value, boost::blank,
-                                    boost::multiplicative<Element<Ring>, mpz_class>>,
-                 boost::multiplicative<Element<Ring>, int> {
+                boost::totally_ordered<Element<Ring>>,
+                boost::totally_ordered<Element<Ring>, RealNumber>,
+                boost::multiplicative<Element<Ring>, typename Ring::ElementClass>,
+                std::conditional_t<std::is_same<typename Ring::ElementClass, mpz_class>::value, boost::blank,
+                                   boost::multiplicative<Element<Ring>, mpz_class>>,
+                boost::multiplicative<Element<Ring>, int> {
  public:
   Element();
   explicit Element(const std::shared_ptr<const Module<Ring>>& parent);

@@ -278,7 +278,10 @@ ostream& operator<<(ostream& out, const Element<Ring>& self) {
         out << " + ";
       }
       empty = false;
-      out << self.impl->coefficients[i] << "*" << *self.impl->parent->gens()[i];
+      if (self.impl->coefficients[i] != 1) {
+        out << self.impl->coefficients[i] << "*";
+      }
+      out << *self.impl->parent->gens()[i];
     }
   }
   if (empty) {
