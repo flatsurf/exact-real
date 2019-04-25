@@ -19,6 +19,8 @@
  *********************************************************************/
 
 #include <e-antic/renfxx.h>
+#include <boost/algorithm/string/join.hpp>
+#include <boost/range/adaptor/transformed.hpp>
 #include <set>
 
 #include "exact-real/element.hpp"
@@ -29,9 +31,11 @@
 #include "exact-real/real_number.hpp"
 
 using namespace exactreal;
+using boost::adaptors::transformed;
 using std::is_same_v;
 using std::set;
 using std::shared_ptr;
+using std::string;
 using std::vector;
 
 namespace {
@@ -199,9 +203,9 @@ std::ostream& operator<<(std::ostream& os, const Module<R>& self) {
   } else {
     os << "K" /* self.ring() */ << "-Module(";
   }
-  for (const auto& b : self.gens()) {
-    os << *b << ", ";
-  }
+  os << boost::algorithm::join(self.gens() | transformed(
+                                                 [](auto& gen) { return boost::lexical_cast<string>(*gen); }),
+                               ", ");
   return os << ")";
 }
 

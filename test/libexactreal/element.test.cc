@@ -82,8 +82,8 @@ TEST(ElementZZ, PromotionFromSubmodule) {
   auto m = make_shared<Module<IntegerRingTraits>>(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1)}, 64);
   auto n = make_shared<Module<IntegerRingTraits>>(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()}, 64);
 
-	EXPECT_EQ(Element(m, 0), Element(n, 0));
-	EXPECT_NE(Element(m, 0), Element(n, 1));
+  EXPECT_EQ(Element(m, 0), Element(n, 0));
+  EXPECT_NE(Element(m, 0), Element(n, 1));
 }
 
 TEST(ElementZZ, Scalars) {
@@ -108,12 +108,12 @@ TEST(ElementZZ, Scalars) {
     EXPECT_EQ(mpz_class(-1) * x, -x);
     EXPECT_LT(mpz_class(-1) * x, x);
     EXPECT_LT(mpz_class(-1) * x, Element(m));
-		auto one = RealNumber::rational(1);
-		EXPECT_LT(mpz_class(-1) * x, *one);
-		if (i == 0)
-			EXPECT_EQ(x, *one);
-		else
-			EXPECT_NE(x, *one);
+    auto one = RealNumber::rational(1);
+    EXPECT_LT(mpz_class(-1) * x, *one);
+    if (i == 0)
+      EXPECT_EQ(x, *one);
+    else
+      EXPECT_NE(x, *one);
     EXPECT_EQ(mpz_class(1) * x, x);
     EXPECT_EQ(mpz_class(0) * x, Element(m));
   }
@@ -141,12 +141,12 @@ TEST(ElementQQ, Scalars) {
     EXPECT_EQ(mpz_class(-1) * x, -x);
     EXPECT_LT(mpz_class(-1) * x, x);
     EXPECT_LT(mpz_class(-1) * x, Element(m));
-		auto one = RealNumber::rational(1);
-		EXPECT_LT(mpz_class(-1) * x, *one);
-		if (i == 0)
-			EXPECT_EQ(x, *one);
-		else
-			EXPECT_NE(x, *one);
+    auto one = RealNumber::rational(1);
+    EXPECT_LT(mpz_class(-1) * x, *one);
+    if (i == 0)
+      EXPECT_EQ(x, *one);
+    else
+      EXPECT_NE(x, *one);
     EXPECT_EQ(mpz_class(1) * x, x);
     EXPECT_EQ(mpz_class(0) * x, Element(m));
   }
@@ -184,12 +184,12 @@ TEST(ElementNF, Scalars) {
     EXPECT_EQ(mpz_class(-1) * x, -x);
     EXPECT_LT(mpz_class(-1) * x, x);
     EXPECT_LT(mpz_class(-1) * x, Element(m));
-		auto one = RealNumber::rational(1);
-		EXPECT_LT(mpz_class(-1) * x, *one);
-		if (i == 0)
-			EXPECT_EQ(x, *one);
-		else
-			EXPECT_NE(x, *one);
+    auto one = RealNumber::rational(1);
+    EXPECT_LT(mpz_class(-1) * x, *one);
+    if (i == 0)
+      EXPECT_EQ(x, *one);
+    else
+      EXPECT_NE(x, *one);
     EXPECT_EQ(mpz_class(1) * x, x);
     EXPECT_EQ(mpz_class(0) * x, Element(m));
   }
