@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -exo pipefail
 
 unset ASV_SECRET_KEY
 
@@ -12,6 +12,6 @@ unset PIP_NO_INDEX
 unset PIP_NO_DEPENDENCIES
 pip install cpp-coveralls
 
-cd `find $CONDA_BLD_PATH -name '*.gcno' | head -n1 | sed 's/\(.*work\).*/\1/g'`
+cd $SRC_DIR/src/libexactreal/
 set +x
-if [ -n "$COVERALLS_REPO_TOKEN" ];then coveralls --gcov `which x86_64-conda_cos6-linux-gnu-gcov` --gcov-options '\-lrp' -b src; fi
+if [ -n "$COVERALLS_REPO_TOKEN" ];then coveralls --gcov `which x86_64-conda_cos6-linux-gnu-gcov` --gcov-options '\-lrp' -b .; fi

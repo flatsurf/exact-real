@@ -40,3 +40,4 @@ jobs:
     displayName: Run docker build
     env:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
+      COVERALLS_REPO_TOKEN: $(COVERALLS_REPO_TOKEN)

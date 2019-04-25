@@ -19,6 +19,11 @@ conda-build:
 
 CONDARC
 
+# Inject secrets into conda-build which filters the environment. If we
+# whitelisted explicitly in meta.yaml, these would be publicly readable in the
+# uploaded package at anaconda.org.
+export -p | grep COVERALLS_REPO_TOKEN >> /tmp/secrets || true
+
 conda install --yes --quiet conda-forge-ci-setup=2 conda-build -c conda-forge
 
 # set up the condarc
