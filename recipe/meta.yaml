@@ -31,8 +31,6 @@ requirements:
     - libtool
     - automake
     - {{ compiler('cxx') }}
-    # test-valgrind.sh needs valgrind
-    - valgrind
   host:
     - boost-cpp
     - e-antic 1.*
@@ -41,7 +39,6 @@ requirements:
     # requirement of make check which also runs benchmarks
     - gtest
     - benchmark
-    - valgrind
   run_exports:
     - libexactreal {{ version }}
 
