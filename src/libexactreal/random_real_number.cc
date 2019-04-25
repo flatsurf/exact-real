@@ -40,7 +40,8 @@ namespace {
 unsigned int nextSeed = 1337;
 
 // A random real number in [0, 1]
-struct RandomRealNumber final : RealNumber {
+class RandomRealNumber final : public RealNumber {
+ public:
   RandomRealNumber() : seed(nextSeed++) {}
 
   // Creates a random Arf from digits in base 2.

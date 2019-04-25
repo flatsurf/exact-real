@@ -30,7 +30,8 @@
 
 namespace exactreal {
 template <typename Ring>
-struct Module : std::enable_shared_from_this<Module<Ring>> {
+class Module : std::enable_shared_from_this<Module<Ring>> {
+ public:
   using Basis = std::vector<std::shared_ptr<RealNumber>>;
 
   Module();

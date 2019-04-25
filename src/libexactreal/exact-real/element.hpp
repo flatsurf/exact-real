@@ -30,24 +30,19 @@
 #include "exact-real/external/spimpl/spimpl.h"
 
 #include "exact-real/exact-real.hpp"
+#include "exact-real/forward.hpp"
 
 namespace exactreal {
 
-struct Arb;
-
 template <typename Ring>
-struct Module;
-
-struct RealNumber;
-
-template <typename Ring>
-struct Element : boost::additive<Element<Ring>>,
+class Element : boost::additive<Element<Ring>>,
                  boost::totally_ordered<Element<Ring>>,
                  boost::totally_ordered<Element<Ring>, RealNumber>,
                  boost::multiplicative<Element<Ring>, typename Ring::ElementClass>,
                  std::conditional_t<std::is_same<typename Ring::ElementClass, mpz_class>::value, boost::blank,
                                     boost::multiplicative<Element<Ring>, mpz_class>>,
                  boost::multiplicative<Element<Ring>, int> {
+ public:
   Element();
   explicit Element(const std::shared_ptr<const Module<Ring>>& parent);
   Element(const std::shared_ptr<const Module<Ring>>& parent, const std::vector<typename Ring::ElementClass>& coefficients);

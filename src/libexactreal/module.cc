@@ -41,7 +41,8 @@ constexpr void assertSame() {
 }
 
 template <typename Ring>
-struct ModuleImplementation {
+class ModuleImplementation {
+ public:
   using Basis = vector<shared_ptr<RealNumber>>;
 
   ModuleImplementation() : basis({}), precision(0) {}
@@ -56,12 +57,14 @@ struct ModuleImplementation {
 };
 
 template <typename Ring>
-struct ModuleImplementationWithoutParameters : ModuleImplementation<Ring> {
+class ModuleImplementationWithoutParameters : public ModuleImplementation<Ring> {
+ public:
   using ModuleImplementation<Ring>::ModuleImplementation;
 };
 
 template <typename Ring>
-struct ModuleImplementationWithParameters : ModuleImplementation<Ring> {
+class ModuleImplementationWithParameters : public ModuleImplementation<Ring> {
+ public:
   ModuleImplementationWithParameters() : ModuleImplementation<Ring>(), parameters(&trivial) {}
 
   static typename Ring::Parameters trivial;
@@ -80,9 +83,10 @@ typename Ring::Parameters ModuleImplementationWithParameters<Ring>::trivial = ty
 
 namespace exactreal {
 template <typename Ring>
-struct Module<Ring>::Implementation
-    : std::conditional_t<is_parametrized_v<Ring>, ModuleImplementationWithParameters<Ring>,
+class Module<Ring>::Implementation
+    : public std::conditional_t<is_parametrized_v<Ring>, ModuleImplementationWithParameters<Ring>,
                          ModuleImplementationWithoutParameters<Ring>> {
+ public:
   using std::conditional_t<is_parametrized_v<Ring>, ModuleImplementationWithParameters<Ring>,
                            ModuleImplementationWithoutParameters<Ring>>::conditional_t;
 };
@@ -182,13 +186,13 @@ std::ostream& operator<<(std::ostream& os, const Module<R>& self) {
 #include "exact-real/number_field_traits.hpp"
 #include "exact-real/rational_field_traits.hpp"
 
-template struct exactreal::Module<IntegerRingTraits>;
+template class exactreal::Module<IntegerRingTraits>;
 template exactreal::Module<IntegerRingTraits>::Module(const vector<shared_ptr<RealNumber>>&, prec);
 template std::ostream& exactreal::operator<<(std::ostream&, const Module<IntegerRingTraits>&);
-template struct exactreal::Module<RationalFieldTraits>;
+template class exactreal::Module<RationalFieldTraits>;
 template exactreal::Module<RationalFieldTraits>::Module(const vector<shared_ptr<RealNumber>>&, long);
 template std::ostream& exactreal::operator<<(std::ostream&, const Module<RationalFieldTraits>&);
-template struct exactreal::Module<NumberFieldTraits>;
+template class exactreal::Module<NumberFieldTraits>;
 template exactreal::Module<NumberFieldTraits>::Module(const vector<shared_ptr<RealNumber>>&,
                                                       const NumberFieldTraits::Parameters&, prec);
 template std::ostream& exactreal::operator<<(std::ostream&, const Module<NumberFieldTraits>&);

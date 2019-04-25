@@ -57,7 +57,8 @@ namespace exactreal {
 //
 // Note that methods here are usually named as their counterparts in arf.h with
 // the leading arf_ removed.
-struct Arf : yap::Terminal<Arf, yap::ArfExpr>, boost::totally_ordered<Arf>, boost::totally_ordered<Arf, long>, boost::shiftable<Arf, long> {
+class Arf : yap::Terminal<Arf, yap::ArfExpr>, boost::totally_ordered<Arf>, boost::totally_ordered<Arf, long>, boost::shiftable<Arf, long> {
+ public:
   enum class Round {
     NEAR = ARF_RND_NEAR,
     DOWN = ARF_RND_DOWN,

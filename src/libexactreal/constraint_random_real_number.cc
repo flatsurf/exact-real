@@ -43,7 +43,8 @@ namespace {
 unsigned int nextSeed = 1337;
 
 // A random real number in [a, b]
-struct ConstraintRandomRealNumber final : RealNumber {
+class ConstraintRandomRealNumber final : public RealNumber {
+ public:
   ConstraintRandomRealNumber(const Arf& a, const Arf& b) : inner(RealNumber::random()) {
     if (a >= b) {
       throw std::logic_error("interval must have an interior");
