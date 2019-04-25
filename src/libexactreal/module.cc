@@ -18,8 +18,8 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <set>
 #include <e-antic/renfxx.h>
+#include <set>
 
 #include "exact-real/element.hpp"
 #include "exact-real/integer_ring_traits.hpp"
@@ -30,9 +30,9 @@
 
 using namespace exactreal;
 using std::is_same_v;
+using std::set;
 using std::shared_ptr;
 using std::vector;
-using std::set;
 
 namespace {
 template <typename Ring, typename SameRing>
@@ -82,9 +82,9 @@ template <typename Ring>
 typename Ring::Parameters ModuleImplementationWithParameters<Ring>::trivial = typename Ring::Parameters();
 
 struct CompareGenerators {
-	bool operator()(const shared_ptr<RealNumber>& lhs, const shared_ptr<RealNumber>& rhs) const {
-		return *lhs < *rhs;
-	}
+  bool operator()(const shared_ptr<RealNumber>& lhs, const shared_ptr<RealNumber>& rhs) const {
+    return *lhs < *rhs;
+  }
 };
 
 }  // namespace
@@ -93,7 +93,7 @@ namespace exactreal {
 template <typename Ring>
 class Module<Ring>::Implementation
     : public std::conditional_t<is_parametrized_v<Ring>, ModuleImplementationWithParameters<Ring>,
-                         ModuleImplementationWithoutParameters<Ring>> {
+                                ModuleImplementationWithoutParameters<Ring>> {
  public:
   using std::conditional_t<is_parametrized_v<Ring>, ModuleImplementationWithParameters<Ring>,
                            ModuleImplementationWithoutParameters<Ring>>::conditional_t;
@@ -143,7 +143,7 @@ template <typename Ring>
 shared_ptr<const Module<Ring>> Module<Ring>::span(const shared_ptr<const Module<Ring>>& m, const shared_ptr<const Module<Ring>>& n) {
   const prec prec = std::max(m->impl->precision, n->impl->precision);
 
-	// When one of the modules is trivial, we do not need to worry about the parameters but just return the other
+  // When one of the modules is trivial, we do not need to worry about the parameters but just return the other
   if (m->gens().size() == 0) {
     if (n->impl->precision == prec) {
       return n;
@@ -160,29 +160,29 @@ shared_ptr<const Module<Ring>> Module<Ring>::span(const shared_ptr<const Module<
     }
   }
 
-	using Set = set<shared_ptr<RealNumber>, CompareGenerators>;
-	Set mgens = Set(m->gens().begin(), m->gens().end());
-	Set ngens = Set(n->gens().begin(), n->gens().end());
-	Set gens = Set(mgens);
-	for (auto gen : ngens) gens.insert(gen);
+  using Set = set<shared_ptr<RealNumber>, CompareGenerators>;
+  Set mgens = Set(m->gens().begin(), m->gens().end());
+  Set ngens = Set(n->gens().begin(), n->gens().end());
+  Set gens = Set(mgens);
+  for (auto gen : ngens) gens.insert(gen);
 
-	// Note that we cannot use a std::set.operator== with a custom Compare() here
-	// since equality of sets relies on the operator== of the elements as well
-	// which is not what we want (the shared_ptr.operator== does not do the right
-	// thing.)
-	auto eq = [](const Set& lhs, const Set& rhs) { return std::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), [](const auto& x, const auto& y) { return *x == *y; }); };
+  // Note that we cannot use a std::set.operator== with a custom Compare() here
+  // since equality of sets relies on the operator== of the elements as well
+  // which is not what we want (the shared_ptr.operator== does not do the right
+  // thing.)
+  auto eq = [](const Set& lhs, const Set& rhs) { return std::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), [](const auto& x, const auto& y) { return *x == *y; }); };
 
-	if (eq(gens, mgens)) {
+  if (eq(gens, mgens)) {
     if (parameters_match && m->impl->precision == prec) {
       return m;
-		}
-	}
+    }
+  }
 
-	if (eq(gens, ngens)) {
+  if (eq(gens, ngens)) {
     if (parameters_match && n->impl->precision == prec) {
       return n;
-		}
-	}
+    }
+  }
 
   throw std::logic_error("Module::span() not implemented when a new module would need to be constructed");
 }

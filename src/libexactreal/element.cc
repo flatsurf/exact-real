@@ -219,7 +219,7 @@ bool Element<Ring>::operator==(const RealNumber& rhs) const {
   if (it == gens.end()) {
     throw logic_error("not implemented - equality of Element with unrelated RealNumber");
   }
-	const size at = it - gens.begin();
+  const size at = it - gens.begin();
   for (size_t i = 0; i < impl->parent->rank(); i++) {
     if (impl->coefficients[i] == 0) {
       if (i == at) {
