@@ -14,4 +14,4 @@ pip install cpp-coveralls
 
 cd $SRC_DIR/src/libexactreal/
 set +x
-if [ -n "$COVERALLS_REPO_TOKEN" ];then coveralls --gcov `which x86_64-conda_cos6-linux-gnu-gcov` --gcov-options '\-lrp' -b .; fi
+if [ -n "$COVERALLS_REPO_TOKEN" ];then coveralls --gcov `which x86_64-conda_cos6-linux-gnu-gcov` --exclude exact-real/external --gcov-options '\-lrp' -b .; fi
