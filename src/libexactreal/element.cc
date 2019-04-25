@@ -255,11 +255,11 @@ Element<Ring>& Element<Ring>::promote(const std::shared_ptr<const Module<Ring>>&
     return *this = Element(parent);
   }
   auto our_gens = impl->parent->gens();
-  assert(std::all_of(our_gens.begin(), our_gens.end(), [&](const auto& gen) { return std::find(parent->gens().begin(), parent->gens().end(), gen) != parent->gens().end(); }) &&
+  assert(std::all_of(our_gens.begin(), our_gens.end(), [&](const auto& gen) { return std::find_if(parent->gens().begin(), parent->gens().end(), [&](const auto& ogen) { return *gen == *ogen; }) != parent->gens().end(); }) &&
          "can not promote to new parent since our parent is not a submodule");
   return *this = Element<Ring>(parent, boolinq::from(parent->gens())
                                            .select([&](const auto& gen) {
-                                             auto our_gen = std::find(our_gens.begin(), our_gens.end(), gen);
+                                             auto our_gen = std::find_if(our_gens.begin(), our_gens.end(), [&](auto& g) { return *g == *gen; });
                                              if (our_gen == our_gens.end()) {
                                                return typename Ring::ElementClass();
                                              } else {

@@ -78,6 +78,14 @@ TEST(ElementZZ, PromotionFromTrivial) {
   EXPECT_GE(gen, trivial);
 }
 
+TEST(ElementZZ, PromotionFromSubmodule) {
+  auto m = make_shared<Module<IntegerRingTraits>>(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1)}, 64);
+  auto n = make_shared<Module<IntegerRingTraits>>(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()}, 64);
+
+	EXPECT_EQ(Element(m, 0), Element(n, 0));
+	EXPECT_NE(Element(m, 0), Element(n, 1));
+}
+
 TEST(ElementZZ, Scalars) {
   auto m = make_shared<Module<IntegerRingTraits>>(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()}, 64);
 
