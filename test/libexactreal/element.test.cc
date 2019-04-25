@@ -100,6 +100,12 @@ TEST(ElementZZ, Scalars) {
     EXPECT_EQ(mpz_class(-1) * x, -x);
     EXPECT_LT(mpz_class(-1) * x, x);
     EXPECT_LT(mpz_class(-1) * x, Element(m));
+		auto one = RealNumber::rational(1);
+		EXPECT_LT(mpz_class(-1) * x, *one);
+		if (i == 0)
+			EXPECT_EQ(x, *one);
+		else
+			EXPECT_NE(x, *one);
     EXPECT_EQ(mpz_class(1) * x, x);
     EXPECT_EQ(mpz_class(0) * x, Element(m));
   }
@@ -127,6 +133,12 @@ TEST(ElementQQ, Scalars) {
     EXPECT_EQ(mpz_class(-1) * x, -x);
     EXPECT_LT(mpz_class(-1) * x, x);
     EXPECT_LT(mpz_class(-1) * x, Element(m));
+		auto one = RealNumber::rational(1);
+		EXPECT_LT(mpz_class(-1) * x, *one);
+		if (i == 0)
+			EXPECT_EQ(x, *one);
+		else
+			EXPECT_NE(x, *one);
     EXPECT_EQ(mpz_class(1) * x, x);
     EXPECT_EQ(mpz_class(0) * x, Element(m));
   }
@@ -164,6 +176,12 @@ TEST(ElementNF, Scalars) {
     EXPECT_EQ(mpz_class(-1) * x, -x);
     EXPECT_LT(mpz_class(-1) * x, x);
     EXPECT_LT(mpz_class(-1) * x, Element(m));
+		auto one = RealNumber::rational(1);
+		EXPECT_LT(mpz_class(-1) * x, *one);
+		if (i == 0)
+			EXPECT_EQ(x, *one);
+		else
+			EXPECT_NE(x, *one);
     EXPECT_EQ(mpz_class(1) * x, x);
     EXPECT_EQ(mpz_class(0) * x, Element(m));
   }
@@ -179,8 +197,12 @@ TEST(ElementNF, Scalars) {
     EXPECT_GT(renf_elem_class(K, "a") * x, x);
     EXPECT_GT(2 * x, renf_elem_class(K, "a") * x);
 
-    EXPECT_EQ((x + x) / x, 2);
-    EXPECT_EQ((x + x) / elements[!i], std::optional<renf_elem_class>{});
+    for (size_t j = 0; j < sizeof(elements) / sizeof(elements[0]); j++) {
+      if (i == j)
+        EXPECT_EQ((x + x) / elements[j], 2);
+      else
+        EXPECT_EQ((x + x) / elements[j], std::optional<renf_elem_class>{});
+    }
   }
 }
 
