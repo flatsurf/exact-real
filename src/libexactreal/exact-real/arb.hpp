@@ -65,7 +65,8 @@ inline constexpr const prec ARB_PRECISION_FAST = 64;
 //
 // Note that methods here are usually named as their counterparts in arb.h with
 // the leading arb_ removed.
-struct Arb : yap::Terminal<Arb, yap::ArbExpr> {
+class Arb : yap::Terminal<Arb, yap::ArbExpr> {
+ public:
   // An exact zero element
   Arb() noexcept;
   Arb(const Arb&) noexcept;

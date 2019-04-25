@@ -30,12 +30,6 @@
 using eantic::renf_elem_class;
 using std::ostream;
 
-namespace {
-struct X {
-  arb_t x;
-};
-}  // namespace
-
 namespace exactreal {
 Arb::Arb() noexcept { arb_init(arb_t()); }
 

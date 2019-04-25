@@ -31,7 +31,8 @@ using std::unique_ptr;
 namespace {
 
 // An exact rational number
-struct RationalRealNumber final : RealNumber {
+class RationalRealNumber final : public RealNumber {
+ public:
   explicit RationalRealNumber(const mpq_class& value) : value(value) {}
 
   virtual Arf arf(long prec) const override {

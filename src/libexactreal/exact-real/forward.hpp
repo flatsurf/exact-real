@@ -39,16 +39,16 @@ template <boost::yap::expr_kind Kind, typename Tuple>
 struct ArbExpr;
 }  // namespace yap
 
-struct Arb;
-struct Arf;
+class Arb;
+class Arf;
 
-struct RealNumber;
-
-template <typename Ring>
-struct Element;
+class RealNumber;
 
 template <typename Ring>
-struct Module;
+class Element;
+
+template <typename Ring>
+class Module;
 
 }  // namespace exactreal
 

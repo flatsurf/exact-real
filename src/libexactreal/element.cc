@@ -37,7 +37,8 @@ using std::vector;
 
 namespace {
 template <typename Ring>
-struct ElementImplementation {
+class ElementImplementation {
+ public:
   ElementImplementation() : ElementImplementation(Module<Ring>::trivial) {}
 
   explicit ElementImplementation(const std::shared_ptr<const Module<Ring>>& parent)
@@ -68,7 +69,8 @@ bool lt_assuming_ne(const LHS& lhs, const RHS& rhs) {
 
 namespace exactreal {
 template <typename Ring>
-struct Element<Ring>::Implementation : ElementImplementation<Ring> {
+class Element<Ring>::Implementation : public ElementImplementation<Ring> {
+ public:
   using ElementImplementation<Ring>::ElementImplementation;
 };
 
@@ -292,12 +294,12 @@ ostream& operator<<(ostream& out, const Element<Ring>& self) {
 #include "exact-real/number_field_traits.hpp"
 #include "exact-real/rational_field_traits.hpp"
 
-template struct exactreal::Element<IntegerRingTraits>;
+template class exactreal::Element<IntegerRingTraits>;
 template ostream& exactreal::operator<<<IntegerRingTraits>(ostream&, const Element<IntegerRingTraits>&);
-template struct exactreal::Element<RationalFieldTraits>;
+template class exactreal::Element<RationalFieldTraits>;
 template ostream& exactreal::operator<<<RationalFieldTraits>(ostream&, const Element<RationalFieldTraits>&);
 template Element<RationalFieldTraits>& exactreal::Element<RationalFieldTraits>::operator*=
     <mpz_class>(const mpz_class& rhs);
-template struct exactreal::Element<NumberFieldTraits>;
+template class exactreal::Element<NumberFieldTraits>;
 template ostream& exactreal::operator<<<NumberFieldTraits>(ostream&, const Element<NumberFieldTraits>&);
 template Element<NumberFieldTraits>& exactreal::Element<NumberFieldTraits>::operator*=<mpz_class>(const mpz_class& rhs);

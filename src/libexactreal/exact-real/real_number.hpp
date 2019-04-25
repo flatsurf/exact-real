@@ -26,13 +26,12 @@
 #include <memory>
 
 #include "exact-real/exact-real.hpp"
+#include "exact-real/forward.hpp"
 
 namespace exactreal {
 
-struct Arb;
-struct Arf;
-
-struct RealNumber : boost::totally_ordered<RealNumber> {
+class RealNumber : boost::totally_ordered<RealNumber> {
+ public:
   virtual ~RealNumber();
   explicit operator double() const;
 
