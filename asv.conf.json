@@ -20,7 +20,7 @@
     "conda_channels": ["flatsurf", "conda-forge", "default"],
     "build_command": [
 	"./recipe/configure.sh",
-	"./recipe/build.sh"
+	"./recipe/build_.sh"
     ],
     "install_command": [],
     "uninstall_command": [],
