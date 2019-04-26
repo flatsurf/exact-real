@@ -247,6 +247,11 @@ Element<Ring>::operator double() const {
 }
 
 template <typename Ring>
+const std::shared_ptr<const Module<Ring>>& Element<Ring>::module() const {
+  return impl->parent;
+}
+
+template <typename Ring>
 Element<Ring>& Element<Ring>::promote(const std::shared_ptr<const Module<Ring>>& parent) {
   if (this->impl->parent == parent) {
     return *this;

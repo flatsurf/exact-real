@@ -87,6 +87,7 @@ TEST(ElementZZ, PromotionFromSubmodule) {
 
   EXPECT_EQ(Element(m, 0), Element(n, 0));
   EXPECT_NE(Element(m, 0), Element(n, 1));
+  EXPECT_EQ(&*(Element(m, 0) + Element(n, 0)).module(), &*n);
 }
 
 TEST(ElementZZ, Scalars) {
