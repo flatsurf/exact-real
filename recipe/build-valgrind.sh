@@ -3,4 +3,5 @@ set -e
 
 conda install -y valgrind
 
-./recipe/build-build.sh
+./recipe/configure.sh
+./recipe/build_.sh

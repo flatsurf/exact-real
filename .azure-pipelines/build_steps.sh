@@ -23,6 +23,7 @@ CONDARC
 # whitelisted explicitly in meta.yaml, these would be publicly readable in the
 # uploaded package at anaconda.org.
 export -p | grep COVERALLS_REPO_TOKEN >> /tmp/secrets || true
+export -p | grep ASV_SECRET_KEY >> /tmp/secrets || true
 
 conda install --yes --quiet conda-forge-ci-setup=2 conda-build -c conda-forge
 

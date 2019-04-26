@@ -7,8 +7,8 @@ make check
 # We collect test results in an Airspeed Velocity database if we have the necessary credentials
 if [ -n "$ASV_SECRET_KEY" ];then
   conda install --quiet -y git
-  git config --global user.name 'CircleCI Benchmark'
-  git config --global user.email 'benchmark@circleci.invalid'
+  git config --global user.name 'CI Benchmark'
+  git config --global user.email 'benchmark@ci.invalid'
   git config --global push.default nothing
   mkdir -p ~/.ssh
   sudo yum install -y openssh-clients
@@ -25,9 +25,8 @@ if [ -n "$ASV_SECRET_KEY" ];then
   rm -rf .asv/results
   git clone git@github.com:flatsurf/exact-real-asv.git .asv/results
 
-  make check
+  asv run
   
-  # We publish test results as an Airspeed Velocity database; actually we don't see #1
   pushd .asv/results
   git add .
   git commit -m "Added benchmark run"
