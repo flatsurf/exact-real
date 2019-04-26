@@ -91,6 +91,11 @@ Element<Ring>::Element(const std::shared_ptr<const Module<Ring>>& parent, const 
 }
 
 template <typename Ring>
+typename Ring::ElementClass Element<Ring>::operator[](const size i) const {
+  return impl->coefficients.at(i);
+}
+
+template <typename Ring>
 Arb Element<Ring>::arb(long prec) const {
   if (!*this) {
     return Arb();

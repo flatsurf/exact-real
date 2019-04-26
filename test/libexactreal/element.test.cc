@@ -50,6 +50,9 @@ TEST(ElementZZ, Generators) {
   EXPECT_NE(one, x);
   EXPECT_GT(x, Element(m));
   EXPECT_LT(x, one);
+
+  EXPECT_EQ(x[0], 0);
+  EXPECT_EQ(x[1], 1);
 }
 
 TEST(ElementZZ, Additive) {
