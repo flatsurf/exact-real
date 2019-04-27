@@ -16,13 +16,17 @@ source:
 build:
   number: {{ build_number }}
   string: {{ build_string }}
-  # e-antic is not built for Windows & macOS
+  # e-antic is not available for Windows & macOS
   skip: True  # [win]
   skip: True  # [osx]
   script:
     - source ./recipe/cflags.sh
     - source /tmp/secrets
     - ./recipe/build-{{ flavour }}.sh
+    # conda-build can currently not copy build-artifacts over to the testing
+    # stage, so we can only run make check if we rebuild everything. Therefore,
+    # we run make check as part of the build in the usual make; make check;
+    # make install order.
     - ./recipe/test-{{ flavour }}.sh
     - make install
 

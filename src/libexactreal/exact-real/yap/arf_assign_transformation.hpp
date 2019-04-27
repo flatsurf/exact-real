@@ -21,6 +21,8 @@
 #ifndef LIBEXACTREAL_YAP_ARF_ASSIGN_TRANSFORMATION_HPP
 #define LIBEXACTREAL_YAP_ARF_ASSIGN_TRANSFORMATION_HPP
 
+#include <iostream>
+
 #include "exact-real/arf.hpp"
 #include "exact-real/exact-real.hpp"
 #include "exact-real/yap/assign_transformation.hpp"
@@ -85,6 +87,9 @@ struct ArfAssignTransformation : AssignTransformation<Arf, ArfAssignTransformati
     static_assert(roundBound,
                   "Expression can not be evaluated. The binary operator requires the rounding to be specified. Did you "
                   "forget to wrap your expression in a (…)(Arf::Round::NEAR) to set the rounding explicitly?");
+    // Note that cling as of mid 2019 ignores the static_asserts above, i.e.,
+    // it's strangely possible that roundBound is actually 0 here.
+
     if constexpr (tag == boost::yap::expr_kind::plus) {
       arf_add(this->value.arf_t(), this->value.arf_t(), rhs.arf_t(), *precision, static_cast<int>(*round));
     } else if constexpr (tag == boost::yap::expr_kind::minus) {

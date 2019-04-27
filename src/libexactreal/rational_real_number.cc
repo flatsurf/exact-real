@@ -47,6 +47,15 @@ class RationalRealNumber final : public RealNumber {
     }
   }
 
+  bool operator==(const Arf& arf) const override {
+    Arf num = (arf * Arf(value.get_den(), 0))(ARF_PREC_EXACT, Arf::Round::NEAR);
+    return num == Arf(value.get_num(), 0);
+  }
+
+  bool operator==(const mpq_class& rat) const override {
+    return value == rat;
+  }
+
   RealNumber const& operator>>(ostream& out) const override {
     out << value;
     return *this;

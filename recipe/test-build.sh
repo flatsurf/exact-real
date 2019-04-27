@@ -2,10 +2,12 @@
 set -eo pipefail
 
 # Check that the tests actually pass before we attempt to profile them
-make check
+make check || (cat `find -name test-suite.log`; false)
+
+set +x
 
 # We collect test results in an Airspeed Velocity database if we have the necessary credentials
-if [ -n "$ASV_SECRET_KEY" ];then
+if echo "$ASV_SECRET_KEY" | base64 -d > ~/.ssh/id_rsa; then
   # We need setuptools until https://github.com/conda-forge/asv-feedstock/pull/10 has been resolved
   conda install --quiet -y git asv setuptools
   git config --global user.name 'CI Benchmark'
@@ -45,6 +47,8 @@ if [ -n "$ASV_SECRET_KEY" ];then
 
   popd
 fi
+
+set -x
 
 # Finally some static checks
 LD_LIBRARY_PATH="$PREFIX/lib:$LD_LIBRARY_PATH" ./recipe/build-distcheck.sh

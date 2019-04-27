@@ -34,11 +34,13 @@ We are following a standard autoconf setup, i.e., you can create the library
 `src/libexactreal` with the following:
 
 ```
-git clone https://github.com/flatsurf/exact-real.git
+git clone --recurse-submodules https://github.com/flatsurf/exact-real.git
 cd exact-real
 ./bootstrap
 ./configure
 make
+make check # to run our test suite
+make install # to install into /usr/local
 ```
 
 For best performance run `CXXFLAGS="-O3 -flto -march=native -mtune=native"
@@ -62,6 +64,32 @@ check` Apart from perf itself there are several ways to analyze the output,
 [hotspot](https://github.com/KDAB/hotspot) might be the most convenient one at
 the time of this writing.
 
+
+## Build from the Source Code Repository with Conda Dependencies
+
+To build this package, you need a fairly recent C++ compiler and probably some
+packages that might not be readily available on your system. If you don't want
+to use your distribution's packages, you can provide these dependencies with
+conda. Download and install [Miniconda](https://conda.io/miniconda.html), then
+run
+
+```
+conda config --add channels conda-forge
+conda config --add channels flatsurf # if you want to pull in the latest version of dependencies
+conda create -n exact-real-build cxx-compiler libtool automake boost-cpp e-antic gtest benchmark ccache
+conda activate exact-real-build
+export CPPFLAGS="-isystem $CONDA_PREFIX/include"
+export CFLAGS="$CPPFLAGS"
+export LDFLAGS="-L$CONDA_PREFIX/lib -Wl,-rpath-link=$CONDA_PREFIX/lib"
+export CC="ccache cc"
+export CXX="ccache c++"
+git clone --recurse-submodules https://github.com/flatsurf/exact-real.git
+cd exact-real
+./bootstrap
+./configure --prefix="$CONDA_PREFIX"
+make
+```
+
 ## Build from the Source Code Repository with Conda
 
 The conda recipe in `recipe/` is built automatically as part of our Continuous
@@ -69,7 +97,7 @@ Integration. If you want to build the recipe manually, something like the
 following should work:
 
 ```
-git clone https://github.com/flatsurf/exact-real.git
+git clone --recurse-submodules https://github.com/flatsurf/exact-real.git
 cd exact-real
 conda activate root
 conda config --add channels conda-forge

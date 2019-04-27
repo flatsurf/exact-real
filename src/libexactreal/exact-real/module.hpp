@@ -37,10 +37,10 @@ class Module : std::enable_shared_from_this<Module<Ring>> {
   Module();
 
   template <typename RingWithoutParameters = Ring>
-  explicit Module(const Basis&, prec);
+  explicit Module(const Basis&);
 
   template <typename RingWithParameters = Ring>
-  explicit Module(const Basis&, const typename RingWithParameters::Parameters&, prec);
+  explicit Module(const Basis&, const typename RingWithParameters::Parameters&);
 
   // Return the specific ring (e.g., the number field); only enabled if the
   // ring has such data, e.g., not for the integers or the rationals.

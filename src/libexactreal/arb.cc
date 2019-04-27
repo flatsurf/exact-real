@@ -50,6 +50,10 @@ Arb::Arb(const std::pair<Arf, Arf>& bounds, const mp_limb_signed_t precision) : 
   arb_set_interval_arf(arb_t(), bounds.first.arf_t(), bounds.second.arf_t(), precision);
 }
 
+Arb::Arb(const Arf& midpoint) : Arb() {
+  arb_set_arf(arb_t(), midpoint.arf_t());
+}
+
 Arb::Arb(const mpq_class& rat, const mp_limb_signed_t precision) noexcept : Arb() {
   fmpq_t x;
   fmpq_init_set_readonly(x, rat.get_mpq_t());

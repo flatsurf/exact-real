@@ -83,8 +83,16 @@ class RandomRealNumber final : public RealNumber {
     }
   }
 
+  bool operator==(const Arf&) const override {
+    return false;
+  }
+
+  bool operator==(const mpq_class&) const override {
+    return false;
+  }
+
   RealNumber const& operator>>(ostream& out) const override {
-    out << "ℝ(" << static_cast<double>(*this) << ", seed=" << seed << ")";
+    out << "ℝ(" << static_cast<double>(*this) << "…)";
     return *this;
   }
 
