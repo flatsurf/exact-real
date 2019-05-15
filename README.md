@@ -25,8 +25,10 @@ conda install -c flatsurf libexactreal
 
 ## Run with binder in the Cloud
 
-You can try out this library in a very limited environment online by clicking
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/exact-real/master?filepath=binder%2FSample.ipynb)
+You can try out the projects in this repository in a very limited environment online by clicking the following links:
+
+* **libexactreal** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/exact-real/master?filepath=binder%2FSample.ipynb)
+* **pyexactreal** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/exact-real/master?filepath=binder%2FSample.pyexactreal.ipynb)
 
 ## Build from the Source Code Repository
 

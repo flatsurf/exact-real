@@ -21,6 +21,8 @@ build:
   skip: True  # [osx]
   script:
     - source ./recipe/cflags.sh
+    # /tmp/secrets contains some CI-injected credentials to services such as
+    # coveralls or ASV.
     - source /tmp/secrets
     - ./recipe/build-{{ flavour }}.sh
     # conda-build can currently not copy build-artifacts over to the testing
@@ -28,7 +30,7 @@ build:
     # we run make check as part of the build in the usual make; make check;
     # make install order.
     - ./recipe/test-{{ flavour }}.sh
-    - make install
+    - cd src/libexactreal && make install
 
 requirements:
   build:
@@ -45,6 +47,31 @@ requirements:
     - benchmark
   run_exports:
     - libexactreal {{ version }}
+
+outputs:
+  - name: libexactreal
+  - name: pyexactreal
+    build:
+      skip: True  # [win]
+      skip: True  # [osx]
+    script: install-python.sh
+    requirements:
+      build:
+        - libtool
+        - automake
+        - {{ compiler('cxx') }}
+      host:
+        - boost-cpp
+        - e-antic 1.*
+        - arb
+        - gmp
+      run:
+        - libexactreal =={{ version }}
+        # cppyy, not packaged in conda-forge yet
+    # We cannot test that that the import works since cppyy is not on conda-forge yet
+    #test:
+    #  imports:
+    #    - pyexactreal
 
 about:
   home: https://github.com/flatsurf/exact-real
