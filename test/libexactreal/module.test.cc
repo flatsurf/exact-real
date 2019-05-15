@@ -35,13 +35,13 @@ using std::string;
 using std::vector;
 
 TEST(ModuleZZ, Create) {
-  auto trivial = Module<IntegerRingTraits>();
-  EXPECT_EQ(trivial.rank(), 0);
-  EXPECT_EQ(lexical_cast<string>(trivial), "ℤ-Module()");
+  auto trivial = Module<IntegerRingTraits>::make();
+  EXPECT_EQ(trivial->rank(), 0);
+  EXPECT_EQ(lexical_cast<string>(*trivial), "ℤ-Module()");
 
-  auto m = Module<IntegerRingTraits>({RealNumber::random(), RealNumber::random()});
-  EXPECT_EQ(m.rank(), 2);
-  EXPECT_EQ(lexical_cast<string>(m), "ℤ-Module(ℝ(0.303644…), ℝ(0.120809…))");
+  auto m = Module<IntegerRingTraits>::make({RealNumber::random(), RealNumber::random()});
+  EXPECT_EQ(m->rank(), 2);
+  EXPECT_EQ(lexical_cast<string>(*m), "ℤ-Module(ℝ(0.303644…), ℝ(0.120809…))");
 }
 
 #include "main.hpp"

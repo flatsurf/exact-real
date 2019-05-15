@@ -1,4 +1,4 @@
-[![Linux](https://dev.azure.com/flatsurf/conda/_apis/build/status/flatsurf.exact-real?branchName=master&jobName=linux&configuration=build_linux_)](https://dev.azure.com/flatsurf/conda/_build/latest?definitionId=&branchName=master)
+[![Linux](https://dev.azure.com/flatsurf/conda/_apis/build/status/flatsurf.exact-real?branchName=master&jobName=linux&configuration=linux%20build_linux_)](https://dev.azure.com/flatsurf/conda/_build/latest?definitionId=&branchName=master)
 ![OSX disabled](https://img.shields.io/badge/OSX-disabled-lightgrey.svg)
 ![Windows disabled](https://img.shields.io/badge/Windows-disabled-lightgrey.svg)
 ![ppc64le disabled](https://img.shields.io/badge/ppc64le-disabled-lightgrey.svg)
@@ -13,6 +13,7 @@ experimental. There are no stable releases yet.
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Nightly Build](https://img.shields.io/badge/recipe-libexactreal-green.svg)](https://anaconda.org/flatsurf/libexactreal) | [![Conda Downloads](https://img.shields.io/conda/dn/flatsurf/libexactreal.svg)](https://anaconda.org/flatsurf/libexactreal) | [![Conda Version](https://img.shields.io/conda/vn/flatsurf/libexactreal.svg)](https://anaconda.org/flatsurf/libexactreal) | [![Conda Platforms](https://img.shields.io/conda/pn/flatsurf/libexactreal.svg)](https://anaconda.org/flatsurf/libexactreal) |
+| [![Nightly Build](https://img.shields.io/badge/recipe-pyexactreal-green.svg)](https://anaconda.org/flatsurf/pyexactreal) | [![Conda Downloads](https://img.shields.io/conda/dn/flatsurf/pyexactreal.svg)](https://anaconda.org/flatsurf/pyexactreal) | [![Conda Version](https://img.shields.io/conda/vn/flatsurf/pyexactreal.svg)](https://anaconda.org/flatsurf/pyexactreal) | [![Conda Platforms](https://img.shields.io/conda/pn/flatsurf/pyexactreal.svg)](https://anaconda.org/flatsurf/pyexactreal) |
 
 ## Install with Conda
 
@@ -20,7 +21,15 @@ You can install this package with conda. Download and install [Miniconda](https:
 
 ```
 conda config --add channels conda-forge
-conda install -c flatsurf libexactreal
+conda create -n exactreal -c flatsurf libexactreal pyexactreal
+conda activate exactreal
+```
+
+The Python wrapper `pyexactreal` is based on [cppyy](https://cppyy.readthedocs.io/) which is [not available on conda-forge yet](https://bitbucket.org/wlav/cppyy/issues/55/package-for-conda-forge). Therefore, to use the Python wrapper, you need to install cppyy from PyPI:
+
+```
+conda install pip
+pip install cppyy
 ```
 
 ## Run with binder in the Cloud
