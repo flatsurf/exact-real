@@ -128,6 +128,14 @@ class ConstraintRandomRealNumber final : public RealNumber {
     }
   }
 
+  bool operator==(const Arf&) const override {
+    return false;
+  }
+
+  bool operator==(const mpq_class&) const override {
+    return false;
+  }
+
   RealNumber const& operator>>(ostream& out) const override {
     out << "ℝ(" << initial << " + " << *inner << "p" << e << ")";
     if (lexical_cast<string>(static_cast<double>(initial)).compare(lexical_cast<string>(static_cast<double>(*this)))) {

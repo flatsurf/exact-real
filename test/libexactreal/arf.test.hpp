@@ -52,7 +52,7 @@ long relativeAccuracy(const Arf& expected, const Arf& actual) {
 }
 
 void testArf(std::unique_ptr<RealNumber> x) {
-  if (*x == Arb()) {
+  if (*x == 0) {
     return;
   }
 

@@ -48,7 +48,7 @@ int RealNumber::cmp(const Arb& arb) const {
 
 void RealNumber::refine(Arb& arb, long prec) const {
   // Since we refine, arb must contain this real number.
-  assert(this->operator==(arb));
+  assert(this->cmp(arb) == 0);
 
   if (arb_rel_accuracy_bits(arb.arb_t()) >= prec) {
     return;
@@ -81,7 +81,27 @@ bool RealNumber::operator<(const RealNumber& rhs) const {
   }
 }
 
-bool RealNumber::operator==(const Arb& rhs) const { return cmp(rhs) == 0; }
+bool RealNumber::operator<(const Arf& rhs) const {
+  if (this->operator==(rhs)) {
+    return false;
+  }
+  Arb self = Arb::zero_pm_inf();
+  Arb other = Arb(rhs);
+  for (long prec = 2;; prec *= 2) {
+    refine(self, prec);
+    auto lt = self < other;
+    if (lt.has_value()) {
+      return *lt;
+    }
+  }
+}
+
+bool RealNumber::operator>(const Arf& rhs) const {
+  if (this->operator==(rhs)) {
+    return false;
+  }
+  return !this->operator<(rhs);
+}
 
 ostream& operator<<(ostream& out, const RealNumber& self) {
   self >> out;

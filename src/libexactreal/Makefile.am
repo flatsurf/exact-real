@@ -11,7 +11,8 @@ libexactreal_la_SOURCES =               \
     rational_field_traits.cc            \
     number_field_traits.cc              \
     constraint_random_real_number.cc    \
-    arf.cc
+    arf.cc                              \
+    cppyy.cc
 
 libexactreal_la_LDFLAGS = -version-info $(libexactreal_version_info)
 
@@ -42,7 +43,8 @@ nobase_include_HEADERS =                                  \
     exact-real/yap/round_transformation.hpp               \
     exact-real/yap/terminal.hpp                           \
     exact-real/external/spimpl/spimpl.h                   \
-    exact-real/external/boolinq/include/boolinq/boolinq.h
+    exact-real/external/boolinq/include/boolinq/boolinq.h \
+    exact-real/cppyy.hpp
 
 $(builddir)/exact-real/exact-real.hpp: $(srcdir)/exact-real/exact-real.hpp.in Makefile
 	mkdir -p $(builddir)/libexactreal

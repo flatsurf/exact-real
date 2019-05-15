@@ -168,7 +168,7 @@ ostream& operator<<(ostream& os, const Arf& self) {
     return os << static_cast<double>(self);
   }
 
-  os << self.mantissa() << "p" << self.exponent() << "[∼" << static_cast<double>(self) << "]";
+  os << static_cast<double>(self) << "=" << self.mantissa() << "p" << self.exponent();
 
   return os;
 }

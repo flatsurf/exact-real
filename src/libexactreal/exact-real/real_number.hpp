@@ -30,7 +30,18 @@
 
 namespace exactreal {
 
-class RealNumber : boost::totally_ordered<RealNumber> {
+class RealNumber : boost::totally_ordered<RealNumber>,
+                   boost::totally_ordered<RealNumber, signed char>,
+                   boost::totally_ordered<RealNumber, unsigned char>,
+                   boost::totally_ordered<RealNumber, signed int>,
+                   boost::totally_ordered<RealNumber, unsigned int>,
+                   boost::totally_ordered<RealNumber, signed short int>,
+                   boost::totally_ordered<RealNumber, unsigned short int>,
+                   boost::totally_ordered<RealNumber, signed long int>,
+                   boost::totally_ordered<RealNumber, unsigned long int>,
+                   boost::totally_ordered<RealNumber, Arf>,
+                   boost::totally_ordered<RealNumber, mpz_class>,
+                   boost::totally_ordered<RealNumber, mpq_class> {
  public:
   virtual ~RealNumber();
   explicit operator double() const;
@@ -51,10 +62,27 @@ class RealNumber : boost::totally_ordered<RealNumber> {
   bool operator<(const RealNumber&) const;
   virtual bool operator==(const RealNumber&) const = 0;
 
+  template <typename Integer>
+  std::enable_if_t<std::is_integral_v<Integer>, bool> operator<(Integer) const noexcept;
+  template <typename Integer>
+  std::enable_if_t<std::is_integral_v<Integer>, bool> operator>(Integer) const noexcept;
+  template <typename Integer>
+  std::enable_if_t<std::is_integral_v<Integer>, bool> operator==(Integer) const noexcept;
+
+  bool operator<(const Arf&) const;
+  bool operator>(const Arf&) const;
+  virtual bool operator==(const Arf&) const = 0;
+
+  bool operator<(const mpq_class&) const;
+  bool operator>(const mpq_class&) const;
+  virtual bool operator==(const mpq_class&) const = 0;
+
+  bool operator<(const mpz_class&) const noexcept;
+  bool operator>(const mpz_class&) const noexcept;
+  bool operator==(const mpz_class&) const noexcept;
+
+  // Return whether the Arb interval contains this real (0) or the number is left (-1) or right (1) of that interval.
   int cmp(const Arb&) const;
-  bool operator<(const Arb&) const;
-  bool operator>(const Arb&) const;
-  bool operator==(const Arb&) const;
 
   virtual RealNumber const& operator>>(std::ostream&) const = 0;
   friend std::ostream& operator<<(std::ostream&, const RealNumber&);
@@ -71,6 +99,21 @@ class RealNumber : boost::totally_ordered<RealNumber> {
   static std::unique_ptr<RealNumber> pi();
   static std::unique_ptr<RealNumber> e();
 };
+
+template <typename Integer>
+std::enable_if_t<std::is_integral_v<Integer>, bool> RealNumber::operator<(Integer rhs) const noexcept {
+  return this->operator<(Arf(rhs));
+}
+
+template <typename Integer>
+std::enable_if_t<std::is_integral_v<Integer>, bool> RealNumber::operator>(Integer rhs) const noexcept {
+  return this->operator>(Arf(rhs));
+}
+
+template <typename Integer>
+std::enable_if_t<std::is_integral_v<Integer>, bool> RealNumber::operator==(Integer rhs) const noexcept {
+  return this->operator==(Arf(rhs));
+}
 
 }  // namespace exactreal
 

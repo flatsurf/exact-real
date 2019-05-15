@@ -39,9 +39,9 @@ TEST(ModuleZZ, Create) {
   EXPECT_EQ(trivial.rank(), 0);
   EXPECT_EQ(lexical_cast<string>(trivial), "ℤ-Module()");
 
-  auto m = Module<IntegerRingTraits>({RealNumber::random(), RealNumber::random()}, 64);
+  auto m = Module<IntegerRingTraits>({RealNumber::random(), RealNumber::random()});
   EXPECT_EQ(m.rank(), 2);
-  EXPECT_EQ(lexical_cast<string>(m), "ℤ-Module(ℝ(0.303644, seed=1337), ℝ(0.120809, seed=1338))");
+  EXPECT_EQ(lexical_cast<string>(m), "ℤ-Module(ℝ(0.303644…), ℝ(0.120809…))");
 }
 
 #include "main.hpp"

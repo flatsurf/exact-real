@@ -49,7 +49,7 @@ TEST(ArbTest, Relations) {
 TEST(ArbTest, Printing) {
   EXPECT_EQ(lexical_cast<string>(Arf()), "0");
   EXPECT_EQ(lexical_cast<string>(Arf(1337)), "1337");
-  EXPECT_EQ(lexical_cast<string>(Arf(13.37)), "7526640877242941p-49[∼13.37]");
+  EXPECT_EQ(lexical_cast<string>(Arf(13.37)), "13.37=7526640877242941p-49");
 }
 
 #include "main.hpp"

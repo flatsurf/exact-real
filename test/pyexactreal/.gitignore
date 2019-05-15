@@ -1,0 +1,5 @@
+# test artifacts
+*.trs
+
+# generated files
+/test-env.sh
