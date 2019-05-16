@@ -24,13 +24,15 @@
 #include <gmpxx.h>
 #include <boost/operators.hpp>
 #include <memory>
+#include <optional>
 
 #include "exact-real/exact-real.hpp"
 #include "exact-real/forward.hpp"
 
 namespace exactreal {
 
-class RealNumber : boost::totally_ordered<RealNumber>,
+class RealNumber : public std::enable_shared_from_this<RealNumber>,
+                   boost::totally_ordered<RealNumber>,
                    boost::totally_ordered<RealNumber, signed char>,
                    boost::totally_ordered<RealNumber, unsigned char>,
                    boost::totally_ordered<RealNumber, signed int>,
@@ -45,6 +47,7 @@ class RealNumber : boost::totally_ordered<RealNumber>,
  public:
   virtual ~RealNumber();
   explicit operator double() const;
+  explicit virtual operator std::optional<mpq_class>() const = 0;
 
   // Return an Arf float with prec bits of relative accuracy approximating this
   // number.
@@ -71,11 +74,11 @@ class RealNumber : boost::totally_ordered<RealNumber>,
 
   bool operator<(const Arf&) const;
   bool operator>(const Arf&) const;
-  virtual bool operator==(const Arf&) const = 0;
+  bool operator==(const Arf&) const;
 
   bool operator<(const mpq_class&) const;
   bool operator>(const mpq_class&) const;
-  virtual bool operator==(const mpq_class&) const = 0;
+  bool operator==(const mpq_class&) const;
 
   bool operator<(const mpz_class&) const noexcept;
   bool operator>(const mpz_class&) const noexcept;
@@ -84,20 +87,22 @@ class RealNumber : boost::totally_ordered<RealNumber>,
   // Return whether the Arb interval contains this real (0) or the number is left (-1) or right (1) of that interval.
   int cmp(const Arb&) const;
 
+  virtual std::shared_ptr<const RealNumber> operator*(const RealNumber&)const;
+
   virtual RealNumber const& operator>>(std::ostream&) const = 0;
   friend std::ostream& operator<<(std::ostream&, const RealNumber&);
 
   // A random real in the range [0, 1]
-  static std::unique_ptr<RealNumber> random();
+  static std::shared_ptr<RealNumber> random();
   // A random real in the range [a, b]
-  static std::unique_ptr<RealNumber> random(const Arf& a, const Arf& b);
+  static std::shared_ptr<RealNumber> random(const Arf& a, const Arf& b);
   // A random real number, close to d; mostly useful to port code from doubles
   // that are meant to ressemble random reals
-  static std::unique_ptr<RealNumber> random(const double d);
-  static std::unique_ptr<RealNumber> rational(const mpq_class&);
-  static std::unique_ptr<RealNumber> liouville(size_t base = 2);
-  static std::unique_ptr<RealNumber> pi();
-  static std::unique_ptr<RealNumber> e();
+  static std::shared_ptr<RealNumber> random(const double d);
+  static std::shared_ptr<RealNumber> rational(const mpq_class&);
+  static std::shared_ptr<RealNumber> liouville(size_t base = 2);
+  static std::shared_ptr<RealNumber> pi();
+  static std::shared_ptr<RealNumber> e();
 };
 
 template <typename Integer>

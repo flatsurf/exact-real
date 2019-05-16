@@ -23,6 +23,7 @@
 #include <boost/range/adaptor/transformed.hpp>
 #include <set>
 
+#include "exact-real/detail/smart_less.hpp"
 #include "exact-real/element.hpp"
 #include "exact-real/integer_ring_traits.hpp"
 #include "exact-real/module.hpp"
@@ -50,7 +51,7 @@ constexpr void assertSame() {
 template <typename Ring>
 class ModuleImplementation {
  public:
-  using Basis = vector<shared_ptr<RealNumber>>;
+  using Basis = typename exactreal::Module<Ring>::Basis;
 
   ModuleImplementation() : basis({}) {}
 
@@ -85,12 +86,6 @@ class ModuleImplementationWithParameters : public ModuleImplementation<Ring> {
 template <typename Ring>
 typename Ring::Parameters ModuleImplementationWithParameters<Ring>::trivial = typename Ring::Parameters();
 
-struct CompareGenerators {
-  bool operator()(const shared_ptr<RealNumber>& lhs, const shared_ptr<RealNumber>& rhs) const {
-    return *lhs < *rhs;
-  }
-};
-
 }  // namespace
 
 namespace exactreal {
@@ -102,43 +97,29 @@ class Module<Ring>::Implementation
   using std::conditional_t<is_parametrized_v<Ring>, ModuleImplementationWithParameters<Ring>,
                            ModuleImplementationWithoutParameters<Ring>>::conditional_t;
 };
-}  // namespace exactreal
-
-namespace exactreal {
-template <typename Ring>
-Module<Ring>::Module() : impl(spimpl::make_unique_impl<Module<Ring>::Implementation>()) {}
 
 template <typename Ring>
-template <typename RingWithoutParameters>
-Module<Ring>::Module(const Basis& basis)
-    : impl(spimpl::make_unique_impl<Module<Ring>::Implementation>(basis)) {
-  assertSame<Ring, RingWithoutParameters>();
-  static_assert(!is_parametrized_v<Ring>, "constructor is only valid for rings without parameters");
-}
-
-template <typename Ring>
-template <typename RingWithParameters>
-Module<Ring>::Module(const Basis& basis, const typename RingWithParameters::Parameters& parameters)
-    : impl(spimpl::make_unique_impl<Module<Ring>::Implementation>(basis, parameters)) {
-  assertSame<Ring, RingWithParameters>();
-  static_assert(is_parametrized_v<Ring>, "constructor is only valid for rings with parameters");
-}
+Module<Ring>::Module(spimpl::unique_impl_ptr<Module<Ring>::Implementation>&& impl) : impl(std::move(impl)) {}
 
 template <typename Ring>
 shared_ptr<Module<Ring>> Module<Ring>::make() {
-  return shared_ptr<Module<Ring>>(new Module<Ring>());
+  return shared_ptr<Module<Ring>>(new Module<Ring>(spimpl::make_unique_impl<Module<Ring>::Implementation>()));
 }
 
 template <typename Ring>
 template <typename RingWithoutParameters>
 shared_ptr<Module<Ring>> Module<Ring>::make(const Basis& basis) {
-  return shared_ptr<Module<Ring>>(new Module<Ring>(basis));
+  assertSame<Ring, RingWithoutParameters>();
+  static_assert(!is_parametrized_v<Ring>, "constructor is only valid for rings without parameters");
+  return shared_ptr<Module<Ring>>(new Module<Ring>(spimpl::make_unique_impl<Module<Ring>::Implementation>(basis)));
 }
 
 template <typename Ring>
 template <typename RingWithParameters>
 shared_ptr<Module<Ring>> Module<Ring>::make(const Basis& basis, const typename RingWithParameters::Parameters& parameters) {
-  return shared_ptr<Module<Ring>>(new Module<Ring>(basis, parameters));
+  assertSame<Ring, RingWithParameters>();
+  static_assert(is_parametrized_v<Ring>, "constructor is only valid for rings with parameters");
+  return shared_ptr<Module<Ring>>(new Module<Ring>(spimpl::make_unique_impl<Module<Ring>::Implementation>(basis, parameters)));
 }
 
 template <typename Ring>
@@ -147,7 +128,7 @@ size Module<Ring>::rank() const {
 }
 
 template <typename Ring>
-vector<shared_ptr<RealNumber>> const& Module<Ring>::basis() const {
+vector<shared_ptr<const RealNumber>> const& Module<Ring>::basis() const {
   return impl->basis;
 }
 
@@ -162,7 +143,7 @@ const typename RingWithParameters::Parameters& Module<Ring>::ring() const {
   assertSame<Ring, RingWithParameters>();
   static_assert(is_parametrized_v<Ring>, "ring() is only valid over rings with parameters");
 
-  return impl->parameters;
+  return *impl->parameters;
 }
 
 template <typename Ring>
@@ -182,31 +163,26 @@ shared_ptr<const Module<Ring>> Module<Ring>::span(const shared_ptr<const Module<
     }
   }
 
-  using Set = set<shared_ptr<RealNumber>, CompareGenerators>;
-  Set mgens = Set(m->basis().begin(), m->basis().end());
-  Set ngens = Set(n->basis().begin(), n->basis().end());
-  Set gens = Set(mgens);
-  for (auto gen : ngens) gens.insert(gen);
+  if (!parameters_match) {
+    throw std::logic_error("Module::span() not implemented when a new module would need to be constructed");
+  }
 
-  // Note that we cannot use a std::set.operator== with a custom Compare() here
-  // since equality of sets relies on the operator== of the elements as well
-  // which is not what we want (the shared_ptr.operator== does not do the right
-  // thing.)
-  auto eq = [](const Set& lhs, const Set& rhs) { return std::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), [](const auto& x, const auto& y) { return *x == *y; }); };
-
-  if (eq(gens, mgens)) {
-    if (parameters_match) {
+  // This is a very naive O(n²) implementation. Doing something smart here is a
+  // little bit more work since basis() is a vector of unique_ptr that we can
+  // not copy & sort easily. I guess, the module should keep a set of pointers
+  // to its generators around so that we can efficiently query whether a real
+  // is in the that generating set.
+  for (auto& mgen : m->basis()) {
+    if (find_if(n->basis().begin(), n->basis().end(), [&](const auto& gen) { return *gen == *mgen; }) == n->basis().end()) {
+      for (auto& ngen : n->basis()) {
+        if (find_if(m->basis().begin(), m->basis().end(), [&](const auto& gen) { return *gen == *ngen; }) == m->basis().end()) {
+          throw std::logic_error("Module::span() not implemented when a new module would need to be constructed");
+        }
+      }
       return m;
     }
   }
-
-  if (eq(gens, ngens)) {
-    if (parameters_match) {
-      return n;
-    }
-  }
-
-  throw std::logic_error("Module::span() not implemented when a new module would need to be constructed");
+  return n;
 }
 
 template <typename Ring>
@@ -231,21 +207,25 @@ std::ostream& operator<<(std::ostream& os, const Module<R>& self) {
 
 // Explicit instantiations of templates so that code is generated for the
 // linker.
+#include "exact-real/detail/smart_ostream.hpp"
 #include "exact-real/integer_ring_traits.hpp"
 #include "exact-real/number_field_traits.hpp"
 #include "exact-real/rational_field_traits.hpp"
 
 template class exactreal::Module<IntegerRingTraits>;
-template shared_ptr<exactreal::Module<IntegerRingTraits>> exactreal::Module<IntegerRingTraits>::make(const vector<shared_ptr<RealNumber>>&);
-template exactreal::Module<IntegerRingTraits>::Module(const vector<shared_ptr<RealNumber>>&);
+template shared_ptr<exactreal::Module<IntegerRingTraits>> exactreal::Module<IntegerRingTraits>::make(const vector<shared_ptr<const RealNumber>>&);
 template std::ostream& exactreal::operator<<(std::ostream&, const Module<IntegerRingTraits>&);
+template std::ostream& exactreal::operator<<(std::ostream&, const shared_ptr<const Module<IntegerRingTraits>>&);
+template std::ostream& exactreal::operator<<(std::ostream&, const shared_ptr<Module<IntegerRingTraits>>&);
 template class exactreal::Module<RationalFieldTraits>;
-template shared_ptr<exactreal::Module<RationalFieldTraits>> exactreal::Module<RationalFieldTraits>::make(const vector<shared_ptr<RealNumber>>&);
-template exactreal::Module<RationalFieldTraits>::Module(const vector<shared_ptr<RealNumber>>&);
+template shared_ptr<exactreal::Module<RationalFieldTraits>> exactreal::Module<RationalFieldTraits>::make(const vector<shared_ptr<const RealNumber>>&);
 template std::ostream& exactreal::operator<<(std::ostream&, const Module<RationalFieldTraits>&);
+template std::ostream& exactreal::operator<<(std::ostream&, const shared_ptr<const Module<RationalFieldTraits>>&);
+template std::ostream& exactreal::operator<<(std::ostream&, const shared_ptr<Module<RationalFieldTraits>>&);
 template class exactreal::Module<NumberFieldTraits>;
-template shared_ptr<exactreal::Module<NumberFieldTraits>> exactreal::Module<NumberFieldTraits>::make(const vector<shared_ptr<RealNumber>>&,
+template shared_ptr<exactreal::Module<NumberFieldTraits>> exactreal::Module<NumberFieldTraits>::make(const vector<shared_ptr<const RealNumber>>&,
                                                                                                      const NumberFieldTraits::Parameters&);
-template exactreal::Module<NumberFieldTraits>::Module(const vector<shared_ptr<RealNumber>>&,
-                                                      const NumberFieldTraits::Parameters&);
+template const NumberFieldTraits::Parameters& exactreal::Module<NumberFieldTraits>::ring<NumberFieldTraits>() const;
 template std::ostream& exactreal::operator<<(std::ostream&, const Module<NumberFieldTraits>&);
+template std::ostream& exactreal::operator<<(std::ostream&, const shared_ptr<const Module<NumberFieldTraits>>&);
+template std::ostream& exactreal::operator<<(std::ostream&, const shared_ptr<Module<NumberFieldTraits>>&);

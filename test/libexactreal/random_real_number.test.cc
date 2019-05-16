@@ -76,7 +76,7 @@ TEST(RandomRealNumberTest, comparison) {
 }
 
 struct RandomRealNumberFixture : benchmark::Fixture {
-  std::unique_ptr<RealNumber> rnd = RealNumber::random();
+  std::shared_ptr<RealNumber> rnd = RealNumber::random();
 };
 
 BENCHMARK_F(RandomRealNumberFixture, Double)

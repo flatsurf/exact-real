@@ -21,8 +21,8 @@
 #include <cassert>
 
 #include "exact-real/arb.hpp"
-#include "exact-real/arf.hpp"
 #include "exact-real/real_number.hpp"
+#include "exact-real/yap/arf.hpp"
 
 using std::max;
 using std::ostream;
@@ -101,6 +101,19 @@ bool RealNumber::operator>(const Arf& rhs) const {
     return false;
   }
   return !this->operator<(rhs);
+}
+
+bool RealNumber::operator==(const Arf& arf) const {
+  auto rat = static_cast<std::optional<mpq_class>>(*this);
+  if (!rat.has_value())
+    return false;
+
+  Arf num = (arf * Arf(rat->get_den(), 0))(ARF_PREC_EXACT, Arf::Round::NEAR);
+  return num == Arf(rat->get_num(), 0);
+}
+
+bool RealNumber::operator==(const mpq_class& rat) const {
+  return rat == static_cast<std::optional<mpq_class>>(*this);
 }
 
 ostream& operator<<(ostream& out, const RealNumber& self) {

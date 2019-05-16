@@ -37,6 +37,12 @@ def test_binder():
     x = M.gen(1)
     assert str(x) == "ℝ(0.303644…)"
 
-    assert str(x + 2*x) == "3*ℝ(0.303644…)"
+    y = x + 2*x
+    assert str(y) == "3*ℝ(0.303644…)"
+
+    z = x*x + y;
+    assert str(z) == "ℝ(0.303644…)*ℝ(0.303644…) + 3*ℝ(0.303644…)"
+
+    assert str(z.module()) == "ℤ-Module(ℝ(0.303644…)*ℝ(0.303644…), ℝ(0.303644…), 1)"
 
 if __name__ == '__main__': sys.exit(pytest.main(sys.argv))

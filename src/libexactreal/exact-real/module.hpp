@@ -31,17 +31,9 @@
 namespace exactreal {
 template <typename Ring>
 class Module : public std::enable_shared_from_this<Module<Ring>> {
-  using Basis = std::vector<std::shared_ptr<RealNumber>>;
-
-  Module();
-
-  template <typename RingWithoutParameters = Ring>
-  explicit Module(const Basis&);
-
-  template <typename RingWithParameters = Ring>
-  explicit Module(const Basis&, const typename RingWithParameters::Parameters&);
-
  public:
+  using Basis = std::vector<std::shared_ptr<const RealNumber>>;
+
   static std::shared_ptr<Module<Ring>> make();
 
   template <typename RingWithoutParameters = Ring>
@@ -70,6 +62,8 @@ class Module : public std::enable_shared_from_this<Module<Ring>> {
  private:
   struct Implementation;
   spimpl::unique_impl_ptr<Implementation> impl;
+
+  Module(spimpl::unique_impl_ptr<Implementation>&&);
 };
 
 }  // namespace exactreal

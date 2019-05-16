@@ -21,9 +21,11 @@
 #include <e-antic/renfxx.h>
 #include <boost/numeric/conversion/cast.hpp>
 #include <cmath>
+#include <map>
+#include <set>
 
+#include "exact-real/detail/smart_less.hpp"
 #include "exact-real/element.hpp"
-#include "exact-real/external/boolinq/include/boolinq/boolinq.h"
 #include "exact-real/module.hpp"
 #include "exact-real/real_number.hpp"
 #include "exact-real/yap/arb.hpp"
@@ -32,7 +34,10 @@ using namespace exactreal;
 using boost::numeric_cast;
 using std::find_if;
 using std::logic_error;
+using std::map;
 using std::ostream;
+using std::set;
+using std::shared_ptr;
 using std::vector;
 
 namespace {
@@ -41,15 +46,15 @@ class ElementImplementation {
  public:
   ElementImplementation() : ElementImplementation(Module<Ring>::trivial) {}
 
-  explicit ElementImplementation(const std::shared_ptr<const Module<Ring>>& parent)
+  explicit ElementImplementation(const shared_ptr<const Module<Ring>>& parent)
       : ElementImplementation(parent, vector<typename Ring::ElementClass>(parent->rank())) {}
 
-  ElementImplementation(const std::shared_ptr<const Module<Ring>>& parent, const vector<typename Ring::ElementClass>& coefficients)
+  ElementImplementation(const shared_ptr<const Module<Ring>>& parent, const vector<typename Ring::ElementClass>& coefficients)
       : parent(parent), coefficients(coefficients) {
     assert(size(coefficients.size()) == parent->rank());
   }
 
-  std::shared_ptr<const Module<Ring>> parent;
+  shared_ptr<const Module<Ring>> parent;
   vector<typename Ring::ElementClass> coefficients;
 };
 
@@ -78,14 +83,14 @@ template <typename Ring>
 Element<Ring>::Element() : impl(spimpl::make_impl<Element<Ring>::Implementation>()) {}
 
 template <typename Ring>
-Element<Ring>::Element(const std::shared_ptr<const Module<Ring>>& parent) : impl(spimpl::make_impl<Element<Ring>::Implementation>(parent)) {}
+Element<Ring>::Element(const shared_ptr<const Module<Ring>>& parent) : impl(spimpl::make_impl<Element<Ring>::Implementation>(parent)) {}
 
 template <typename Ring>
-Element<Ring>::Element(const std::shared_ptr<const Module<Ring>>& parent, const vector<typename Ring::ElementClass>& coefficients)
+Element<Ring>::Element(const shared_ptr<const Module<Ring>>& parent, const vector<typename Ring::ElementClass>& coefficients)
     : impl(spimpl::make_impl<Element<Ring>::Implementation>(parent, coefficients)) {}
 
 template <typename Ring>
-Element<Ring>::Element(const std::shared_ptr<const Module<Ring>>& parent, const size gen)
+Element<Ring>::Element(const shared_ptr<const Module<Ring>>& parent, const size gen)
     : impl(spimpl::make_impl<Element<Ring>::Implementation>(parent)) {
   impl->coefficients[numeric_cast<size_t>(gen)] = 1;
 }
@@ -113,16 +118,53 @@ Element<Ring>& Element<Ring>::operator+=(const Element<Ring>& rhs) {
   if (impl->parent != rhs.impl->parent) {
     auto parent = Module<Ring>::span(this->impl->parent, rhs.impl->parent);
     return promote(parent) += Element<Ring>(rhs).promote(parent);
+  } else {
+    for (int i = 0; i < impl->parent->rank(); i++) {
+      impl->coefficients[i] += rhs.impl->coefficients[i];
+    }
+    return *this;
   }
-  for (int i = 0; i < impl->parent->rank(); i++) {
-    impl->coefficients[i] += rhs.impl->coefficients[i];
-  }
-  return *this;
 }
 
 template <typename Ring>
 Element<Ring>& Element<Ring>::operator-=(const Element<Ring>& rhs) {
   return *this += -rhs;
+}
+
+template <typename Ring>
+Element<Ring>& Element<Ring>::operator*=(const Element<Ring>& rhs) {
+  if constexpr (is_parametrized_v<Ring>) {
+    if (this->module()->ring() != rhs.module()->ring()) {
+      throw std::logic_error("not implemented - multiplication in modules over different rings");
+    }
+  }
+
+  map<shared_ptr<const RealNumber>, typename Ring::ElementClass, smart_less<shared_ptr<const RealNumber>>> products;
+
+  for (size_t i = 0; i < impl->parent->basis().size(); i++) {
+    for (size_t j = 0; j < rhs.impl->parent->basis().size(); j++) {
+      auto gen = *impl->parent->basis()[i] * *rhs.impl->parent->basis()[j];
+      auto value = impl->coefficients[i] * rhs.impl->coefficients[j];
+
+      products[gen] += value;
+    }
+  }
+
+  vector<typename Ring::ElementClass> coefficients;
+  vector<shared_ptr<const RealNumber>> basis;
+  for (auto& v : products) {
+    basis.push_back(v.first);
+    coefficients.push_back(v.second);
+  }
+
+  if constexpr (is_parametrized_v<Ring>) {
+    this->impl->parent = Module<Ring>::make(basis, this->impl->parent->ring());
+  } else {
+    this->impl->parent = Module<Ring>::make(basis);
+  }
+  this->impl->coefficients = coefficients;
+
+  return *this;
 }
 
 template <typename Ring>
@@ -219,8 +261,8 @@ bool Element<Ring>::operator==(const Element<Ring>& rhs) const {
 
 template <typename Ring>
 bool Element<Ring>::operator==(const RealNumber& rhs) const {
-  auto gens = impl->parent->basis();
-  auto it = find_if(gens.begin(), gens.end(), [&](auto other) { return other.operator*() == rhs; });
+  auto& gens = impl->parent->basis();
+  auto it = find_if(gens.begin(), gens.end(), [&](const auto& other) { return *other == rhs; });
   if (it == gens.end()) {
     throw logic_error("not implemented - equality of Element with unrelated RealNumber");
   }
@@ -252,31 +294,33 @@ Element<Ring>::operator double() const {
 }
 
 template <typename Ring>
-const std::shared_ptr<const Module<Ring>>& Element<Ring>::module() const {
+const shared_ptr<const Module<Ring>>& Element<Ring>::module() const {
   return impl->parent;
 }
 
 template <typename Ring>
-Element<Ring>& Element<Ring>::promote(const std::shared_ptr<const Module<Ring>>& parent) {
+Element<Ring>& Element<Ring>::promote(const shared_ptr<const Module<Ring>>& parent) {
   if (this->impl->parent == parent) {
     return *this;
   }
   if (!*this) {
     return *this = Element(parent);
   }
-  auto our_gens = impl->parent->basis();
+  auto& our_gens = impl->parent->basis();
   assert(std::all_of(our_gens.begin(), our_gens.end(), [&](const auto& gen) { return std::find_if(parent->basis().begin(), parent->basis().end(), [&](const auto& ogen) { return *gen == *ogen; }) != parent->basis().end(); }) &&
          "can not promote to new parent since our parent is not a submodule");
-  return *this = Element<Ring>(parent, boolinq::from(parent->basis())
-                                           .select([&](const auto& gen) {
-                                             auto our_gen = std::find_if(our_gens.begin(), our_gens.end(), [&](auto& g) { return *g == *gen; });
-                                             if (our_gen == our_gens.end()) {
-                                               return typename Ring::ElementClass();
-                                             } else {
-                                               return impl->coefficients[our_gen - our_gens.begin()];
-                                             }
-                                           })
-                                           .toVector());
+
+  vector<typename Ring::ElementClass> new_coefficients;
+  std::transform(parent->basis().begin(), parent->basis().end(), std::back_inserter(new_coefficients),
+                 [&](const auto& gen) {
+                   auto our_gen = std::find_if(our_gens.begin(), our_gens.end(), [&](auto& g) { return *g == *gen; });
+                   if (our_gen == our_gens.end()) {
+                     return typename Ring::ElementClass();
+                   } else {
+                     return impl->coefficients[our_gen - our_gens.begin()];
+                   }
+                 });
+  return *this = Element<Ring>(parent, new_coefficients);
 }
 
 template <typename Ring>

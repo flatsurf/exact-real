@@ -94,7 +94,7 @@ def pretty_print(proxy, name):
 cppyy.py.add_pythonization(pretty_print, "exactreal")
 cppyy.py.add_pythonization(pretty_print, "eantic")
 
-for path in os.environ.get('PYEXCTREAL_INCLUDE','').split(':'):
+for path in os.environ.get('PYEXACTREAL_INCLUDE','').split(':'):
     if path: cppyy.add_include_path(path)
 
 cppyy.include("exact-real/cppyy.hpp")
@@ -103,13 +103,13 @@ cppyy.include("e-antic/renfxx.h")
 from cppyy.gbl import exactreal
 
 def makeModule(traits, gens, ring=None):
-    vector = cppyy.gbl.std.vector[cppyy.gbl.std.shared_ptr[exactreal.RealNumber]]
-    basis = vector([g.__smartptr__().release() for g in gens])
-    make_shared = cppyy.gbl.std.make_shared[exactreal.Module[traits]]
+    vector = cppyy.gbl.std.vector['std::shared_ptr<const exactreal::RealNumber>']
+    basis = vector(gens)
+    make = exactreal.Module[traits].make[traits]
     if ring is None:
-        return make_shared(basis)
+        return make(basis)
     else:
-        return make_shared(basis, ring)
+        return make(basis, ring)
 
 exactreal.ZZModule = lambda *gens: makeModule(exactreal.IntegerRingTraits, gens)
 exactreal.QQModule = lambda *gens: makeModule(exactreal.RationalFieldTraits, gens)

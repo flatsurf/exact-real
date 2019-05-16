@@ -18,32 +18,32 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef EXACTREAL_TEST_ARB_HPP
-#define EXACTREAL_TEST_ARB_HPP
+#ifndef LIBEXACTREAL_SMART_OSTREAM_HPP
+#define LIBEXACTREAL_SMART_OSTREAM_HPP
 
-#include <flint/flintxx/frandxx.h>
-#include <cassert>
-#include <exact-real/arb.hpp>
 #include <memory>
+#include <ostream>
 
-using namespace exactreal;
-using std::make_unique;
-using std::unique_ptr;
-
-struct ArbTester {
-  unique_ptr<flint::frandxx> flint_rand;
-
-  void reset() { flint_rand = make_unique<flint::frandxx>(); }
-
-  Arb random(prec prec = 53, size mag = 10) {
-    assert(prec != 0);
-    while (1) {
-      Arb ret = Arb::randtest(*flint_rand, prec, mag);
-      if (!ret.is_exact()) {
-        return ret;
-      }
-    }
+namespace exactreal {
+// A convenience print wrapper for easier debugging in GDB with
+// https://stackoverflow.com/a/55550136/812379
+template <class T>
+std::ostream& operator<<(std::ostream& os, const std::shared_ptr<T>& self) {
+  if (self == nullptr) {
+    return os << "nullptr";
+  } else {
+    return os << *self;
   }
-};
+}
+
+template <class T>
+std::ostream& operator<<(std::ostream& os, const std::unique_ptr<T>& self) {
+  if (self == nullptr) {
+    return os << "nullptr";
+  } else {
+    return os << *self;
+  }
+}
+}  // namespace exactreal
 
 #endif

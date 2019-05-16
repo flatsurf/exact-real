@@ -40,7 +40,7 @@ using std::string;
 using std::vector;
 
 TEST(ElementZZ, Generators) {
-  auto m = Module<IntegerRingTraits>::make(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()});
+  auto m = Module<IntegerRingTraits>::make({RealNumber::rational(1), RealNumber::random()});
 
   auto one = Element(m, 0);
   auto x = Element(m, 1);
@@ -57,7 +57,7 @@ TEST(ElementZZ, Generators) {
 }
 
 TEST(ElementZZ, Additive) {
-  auto m = Module<IntegerRingTraits>::make(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()});
+  auto m = Module<IntegerRingTraits>::make({RealNumber::rational(1), RealNumber::random()});
 
   Element<IntegerRingTraits> elements[]{Element(m, 0), Element(m, 1)};
 
@@ -70,7 +70,7 @@ TEST(ElementZZ, Additive) {
 }
 
 TEST(ElementZZ, PromotionFromTrivial) {
-  auto m = Module<IntegerRingTraits>::make(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()});
+  auto m = Module<IntegerRingTraits>::make({RealNumber::rational(1), RealNumber::random()});
 
   auto gen = Element(m, 1);
   auto zero = Element(m);
@@ -86,8 +86,8 @@ TEST(ElementZZ, PromotionFromTrivial) {
 }
 
 TEST(ElementZZ, PromotionFromSubmodule) {
-  auto m = Module<IntegerRingTraits>::make(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1)});
-  auto n = Module<IntegerRingTraits>::make(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()});
+  auto m = Module<IntegerRingTraits>::make({RealNumber::rational(1)});
+  auto n = Module<IntegerRingTraits>::make({RealNumber::rational(1), RealNumber::random()});
 
   EXPECT_EQ(Element(m, 0), Element(n, 0));
   EXPECT_NE(Element(m, 0), Element(n, 1));
@@ -95,7 +95,7 @@ TEST(ElementZZ, PromotionFromSubmodule) {
 }
 
 TEST(ElementZZ, Scalars) {
-  auto m = Module<IntegerRingTraits>::make(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()});
+  auto m = Module<IntegerRingTraits>::make({RealNumber::rational(1), RealNumber::random()});
 
   Element<IntegerRingTraits> elements[]{Element(m, 0), Element(m, 1)};
 
@@ -128,15 +128,28 @@ TEST(ElementZZ, Scalars) {
 }
 
 TEST(ElementZZ, Printing) {
-  auto m = Module<IntegerRingTraits>::make(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()});
+  auto m = Module<IntegerRingTraits>::make({RealNumber::rational(1), RealNumber::random()});
 
   EXPECT_EQ(lexical_cast<string>(Element(m, 0)), "1");
   EXPECT_EQ(lexical_cast<string>(Element(m, 1)), "ℝ(0.621222…)");
   EXPECT_EQ(lexical_cast<string>(Element(m, 0) + Element(m, 1)), "1 + ℝ(0.621222…)");
 }
 
+TEST(ElementZZ, Multiplication) {
+  auto m = Module<IntegerRingTraits>::make({RealNumber::rational(1), RealNumber::random()});
+
+  auto one = Element(m, 0);
+  auto rnd = Element(m, 1);
+
+  EXPECT_EQ(one * one, one);
+  EXPECT_EQ(one * rnd, rnd);
+  EXPECT_NE(rnd * rnd, rnd);
+  EXPECT_EQ(rnd * rnd, rnd * rnd);
+  EXPECT_EQ(rnd - rnd * one, one - one);
+}
+
 TEST(ElementQQ, Scalars) {
-  auto m = Module<RationalFieldTraits>::make(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()});
+  auto m = Module<RationalFieldTraits>::make({RealNumber::rational(1), RealNumber::random()});
 
   Element<RationalFieldTraits> elements[]{Element(m, 0), Element(m, 1)};
 
@@ -179,7 +192,7 @@ TEST(ElementQQ, Scalars) {
 
 TEST(ElementNF, Scalars) {
   renf_class K("a^2 - 2", "a", "1.41 +/- 0.1", 64);
-  auto m = Module<NumberFieldTraits>::make(vector<std::shared_ptr<RealNumber>>{RealNumber::rational(1), RealNumber::random()}, K);
+  auto m = Module<NumberFieldTraits>::make({RealNumber::rational(1), RealNumber::random()}, K);
 
   Element<NumberFieldTraits> elements[]{Element(m, 0), Element(m, 1)};
 

@@ -31,7 +31,6 @@ using namespace exactreal;
 using std::nextafter;
 using std::numeric_limits;
 using std::swap;
-using std::unique_ptr;
 using std::vector;
 
 TEST(ConstraintRandomRealNumberFromDoubleTest, Equality) {
@@ -97,81 +96,5 @@ TEST(ConstraintRandomRealNumberFromIntervalTest, arf) {
   testArf(RealNumber::random(Arf(-13e-37), Arf(0)));
   testArf(RealNumber::random(Arf(0), Arf(13e37)));
 }
-
-/*
-TEST(RandomRealNumberTest, arf) {
-        auto rnd = RealNumber::random();
-        Arf prev = Arf();
-        Arf approx = Arf();
-        for (unsigned int prec = 1; prec <= 1024; prec*=2){
-                prev = approx;
-                approx = rnd->arf(prec);
-                ASSERT_EQ(approx, rnd->arf(prec));
-                ASSERT_GE(approx, Arf());
-                ASSERT_LE(approx, Arf(1l));
-
-                // arf_bits(approx.t) >= prec might not be true because trailing zeros in
-                // the floating point representation are not stored explicitly:
-                // ASSERT_GE(arf_bits(approx.t), prec);
-                // Instead we check that at least the precision does not decrease:
-                ASSERT_GE(arf_bits(approx.t), arf_bits(prev.t));
-
-                Arf diff = (approx - rnd->arf(prec * 2)).abs();
-                for (auto i = 0u; i < prec; i++){
-                        ASSERT_LE(diff, 1);
-                        diff *= 2;
-                }
-        }
-}
-
-TEST(RandomRealNumberTest, refine) {
-        auto rnd = RealNumber::random();
-        for (unsigned int prec = 1; prec <= 1024; prec*=2){
-                Arb a = Arb::any();
-
-                rnd->refine(a, prec);
-                ASSERT_EQ(arb_rel_accuracy_bits(a.t), prec);
-
-                rnd->refine(a, prec/2);
-                ASSERT_EQ(arb_rel_accuracy_bits(a.t), prec);
-
-                ASSERT_EQ(rnd->cmp(a), 0);
-        }
-}
-
-TEST(RandomRealNumberTest, comparison) {
-        auto rnd0 = RealNumber::random();
-        auto rnd1 = RealNumber::random();
-        ASSERT_NE(*rnd0, *rnd1);
-        ASSERT_EQ(*rnd0, *rnd0);
-        ASSERT_EQ(*rnd1, *rnd1);
-
-        ASSERT_TRUE((*rnd0 < *rnd1) != (*rnd0 > *rnd1));
-        if (*rnd0 > *rnd1) {
-                return;
-        }
-
-        ASSERT_LT(*rnd0, *rnd1);
-        ASSERT_GT(*rnd1, *rnd0);
-}
-
-struct RandomRealNumberFixture : benchmark::Fixture {
-        std::unique_ptr<RealNumber> rnd = RealNumber::random();
-};
-
-BENCHMARK_F(RandomRealNumberFixture, Double)(benchmark::State& state){
-        for (auto _ : state) {
-                benchmark::DoNotOptimize(static_cast<double>(*rnd));
-        }
-}
-
-BENCHMARK_DEFINE_F(RandomRealNumberFixture, arf)(benchmark::State& state){
-        for (auto _ : state) {
-                benchmark::DoNotOptimize(rnd->arf(static_cast<unsigned int>(state.range(0))));
-        }
-}
-
-BENCHMARK_REGISTER_F(RandomRealNumberFixture, arf)->Range(16, 1<<16);
-*/
 
 #include "main.hpp"
