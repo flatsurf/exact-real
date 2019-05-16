@@ -103,7 +103,7 @@ Arb Element<Ring>::arb(long prec) const {
   prec += numeric_cast<long>(ceil(log2(numeric_cast<double>(impl->parent->rank()))));
   Arb ret;
   for (int i = 0; i < impl->parent->rank(); i++) {
-    ret += (impl->parent->gens()[i]->arb(prec) * Ring::arb(impl->coefficients[i], prec))(prec);
+    ret += (impl->parent->basis()[i]->arb(prec) * Ring::arb(impl->coefficients[i], prec))(prec);
   }
   return ret;
 }
@@ -219,7 +219,7 @@ bool Element<Ring>::operator==(const Element<Ring>& rhs) const {
 
 template <typename Ring>
 bool Element<Ring>::operator==(const RealNumber& rhs) const {
-  auto gens = impl->parent->gens();
+  auto gens = impl->parent->basis();
   auto it = find_if(gens.begin(), gens.end(), [&](auto other) { return other.operator*() == rhs; });
   if (it == gens.end()) {
     throw logic_error("not implemented - equality of Element with unrelated RealNumber");
@@ -264,10 +264,10 @@ Element<Ring>& Element<Ring>::promote(const std::shared_ptr<const Module<Ring>>&
   if (!*this) {
     return *this = Element(parent);
   }
-  auto our_gens = impl->parent->gens();
-  assert(std::all_of(our_gens.begin(), our_gens.end(), [&](const auto& gen) { return std::find_if(parent->gens().begin(), parent->gens().end(), [&](const auto& ogen) { return *gen == *ogen; }) != parent->gens().end(); }) &&
+  auto our_gens = impl->parent->basis();
+  assert(std::all_of(our_gens.begin(), our_gens.end(), [&](const auto& gen) { return std::find_if(parent->basis().begin(), parent->basis().end(), [&](const auto& ogen) { return *gen == *ogen; }) != parent->basis().end(); }) &&
          "can not promote to new parent since our parent is not a submodule");
-  return *this = Element<Ring>(parent, boolinq::from(parent->gens())
+  return *this = Element<Ring>(parent, boolinq::from(parent->basis())
                                            .select([&](const auto& gen) {
                                              auto our_gen = std::find_if(our_gens.begin(), our_gens.end(), [&](auto& g) { return *g == *gen; });
                                              if (our_gen == our_gens.end()) {
@@ -291,7 +291,7 @@ ostream& operator<<(ostream& out, const Element<Ring>& self) {
       if (self.impl->coefficients[i] != 1) {
         out << self.impl->coefficients[i] << "*";
       }
-      out << *self.impl->parent->gens()[i];
+      out << *self.impl->parent->basis()[i];
     }
   }
   if (empty) {

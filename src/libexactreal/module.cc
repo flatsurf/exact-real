@@ -33,6 +33,7 @@
 using namespace exactreal;
 using boost::adaptors::transformed;
 using std::is_same_v;
+using std::make_shared;
 using std::set;
 using std::shared_ptr;
 using std::string;
@@ -103,10 +104,10 @@ class Module<Ring>::Implementation
 };
 }  // namespace exactreal
 
+namespace exactreal {
 template <typename Ring>
 Module<Ring>::Module() : impl(spimpl::make_unique_impl<Module<Ring>::Implementation>()) {}
 
-namespace exactreal {
 template <typename Ring>
 template <typename RingWithoutParameters>
 Module<Ring>::Module(const Basis& basis)
@@ -124,13 +125,35 @@ Module<Ring>::Module(const Basis& basis, const typename RingWithParameters::Para
 }
 
 template <typename Ring>
+shared_ptr<Module<Ring>> Module<Ring>::make() {
+  return shared_ptr<Module<Ring>>(new Module<Ring>());
+}
+
+template <typename Ring>
+template <typename RingWithoutParameters>
+shared_ptr<Module<Ring>> Module<Ring>::make(const Basis& basis) {
+  return shared_ptr<Module<Ring>>(new Module<Ring>(basis));
+}
+
+template <typename Ring>
+template <typename RingWithParameters>
+shared_ptr<Module<Ring>> Module<Ring>::make(const Basis& basis, const typename RingWithParameters::Parameters& parameters) {
+  return shared_ptr<Module<Ring>>(new Module<Ring>(basis, parameters));
+}
+
+template <typename Ring>
 size Module<Ring>::rank() const {
   return impl->basis.size();
 }
 
 template <typename Ring>
-vector<shared_ptr<RealNumber>> const& Module<Ring>::gens() const {
+vector<shared_ptr<RealNumber>> const& Module<Ring>::basis() const {
   return impl->basis;
+}
+
+template <typename Ring>
+Element<Ring> Module<Ring>::gen(size i) const {
+  return Element<Ring>(this->shared_from_this(), i);
 }
 
 template <typename Ring>
@@ -145,10 +168,10 @@ const typename RingWithParameters::Parameters& Module<Ring>::ring() const {
 template <typename Ring>
 shared_ptr<const Module<Ring>> Module<Ring>::span(const shared_ptr<const Module<Ring>>& m, const shared_ptr<const Module<Ring>>& n) {
   // When one of the modules is trivial, we do not need to worry about the parameters but just return the other
-  if (m->gens().size() == 0) {
+  if (m->basis().size() == 0) {
     return n;
   }
-  if (n->gens().size() == 0) {
+  if (n->basis().size() == 0) {
     return span(n, m);
   }
 
@@ -160,8 +183,8 @@ shared_ptr<const Module<Ring>> Module<Ring>::span(const shared_ptr<const Module<
   }
 
   using Set = set<shared_ptr<RealNumber>, CompareGenerators>;
-  Set mgens = Set(m->gens().begin(), m->gens().end());
-  Set ngens = Set(n->gens().begin(), n->gens().end());
+  Set mgens = Set(m->basis().begin(), m->basis().end());
+  Set ngens = Set(n->basis().begin(), n->basis().end());
   Set gens = Set(mgens);
   for (auto gen : ngens) gens.insert(gen);
 
@@ -187,7 +210,7 @@ shared_ptr<const Module<Ring>> Module<Ring>::span(const shared_ptr<const Module<
 }
 
 template <typename Ring>
-const shared_ptr<const Module<Ring>> Module<Ring>::trivial = std::make_shared<const Module<Ring>>();
+const shared_ptr<const Module<Ring>> Module<Ring>::trivial = Module<Ring>::make();
 
 template <typename R>
 std::ostream& operator<<(std::ostream& os, const Module<R>& self) {
@@ -198,8 +221,8 @@ std::ostream& operator<<(std::ostream& os, const Module<R>& self) {
   } else {
     os << "K" /* self.ring() */ << "-Module(";
   }
-  os << boost::algorithm::join(self.gens() | transformed(
-                                                 [](auto& gen) { return boost::lexical_cast<string>(*gen); }),
+  os << boost::algorithm::join(self.basis() | transformed(
+                                                  [](auto& gen) { return boost::lexical_cast<string>(*gen); }),
                                ", ");
   return os << ")";
 }
@@ -213,12 +236,16 @@ std::ostream& operator<<(std::ostream& os, const Module<R>& self) {
 #include "exact-real/rational_field_traits.hpp"
 
 template class exactreal::Module<IntegerRingTraits>;
+template shared_ptr<exactreal::Module<IntegerRingTraits>> exactreal::Module<IntegerRingTraits>::make(const vector<shared_ptr<RealNumber>>&);
 template exactreal::Module<IntegerRingTraits>::Module(const vector<shared_ptr<RealNumber>>&);
 template std::ostream& exactreal::operator<<(std::ostream&, const Module<IntegerRingTraits>&);
 template class exactreal::Module<RationalFieldTraits>;
+template shared_ptr<exactreal::Module<RationalFieldTraits>> exactreal::Module<RationalFieldTraits>::make(const vector<shared_ptr<RealNumber>>&);
 template exactreal::Module<RationalFieldTraits>::Module(const vector<shared_ptr<RealNumber>>&);
 template std::ostream& exactreal::operator<<(std::ostream&, const Module<RationalFieldTraits>&);
 template class exactreal::Module<NumberFieldTraits>;
+template shared_ptr<exactreal::Module<NumberFieldTraits>> exactreal::Module<NumberFieldTraits>::make(const vector<shared_ptr<RealNumber>>&,
+                                                                                                     const NumberFieldTraits::Parameters&);
 template exactreal::Module<NumberFieldTraits>::Module(const vector<shared_ptr<RealNumber>>&,
                                                       const NumberFieldTraits::Parameters&);
 template std::ostream& exactreal::operator<<(std::ostream&, const Module<NumberFieldTraits>&);

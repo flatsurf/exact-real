@@ -1,4 +1,4 @@
-TESTS = arf.py arb.py real_number.py module.py
+TESTS = arf.py arb.py real_number.py module.py binder.py
 EXTRA_DIST = $(TESTS)
 
 AM_TESTS_ENVIRONMENT = . $(builddir)/test-env.sh;
@@ -7,6 +7,7 @@ arf.py: test-env.sh
 arb.py: test-env.sh
 real_number.py: test-env.sh
 module.py: test-env.sh
+binder.py: test-env.sh
 
 @VALGRIND_CHECK_RULES@
 

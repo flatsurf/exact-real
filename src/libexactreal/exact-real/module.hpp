@@ -30,8 +30,7 @@
 
 namespace exactreal {
 template <typename Ring>
-class Module : std::enable_shared_from_this<Module<Ring>> {
- public:
+class Module : public std::enable_shared_from_this<Module<Ring>> {
   using Basis = std::vector<std::shared_ptr<RealNumber>>;
 
   Module();
@@ -42,6 +41,15 @@ class Module : std::enable_shared_from_this<Module<Ring>> {
   template <typename RingWithParameters = Ring>
   explicit Module(const Basis&, const typename RingWithParameters::Parameters&);
 
+ public:
+  static std::shared_ptr<Module<Ring>> make();
+
+  template <typename RingWithoutParameters = Ring>
+  static std::shared_ptr<Module<Ring>> make(const Basis&);
+
+  template <typename RingWithParameters = Ring>
+  static std::shared_ptr<Module<Ring>> make(const Basis&, const typename RingWithParameters::Parameters&);
+
   // Return the specific ring (e.g., the number field); only enabled if the
   // ring has such data, e.g., not for the integers or the rationals.
   template <class RingWithParameters = Ring>
@@ -49,7 +57,8 @@ class Module : std::enable_shared_from_this<Module<Ring>> {
 
   size rank() const;
 
-  const Basis& gens() const;
+  const Basis& basis() const;
+  Element<Ring> gen(size i) const;
 
   static const std::shared_ptr<const Module> trivial;
 
