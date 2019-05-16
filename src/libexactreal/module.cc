@@ -56,8 +56,12 @@ class ModuleImplementation {
   ModuleImplementation() : basis({}) {}
 
   explicit ModuleImplementation(const Basis& basis) : basis(basis) {
-    // See https://github.com/flatsurf/exact-real/issues/5 for missing input
-    // checks.
+    for (auto it = basis.begin(); it != basis.end(); it++) {
+      for (auto jt = it + 1; jt != basis.end(); jt++) {
+        assert((!static_cast<std::optional<mpq_class>>(**it) || !static_cast<std::optional<mpq_class>>(**jt)) && "at most one generator can be rational");
+        assert(**it != **jt && "generators must be distinct");
+      }
+    }
   }
 
   Basis basis;
