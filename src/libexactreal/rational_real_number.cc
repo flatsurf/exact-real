@@ -24,9 +24,9 @@
 #include "exact-real/yap/arf.hpp"
 
 using namespace exactreal;
-using std::make_unique;
+using std::make_shared;
 using std::ostream;
-using std::unique_ptr;
+using std::shared_ptr;
 
 namespace {
 
@@ -47,18 +47,23 @@ class RationalRealNumber final : public RealNumber {
     }
   }
 
-  bool operator==(const Arf& arf) const override {
-    Arf num = (arf * Arf(value.get_den(), 0))(ARF_PREC_EXACT, Arf::Round::NEAR);
-    return num == Arf(value.get_num(), 0);
-  }
-
-  bool operator==(const mpq_class& rat) const override {
-    return value == rat;
+  explicit operator std::optional<mpq_class>() const override {
+    return value;
   }
 
   RealNumber const& operator>>(ostream& out) const override {
     out << value;
     return *this;
+  }
+
+  shared_ptr<const RealNumber> operator*(const RealNumber& rhs) const override {
+    if (value == 1) {
+      return rhs.shared_from_this();
+    }
+    if (typeid(rhs) == typeid(*this)) {
+      return make_shared<RationalRealNumber>(value * static_cast<const RationalRealNumber*>(&rhs)->value);
+    }
+    throw std::logic_error("not implemented - multiplication with non-trivial rational");
   }
 
  private:
@@ -67,5 +72,5 @@ class RationalRealNumber final : public RealNumber {
 }  // namespace
 
 namespace exactreal {
-unique_ptr<RealNumber> RealNumber::rational(const mpq_class& value) { return make_unique<RationalRealNumber>(value); }
+shared_ptr<RealNumber> RealNumber::rational(const mpq_class& value) { return make_shared<RationalRealNumber>(value); }
 }  // namespace exactreal

@@ -51,7 +51,7 @@ long relativeAccuracy(const Arf& expected, const Arf& actual) {
   return Arf((1 / relativeError(expected, actual))(64, Arf::Round::NEAR)).logb();
 }
 
-void testArf(std::unique_ptr<RealNumber> x) {
+void testArf(std::shared_ptr<RealNumber> x) {
   if (*x == 0) {
     return;
   }
@@ -90,6 +90,6 @@ void testArf(std::unique_ptr<RealNumber> x) {
 }
 
 // Force creation of code for easier debugging in gdb; so we can call operator*.
-template class std::unique_ptr<RealNumber>;
+template class std::shared_ptr<RealNumber>;
 
 #endif

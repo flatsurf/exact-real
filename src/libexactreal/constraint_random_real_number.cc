@@ -32,12 +32,12 @@
 using namespace exactreal;
 using boost::lexical_cast;
 using std::isfinite;
-using std::make_unique;
+using std::make_shared;
 using std::nextafter;
 using std::numeric_limits;
 using std::ostream;
+using std::shared_ptr;
 using std::string;
-using std::unique_ptr;
 
 namespace {
 unsigned int nextSeed = 1337;
@@ -93,6 +93,8 @@ class ConstraintRandomRealNumber final : public RealNumber {
     initial = Arf(mantissa, e);
   }
 
+  ConstraintRandomRealNumber(const Arf& initial, long e, const shared_ptr<const RealNumber>& inner) : initial(initial), e(e), inner(inner) {}
+
   virtual Arf arf(long prec) const override {
     if (prec < 1) {
       prec = 0;
@@ -128,12 +130,8 @@ class ConstraintRandomRealNumber final : public RealNumber {
     }
   }
 
-  bool operator==(const Arf&) const override {
-    return false;
-  }
-
-  bool operator==(const mpq_class&) const override {
-    return false;
+  explicit operator std::optional<mpq_class>() const override {
+    return {};
   }
 
   RealNumber const& operator>>(ostream& out) const override {
@@ -147,20 +145,20 @@ class ConstraintRandomRealNumber final : public RealNumber {
  private:
   Arf initial;
   long e;
-  unique_ptr<RealNumber> inner;
+  shared_ptr<const RealNumber> inner;
 };
 }  // namespace
 
 namespace exactreal {
-unique_ptr<RealNumber> RealNumber::random(const Arf& lower, const Arf& upper) {
+shared_ptr<RealNumber> RealNumber::random(const Arf& lower, const Arf& upper) {
   if (lower == 0 && upper == 1) {
     return RealNumber::random();
   } else {
-    return make_unique<ConstraintRandomRealNumber>(lower, upper);
+    return make_shared<ConstraintRandomRealNumber>(lower, upper);
   }
 }
 
-unique_ptr<RealNumber> RealNumber::random(const double x) {
+shared_ptr<RealNumber> RealNumber::random(const double x) {
   if (!isfinite(x)) {
     throw std::logic_error("not implemented - random number close to non-finite");
   }

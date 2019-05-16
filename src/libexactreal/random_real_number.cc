@@ -30,11 +30,12 @@
 
 using namespace exactreal;
 using boost::random::rand48;
-using std::make_unique;
+using std::make_shared;
+using std::optional;
 using std::ostream;
+using std::shared_ptr;
 using std::string;
 using std::stringstream;
-using std::unique_ptr;
 
 namespace {
 unsigned int nextSeed = 1337;
@@ -42,7 +43,8 @@ unsigned int nextSeed = 1337;
 // A random real number in [0, 1]
 class RandomRealNumber final : public RealNumber {
  public:
-  RandomRealNumber() : seed(nextSeed++) {}
+  RandomRealNumber() : RandomRealNumber(nextSeed++) {}
+  RandomRealNumber(unsigned int seed) : seed(seed) {}
 
   // Creates a random Arf from digits in base 2.
   // We could speed this up by caching numbers to some precision but let's wait
@@ -83,12 +85,8 @@ class RandomRealNumber final : public RealNumber {
     }
   }
 
-  bool operator==(const Arf&) const override {
-    return false;
-  }
-
-  bool operator==(const mpq_class&) const override {
-    return false;
+  operator std::optional<mpq_class>() const override {
+    return {};
   }
 
   RealNumber const& operator>>(ostream& out) const override {
@@ -109,5 +107,5 @@ class RandomRealNumber final : public RealNumber {
 }  // namespace
 
 namespace exactreal {
-unique_ptr<RealNumber> RealNumber::random() { return make_unique<RandomRealNumber>(); }
+shared_ptr<RealNumber> RealNumber::random() { return make_shared<RandomRealNumber>(); }
 }  // namespace exactreal

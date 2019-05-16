@@ -28,7 +28,7 @@
 using namespace exactreal;
 
 TEST(RationalRealNumberTest, Equality) {
-  std::unique_ptr<RealNumber> numbers[]{RealNumber::rational(0), RealNumber::rational(1),
+  std::shared_ptr<RealNumber> numbers[]{RealNumber::rational(0), RealNumber::rational(1),
                                         RealNumber::rational(mpq_class(1, 2)), RealNumber::rational(mpq_class(4, 3))};
 
   const size_t length = sizeof(numbers) / sizeof(numbers[0]);
@@ -44,7 +44,7 @@ TEST(RationalRealNumberTest, Equality) {
 }
 
 TEST(RationalRealNumberTest, Comparison) {
-  std::unique_ptr<RealNumber> numbers[]{RealNumber::rational(0), RealNumber::rational(mpq_class(1, 2)),
+  std::shared_ptr<RealNumber> numbers[]{RealNumber::rational(0), RealNumber::rational(mpq_class(1, 2)),
                                         RealNumber::rational(1), RealNumber::rational(mpq_class(4, 3))};
 
   const size_t length = sizeof(numbers) / sizeof(numbers[0]);

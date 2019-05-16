@@ -36,6 +36,7 @@ namespace exactreal {
 
 template <typename Ring>
 class Element : boost::additive<Element<Ring>>,
+                boost::multipliable<Element<Ring>>,
                 boost::totally_ordered<Element<Ring>>,
                 boost::totally_ordered<Element<Ring>, RealNumber>,
                 boost::multiplicative<Element<Ring>, typename Ring::ElementClass>,
@@ -55,6 +56,7 @@ class Element : boost::additive<Element<Ring>>,
 
   Element& operator+=(const Element&);
   Element& operator-=(const Element&);
+  Element& operator*=(const Element&);
   Element operator-() const;
   Element& operator*=(const typename Ring::ElementClass&);
   // Define a operator*=(const mpz_class&) if Ring::ElementClass != mpz_class

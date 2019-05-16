@@ -4,6 +4,7 @@ libexactreal_la_SOURCES =               \
     real_number.cc                      \
     rational_real_number.cc             \
     random_real_number.cc               \
+		real_number_product.cc              \
     element.cc                          \
     module.cc                           \
     arb.cc                              \
@@ -43,8 +44,11 @@ nobase_include_HEADERS =                                  \
     exact-real/yap/round_transformation.hpp               \
     exact-real/yap/terminal.hpp                           \
     exact-real/external/spimpl/spimpl.h                   \
-    exact-real/external/boolinq/include/boolinq/boolinq.h \
     exact-real/cppyy.hpp
+
+noinst_HEADERS =                                          \
+		exact-real/detail/smart_less.hpp                      \
+		exact-real/detail/smart_ostream.hpp
 
 $(builddir)/exact-real/exact-real.hpp: $(srcdir)/exact-real/exact-real.hpp.in Makefile
 	mkdir -p $(builddir)/libexactreal

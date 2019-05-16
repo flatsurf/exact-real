@@ -44,4 +44,16 @@ TEST(ModuleZZ, Create) {
   EXPECT_EQ(lexical_cast<string>(*m), "ℤ-Module(ℝ(0.303644…), ℝ(0.120809…))");
 }
 
+TEST(ModuleZZ, Multiplication) {
+  auto m = Module<IntegerRingTraits>::make({RealNumber::rational(1), RealNumber::random()});
+  auto n = Module<IntegerRingTraits>::make({RealNumber::rational(1)});
+
+  auto one = n->gen(0);
+  auto rnd = m->gen(1);
+
+  EXPECT_EQ((rnd * one).module()->rank(), 2);
+  EXPECT_EQ((rnd * rnd).module()->rank(), 3);
+  EXPECT_EQ((rnd * rnd * rnd).module()->rank(), 4);
+}
+
 #include "main.hpp"

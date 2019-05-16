@@ -84,6 +84,10 @@ extern template std::ostream &exactreal::operator<<<exactreal::IntegerRingTraits
 extern template std::ostream &exactreal::operator<<<exactreal::RationalFieldTraits>(std::ostream &, const exactreal::Element<exactreal::RationalFieldTraits> &);
 extern template std::ostream &exactreal::operator<<<exactreal::NumberFieldTraits>(std::ostream &, const exactreal::Element<exactreal::NumberFieldTraits> &);
 
+extern template std::shared_ptr<exactreal::Module<exactreal::IntegerRingTraits>> exactreal::Module<exactreal::IntegerRingTraits>::make(const std::vector<std::shared_ptr<const exactreal::RealNumber>> &);
+extern template std::shared_ptr<exactreal::Module<exactreal::RationalFieldTraits>> exactreal::Module<exactreal::RationalFieldTraits>::make(const std::vector<std::shared_ptr<const exactreal::RealNumber>> &);
+extern template std::shared_ptr<exactreal::Module<exactreal::NumberFieldTraits>> exactreal::Module<exactreal::NumberFieldTraits>::make(const std::vector<std::shared_ptr<const exactreal::RealNumber>> &, const exactreal::NumberFieldTraits::Parameters &);
+
 // Squash some compiler warnings that come out of cppyy otherwise
 extern template const std::shared_ptr<const exactreal::Module<exactreal::IntegerRingTraits>> exactreal::Module<exactreal::IntegerRingTraits>::trivial;
 extern template const std::shared_ptr<const exactreal::Module<exactreal::NumberFieldTraits>> exactreal::Module<exactreal::NumberFieldTraits>::trivial;
