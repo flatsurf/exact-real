@@ -81,6 +81,11 @@ bool RealNumber::operator<(const RealNumber& rhs) const {
   }
 }
 
+bool RealNumber::operator==(const RealNumber& rhs) const {
+  // Since all real numbers are created by a UniqueFactory, it suffices to compare them for identity.
+  return this == &rhs;
+}
+
 bool RealNumber::operator<(const Arf& rhs) const {
   if (this->operator==(rhs)) {
     return false;
@@ -116,8 +121,15 @@ bool RealNumber::operator==(const mpq_class& rat) const {
   return rat == static_cast<std::optional<mpq_class>>(*this);
 }
 
-ostream& operator<<(ostream& out, const RealNumber& self) {
-  self >> out;
-  return out;
+ostream& operator<<(ostream& os, const RealNumber& self) {
+  self >> os;
+  return os;
 }
+
 }  // namespace exactreal
+
+// Explicit instantiations of templates so that code is generated for the
+// linker.
+#include "exact-real/detail/smart_ostream.hpp"
+
+template std::ostream& exactreal::operator<<(std::ostream&, const std::shared_ptr<const RealNumber>&);

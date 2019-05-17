@@ -63,7 +63,7 @@ class RealNumber : public std::enable_shared_from_this<RealNumber>,
 
   Arb& iadd(Arb& self, long prec);
   bool operator<(const RealNumber&) const;
-  virtual bool operator==(const RealNumber&) const = 0;
+  bool operator==(const RealNumber&) const;
 
   template <typename Integer>
   std::enable_if_t<std::is_integral_v<Integer>, bool> operator<(Integer) const noexcept;

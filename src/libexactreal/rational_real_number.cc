@@ -20,6 +20,7 @@
 
 #include <gmpxx.h>
 
+#include "exact-real/detail/unique_factory.hpp"
 #include "exact-real/real_number.hpp"
 #include "exact-real/yap/arf.hpp"
 
@@ -39,14 +40,6 @@ class RationalRealNumber final : public RealNumber {
     return (Arf(value.get_num(), 0) / Arf(value.get_den(), 0))(prec, Arf::Round::NEAR);
   }
 
-  bool operator==(const RealNumber& rhs) const override {
-    if (typeid(rhs) == typeid(*this)) {
-      return this->value == static_cast<const RationalRealNumber*>(&rhs)->value;
-    } else {
-      return false;
-    }
-  }
-
   explicit operator std::optional<mpq_class>() const override {
     return value;
   }
@@ -61,7 +54,7 @@ class RationalRealNumber final : public RealNumber {
       return rhs.shared_from_this();
     }
     if (typeid(rhs) == typeid(*this)) {
-      return make_shared<RationalRealNumber>(value * static_cast<const RationalRealNumber*>(&rhs)->value);
+      return RealNumber::rational(value * static_cast<const RationalRealNumber*>(&rhs)->value);
     }
     throw std::logic_error("not implemented - multiplication with non-trivial rational");
   }
@@ -69,8 +62,12 @@ class RationalRealNumber final : public RealNumber {
  private:
   mpq_class value;
 };
+
 }  // namespace
 
 namespace exactreal {
-shared_ptr<RealNumber> RealNumber::rational(const mpq_class& value) { return make_shared<RationalRealNumber>(value); }
+shared_ptr<RealNumber> RealNumber::rational(const mpq_class& value) {
+  static UniqueFactory<RationalRealNumber, mpq_class> factory;
+  return factory.get(value, [](const mpq_class& v) { return new RationalRealNumber(v); });
+}
 }  // namespace exactreal
