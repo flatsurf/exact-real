@@ -9,5 +9,8 @@ setup(
     version = '@PACKAGE_VERSION@',
     packages = ['pyexactreal',],
     license = 'GPL 2.0+',
+    install_requires=[
+        'cppyy'
+    ],
     long_description = open('@top_srcdir@/README').read(),
 )
