@@ -95,7 +95,7 @@ class ModuleImplementationWithParameters : public ModuleImplementation<Ring> {
 
   typename Ring::Parameters const* parameters;
 
-  using Factory = UniqueFactory<Module<Ring>, Basis, const typename Ring::Parameters&>;
+  using Factory = UniqueFactory<Module<Ring>, Basis, const typename Ring::Parameters>;
   static Factory factory;
 };
 

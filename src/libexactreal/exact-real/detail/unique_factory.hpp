@@ -84,11 +84,13 @@ class UniqueFactory {
   }
 
   template <typename T>
-  static auto& target(const T& ptr) {
+  static decltype(auto) target(T&& ptr) {
     if constexpr (is_weak_ptr<T>::value) {
+      assert(!ptr.expired);
+      assert(ptr != nullptr);
       return *ptr;
     } else {
-      return ptr;
+      return std::forward<T>(ptr);
     }
   }
 
@@ -100,8 +102,8 @@ class UniqueFactory {
   }
 
   bool eq(const WeakKey& a, const WeakKey& b) {
-    return std::apply([](auto&&... args) { return tuple(target(args)...); }, a) ==
-           std::apply([](auto&&... args) { return tuple(target(args)...); }, b);
+    return std::apply([](auto&&... args) { return tuple(target(std::forward<decltype(args)>(args))...); }, a) ==
+           std::apply([](auto&&... args) { return tuple(target(std::forward<decltype(args)>(args))...); }, b);
   }
 
  public:
