@@ -31,17 +31,17 @@
 *.exe
 *.out
 *.app
-/polygon
-/arb
-/arf
-/arb_yap
-/arf_yap
-/arb_benchmark
-/random_real_number
-/module
-/element
-/rational_real_number
-/constraint_random_real_number
+polygon
+arb
+arf
+arb_yap
+arf_yap
+arb_benchmark
+random_real_number
+module
+element
+rational_real_number
+constraint_random_real_number
 
 ### Autotools Generated Files
 /.deps
