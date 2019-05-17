@@ -23,26 +23,16 @@
 import sys
 import pytest
 
-# Check that the contents of the Binder sample notebook work as expected; see
-# /binder/Sample.pyexactreal.ipynb
-
-def test_binder():
+def test_module():
     from pyexactreal import exactreal
     ZZModule = exactreal.ZZModule
     RealNumber = exactreal.RealNumber
 
     M = ZZModule(RealNumber.rational(1), RealNumber.random())
-    assert str(M) == "ℤ-Module(1, ℝ(0.303644…))"
 
     x = M.gen(1)
-    assert str(x) == "ℝ(0.303644…)"
-
-    y = x + 2*x
-    assert str(y) == "3*ℝ(0.303644…)"
-
-    z = x*x + y;
-    assert str(z) == "3*ℝ(0.303644…) + ℝ(0.303644…)*ℝ(0.303644…)"
-
-    assert str(z.module()) == "ℤ-Module(1, ℝ(0.303644…), ℝ(0.303644…)*ℝ(0.303644…))"
+    # there used to be a segfault in calling module() on a temporary
+    assert str((x*x).module()) == "ℤ-Module(ℝ(0.303644…)*ℝ(0.303644…), 1, ℝ(0.303644…))"
 
 if __name__ == '__main__': sys.exit(pytest.main(sys.argv))
+

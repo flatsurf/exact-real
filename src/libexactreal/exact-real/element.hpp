@@ -79,7 +79,7 @@ class Element : boost::additive<Element<Ring>>,
   explicit operator bool() const;
   explicit operator double() const;
 
-  const std::shared_ptr<const Module<Ring>>& module() const;
+  const std::shared_ptr<const Module<Ring>> module() const;
   Element& promote(const std::shared_ptr<const Module<Ring>>& module);
 
   template <typename R>
