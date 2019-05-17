@@ -6,6 +6,8 @@ make check || (cat `find -name test-suite.log`; false)
 
 set +x
 
+mkdir -p ~/.ssh
+
 # We collect test results in an Airspeed Velocity database if we have the necessary credentials
 if echo "$ASV_SECRET_KEY" | base64 -d > ~/.ssh/id_rsa; then
   # We need setuptools until https://github.com/conda-forge/asv-feedstock/pull/10 has been resolved
