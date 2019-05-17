@@ -26,6 +26,7 @@
 
 #include "exact-real/arb.hpp"
 #include "exact-real/arf.hpp"
+#include "exact-real/detail/unique_factory.hpp"
 #include "exact-real/real_number.hpp"
 
 using namespace exactreal;
@@ -43,7 +44,6 @@ unsigned int nextSeed = 1337;
 // A random real number in [0, 1]
 class RandomRealNumber final : public RealNumber {
  public:
-  RandomRealNumber() : RandomRealNumber(nextSeed++) {}
   RandomRealNumber(unsigned int seed) : seed(seed) {}
 
   // Creates a random Arf from digits in base 2.
@@ -77,14 +77,6 @@ class RandomRealNumber final : public RealNumber {
     return Arf(os.str(), 2, exp);
   }
 
-  bool operator==(const RealNumber& rhs) const override {
-    if (typeid(rhs) == typeid(*this)) {
-      return this->seed == static_cast<const RandomRealNumber*>(&rhs)->seed;
-    } else {
-      return false;
-    }
-  }
-
   operator std::optional<mpq_class>() const override {
     return {};
   }
@@ -107,5 +99,8 @@ class RandomRealNumber final : public RealNumber {
 }  // namespace
 
 namespace exactreal {
-shared_ptr<RealNumber> RealNumber::random() { return make_shared<RandomRealNumber>(); }
+shared_ptr<RealNumber> RealNumber::random() {
+  static UniqueFactory<RandomRealNumber, unsigned int> factory;
+  return factory.get(nextSeed++, [](const unsigned int& seed) { return new RandomRealNumber(seed); });
+}
 }  // namespace exactreal

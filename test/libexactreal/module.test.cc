@@ -35,7 +35,7 @@ using std::string;
 using std::vector;
 
 TEST(ModuleZZ, Create) {
-  auto trivial = Module<IntegerRingTraits>::make();
+  auto trivial = Module<IntegerRingTraits>::trivial;
   EXPECT_EQ(trivial->rank(), 0);
   EXPECT_EQ(lexical_cast<string>(*trivial), "ℤ-Module()");
 
@@ -45,15 +45,20 @@ TEST(ModuleZZ, Create) {
 }
 
 TEST(ModuleZZ, Multiplication) {
-  auto m = Module<IntegerRingTraits>::make({RealNumber::rational(1), RealNumber::random()});
+  auto m = Module<IntegerRingTraits>::make({RealNumber::random(), RealNumber::rational(1)});
   auto n = Module<IntegerRingTraits>::make({RealNumber::rational(1)});
 
   auto one = n->gen(0);
-  auto rnd = m->gen(1);
+  auto rnd = m->gen(0);
 
   EXPECT_EQ((rnd * one).module()->rank(), 2);
+  // This might not hold, as the order of the generators in the two modules might be different
+  // EXPECT_EQ((rnd * one).module(), rnd.module());
+  EXPECT_EQ((rnd * one).module(), (one * rnd).module());
   EXPECT_EQ((rnd * rnd).module()->rank(), 3);
+  EXPECT_EQ((rnd * rnd).module(), (rnd * rnd).module());
   EXPECT_EQ((rnd * rnd * rnd).module()->rank(), 4);
+  EXPECT_NE((rnd * rnd * rnd).module(), (rnd * rnd).module());
 }
 
 #include "main.hpp"

@@ -24,7 +24,6 @@
 #include <map>
 #include <set>
 
-#include "exact-real/detail/smart_less.hpp"
 #include "exact-real/element.hpp"
 #include "exact-real/module.hpp"
 #include "exact-real/real_number.hpp"
@@ -139,7 +138,7 @@ Element<Ring>& Element<Ring>::operator*=(const Element<Ring>& rhs) {
     }
   }
 
-  map<shared_ptr<const RealNumber>, typename Ring::ElementClass, smart_less<shared_ptr<const RealNumber>>> products;
+  map<shared_ptr<const RealNumber>, typename Ring::ElementClass> products;
 
   for (size_t i = 0; i < impl->parent->basis().size(); i++) {
     for (size_t j = 0; j < rhs.impl->parent->basis().size(); j++) {

@@ -47,7 +47,7 @@ nobase_include_HEADERS =                                  \
     exact-real/cppyy.hpp
 
 noinst_HEADERS =                                          \
-		exact-real/detail/smart_less.hpp                      \
+		exact-real/detail/unique_factory.hpp                  \
 		exact-real/detail/smart_ostream.hpp
 
 $(builddir)/exact-real/exact-real.hpp: $(srcdir)/exact-real/exact-real.hpp.in Makefile

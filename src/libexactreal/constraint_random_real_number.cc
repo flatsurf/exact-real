@@ -26,6 +26,7 @@
 #include <boost/random/uniform_int_distribution.hpp>
 #include <sstream>
 
+#include "exact-real/detail/unique_factory.hpp"
 #include "exact-real/real_number.hpp"
 #include "exact-real/yap/arf.hpp"
 
@@ -45,7 +46,7 @@ unsigned int nextSeed = 1337;
 // A random real number in [a, b]
 class ConstraintRandomRealNumber final : public RealNumber {
  public:
-  ConstraintRandomRealNumber(const Arf& a, const Arf& b) : inner(RealNumber::random()) {
+  ConstraintRandomRealNumber(const Arf& a, const Arf& b, unsigned int seed) : inner(RealNumber::random()) {
     if (a >= b) {
       throw std::logic_error("interval must have an interior");
     }
@@ -83,7 +84,7 @@ class ConstraintRandomRealNumber final : public RealNumber {
 
     gmp_randstate_t rnd;
     gmp_randinit_default(rnd);
-    gmp_randseed_ui(rnd, nextSeed++);
+    gmp_randseed_ui(rnd, seed);
     mpz_urandomm(mantissa.get_mpz_t(), rnd, length.get_mpz_t());
     gmp_randclear(rnd);
 
@@ -121,15 +122,6 @@ class ConstraintRandomRealNumber final : public RealNumber {
     return ret;
   }
 
-  bool operator==(const RealNumber& rhs) const override {
-    if (typeid(rhs) == typeid(*this)) {
-      return this->initial == static_cast<const ConstraintRandomRealNumber*>(&rhs)->initial &&
-             *(this->inner) == *(static_cast<const ConstraintRandomRealNumber*>(&rhs)->inner);
-    } else {
-      return false;
-    }
-  }
-
   explicit operator std::optional<mpq_class>() const override {
     return {};
   }
@@ -154,7 +146,10 @@ shared_ptr<RealNumber> RealNumber::random(const Arf& lower, const Arf& upper) {
   if (lower == 0 && upper == 1) {
     return RealNumber::random();
   } else {
-    return make_shared<ConstraintRandomRealNumber>(lower, upper);
+    static UniqueFactory<ConstraintRandomRealNumber, Arf, Arf, unsigned int> factory;
+    return factory.get(lower, upper, nextSeed++, [](const Arf& l, const Arf& u, const unsigned int& seed) {
+      return new ConstraintRandomRealNumber(l, u, seed);
+    });
   }
 }
 

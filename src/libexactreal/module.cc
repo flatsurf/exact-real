@@ -23,7 +23,7 @@
 #include <boost/range/adaptor/transformed.hpp>
 #include <set>
 
-#include "exact-real/detail/smart_less.hpp"
+#include "exact-real/detail/unique_factory.hpp"
 #include "exact-real/element.hpp"
 #include "exact-real/integer_ring_traits.hpp"
 #include "exact-real/module.hpp"
@@ -34,7 +34,6 @@
 using namespace exactreal;
 using boost::adaptors::transformed;
 using std::is_same_v;
-using std::make_shared;
 using std::set;
 using std::shared_ptr;
 using std::string;
@@ -69,26 +68,42 @@ class ModuleImplementation {
 
 template <typename Ring>
 class ModuleImplementationWithoutParameters : public ModuleImplementation<Ring> {
+  using typename ModuleImplementation<Ring>::Basis;
+
  public:
   using ModuleImplementation<Ring>::ModuleImplementation;
+
+  using Factory = UniqueFactory<Module<Ring>, Basis>;
+  static Factory factory;
 };
 
 template <typename Ring>
+typename ModuleImplementationWithoutParameters<Ring>::Factory ModuleImplementationWithoutParameters<Ring>::factory = typename ModuleImplementationWithoutParameters<Ring>::Factory();
+
+template <typename Ring>
 class ModuleImplementationWithParameters : public ModuleImplementation<Ring> {
+  using typename ModuleImplementation<Ring>::Basis;
+
  public:
   ModuleImplementationWithParameters() : ModuleImplementation<Ring>(), parameters(&trivial) {}
 
   static typename Ring::Parameters trivial;
 
-  explicit ModuleImplementationWithParameters(const typename ModuleImplementation<Ring>::Basis& basis,
+  explicit ModuleImplementationWithParameters(const Basis& basis,
                                               const typename Ring::Parameters& parameters)
       : ModuleImplementation<Ring>(basis), parameters(&parameters) {}
 
   typename Ring::Parameters const* parameters;
+
+  using Factory = UniqueFactory<Module<Ring>, Basis, const typename Ring::Parameters&>;
+  static Factory factory;
 };
 
 template <typename Ring>
 typename Ring::Parameters ModuleImplementationWithParameters<Ring>::trivial = typename Ring::Parameters();
+
+template <typename Ring>
+typename ModuleImplementationWithParameters<Ring>::Factory ModuleImplementationWithParameters<Ring>::factory = typename ModuleImplementationWithParameters<Ring>::Factory();
 
 }  // namespace
 
@@ -106,16 +121,13 @@ template <typename Ring>
 Module<Ring>::Module(spimpl::unique_impl_ptr<Module<Ring>::Implementation>&& impl) : impl(std::move(impl)) {}
 
 template <typename Ring>
-shared_ptr<Module<Ring>> Module<Ring>::make() {
-  return shared_ptr<Module<Ring>>(new Module<Ring>(spimpl::make_unique_impl<Module<Ring>::Implementation>()));
-}
-
-template <typename Ring>
 template <typename RingWithoutParameters>
 shared_ptr<Module<Ring>> Module<Ring>::make(const Basis& basis) {
   assertSame<Ring, RingWithoutParameters>();
   static_assert(!is_parametrized_v<Ring>, "constructor is only valid for rings without parameters");
-  return shared_ptr<Module<Ring>>(new Module<Ring>(spimpl::make_unique_impl<Module<Ring>::Implementation>(basis)));
+  return Module<Ring>::Implementation::factory.get(basis, [](const Basis& gens) {
+    return new Module<Ring>(spimpl::make_unique_impl<Module<Ring>::Implementation>(gens));
+  });
 }
 
 template <typename Ring>
@@ -123,7 +135,9 @@ template <typename RingWithParameters>
 shared_ptr<Module<Ring>> Module<Ring>::make(const Basis& basis, const typename RingWithParameters::Parameters& parameters) {
   assertSame<Ring, RingWithParameters>();
   static_assert(is_parametrized_v<Ring>, "constructor is only valid for rings with parameters");
-  return shared_ptr<Module<Ring>>(new Module<Ring>(spimpl::make_unique_impl<Module<Ring>::Implementation>(basis, parameters)));
+  return Module<Ring>::Implementation::factory.get(basis, parameters, [](const Basis& gens, const typename RingWithParameters::Parameters& params) {
+    return new Module<Ring>(spimpl::make_unique_impl<Module<Ring>::Implementation>(gens, params));
+  });
 }
 
 template <typename Ring>
@@ -151,6 +165,12 @@ const typename RingWithParameters::Parameters& Module<Ring>::ring() const {
 }
 
 template <typename Ring>
+bool Module<Ring>::operator==(const Module<Ring>& rhs) const {
+  // Since this is a unique parent, there can be no duplicates and it sufficies to compare pointers.
+  return this == &rhs;
+}
+
+template <typename Ring>
 shared_ptr<const Module<Ring>> Module<Ring>::span(const shared_ptr<const Module<Ring>>& m, const shared_ptr<const Module<Ring>>& n) {
   // When one of the modules is trivial, we do not need to worry about the parameters but just return the other
   if (m->basis().size() == 0) {
@@ -171,11 +191,8 @@ shared_ptr<const Module<Ring>> Module<Ring>::span(const shared_ptr<const Module<
     throw std::logic_error("Module::span() not implemented when a new module would need to be constructed");
   }
 
-  // This is a very naive O(n²) implementation. Doing something smart here is a
-  // little bit more work since basis() is a vector of unique_ptr that we can
-  // not copy & sort easily. I guess, the module should keep a set of pointers
-  // to its generators around so that we can efficiently query whether a real
-  // is in the that generating set.
+  // This is a very naive O(n²) implementation. Doing something smart here used
+  // to be very difficult due to some unique_ptr mess.
   for (auto& mgen : m->basis()) {
     if (find_if(n->basis().begin(), n->basis().end(), [&](const auto& gen) { return *gen == *mgen; }) == n->basis().end()) {
       for (auto& ngen : n->basis()) {
@@ -190,7 +207,7 @@ shared_ptr<const Module<Ring>> Module<Ring>::span(const shared_ptr<const Module<
 }
 
 template <typename Ring>
-const shared_ptr<const Module<Ring>> Module<Ring>::trivial = Module<Ring>::make();
+const shared_ptr<const Module<Ring>> Module<Ring>::trivial = std::shared_ptr<Module<Ring>>(new Module<Ring>(spimpl::make_unique_impl<Module<Ring>::Implementation>()));
 
 template <typename R>
 std::ostream& operator<<(std::ostream& os, const Module<R>& self) {

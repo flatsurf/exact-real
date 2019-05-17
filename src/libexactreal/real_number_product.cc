@@ -23,7 +23,7 @@
 #include <set>
 #include <vector>
 
-#include "exact-real/detail/smart_less.hpp"
+#include "exact-real/detail/unique_factory.hpp"
 #include "exact-real/real_number.hpp"
 #include "exact-real/yap/arf.hpp"
 
@@ -38,19 +38,7 @@ namespace {
 // A product of transcendental reals
 class RealNumberProduct final : public RealNumber {
  public:
-  template <typename Iterable>
-  RealNumberProduct(const Iterable& factors) {
-    for (auto& factor : factors) {
-      assert(!static_cast<optional<mpq_class>>(*factor) && "All factors must be transcendental");
-      if (typeid(factor) == typeid(*this)) {
-        for (auto& f : static_cast<const RealNumberProduct*>(&*factor)->factors) {
-          this->factors.insert(f);
-        }
-      } else {
-        this->factors.insert(factor);
-      }
-    }
-  }
+  RealNumberProduct(const multiset<shared_ptr<const RealNumber>>& factors) : factors(factors) {}
 
   RealNumber const& operator>>(std::ostream& os) const override {
     bool first = true;
@@ -60,14 +48,6 @@ class RealNumberProduct final : public RealNumber {
       os << *factor;
     }
     return *this;
-  }
-
-  bool operator==(const RealNumber& rhs) const override {
-    if (typeid(rhs) == typeid(*this)) {
-      return smart_eq(this->factors, static_cast<const RealNumberProduct*>(&rhs)->factors);
-    } else {
-      return false;
-    }
   }
 
   explicit operator std::optional<mpq_class>() const override {
@@ -87,8 +67,7 @@ class RealNumberProduct final : public RealNumber {
     return ret;
   }
 
- private:
-  multiset<shared_ptr<const RealNumber>, smart_less<shared_ptr<const RealNumber>>> factors;
+  multiset<shared_ptr<const RealNumber>> factors;
 };
 }  // namespace
 
@@ -98,10 +77,21 @@ shared_ptr<const RealNumber> RealNumber::operator*(const RealNumber& rhs) const 
   if (rational) {
     return rhs * *this;
   }
-  vector<shared_ptr<const RealNumber>> gens;
-  gens.push_back(this->shared_from_this());
-  gens.push_back(rhs.shared_from_this());
-  return make_shared<RealNumberProduct>(gens);
+
+  multiset<shared_ptr<const RealNumber>> factors;
+  for (auto factor : {this->shared_from_this(), rhs.shared_from_this()}) {
+    assert(!static_cast<optional<mpq_class>>(*factor) && "All factors must be transcendental");
+    if (typeid(factor) == typeid(std::shared_ptr<const RealNumberProduct>)) {
+      for (auto& f : static_cast<const RealNumberProduct*>(&*factor)->factors) {
+        factors.insert(f);
+      }
+    } else {
+      factors.insert(factor);
+    }
+  }
+
+  static UniqueFactory<RealNumberProduct, multiset<shared_ptr<const RealNumber>>> factory;
+  return factory.get(factors, [](const multiset<shared_ptr<const RealNumber>>& fs) { return new RealNumberProduct(fs); });
 }
 
 }  // namespace exactreal
