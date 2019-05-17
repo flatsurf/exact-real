@@ -293,7 +293,7 @@ Element<Ring>::operator double() const {
 }
 
 template <typename Ring>
-const shared_ptr<const Module<Ring>>& Element<Ring>::module() const {
+const shared_ptr<const Module<Ring>> Element<Ring>::module() const {
   return impl->parent;
 }
 
