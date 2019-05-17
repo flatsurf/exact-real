@@ -102,6 +102,8 @@ class UniqueFactory {
   }
 
   bool eq(const WeakKey& a, const WeakKey& b) {
+    // The use of tuple here is probably not a good idea as it has to invoke
+    // copy constructors on everything which might be expensive.
     return std::apply([](auto&&... args) { return tuple(target(std::forward<decltype(args)>(args))...); }, a) ==
            std::apply([](auto&&... args) { return tuple(target(std::forward<decltype(args)>(args))...); }, b);
   }
