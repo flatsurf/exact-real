@@ -40,6 +40,20 @@ using std::shared_ptr;
 using std::vector;
 
 namespace {
+// Forward a smart pointers < to the underlying type
+template <class P>
+struct smart_less {
+  constexpr bool operator()(const P& lhs, const P& rhs) const {
+    if (lhs == nullptr) {
+      return rhs == nullptr;
+    }
+    if (rhs == nullptr) {
+      return false;
+    }
+    return *lhs < *rhs;
+  }
+};
+
 template <typename Ring>
 class ElementImplementation {
  public:
@@ -138,7 +152,9 @@ Element<Ring>& Element<Ring>::operator*=(const Element<Ring>& rhs) {
     }
   }
 
-  map<shared_ptr<const RealNumber>, typename Ring::ElementClass> products;
+  // Order coefficients by size so we get a reproducible order of the
+  // generators (helps with reproducible testing.)
+  map<shared_ptr<const RealNumber>, typename Ring::ElementClass, smart_less<shared_ptr<const RealNumber>>> products;
 
   for (size_t i = 0; i < impl->parent->basis().size(); i++) {
     for (size_t j = 0; j < rhs.impl->parent->basis().size(); j++) {
