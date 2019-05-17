@@ -10,6 +10,11 @@
 We build and release this package with every push to the master branch. These releases are considered unstable and highly
 experimental. There are no stable releases yet.
 
+This repository contains two related projects:
+
+* **libexactreal** a C++ library
+* **pyexactreal** a Python wrapper for **libexactreal**
+
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Nightly Build](https://img.shields.io/badge/recipe-libexactreal-green.svg)](https://anaconda.org/flatsurf/libexactreal) | [![Conda Downloads](https://img.shields.io/conda/dn/flatsurf/libexactreal.svg)](https://anaconda.org/flatsurf/libexactreal) | [![Conda Version](https://img.shields.io/conda/vn/flatsurf/libexactreal.svg)](https://anaconda.org/flatsurf/libexactreal) | [![Conda Platforms](https://img.shields.io/conda/pn/flatsurf/libexactreal.svg)](https://anaconda.org/flatsurf/libexactreal) |
