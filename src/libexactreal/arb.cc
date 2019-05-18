@@ -26,6 +26,7 @@
 
 #include "exact-real/arb.hpp"
 #include "exact-real/arf.hpp"
+#include "exact-real/yap/arb.hpp"
 
 using eantic::renf_elem_class;
 using std::ostream;
@@ -174,6 +175,26 @@ std::optional<bool> Arb::operator>(const long long rhs) const noexcept { return 
 std::optional<bool> Arb::operator<=(const long long rhs) const noexcept { return *this <= Arb(rhs); }
 
 std::optional<bool> Arb::operator>=(const long long rhs) const noexcept { return *this >= Arb(rhs); }
+
+std::optional<bool> Arb::operator<(const mpq_class& rhs) const noexcept {
+  Arb lhs = (*this * Arb(rhs.get_den()))(ARF_PREC_EXACT);
+  return lhs < Arb(rhs.get_num());
+}
+
+std::optional<bool> Arb::operator>(const mpq_class& rhs) const noexcept {
+  Arb lhs = (*this * Arb(rhs.get_den()))(ARF_PREC_EXACT);
+  return lhs > Arb(rhs.get_num());
+}
+
+std::optional<bool> Arb::operator<=(const mpq_class& rhs) const noexcept {
+  Arb lhs = (*this * Arb(rhs.get_den()))(ARF_PREC_EXACT);
+  return lhs <= Arb(rhs.get_num());
+}
+
+std::optional<bool> Arb::operator>=(const mpq_class& rhs) const noexcept {
+  Arb lhs = (*this * Arb(rhs.get_den()))(ARF_PREC_EXACT);
+  return lhs >= Arb(rhs.get_num());
+}
 
 Arb& Arb::operator=(const Arb& rhs) noexcept {
   arb_set(arb_t(), rhs.arb_t());

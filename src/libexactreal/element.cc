@@ -71,16 +71,30 @@ class ElementImplementation {
   vector<typename Ring::ElementClass> coefficients;
 };
 
-template <typename LHS, typename RHS>
-bool lt_assuming_ne(const LHS& lhs, const RHS& rhs) {
+template <typename Ring, typename RHS>
+bool lt(const Element<Ring>& lhs, const RHS& rhs) {
+  if (lhs == rhs)
+    return false;
   for (long prec = 64;; prec *= 2) {
     Arb self = lhs.arb(prec);
-    Arb other = rhs.arb(prec);
-    auto lt = self < other;
+    std::optional<bool> lt;
+    if constexpr (std::is_same_v<RHS, Element<Ring>> || std::is_same_v<RHS, RealNumber>) {
+      Arb other = rhs.arb(prec);
+      lt = self < other;
+    } else {
+      lt = self < rhs;
+    }
     if (lt.has_value()) {
       return *lt;
     }
   }
+}
+
+template <typename Ring, typename RHS>
+bool gt(const Element<Ring>& lhs, const RHS& rhs) {
+  if (lhs == rhs)
+    return false;
+  return !(lhs < rhs);
 }
 
 }  // namespace
@@ -250,18 +264,73 @@ std::optional<typename Ring::ElementClass> Element<Ring>::operator/(const Elemen
 
 template <typename Ring>
 bool Element<Ring>::operator<(const Element<Ring>& rhs) const {
-  if (this->operator==(rhs)) {
-    return false;
-  }
-  return lt_assuming_ne(*this, rhs);
+  return lt(*this, rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator<(const mpq_class& rhs) const {
+  return lt(*this, rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator>(const mpq_class& rhs) const {
+  return gt(*this, rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator<(const mpz_class& rhs) const {
+  return lt(*this, rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator>(const mpz_class& rhs) const {
+  return gt(*this, rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator<(long long rhs) const {
+  return lt(*this, rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator>(long long rhs) const {
+  return gt(*this, rhs);
 }
 
 template <typename Ring>
 bool Element<Ring>::operator<(const RealNumber& rhs) const {
-  if (this->operator==(rhs)) {
-    return false;
+  return lt(*this, rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator>(const RealNumber& rhs) const {
+  return gt(*this, rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator==(const mpz_class& rhs) const {
+  return *this == mpq_class(rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator==(long long rhs) const {
+  return *this == mpq_class(boost::lexical_cast<std::string>(rhs));
+}
+
+template <typename Ring>
+bool Element<Ring>::operator==(const mpq_class& rhs) const {
+  for (size_t i = 0; i < module()->rank(); i++) {
+    auto rational = static_cast<std::optional<mpq_class>>(*module()->basis()[i]);
+    if (rational) {
+      if (*rational * impl->coefficients[i] != rhs)
+        return false;
+    } else {
+      if (impl->coefficients[i])
+        return false;
+    }
   }
-  return lt_assuming_ne(*this, rhs);
+
+  return true;
 }
 
 template <typename Ring>

@@ -105,6 +105,10 @@ class Arb : yap::Terminal<Arb, yap::ArbExpr> {
   std::optional<bool> operator>(const long long) const noexcept;
   std::optional<bool> operator<=(const long long) const noexcept;
   std::optional<bool> operator>=(const long long) const noexcept;
+  std::optional<bool> operator<(const mpq_class&) const noexcept;
+  std::optional<bool> operator>(const mpq_class&) const noexcept;
+  std::optional<bool> operator<=(const mpq_class&) const noexcept;
+  std::optional<bool> operator>=(const mpq_class&) const noexcept;
   std::optional<bool> operator==(const Arb&) const noexcept;
   std::optional<bool> operator!=(const Arb&) const noexcept;
 

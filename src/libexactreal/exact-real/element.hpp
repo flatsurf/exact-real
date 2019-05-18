@@ -39,6 +39,9 @@ class Element : boost::additive<Element<Ring>>,
                 boost::multipliable<Element<Ring>>,
                 boost::totally_ordered<Element<Ring>>,
                 boost::totally_ordered<Element<Ring>, RealNumber>,
+                boost::totally_ordered<Element<Ring>, mpq_class>,
+                boost::totally_ordered<Element<Ring>, mpz_class>,
+                boost::totally_ordered<Element<Ring>, long long>,
                 boost::multiplicative<Element<Ring>, typename Ring::ElementClass>,
                 std::conditional_t<std::is_same<typename Ring::ElementClass, mpz_class>::value, boost::blank,
                                    boost::multiplicative<Element<Ring>, mpz_class>>,
@@ -75,6 +78,19 @@ class Element : boost::additive<Element<Ring>>,
 
   bool operator==(const RealNumber&) const;
   bool operator<(const RealNumber&) const;
+  bool operator>(const RealNumber&) const;
+
+  bool operator==(const mpq_class&) const;
+  bool operator<(const mpq_class&) const;
+  bool operator>(const mpq_class&) const;
+
+  bool operator==(const mpz_class&) const;
+  bool operator<(const mpz_class&) const;
+  bool operator>(const mpz_class&) const;
+
+  bool operator==(long long) const;
+  bool operator<(long long) const;
+  bool operator>(long long) const;
 
   explicit operator bool() const;
   explicit operator double() const;
