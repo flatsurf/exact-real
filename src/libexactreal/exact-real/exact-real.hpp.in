@@ -24,8 +24,8 @@
  * be safely shipped to the client, i.e., not the ones in config.h
  */
 
-#ifndef LIBMODEANTIC_MODEANTIC_HPP
-#define LIBMODEANTIC_MODEANTIC_HPP
+#ifndef LIBEXACTREAL_EXACTREAL_HPP
+#define LIBEXACTREAL_EXACTREAL_HPP
 
 #include <arb.h>
 
@@ -62,4 +62,4 @@ constexpr bool false_t = false;
 
 #endif  // __CLING__
 
-#endif  // LIBMODEANTIC_MODEANTIC_HPP
+#endif  // LIBEXACTREAL_EXACTREAL_HPP
