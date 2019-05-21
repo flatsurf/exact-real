@@ -1,32 +1,32 @@
 {
-    "version": 1,
-    "project": "exact-real",
-    "project_url": "https://github.com/flatsurf/exact-real",
-    "show_commit_url": "https://github.com/flatsurf/exact-real",
-    "repo": ".",
-    "environment_type": "conda",
-    "matrix": {
-      "libtool": [],
-      "make": [],
-      "automake": [],
-      "Cython": [],
-      "boost-cpp": [],
-      "e-antic": [],
-      "arb": [],
-      "gmp": [],
-      "gtest": [],
-      "benchmark": []
-    },
-    "conda_channels": ["flatsurf", "conda-forge", "default"],
-    "build_command": [
-	"./recipe/configure.sh",
-	"./recipe/build_.sh"
-    ],
-    "install_command": [],
-    "uninstall_command": [],
-    "benchmark_dir": "test/asv",
-    "env_dir": ".asv/env",
-    "results_dir": ".asv/results",
-    "html_dir": ".asv/html"
+  "version": 1,
+  "project": "exact-real",
+  "project_url": "https://github.com/flatsurf/exact-real",
+  "show_commit_url": "https://github.com/flatsurf/exact-real/commit/",
+  "repo": ".",
+  "environment_type": "conda",
+  "matrix": {
+    "libtool": [],
+    "make": [],
+    "automake": [],
+    "Cython": [],
+    "boost-cpp": [],
+    "e-antic": [],
+    "arb": [],
+    "gmp": [],
+    "gtest": [],
+    "benchmark==1.4.1": []
+  },
+  "conda_channels": ["flatsurf", "conda-forge", "default"],
+  "build_command": [
+    "./recipe/configure.sh",
+    "./recipe/build_.sh"
+  ],
+  "install_command": [],
+  "uninstall_command": [],
+  "benchmark_dir": "test/asv",
+  "env_dir": ".asv/env",
+  "results_dir": ".asv/results",
+  "html_dir": ".asv/html"
 }
 
