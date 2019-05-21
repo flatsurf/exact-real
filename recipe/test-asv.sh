@@ -51,7 +51,7 @@ popd
 asv gh-pages --no-push
 if test "x$have_asv" = "xyes"; then
   # We cannot push to origin since the outer repository has been cloned with https://github.com/…
-  git push git@github.com:flatsurf/flatsurf-asv.git gh-pages:gh-pages -f
+  git push git@github.com:flatsurf/exact-real-asv.git gh-pages:gh-pages -f
 fi
 
 popd
