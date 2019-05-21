@@ -14,11 +14,11 @@
     "e-antic": [],
     "arb": [],
     "gmp": [],
-    "gtest": []
+    "gtest": [],
+    "benchmark==1.4.1": []
   },
   "conda_channels": ["flatsurf", "conda-forge", "default"],
   "build_command": [
-    "conda install -c conda-forge benchmark",
     "./recipe/configure.sh",
     "./recipe/build_.sh"
   ],

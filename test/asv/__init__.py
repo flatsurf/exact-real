@@ -22,9 +22,8 @@
 # perform over time.
 
 # If you want to use this module, make sure NOT to add the conda-forge package
-# 'benchmark' (google benchmark) to your asv.conf.json matrix. The benchmark
-# key is used internally by asv. Instead, add "conda install -c conda-forge
-# benchmark" to your build_commands.
+# 'benchmark' (google benchmark) to your asv.conf.json matrix as that is a
+# reserved key in ASV. Instead add an exact pin such as 'benchmark==1.4.1'.
 
 import json
 import glob
