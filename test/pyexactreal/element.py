@@ -34,5 +34,28 @@ def test_module():
     # there used to be a segfault in calling module() on a temporary
     assert str((x*x).module()) == "ℤ-Module(ℝ(0.303644…)*ℝ(0.303644…), ℝ(0.303644…), 1)"
 
+def test_multiplication():
+    from pyexactreal import exactreal
+    RealNumber = exactreal.RealNumber
+    Module = exactreal.NumberFieldModule
+    NumberField = exactreal.NumberField
+
+    # The following came up when doing arithmetic between renf_elem_class and
+    # Element<NumberFieldTraits> when trying to construct a hexagon with random side
+    # lengths
+    K = NumberField("x^2 - 3", "x", "1.73 +/- 0.1")
+    x = K.gen()
+
+    M = Module(K, RealNumber.rational(1), RealNumber.random(), RealNumber.random())
+    one = M.gen(0)
+    μ = M.gen(1)
+    ν = M.gen(2)
+
+    assert 2*one == one + one
+    assert 0*one == one - one
+    assert x*μ == μ*x
+    assert 2*one + μ - ν - 2*one - μ + ν == 0
+    assert 0*one + x*μ + x*ν - 0*one - x*ν - x*μ == 0
+
 if __name__ == '__main__': sys.exit(pytest.main(sys.argv))
 
