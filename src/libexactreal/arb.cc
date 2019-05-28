@@ -109,6 +109,12 @@ bool Arb::is_exact() const noexcept { return arb_is_exact(arb_t()); }
 
 bool Arb::is_finite() const noexcept { return arb_is_finite(arb_t()); }
 
+Arb Arb::operator-() const noexcept {
+  Arb ret;
+  arb_neg(ret.arb_t(), arb_t());
+  return ret;
+}
+
 std::optional<bool> Arb::operator<(const Arb& rhs) const noexcept {
   if (arb_lt(arb_t(), rhs.arb_t())) {
     return true;
