@@ -91,6 +91,8 @@ class Arb : yap::Terminal<Arb, yap::ArbExpr> {
   Arb& operator=(int) noexcept;
   Arb& operator=(long long) noexcept;
 
+  Arb operator-() const noexcept;
+
   // The comparison operators return a value if the relation is true for all
   // elements in the ball described by this element, e.g., x < y, returns true
   // if the relation is true for every element in x and y, they return false if

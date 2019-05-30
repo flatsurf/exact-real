@@ -45,6 +45,13 @@ TEST(ArbTest, Relations) {
   ASSERT_TRUE((x <= y) && !*(x >= y));
 }
 
+TEST(ArbTest, UnaryMinus) {
+  Arb x(1);
+
+  ASSERT_TRUE(x == -(-x) && *(x == -(-x)));
+  ASSERT_TRUE(x == -x && !*(x == -x));
+}
+
 TEST(ArbTest, IsExact) {
   ASSERT_TRUE(Arb(mpq_class(1, 2), 2).is_exact());
   ASSERT_FALSE(Arb(mpq_class(1, 3), 2).is_exact());
