@@ -191,7 +191,7 @@ TEST(ElementQQ, Scalars) {
 }
 
 TEST(ElementNF, Scalars) {
-  renf_class K("a^2 - 2", "a", "1.41 +/- 0.1", 64);
+  auto K = renf_class::make("a^2 - 2", "a", "1.41 +/- 0.1", 64);
   auto m = Module<NumberFieldTraits>::make({RealNumber::rational(1), RealNumber::random()}, K);
 
   Element<NumberFieldTraits> elements[]{Element(m, 0), Element(m, 1)};
