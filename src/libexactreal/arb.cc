@@ -75,8 +75,8 @@ Arb::Arb(const renf_elem_class& renf, const mp_limb_signed_t precision) noexcept
   if (renf.is_fmpq()) {
     arb_set_fmpq(arb_t(), renf.fmpq_t(), precision);
   } else {
-    renf_refine_embedding(renf.parent().renf_t(), precision);
-    renf_elem_set_evaluation(renf.renf_elem_t(), renf.parent().renf_t(), precision);
+    renf_refine_embedding(renf.parent()->renf_t(), precision);
+    renf_elem_set_evaluation(renf.renf_elem_t(), renf.parent()->renf_t(), precision);
     arb_set(arb_t(), renf.renf_elem_t()->emb);
   }
 }

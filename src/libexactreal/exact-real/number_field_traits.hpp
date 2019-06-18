@@ -21,6 +21,8 @@
 #ifndef LIBEXACTREAL_NUMBER_FIELD_HPP
 #define LIBEXACTREAL_NUMBER_FIELD_HPP
 
+#include <memory>
+
 #include "e-antic/renfxx_fwd.h"
 #include "exact-real/exact-real.hpp"
 #include "exact-real/forward.hpp"
@@ -30,7 +32,7 @@ namespace exactreal {
 struct NumberFieldTraits {
   typedef eantic::renf_elem_class ElementClass;
   static constexpr bool isField = true;
-  typedef eantic::renf_class Parameters;
+  typedef std::shared_ptr<const eantic::renf_class> Parameters;
   static Arb arb(const ElementClass& x, long prec);
 };
 

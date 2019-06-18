@@ -58,7 +58,7 @@ struct ArbAssignTransformation : AssignTransformation<Arb, ArbAssignTransformati
   template <boost::yap::expr_kind tag>
   void binary(Arb&& rhs) {
     static_assert(precisionBound,
-                  "Expression can not be evaluated. This binary operator requires the precision to be bound. Dod you "
+                  "Expression can not be evaluated. This binary operator requires the precision to be bound. Did you "
                   "forget to wrap your expression in a (…)(64) to set the precision explicitly?");
     if constexpr (tag == boost::yap::expr_kind::plus) {
       arb_add(this->value.arb_t(), this->value.arb_t(), rhs.arb_t(), *precision);
