@@ -119,5 +119,7 @@ def makeModule(traits, gens, ring=None):
 exactreal.ZZModule = lambda *gens: makeModule(exactreal.IntegerRingTraits, gens)
 exactreal.QQModule = lambda *gens: makeModule(exactreal.RationalFieldTraits, gens)
 exactreal.NumberFieldModule = lambda field, *gens: makeModule(exactreal.NumberFieldTraits, gens, field)
-exactreal.NumberField = cppyy.gbl.eantic.renf_class.make
-exactreal.NumberFieldElement = cppyy.gbl.eantic.renf_elem_class
+
+from pyeantic import eantic
+exactreal.NumberField = eantic.renf
+exactreal.NumberFieldElement = eantic.renf_elem

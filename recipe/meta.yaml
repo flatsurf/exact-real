@@ -68,6 +68,7 @@ outputs:
       run:
         - libexactreal =={{ version }}
         # cppyy, not packaged in conda-forge yet
+        - pyeantic
     # We cannot test that that the import works since cppyy is not on conda-forge yet
     #test:
     #  imports:
