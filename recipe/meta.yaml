@@ -67,12 +67,11 @@ outputs:
         - gmp
       run:
         - libexactreal =={{ version }}
-        # cppyy, not packaged in conda-forge yet
+        - cppyy
         - pyeantic
-    # We cannot test that that the import works since cppyy is not on conda-forge yet
-    #test:
-    #  imports:
-    #    - pyexactreal
+    test:
+      imports:
+        - pyexactreal
 
 about:
   home: https://github.com/flatsurf/exact-real

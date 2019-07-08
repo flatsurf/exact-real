@@ -30,13 +30,6 @@ conda create -n exactreal -c flatsurf libexactreal pyexactreal
 conda activate exactreal
 ```
 
-The Python wrapper `pyexactreal` is based on [cppyy](https://cppyy.readthedocs.io/) which is [not available on conda-forge yet](https://bitbucket.org/wlav/cppyy/issues/55/package-for-conda-forge). Therefore, to use the Python wrapper, you need to install cppyy from PyPI:
-
-```
-conda install pip
-pip install cppyy
-```
-
 ## Run with binder in the Cloud
 
 You can try out the projects in this repository in a very limited environment online by clicking the following links:
