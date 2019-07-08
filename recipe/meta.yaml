@@ -46,6 +46,7 @@ requirements:
     - gtest
     - benchmark
     - pytest
+    - pyeantic
     - cppyy
   run_exports:
     - libexactreal {{ version }}
