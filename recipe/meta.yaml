@@ -61,6 +61,7 @@ outputs:
         - automake
         - {{ compiler('cxx') }}
       host:
+        - setuptools
         - boost-cpp
         - e-antic 1.*
         - arb
