@@ -45,6 +45,8 @@ requirements:
     # requirement of make check which also runs benchmarks
     - gtest
     - benchmark
+    - pytest
+    - cppyy
   run_exports:
     - libexactreal {{ version }}
 
