@@ -71,6 +71,7 @@ outputs:
         - gmp
       run:
         - libexactreal =={{ version }}
+        - boost-cpp
         - cppyy
         - pyeantic
     test:
