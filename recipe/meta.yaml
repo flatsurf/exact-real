@@ -45,6 +45,7 @@ requirements:
     # requirement of make check which also runs benchmarks
     - gtest
     - benchmark
+    # requirements of the Python tests
     - pytest
     - pyeantic
     - cppyy
@@ -57,6 +58,7 @@ outputs:
     build:
       skip: True  # [win]
       skip: True  # [osx]
+      noarch: python
     script: install-python.sh
     requirements:
       build:
@@ -64,16 +66,19 @@ outputs:
         - automake
         - {{ compiler('cxx') }}
       host:
-        - setuptools
         - boost-cpp
         - e-antic 1.*
         - arb
         - gmp
+        # setup.py dependencies; we do not want to bother with Python 2 anymore, so we exclude it
+        - python >=3.6
+        - setuptools
       run:
         - libexactreal =={{ version }}
-        - boost-cpp
+        - python
         - cppyy
         - pyeantic
+        - boost-cpp
     test:
       imports:
         - pyexactreal
