@@ -45,7 +45,10 @@ requirements:
     # requirement of make check which also runs benchmarks
     - gtest
     - benchmark
-    # requirements of the Python tests
+    # requirements of the Python tests; we pin a Python version since we do not
+    # want conda-smithy to create a separate job for every Python version.
+    # (We're not actually building a Python module here but in pyexactreal.)
+    - python ==3.7
     - pytest
     - pyeantic
     - cppyy
