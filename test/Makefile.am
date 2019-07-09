@@ -1,7 +1,4 @@
-if HAVE_PYTEST
-  MAYBE_PYEXACTREAL = pyexactreal
-endif
 if HAVE_GOOGLETEST
   MAYBE_LIBEXACTREAL = libexactreal
 endif
-SUBDIRS = $(MAYBE_LIBEXACTREAL) $(MAYBE_PYEXACTREAL)
+SUBDIRS = pyexactreal libexactreal

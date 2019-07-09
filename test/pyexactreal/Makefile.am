@@ -1,5 +1,8 @@
-TESTS = arf.py arb.py real_number.py module.py binder.py element.py
-EXTRA_DIST = $(TESTS)
+if HAVE_PYTEST
+  TESTS = arf.py arb.py real_number.py module.py binder.py element.py
+endif
+
+EXTRA_DIST = arf.py arb.py real_number.py module.py binder.py element.py
 
 AM_TESTS_ENVIRONMENT = . $(builddir)/test-env.sh;
 
@@ -11,9 +14,6 @@ binder.py: test-env.sh
 element.py: test-env.sh
 
 @VALGRIND_CHECK_RULES@
-
-# Run tests serially so we can see the output without having to check the log file explicitly.
-# AUTOMAKE_OPTIONS = serial-tests
 
 BUILT_SOURCES = test-env.sh
 EXTRA_DIST += test-env.sh.in
