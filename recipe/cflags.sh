@@ -28,3 +28,5 @@ case `uname` in
         export EXTRA_CXXFLAGS="$EXTRA_CXXFLAGS -fno-common"
         ;;
 esac
+
+export MAKEFLAGS="-j$CPU_COUNT"

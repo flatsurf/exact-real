@@ -10,19 +10,14 @@ jobs:
   strategy:
     maxParallel: 8
     matrix:
-      build_linux_:
-        CONFIG: linux_
-        FLAVOUR: build
+      linux_build_flavourcoverage:
+        CONFIG: linux_build_flavourcoverage
         UPLOAD_PACKAGES: True
         DOCKER_IMAGE: condaforge/linux-anvil-comp7
-      valgrind_linux_:
-        CONFIG: linux_
-        FLAVOUR: valgrind
-        UPLOAD_PACKAGES: "False"
-      coverage_linux_:
-        CONFIG: linux_
-        FLAVOUR: coverage
-        UPLOAD_PACKAGES: "False"
+      linux_build_flavourrelease:
+        CONFIG: linux_build_flavourrelease
+        UPLOAD_PACKAGES: True
+        DOCKER_IMAGE: condaforge/linux-anvil-comp7
   steps:
   # configure qemu binfmt-misc running.  This allows us to run docker containers
   # embedded qemu-static

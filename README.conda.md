@@ -29,10 +29,17 @@ Current build status
         <table>
           <thead><tr><th>Variant</th><th>Status</th></tr></thead>
           <tbody><tr>
-              <td>linux</td>
+              <td>linux_build_flavourcoverage</td>
               <td>
                 <a href="https://dev.azure.com/flatsurf/conda/_build/latest?definitionId=&branchName=master">
-                  <img src="https://dev.azure.com/flatsurf/conda/_apis/build/status/exact-real-feedstock?branchName=master&jobName=linux&configuration=linux_" alt="variant">
+                  <img src="https://dev.azure.com/flatsurf/conda/_apis/build/status/exact-real-feedstock?branchName=master&jobName=linux&configuration=linux_build_flavourcoverage" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_build_flavourrelease</td>
+              <td>
+                <a href="https://dev.azure.com/flatsurf/conda/_build/latest?definitionId=&branchName=master">
+                  <img src="https://dev.azure.com/flatsurf/conda/_apis/build/status/exact-real-feedstock?branchName=master&jobName=linux&configuration=linux_build_flavourrelease" alt="variant">
                 </a>
               </td>
             </tr>

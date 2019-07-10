@@ -1,5 +1,7 @@
 boost_cpp:
 - 1.70.0
+build_flavour:
+- coverage
 channel_sources:
 - flatsurf,conda-forge,defaults
 channel_targets:
@@ -17,10 +19,3 @@ pin_run_as_build:
     max_pin: x.x.x
   gmp:
     max_pin: x
-  python:
-    min_pin: x.x
-    max_pin: x.x
-python:
-- '2.7'
-- '3.6'
-- '3.7'

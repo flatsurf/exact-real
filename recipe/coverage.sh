@@ -1,13 +1,13 @@
 #!/bin/bash
 set -exo pipefail
 
-unset ASV_SECRET_KEY
-
+# Create coverage statistics
 make check
 
 # Report coverage data to coveralls
 conda install -y --quiet pip git gcc_linux-64
-# Allow installation of cpp-coveralls with pip (otherwise disabled during conda builds)
+# Allow installation of cpp-coveralls with pip (otherwise disabled during
+# conda builds)
 unset PIP_NO_INDEX
 unset PIP_NO_DEPENDENCIES
 pip install cpp-coveralls

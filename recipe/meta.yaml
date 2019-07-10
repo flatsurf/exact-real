@@ -1,10 +1,9 @@
-# conda-smithy assumes that the build number is >= 1000 when building with the new anaconda compilers,
-# this probably is not important but make_build_number otherwise complains during the build
 # See https://github.com/conda/conda-build/issues/2666 for the missing tag
 {% set version = environ.get('GIT_DESCRIBE_TAG', 'untagged')|string|replace('-','_') %}
+# conda-smithy assumes that the build number is >= 1000 when building with the new anaconda compilers,
+# this probably is not important but make_build_number otherwise complains during the build
 {% set build_number = (environ.get('GIT_DESCRIBE_NUMBER')|int + 1000)|string %}
 {% set build_string = "master_" + build_number %}
-{% set flavour = environ.get('FLAVOUR', 'build')|string %}
 
 package:
   name: libexactreal
@@ -16,69 +15,72 @@ source:
 build:
   number: {{ build_number }}
   string: {{ build_string }}
-  # e-antic is not available for Windows & macOS
+  # e-antic is not available on Windows yet
   skip: True  # [win]
+  # e-antic is not available on macOS yet
   skip: True  # [osx]
-  script:
-    - source ./recipe/cflags.sh
-    # /tmp/secrets contains some CI-injected credentials to services such as
-    # coveralls or ASV.
-    - source /tmp/secrets
-    - ./recipe/build-{{ flavour }}.sh
-    # conda-build can currently not copy build-artifacts over to the testing
-    # stage, so we can only run make check if we rebuild everything. Therefore,
-    # we run make check as part of the build in the usual make; make check;
-    # make install order.
-    - ./recipe/test-{{ flavour }}.sh
-    - cd src/libexactreal && make install
+  script: ./recipe/build-{{ build_flavour }}.sh
 
+# The dependencies of the above build:script section
 requirements:
   build:
     - libtool
     - automake
     - {{ compiler('cxx') }}
+    # requirements for ASV benchmarks
+    - git
+    # requirements for clang-format
+    - clangdev ==8.0.0
   host:
+    # compile-time dependencies of libexactreal
     - boost-cpp
     - e-antic 1.*
     - arb
     - gmp
-    # requirement of make check which also runs benchmarks
+    # enable test/pyexactreal tests in ./configure
+    - {{ pin_compatible('python') }}
+    - pytest
+    - cppyy
+    - pyeantic
+    # enable test/libexactreal tests in ./configure
     - gtest
     - benchmark
-    # requirements of the Python tests; we pin a Python version since we do not
-    # want conda-smithy to create a separate job for every Python version.
-    # (We're not actually building a Python module here but in pyexactreal.)
-    - python ==3.7
-    - pytest
-    - pyeantic
-    - cppyy
-  run_exports:
-    - libexactreal {{ version }}
+    # enable check-valgrind in ./configure
+    - valgrind
+    # requirements for ASV benchmarks
+    - asv
 
 outputs:
   - name: libexactreal
+{% if build_flavour != 'release' %}
+    skip: True
+{% endif %}
+    script: install-libexactreal.sh
+    requirements:
+      build:
+        # Add compiler as a build dependency again so we get a proper hash for this package.
+        - {{ compiler('cxx') }}
+      run:
+        - {{ pin_compatible('e-antic') }}
+    run_exports:
+      # We pin the version of libexactreal exactly since we do not want to
+      # bother with incompatibilities in our nightly builds.
+      - {{ pin_subpackage('libexactreal', exact=True) }}
   - name: pyexactreal
+{% if build_flavour != 'release' %}
+    skip: True
+{% endif %}
     build:
-      skip: True  # [win]
-      skip: True  # [osx]
       noarch: python
     script: install-python.sh
     requirements:
-      build:
-        - libtool
-        - automake
-        - {{ compiler('cxx') }}
       host:
-        - boost-cpp
-        - e-antic 1.*
-        - arb
-        - gmp
-        # setup.py dependencies; we do not want to bother with Python 2 anymore, so we exclude it
-        - python >=3.6
+        - {{ pin_compatible('python') }}
         - setuptools
       run:
-        - libexactreal =={{ version }}
-        - python
+        # We pin the version of libexactreal exactly since we do not want to
+        # bother with incompatibilities in our nightly builds.
+        - {{ pin_subpackage('libexactreal', exact=True) }}
         - cppyy
         - pyeantic
         - boost-cpp
