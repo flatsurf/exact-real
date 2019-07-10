@@ -6,8 +6,4 @@ channels:
 azure:
   user_or_org: flatsurf
   project_name: conda
-  flavours:
-    - build
-    - valgrind
-    - coverage
 channel_name: flatsurf

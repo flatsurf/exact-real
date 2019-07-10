@@ -10,24 +10,15 @@ jobs:
   strategy:
     maxParallel: 8
     matrix:
-      build_linux_:
-        CONFIG: linux_
-        FLAVOUR: build
+      linux_build_flavourcoverage:
+        CONFIG: linux_build_flavourcoverage
         UPLOAD_PACKAGES: True
-      valgrind_linux_:
-        CONFIG: linux_
-        FLAVOUR: valgrind
-        UPLOAD_PACKAGES: "False"
-      coverage_linux_:
-        CONFIG: linux_
-        FLAVOUR: coverage
-        UPLOAD_PACKAGES: "False"
+        DOCKER_IMAGE: condaforge/linux-anvil-comp7
+      linux_build_flavourrelease:
+        CONFIG: linux_build_flavourrelease
+        UPLOAD_PACKAGES: True
+        DOCKER_IMAGE: condaforge/linux-anvil-comp7
   steps:
-  - script: |
-      sudo pip install --upgrade pip
-      sudo pip install setuptools shyaml
-    displayName: Install dependencies
-
   # configure qemu binfmt-misc running.  This allows us to run docker containers
   # embedded qemu-static
   - script: |
@@ -36,7 +27,9 @@ jobs:
     condition: not(startsWith(variables['CONFIG'], 'linux_64'))
     displayName: Configure binfmt_misc
 
-  - script: .azure-pipelines/run_docker_build.sh
+  - script: |
+        export CI=azure
+        .azure-pipelines/run_docker_build.sh
     displayName: Run docker build
     env:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)

@@ -5,8 +5,8 @@ channels:
   - defaults
 dependencies:
   - libexactreal
-  - pip
   - pyexactreal
   - boost-cpp
+  - cppyy
   - notebook
   - xeus-cling

@@ -1,6 +1,7 @@
-check_PROGRAMS = arb arb_yap arb_benchmark random_real_number rational_real_number module element constraint_random_real_number arf_yap arf
-
-TESTS = $(check_PROGRAMS)
+if HAVE_GOOGLETEST
+  check_PROGRAMS = arb arb_yap arb_benchmark random_real_number rational_real_number module element constraint_random_real_number arf_yap arf
+  TESTS = $(check_PROGRAMS)
+endif
 
 arb_SOURCES = arb.test.cc arb.hpp main.hpp
 arf_SOURCES = arf.test.cc arf.hpp main.hpp

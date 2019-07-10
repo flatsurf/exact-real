@@ -29,10 +29,17 @@ Current build status
         <table>
           <thead><tr><th>Variant</th><th>Status</th></tr></thead>
           <tbody><tr>
-              <td>linux</td>
+              <td>linux_build_flavourcoverage</td>
               <td>
                 <a href="https://dev.azure.com/flatsurf/conda/_build/latest?definitionId=&branchName=master">
-                  <img src="https://dev.azure.com/flatsurf/conda/_apis/build/status/exact-real-feedstock?branchName=master&jobName=linux&configuration=linux_" alt="variant">
+                  <img src="https://dev.azure.com/flatsurf/conda/_apis/build/status/exact-real-feedstock?branchName=master&jobName=linux&configuration=linux_build_flavourcoverage" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_build_flavourrelease</td>
+              <td>
+                <a href="https://dev.azure.com/flatsurf/conda/_build/latest?definitionId=&branchName=master">
+                  <img src="https://dev.azure.com/flatsurf/conda/_apis/build/status/exact-real-feedstock?branchName=master&jobName=linux&configuration=linux_build_flavourrelease" alt="variant">
                 </a>
               </td>
             </tr>
@@ -62,6 +69,7 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libexactreal-green.svg)](https://anaconda.org/flatsurf/libexactreal) | [![Conda Downloads](https://img.shields.io/conda/dn/flatsurf/libexactreal.svg)](https://anaconda.org/flatsurf/libexactreal) | [![Conda Version](https://img.shields.io/conda/vn/flatsurf/libexactreal.svg)](https://anaconda.org/flatsurf/libexactreal) | [![Conda Platforms](https://img.shields.io/conda/pn/flatsurf/libexactreal.svg)](https://anaconda.org/flatsurf/libexactreal) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-pyexactreal-green.svg)](https://anaconda.org/flatsurf/pyexactreal) | [![Conda Downloads](https://img.shields.io/conda/dn/flatsurf/pyexactreal.svg)](https://anaconda.org/flatsurf/pyexactreal) | [![Conda Version](https://img.shields.io/conda/vn/flatsurf/pyexactreal.svg)](https://anaconda.org/flatsurf/pyexactreal) | [![Conda Platforms](https://img.shields.io/conda/pn/flatsurf/pyexactreal.svg)](https://anaconda.org/flatsurf/pyexactreal) |
 
 Installing libexactreal
 =======================
@@ -72,10 +80,10 @@ Installing `libexactreal` from the `flatsurf` channel can be achieved by adding 
 conda config --add channels flatsurf
 ```
 
-Once the `flatsurf` channel has been enabled, `libexactreal` can be installed with:
+Once the `flatsurf` channel has been enabled, `libexactreal, pyexactreal` can be installed with:
 
 ```
-conda install libexactreal
+conda install libexactreal pyexactreal
 ```
 
 It is possible to list all of the versions of `libexactreal` available on your platform with:
