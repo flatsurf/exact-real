@@ -19,7 +19,6 @@ build:
   skip: True  # [win]
   # e-antic is not available on macOS yet
   skip: True  # [osx]
-  script: ./recipe/build-{{ build_flavour }}.sh
 
 # The dependencies of the above build:script section
 requirements:
