@@ -38,7 +38,7 @@ requirements:
     - arb
     - gmp
     # enable test/pyexactreal tests in ./configure
-    - {{ pin_compatible('python') }}
+    - python *
     - pytest
     - cppyy
     - pyeantic
@@ -52,30 +52,27 @@ requirements:
 
 outputs:
   - name: libexactreal
-{% if build_flavour != 'release' %}
-    skip: True
-{% endif %}
+    skip: True   # [build_flavour != 'release']
     script: install-libexactreal.sh
     requirements:
       build:
         # Add compiler as a build dependency again so we get a proper hash for this package.
         - {{ compiler('cxx') }}
-      run:
-        - {{ pin_compatible('e-antic') }}
+      host:
+        - {{ pin_compatible('e-antic', exact=True) }}
     run_exports:
       # We pin the version of libexactreal exactly since we do not want to
       # bother with incompatibilities in our nightly builds.
       - {{ pin_subpackage('libexactreal', exact=True) }}
+
   - name: pyexactreal
-{% if build_flavour != 'release' %}
-    skip: True
-{% endif %}
+    skip: True   # [build_flavour != 'release']
     build:
       noarch: python
     script: install-python.sh
     requirements:
       host:
-        - {{ pin_compatible('python') }}
+        - python
         - setuptools
       run:
         # We pin the version of libexactreal exactly since we do not want to
@@ -83,6 +80,7 @@ outputs:
         - {{ pin_subpackage('libexactreal', exact=True) }}
         - cppyy
         - pyeantic
+        - python
         - boost-cpp
     test:
       imports:
