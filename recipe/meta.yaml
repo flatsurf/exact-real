@@ -103,9 +103,11 @@ outputs:
         - pyeantic
         - python
         - boost-cpp
+{%- if build_flavour == 'release' %}
     test:
       imports:
         - pyexactreal
+{% endif %}
 
 about:
   home: https://github.com/flatsurf/exact-real
