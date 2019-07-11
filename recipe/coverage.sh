@@ -12,7 +12,7 @@ unset PIP_NO_INDEX
 unset PIP_NO_DEPENDENCIES
 pip install cpp-coveralls
 
-cd $SRC_DIR/src/libexactreal/
+cd $SRC_DIR/libexactreal/src
 git checkout -b master
 set +x
 if [ ${#COVERALLS_REPO_TOKEN} = 33 ];then coveralls --gcov `which x86_64-conda_cos6-linux-gnu-gcov` --exclude exact-real/external --gcov-options '\-lrp' -b .; fi

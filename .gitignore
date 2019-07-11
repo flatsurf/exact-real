@@ -7,7 +7,7 @@ Makefile.in
 /ar-lib
 /mdate-sh
 /py-compile
-/test-driver
+test-driver
 /ylwrap
 # Ignore generated files
 Makefile

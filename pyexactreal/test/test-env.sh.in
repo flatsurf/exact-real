@@ -1,0 +1,5 @@
+#!/bin/sh
+
+export PYEXACTREAL_INCLUDE="@srcdir@/../../libexactreal/src:@builddir@/../../libexactreal/src"
+export LD_LIBRARY_PATH="@builddir@/../../libexactreal/src/.libs/"
+export PYTHONPATH="@builddir@/../../pyexactreal/src/:@pythondir@"
