@@ -1,4 +1,5 @@
 TESTS = arf.py arb.py real_number.py module.py binder.py element.py
+EXTRA_DIST = $(TESTS)
 
 AM_TESTS_ENVIRONMENT = . $(builddir)/test-env.sh;
 
@@ -12,7 +13,7 @@ element.py: test-env.sh
 @VALGRIND_CHECK_RULES@
 
 BUILT_SOURCES = test-env.sh
-EXTRA_DIST = test-env.sh.in
+EXTRA_DIST += test-env.sh.in
 CLEANFILES = test-env.sh
 $(builddir)/test-env.sh: $(srcdir)/test-env.sh.in Makefile
 	sed -e 's,[@]srcdir[@],$(srcdir),g' -e 's,[@]builddir[@],$(builddir),g' -e 's,[@]pythondir[@],$(pythondir),g' < $< > $@
