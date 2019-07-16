@@ -60,6 +60,7 @@ VPATH = $(srcdir) $(builddir)
 BUILT_SOURCES = exact-real/exact-real.hpp
 # Distribute exact-real.hpp.in as part of the tarball, but not exact-real.hpp
 EXTRA_DIST = exact-real/exact-real.hpp.in
-nodist_pkginclude_HEADERS = exact-real/exact-real.hpp
+generatedincludedir = $(includedir)/exact-real
+nodist_generatedinclude_HEADERS = exact-real/exact-real.hpp
 
 CLEANFILES = exact-real/exact-real.hpp
