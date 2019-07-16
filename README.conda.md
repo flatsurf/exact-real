@@ -1,5 +1,5 @@
-About libexactreal
-==================
+About exact-real
+================
 
 Home: https://github.com/flatsurf/exact-real
 
@@ -71,10 +71,10 @@ Current release info
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libexactreal-green.svg)](https://anaconda.org/flatsurf/libexactreal) | [![Conda Downloads](https://img.shields.io/conda/dn/flatsurf/libexactreal.svg)](https://anaconda.org/flatsurf/libexactreal) | [![Conda Version](https://img.shields.io/conda/vn/flatsurf/libexactreal.svg)](https://anaconda.org/flatsurf/libexactreal) | [![Conda Platforms](https://img.shields.io/conda/pn/flatsurf/libexactreal.svg)](https://anaconda.org/flatsurf/libexactreal) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-pyexactreal-green.svg)](https://anaconda.org/flatsurf/pyexactreal) | [![Conda Downloads](https://img.shields.io/conda/dn/flatsurf/pyexactreal.svg)](https://anaconda.org/flatsurf/pyexactreal) | [![Conda Version](https://img.shields.io/conda/vn/flatsurf/pyexactreal.svg)](https://anaconda.org/flatsurf/pyexactreal) | [![Conda Platforms](https://img.shields.io/conda/pn/flatsurf/pyexactreal.svg)](https://anaconda.org/flatsurf/pyexactreal) |
 
-Installing libexactreal
-=======================
+Installing exact-real
+=====================
 
-Installing `libexactreal` from the `flatsurf` channel can be achieved by adding `flatsurf` to your channels with:
+Installing `exact-real` from the `flatsurf` channel can be achieved by adding `flatsurf` to your channels with:
 
 ```
 conda config --add channels flatsurf
@@ -95,17 +95,17 @@ conda search libexactreal --channel flatsurf
 
 
 
-Updating libexactreal-feedstock
-===============================
+Updating exact-real-feedstock
+=============================
 
-If you would like to improve the libexactreal recipe or build a new
+If you would like to improve the exact-real recipe or build a new
 package version, please fork this repository and submit a PR. Upon submission,
 your changes will be run on the appropriate platforms to give the reviewer an
 opportunity to confirm that the changes result in a successful build. Once
 merged, the recipe will be re-built and uploaded automatically to the
 `flatsurf` channel, whereupon the built conda packages will be available for
 everybody to install and use from the `flatsurf` channel.
-Note that all branches in the conda-forge/libexactreal-feedstock are
+Note that all branches in the conda-forge/exact-real-feedstock are
 immediately built and any created packages are uploaded, so PRs should be based
 on branches in forks and branches in the main repository should only be used to
 build distinct package versions.

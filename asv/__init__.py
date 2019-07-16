@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #*********************************************************************
 #  This file is part of flatsurf.
 #
@@ -31,13 +32,14 @@ import os
 import os.path
 import subprocess
 
-ASV_BUILD_DIR = os.environ.get('ASV_BUILD_DIR', os.path.dirname(os.path.abspath(__file__)) + "/../../")
+ASV_BUILD_DIR = os.environ.get('ASV_BUILD_DIR', os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 
 BENCHMARKS = {}
 PREFIX = "track_"
 
 os.chdir(ASV_BUILD_DIR)
-for benchmark in glob.glob('test/**/*.*.cc'):
+for benchmark in glob.glob('**/test/*.*.cc'):
+    os.system("echo 'Processing %s'"%benchmark)
     os.chdir(ASV_BUILD_DIR)
     os.chdir(os.path.dirname(benchmark))
     benchmark = os.path.basename(benchmark).replace('.', '_')[:-3]

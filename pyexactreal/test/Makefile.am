@@ -1,8 +1,5 @@
-if HAVE_PYTEST
-  TESTS = arf.py arb.py real_number.py module.py binder.py element.py
-endif
-
-EXTRA_DIST = arf.py arb.py real_number.py module.py binder.py element.py
+TESTS = arf.py arb.py real_number.py module.py binder.py element.py
+EXTRA_DIST = $(TESTS)
 
 AM_TESTS_ENVIRONMENT = . $(builddir)/test-env.sh;
 

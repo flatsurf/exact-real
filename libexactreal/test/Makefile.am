@@ -16,12 +16,9 @@ constraint_random_real_number_SOURCES = constraint_random_real_number.test.cc ma
 
 @VALGRIND_CHECK_RULES@
 
-AM_CPPFLAGS = -I $(srcdir)/../../src/libexactreal -I $(builddir)/../../src/libexactreal
-AM_LDFLAGS = $(builddir)/../../src/libexactreal/libexactreal.la -lgtest -lbenchmark -lrt -lpthread
+AM_CPPFLAGS = -I $(srcdir)/../src/ -I $(builddir)/../src/
+AM_LDFLAGS = $(builddir)/../src/libexactreal.la -lgtest -lbenchmark -lrt -lpthread
 # arb.hpp & arf.hpp use gmpxx; it appears that we need to link gmp in explicitly as well to make gmpxx happy
 AM_LDFLAGS += -lgmpxx -lgmp
 # arb.hpp & arf.hpp use flint
 AM_LDFLAGS += -lflint
-
-# Run tests serially so we can see the output without having to check the log file explicitly.
-# AUTOMAKE_OPTIONS = serial-tests
