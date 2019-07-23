@@ -128,6 +128,29 @@ typename Ring::ElementClass Element<Ring>::operator[](const size i) const {
 }
 
 template <typename Ring>
+template <typename C>
+std::vector<C> Element<Ring>::coefficients() const {
+  if constexpr (std::is_same_v<C, typename Ring::ElementClass>) {
+    return impl->coefficients;
+  } else if constexpr (std::is_same_v<C, mpq_class> && std::is_same_v<typename Ring::ElementClass, eantic::renf_elem_class>) {
+    std::vector<mpq_class> ret;
+    for (auto& c : impl->coefficients) {
+      mpz_class den = c.get_den();
+      auto nums = c.get_num_vector();
+      for (auto & num : nums) {
+        ret.push_back(mpq_class(num, den));
+      }
+      for (size_t i = nums.size(); i < impl->parent->ring()->degree(); i++) {
+        ret.push_back(0);
+      }
+    }
+    return ret;
+  } else {
+    static_assert(false_v<C>, "unsupported coefficient type");
+  }
+}
+
+template <typename Ring>
 Arb Element<Ring>::arb(long prec) const {
   if (!*this) {
     return Arb();
@@ -437,10 +460,14 @@ ostream& operator<<(ostream& out, const Element<Ring>& self) {
 
 template class exactreal::Element<IntegerRingTraits>;
 template ostream& exactreal::operator<<<IntegerRingTraits>(ostream&, const Element<IntegerRingTraits>&);
+template std::vector<typename IntegerRingTraits::ElementClass> exactreal::Element<IntegerRingTraits>::coefficients() const;
 template class exactreal::Element<RationalFieldTraits>;
 template ostream& exactreal::operator<<<RationalFieldTraits>(ostream&, const Element<RationalFieldTraits>&);
 template Element<RationalFieldTraits>& exactreal::Element<RationalFieldTraits>::operator*=
     <mpz_class>(const mpz_class& rhs);
+template std::vector<typename RationalFieldTraits::ElementClass> exactreal::Element<RationalFieldTraits>::coefficients() const;
 template class exactreal::Element<NumberFieldTraits>;
 template ostream& exactreal::operator<<<NumberFieldTraits>(ostream&, const Element<NumberFieldTraits>&);
 template Element<NumberFieldTraits>& exactreal::Element<NumberFieldTraits>::operator*=<mpz_class>(const mpz_class& rhs);
+template std::vector<typename NumberFieldTraits::ElementClass> exactreal::Element<NumberFieldTraits>::coefficients() const;
+template std::vector<mpq_class> exactreal::Element<NumberFieldTraits>::coefficients<mpq_class>() const;
