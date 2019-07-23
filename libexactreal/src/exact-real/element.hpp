@@ -55,6 +55,9 @@ class Element : boost::additive<Element<Ring>>,
   typename Ring::ElementClass operator[](const size) const;
   std::conditional<Ring::isField, mpq_class, mpz_class> operator[](const std::pair<size, size>&) const;
 
+  template <typename C = typename Ring::ElementClass>
+  std::vector<C> coefficients() const;
+
   Arb arb(long prec) const;
 
   Element& operator+=(const Element&);
