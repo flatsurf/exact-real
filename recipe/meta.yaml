@@ -3,7 +3,7 @@
 # conda-smithy assumes that the build number is >= 1000 when building with the new anaconda compilers,
 # this probably is not important but make_build_number otherwise complains during the build
 {% set build_number = (environ.get('GIT_DESCRIBE_NUMBER')|int + 1000)|string %}
-{% set build_string = "master_" + build_number %}
+{% set build_string = "master_" + build_flavour + "_" + build_number %}
 
 package:
   name: exact-real
