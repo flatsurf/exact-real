@@ -251,9 +251,9 @@ TEST(ElementNF, Coefficients) {
   auto a = renf_elem_class(K, "a");
 
   EXPECT_EQ(x.coefficients(), std::vector<renf_elem_class>({0, 1}));
-  EXPECT_EQ((a*x).coefficients(), std::vector<renf_elem_class>({0, a}));
+  EXPECT_EQ((a * x).coefficients(), std::vector<renf_elem_class>({0, a}));
   EXPECT_EQ(x.coefficients<mpq_class>(), std::vector<mpq_class>({0, 0, 1, 0}));
-  EXPECT_EQ((a*x).coefficients<mpq_class>(), std::vector<mpq_class>({0, 0, 0, 1}));
+  EXPECT_EQ((a * x).coefficients<mpq_class>(), std::vector<mpq_class>({0, 0, 0, 1}));
 }
 
 #include "main.hpp"

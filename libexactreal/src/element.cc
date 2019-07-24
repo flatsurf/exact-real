@@ -137,7 +137,7 @@ std::vector<C> Element<Ring>::coefficients() const {
     for (auto& c : impl->coefficients) {
       mpz_class den = c.get_den();
       auto nums = c.get_num_vector();
-      for (auto & num : nums) {
+      for (auto& num : nums) {
         ret.push_back(mpq_class(num, den));
       }
       for (size_t i = nums.size(); i < impl->parent->ring()->degree(); i++) {
