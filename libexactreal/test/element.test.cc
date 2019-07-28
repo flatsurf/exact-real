@@ -242,7 +242,7 @@ TEST(ElementNF, Scalars) {
     }
   }
 }
-}
+}  // namespace exactreal
 
 TEST(ElementNF, Coefficients) {
   auto K = renf_class::make("a^2 - 2", "a", "1.41 +/- 0.1", 64);

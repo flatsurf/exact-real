@@ -116,6 +116,6 @@ TEST(ArbYapTest, ArithmeticInplace) {
   ASSERT_TRUE(((z = Arb(1337)) *= x(prec)).equal((Arb(1337) * x)(prec)));
   ASSERT_TRUE(((z = Arb(1337)) /= x(prec)).equal((Arb(1337) / x)(prec)));
 }
-}
+}  // namespace exactreal
 
 #include "main.hpp"

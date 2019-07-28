@@ -22,14 +22,14 @@
 #include <gmpxx.h>
 #include <boost/random/linear_congruential.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
-#include <sstream>
-#include <cereal/cereal.hpp>
 #include <cereal/archives/json.hpp>
+#include <cereal/cereal.hpp>
+#include <sstream>
 
 #include "exact-real/arb.hpp"
 #include "exact-real/arf.hpp"
-#include "external/unique-factory/unique_factory.hpp"
 #include "exact-real/real_number.hpp"
+#include "external/unique-factory/unique_factory.hpp"
 
 using namespace exactreal;
 using boost::random::rand48;

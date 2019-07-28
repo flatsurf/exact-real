@@ -60,6 +60,6 @@ TEST(ModuleZZ, Multiplication) {
   EXPECT_EQ((rnd * rnd * rnd).module()->rank(), 4);
   EXPECT_NE((rnd * rnd * rnd).module(), (rnd * rnd).module());
 }
-}
+}  // namespace exactreal
 
 #include "main.hpp"

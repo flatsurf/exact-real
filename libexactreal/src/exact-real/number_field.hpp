@@ -21,8 +21,8 @@
 #ifndef LIBEXACTREAL_NUMBER_FIELD_HPP
 #define LIBEXACTREAL_NUMBER_FIELD_HPP
 
-#include <memory>
 #include <boost/operators.hpp>
+#include <memory>
 
 #include "e-antic/renfxx_fwd.h"
 #include "exact-real/exact-real.hpp"

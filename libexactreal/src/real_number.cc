@@ -21,9 +21,9 @@
 #include <cassert>
 
 #include "exact-real/arb.hpp"
+#include "exact-real/cereal.hpp"
 #include "exact-real/real_number.hpp"
 #include "exact-real/yap/arf.hpp"
-#include "exact-real/cereal.hpp"
 
 using std::max;
 using std::ostream;

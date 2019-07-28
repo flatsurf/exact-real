@@ -19,11 +19,11 @@
  *********************************************************************/
 
 #include <benchmark/benchmark.h>
+#include <e-antic/renfxx.h>
+#include <e-antic/renfxx_cereal.h>
 #include <gtest/gtest.h>
 #include <boost/lexical_cast.hpp>
 #include <cereal/archives/json.hpp>
-#include <e-antic/renfxx.h>
-#include <e-antic/renfxx_cereal.h>
 
 #include <exact-real/cereal.hpp>
 #include <exact-real/real_number.hpp>
@@ -32,8 +32,8 @@
 #include "arf.hpp"
 #include "rings.hpp"
 
-using cereal::JSONOutputArchive;
 using cereal::JSONInputArchive;
+using cereal::JSONOutputArchive;
 
 using testing::Test;
 
@@ -43,14 +43,18 @@ class CerealTest : public Test {};
 
 TYPED_TEST_CASE(CerealTest, Rings);
 
-template<typename T> struct is_shared_ptr : std::false_type {};
-template<typename T> struct is_shared_ptr<std::shared_ptr<T>> : std::true_type {};
+template <typename T>
+struct is_shared_ptr : std::false_type {};
+template <typename T>
+struct is_shared_ptr<std::shared_ptr<T>> : std::true_type {};
 
 template <typename T>
 std::string toString(const T& x) {
   if constexpr (is_shared_ptr<T>::value) {
-    if (x) return boost::lexical_cast<std::string>(x) + "->" + boost::lexical_cast<std::string>(*x);
-    else return "null";
+    if (x)
+      return boost::lexical_cast<std::string>(x) + "->" + boost::lexical_cast<std::string>(*x);
+    else
+      return "null";
   } else {
     return boost::lexical_cast<std::string>(x);
   }
@@ -76,7 +80,7 @@ T test_serialization(const T& x) {
   } else {
     if (x == y) return y;
   }
-  if constexpr (is_shared_ptr<T>::value){
+  if constexpr (is_shared_ptr<T>::value) {
     if (!x && !y) return y;
     if (x && y && *x == *y) return y;
   }
@@ -126,6 +130,6 @@ TYPED_TEST(CerealTest, Element) {
   test_serialization(Element(m));
   test_serialization(Element<TypeParam>());
 }
-}
+}  // namespace exactreal
 
 #include "main.hpp"

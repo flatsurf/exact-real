@@ -21,21 +21,21 @@
 #ifndef LIBEXACTREAL_CEREAL_HPP
 #define LIBEXACTREAL_CEREAL_HPP
 
-#include <cereal/cereal.hpp>
+#include <e-antic/renfxx.h>
+#include <boost/lexical_cast.hpp>
 #include <cereal/archives/json.hpp>
+#include <cereal/cereal.hpp>
 #include <cereal/types/memory.hpp>
 #include <cereal/types/vector.hpp>
-#include <boost/lexical_cast.hpp>
-#include <e-antic/renfxx.h>
 
 #include "arb.hpp"
 #include "arf.hpp"
-#include "module.hpp"
 #include "element.hpp"
-#include "real_number.hpp"
 #include "integer_ring.hpp"
-#include "rational_field.hpp"
+#include "module.hpp"
 #include "number_field.hpp"
+#include "rational_field.hpp"
+#include "real_number.hpp"
 
 namespace exactreal {
 
@@ -61,11 +61,11 @@ namespace {
 const char* arf_serialize_zero = "0 0";
 const char* arf_serialize_pos_inf = "0 -1";
 const char* arf_serialize_neg_inf = "0 -2";
-const char* arf_serialize_nan= "0 -3";
+const char* arf_serialize_nan = "0 -3";
 
-char * arf_serialize(const arf_t x) {
+char* arf_serialize(const arf_t x) {
   if (arf_is_special(x)) {
-    const char * ret;
+    const char* ret;
     if (arf_is_zero(x)) {
       ret = arf_serialize_zero;
     } else if (arf_is_pos_inf(x)) {
@@ -78,7 +78,7 @@ char * arf_serialize(const arf_t x) {
       // Impossible to happen; all the special values have been treated above.
       assert(false);
     }
-    char * res = (char*) flint_malloc(strlen(ret) + 1);
+    char* res = (char*)flint_malloc(strlen(ret) + 1);
     strcpy(res, ret);
     return res;
   } else {
@@ -89,7 +89,7 @@ char * arf_serialize(const arf_t x) {
 
     arf_get_fmpz_2exp(mantissa, exponent, x);
 
-    char * res = (char*) flint_malloc(fmpz_sizeinbase(mantissa, 16) + 1 + fmpz_sizeinbase(exponent, 16));
+    char* res = (char*)flint_malloc(fmpz_sizeinbase(mantissa, 16) + 1 + fmpz_sizeinbase(exponent, 16));
 
     fmpz_get_str(res, 16, mantissa);
     strcat(res, " ");
@@ -97,7 +97,7 @@ char * arf_serialize(const arf_t x) {
 
     fmpz_clear(mantissa);
     fmpz_clear(exponent);
-    
+
     return res;
   }
 }
@@ -117,13 +117,13 @@ int arf_deserialize(arf_t x, const char* data) {
     fmpz_init(mantissa);
     fmpz_init(exponent);
 
-    const char * e_str = strchr(data, ' ');
+    const char* e_str = strchr(data, ' ');
 
     if (e_str == NULL) {
       return 1;
     }
 
-    char * m_str = (char*) flint_malloc(e_str - data + 1);
+    char* m_str = (char*)flint_malloc(e_str - data + 1);
     strncpy(m_str, data, e_str - data);
     m_str[e_str - data] = '\0';
 
@@ -154,16 +154,16 @@ int arf_deserialize(arf_t x, const char* data) {
   return 0;
 }
 
-char * mag_serialize(const mag_t x) {
+char* mag_serialize(const mag_t x) {
   arf_t y;
   arf_init(y);
   arf_set_mag(y, x);
-  char * res = arf_serialize(y);
+  char* res = arf_serialize(y);
   arf_clear(y);
   return res;
 }
 
-int mag_deserialize(mag_t x, const char * data) {
+int mag_deserialize(mag_t x, const char* data) {
   arf_t y;
   arf_init(y);
 
@@ -179,7 +179,7 @@ int mag_deserialize(mag_t x, const char * data) {
 
   arf_get_fmpz_2exp(mantissa, exponent, y);
 
-  assert(fmpz_cmp_ui(mantissa, 1<<MAG_BITS) < 0);
+  assert(fmpz_cmp_ui(mantissa, 1 << MAG_BITS) < 0);
 
   mag_set_ui(x, fmpz_get_ui(mantissa));
 
@@ -192,11 +192,11 @@ int mag_deserialize(mag_t x, const char * data) {
   return err;
 }
 
-char * arb_serialize(const arb_t x) {
-  char * mid = arf_serialize(arb_midref(x));
-  char * mag = mag_serialize(arb_radref(x));
+char* arb_serialize(const arb_t x) {
+  char* mid = arf_serialize(arb_midref(x));
+  char* mag = mag_serialize(arb_radref(x));
 
-  char * res = (char*) flint_malloc(strlen(mid) + 1 + strlen(mag) + 1);
+  char* res = (char*)flint_malloc(strlen(mid) + 1 + strlen(mag) + 1);
   strcpy(res, mid);
   strcat(res, " ");
   strcat(res, mag);
@@ -208,7 +208,7 @@ char * arb_serialize(const arb_t x) {
 }
 
 int arb_deserialize(arb_t x, const char* data) {
-  const char * split = strchr(data, ' ');
+  const char* split = strchr(data, ' ');
   if (split == NULL) {
     return 1;
   }
@@ -218,15 +218,15 @@ int arb_deserialize(arb_t x, const char* data) {
   }
 
   int midlen = split - data;
-  char * mid = (char*) flint_malloc(midlen + 1);
+  char* mid = (char*)flint_malloc(midlen + 1);
   strncpy(mid, data, midlen);
   mid[midlen] = '\0';
 
   int maglen = strlen(data) - midlen - 1;
-  char * mag = (char*) flint_malloc(maglen + 1);
+  char* mag = (char*)flint_malloc(maglen + 1);
   strncpy(mag, split + 1, maglen);
   mag[maglen] = '\0';
-  
+
   int err = arf_deserialize(arb_midref(x), mid);
 
   if (!err) {
@@ -237,11 +237,11 @@ int arb_deserialize(arb_t x, const char* data) {
   flint_free(mag);
   return err;
 }
-}
+}  // namespace
 
 template <typename Archive>
 void save(Archive& archive, const Arb& self) {
-  char * serialized = arb_serialize(self.arb_t());
+  char* serialized = arb_serialize(self.arb_t());
   archive(
       cereal::make_nvp("data", std::string(serialized)),
       cereal::make_nvp("approximation", static_cast<double>(self)));
@@ -261,7 +261,7 @@ void load(Archive& archive, Arb& self) {
 
 template <typename Archive>
 void save(Archive& archive, const Arf& self) {
-  char * serialized = arf_serialize(self.arf_t());
+  char* serialized = arf_serialize(self.arf_t());
   archive(
       cereal::make_nvp("data", std::string(serialized)),
       cereal::make_nvp("approximation", static_cast<double>(self)));
@@ -299,7 +299,7 @@ void load(Archive& archive, Element<Ring>& self) {
   archive(cereal::make_nvp("coefficients", coefficients));
 
   std::vector<typename Ring::ElementClass> coeffs;
-  for (auto& c: coefficients) {
+  for (auto& c : coefficients) {
     coeffs.push_back(*c);
   }
 
@@ -335,7 +335,7 @@ struct ForwardingCereal {
   static void save(Archive& archive, const T& self) {
     using Native = typename Cerealizer::SupportedOutput;
 
-    if constexpr(std::is_same_v<Archive, Native>) {
+    if constexpr (std::is_same_v<Archive, Native>) {
       Cerealizer::save(archive, self);
     } else {
       std::stringstream s;
@@ -348,7 +348,7 @@ struct ForwardingCereal {
   static void load(Archive& archive, T& self) {
     using Native = typename Cerealizer::SupportedInput;
 
-    if constexpr(std::is_same_v<Archive, Native>) {
+    if constexpr (std::is_same_v<Archive, Native>) {
       Cerealizer::load(archive, self);
     } else {
       std::string s;
@@ -374,7 +374,6 @@ void load(Archive& archive, CerealWrap<mpq_class>& self) {
 template <typename Archive>
 void save(Archive& archive, const CerealWrap<mpz_class>& self) {
   archive(cereal::make_nvp("value", boost::lexical_cast<std::string>(*self)));
-  
 }
 
 template <typename Archive>
@@ -393,7 +392,7 @@ template <typename Archive, typename T>
 void load(Archive& archive, CerealWrap<T>& self) {
   archive(*self);
 }
-}
+}  // namespace exactreal
 
 namespace cereal {
 template <typename Archive>
@@ -456,6 +455,6 @@ void load(Archive& archive, std::shared_ptr<const exactreal::Module<Ring>>& self
     self = std::static_pointer_cast<exactreal::Module<Ring>>(archive.getSharedPointer(id));
   }
 }
-}
+}  // namespace cereal
 
 #endif

@@ -19,13 +19,13 @@
  *********************************************************************/
 
 #include <gmpxx.h>
-#include <cereal/cereal.hpp>
 #include <cereal/archives/json.hpp>
+#include <cereal/cereal.hpp>
 
-#include "external/unique-factory/unique_factory.hpp"
+#include "exact-real/cereal.hpp"
 #include "exact-real/real_number.hpp"
 #include "exact-real/yap/arf.hpp"
-#include "exact-real/cereal.hpp"
+#include "external/unique-factory/unique_factory.hpp"
 
 using namespace exactreal;
 using std::make_shared;

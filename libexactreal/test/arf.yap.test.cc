@@ -89,6 +89,6 @@ TEST(ArfYapTest, ArithmeticInplace) {
   ASSERT_EQ(((z = Arf(1337)) *= x(working_prec, rnd)), ((Arf(1337) * x)(working_prec, rnd)));
   ASSERT_EQ(((z = Arf(1337)) /= x(working_prec, rnd)), ((Arf(1337) / x)(working_prec, rnd)));
 }
-}
+}  // namespace exactreal
 
 #include "main.hpp"

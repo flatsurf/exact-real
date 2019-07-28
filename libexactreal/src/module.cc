@@ -23,13 +23,13 @@
 #include <boost/range/adaptor/transformed.hpp>
 #include <set>
 
-#include "external/unique-factory/unique_factory.hpp"
 #include "exact-real/element.hpp"
 #include "exact-real/integer_ring.hpp"
 #include "exact-real/module.hpp"
 #include "exact-real/number_field.hpp"
 #include "exact-real/rational_field.hpp"
 #include "exact-real/real_number.hpp"
+#include "external/unique-factory/unique_factory.hpp"
 
 using namespace exactreal;
 using boost::adaptors::transformed;

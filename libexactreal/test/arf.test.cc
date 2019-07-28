@@ -51,6 +51,6 @@ TEST(ArbTest, Printing) {
   EXPECT_EQ(lexical_cast<string>(Arf(1337)), "1337");
   EXPECT_EQ(lexical_cast<string>(Arf(13.37)), "13.37=7526640877242941p-49");
 }
-}
+}  // namespace exactreal
 
 #include "main.hpp"

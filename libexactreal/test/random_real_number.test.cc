@@ -93,6 +93,6 @@ BENCHMARK_DEFINE_F(RandomRealNumberFixture, arf)
 }
 
 BENCHMARK_REGISTER_F(RandomRealNumberFixture, arf)->Range(16, 1 << 16);
-}
+}  // namespace exactreal
 
 #include "main.hpp"

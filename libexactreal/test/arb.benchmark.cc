@@ -199,5 +199,5 @@ BENCHMARK_DEFINE_F(ArbBenchmark, Arithmetic_C_optimized)
   }
 }
 BENCHMARK_REGISTER_F(ArbBenchmark, Arithmetic_C_optimized)->Apply(ArbBenchmark::BenchmarkedSizes);
-}
+}  // namespace exactreal
 #include "main.hpp"

@@ -18,21 +18,21 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <memory>
-#include <sstream>
 #include <arb.h>
 #include <gmpxx.h>
 #include <boost/lexical_cast.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/random/linear_congruential.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
-#include <cereal/cereal.hpp>
 #include <cereal/archives/json.hpp>
+#include <cereal/cereal.hpp>
+#include <memory>
+#include <sstream>
 
-#include "external/unique-factory/unique_factory.hpp"
+#include "exact-real/cereal.hpp"
 #include "exact-real/real_number.hpp"
 #include "exact-real/yap/arf.hpp"
-#include "exact-real/cereal.hpp"
+#include "external/unique-factory/unique_factory.hpp"
 
 using namespace exactreal;
 using boost::lexical_cast;
@@ -93,8 +93,8 @@ class ConstraintRandomRealNumber final : public RealNumber {
   template <typename Archive>
   void save(Archive& archive) const {
     archive(cereal::make_nvp("initial", initial),
-        cereal::make_nvp("e", e),
-        cereal::make_nvp("inner", inner));
+            cereal::make_nvp("e", e),
+            cereal::make_nvp("inner", inner));
   }
 
  private:

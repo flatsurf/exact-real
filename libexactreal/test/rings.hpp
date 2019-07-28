@@ -21,11 +21,11 @@
 #include <gtest/gtest.h>
 
 #include <exact-real/integer_ring.hpp>
-#include <exact-real/rational_field.hpp>
 #include <exact-real/number_field.hpp>
+#include <exact-real/rational_field.hpp>
 
 namespace {
 using testing::Types;
 
 using Rings = Types<exactreal::IntegerRing, exactreal::RationalField, exactreal::NumberField>;
-}
+}  // namespace

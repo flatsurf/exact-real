@@ -20,8 +20,8 @@
 
 #include <e-antic/renfxx.h>
 
-#include "exact-real/number_field.hpp"
 #include "exact-real/arb.hpp"
+#include "exact-real/number_field.hpp"
 
 namespace exactreal {
 Arb NumberField::arb(const ElementClass& x, mp_limb_signed_t prec) { return Arb(x, prec); }

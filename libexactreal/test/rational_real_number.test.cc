@@ -28,7 +28,7 @@
 namespace exactreal {
 TEST(RationalRealNumberTest, Equality) {
   std::shared_ptr<const RealNumber> numbers[]{RealNumber::rational(0), RealNumber::rational(1),
-                                        RealNumber::rational(mpq_class(1, 2)), RealNumber::rational(mpq_class(4, 3))};
+                                              RealNumber::rational(mpq_class(1, 2)), RealNumber::rational(mpq_class(4, 3))};
 
   const size_t length = sizeof(numbers) / sizeof(numbers[0]);
   for (size_t i = 0; i < length; i++) {
@@ -44,7 +44,7 @@ TEST(RationalRealNumberTest, Equality) {
 
 TEST(RationalRealNumberTest, Comparison) {
   std::shared_ptr<const RealNumber> numbers[]{RealNumber::rational(0), RealNumber::rational(mpq_class(1, 2)),
-                                        RealNumber::rational(1), RealNumber::rational(mpq_class(4, 3))};
+                                              RealNumber::rational(1), RealNumber::rational(mpq_class(4, 3))};
 
   const size_t length = sizeof(numbers) / sizeof(numbers[0]);
   for (size_t i = 0; i < length; i++) {
@@ -60,6 +60,6 @@ TEST(RationalRealNumberTest, Comparison) {
     }
   }
 }
-}
+}  // namespace exactreal
 
 #include "main.hpp"
