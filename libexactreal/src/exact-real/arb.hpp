@@ -126,8 +126,6 @@ class Arb : yap::Terminal<Arb, yap::ArbExpr> {
   explicit operator double() const noexcept;
   // The midpoint of this ball.
   explicit operator Arf() const noexcept;
-  // The radius of this ball.
-  Mag radius() const noexcept;
 
   friend std::ostream& operator<<(std::ostream&, const Arb&);
 
