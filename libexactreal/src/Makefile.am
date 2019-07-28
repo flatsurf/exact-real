@@ -60,6 +60,12 @@ VPATH = $(srcdir) $(builddir)
 BUILT_SOURCES = exact-real/exact-real.hpp
 # Distribute exact-real.hpp.in as part of the tarball, but not exact-real.hpp
 EXTRA_DIST = exact-real/exact-real.hpp.in
+# We vendor the header-only library Cereal (serialization with C++) which we
+# use in some of our source files.
+# Cereal is basically not packaged in any distribution since it is a
+# header-only library that people always vendor into their source tree.
+EXTRA_DIST = external/cereal/include
+AM_CPPFLAGS = -isystem $(srcdir)/external/cereal/include
 generatedincludedir = $(includedir)/exact-real
 nodist_generatedinclude_HEADERS = exact-real/exact-real.hpp
 

@@ -15,10 +15,10 @@ module_SOURCES = module.test.cc main.hpp
 element_SOURCES = element.test.cc main.hpp
 constraint_random_real_number_SOURCES = constraint_random_real_number.test.cc main.hpp arf.test.hpp
 
-# We vendor the header-only library Cereal (serialization of the C++
-# structures) to be able to run the tests even when cereal is not installed.
+# We vendor the header-only library Cereal (serialization with C++ to be able
+# to run the tests even when cereal is not installed.
 # Cereal is basically not packaged in any distribution since it is a
-# header-only library that people always vendor into their sourc tree.
+# header-only library that people always vendor into their source tree.
 EXTRA_DIST = external/cereal/include
 
 @VALGRIND_CHECK_RULES@

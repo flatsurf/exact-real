@@ -10,3 +10,6 @@
 [submodule "libexactreal/test/external/cereal"]
 	path = libexactreal/test/external/cereal
 	url = https://github.com/USCiLab/cereal.git
+[submodule "libexactreal/src/external/cereal"]
+	path = libexactreal/src/external/cereal
+	url = https://github.com/USCiLab/cereal.git
