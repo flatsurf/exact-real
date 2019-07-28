@@ -33,17 +33,17 @@ def test_binder():
     RealNumber = exactreal.RealNumber
 
     M = ZZModule(RealNumber.rational(1), RealNumber.random())
-    assert str(M) == "ℤ-Module(1, ℝ(0.303644…))"
+    assert str(M) == "ℤ-Module(1, ℝ(0.120809…))"
 
     x = M.gen(1)
-    assert str(x) == "ℝ(0.303644…)"
+    assert str(x) == "ℝ(0.120809…)"
 
     y = x + 2*x
-    assert str(y) == "3*ℝ(0.303644…)"
+    assert str(y) == "3*ℝ(0.120809…)"
 
     z = x*x + y;
-    assert str(z) == "ℝ(0.303644…)*ℝ(0.303644…) + 3*ℝ(0.303644…)"
+    assert str(z) == "ℝ(0.120809…)*ℝ(0.120809…) + 3*ℝ(0.120809…)"
 
-    assert str(z.module()) == "ℤ-Module(ℝ(0.303644…)*ℝ(0.303644…), ℝ(0.303644…), 1)"
+    assert str(z.module()) == "ℤ-Module(ℝ(0.120809…)*ℝ(0.120809…), ℝ(0.120809…), 1)"
 
 if __name__ == '__main__': sys.exit(pytest.main(sys.argv))
