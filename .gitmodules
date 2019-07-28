@@ -1,9 +1,6 @@
 [submodule "libexactreal/src/exact-real/external/spimpl"]
 	path = libexactreal/src/exact-real/external/spimpl
 	url = https://github.com/oliora/samples.git
-[submodule "libexactreal/test/external/json"]
-	path = libexactreal/test/external/json
-	url = https://github.com/nlohmann/json.git
 [submodule "libexactreal/src/external/unique-factory"]
 	path = libexactreal/src/external/unique-factory
 	url = https://github.com/flatsurf/unique-factory.git
