@@ -140,7 +140,7 @@ std::vector<C> Element<Ring>::coefficients() const {
       for (auto& num : nums) {
         ret.push_back(mpq_class(num, den));
       }
-      for (size_t i = nums.size(); i < impl->parent->ring()->degree(); i++) {
+      for (size_t i = nums.size(); i < impl->parent->ring().parameters->degree(); i++) {
         ret.push_back(0);
       }
     }
@@ -464,3 +464,4 @@ template class exactreal::Element<NumberField>;
 template ostream& exactreal::operator<<<NumberField>(ostream&, const Element<NumberField>&);
 template Element<NumberField>& exactreal::Element<NumberField>::operator*=<mpz_class>(const mpz_class& rhs);
 template std::vector<mpq_class> exactreal::Element<NumberField>::coefficients<mpq_class>() const;
+template std::vector<eantic::renf_elem_class> exactreal::Element<NumberField>::coefficients<eantic::renf_elem_class>() const;

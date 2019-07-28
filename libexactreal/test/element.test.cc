@@ -242,11 +242,10 @@ TEST(ElementNF, Scalars) {
     }
   }
 }
-}  // namespace exactreal
 
 TEST(ElementNF, Coefficients) {
   auto K = renf_class::make("a^2 - 2", "a", "1.41 +/- 0.1", 64);
-  auto m = Module<NumberFieldTraits>::make({RealNumber::rational(1), RealNumber::random()}, K);
+  auto m = Module<NumberField>::make({RealNumber::rational(1), RealNumber::random()}, K);
 
   auto x = Element(m, 1);
   auto a = renf_elem_class(K, "a");
@@ -256,5 +255,6 @@ TEST(ElementNF, Coefficients) {
   EXPECT_EQ(x.coefficients<mpq_class>(), std::vector<mpq_class>({0, 0, 1, 0}));
   EXPECT_EQ((a * x).coefficients<mpq_class>(), std::vector<mpq_class>({0, 0, 0, 1}));
 }
+}  // namespace exactreal
 
 #include "main.hpp"
