@@ -217,12 +217,12 @@ int arb_deserialize(arb_t x, const char* data) {
     return 1;
   }
 
-  int midlen = split - data;
+  size_t midlen = (size_t)(split - data);
   char* mid = (char*)flint_malloc(midlen + 1);
   strncpy(mid, data, midlen);
   mid[midlen] = '\0';
 
-  int maglen = strlen(data) - midlen - 1;
+  size_t maglen = strlen(data) - midlen - 1;
   char* mag = (char*)flint_malloc(maglen + 1);
   strncpy(mag, split + 1, maglen);
   mag[maglen] = '\0';
