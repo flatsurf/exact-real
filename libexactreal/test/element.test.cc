@@ -24,13 +24,12 @@
 #include <boost/lexical_cast.hpp>
 
 #include <exact-real/element.hpp>
-#include <exact-real/integer_ring_traits.hpp>
+#include <exact-real/integer_ring.hpp>
 #include <exact-real/module.hpp>
-#include <exact-real/number_field_traits.hpp>
-#include <exact-real/rational_field_traits.hpp>
+#include <exact-real/number_field.hpp>
+#include <exact-real/rational_field.hpp>
 #include <exact-real/real_number.hpp>
 
-using namespace exactreal;
 using boost::lexical_cast;
 using eantic::renf_class;
 using eantic::renf_elem_class;
@@ -39,8 +38,9 @@ using std::shared_ptr;
 using std::string;
 using std::vector;
 
+namespace exactreal {
 TEST(ElementZZ, Generators) {
-  auto m = Module<IntegerRingTraits>::make({RealNumber::rational(1), RealNumber::random()});
+  auto m = Module<IntegerRing>::make({RealNumber::rational(1), RealNumber::random()});
 
   auto one = Element(m, 0);
   auto x = Element(m, 1);
@@ -57,9 +57,9 @@ TEST(ElementZZ, Generators) {
 }
 
 TEST(ElementZZ, Additive) {
-  auto m = Module<IntegerRingTraits>::make({RealNumber::rational(1), RealNumber::random()});
+  auto m = Module<IntegerRing>::make({RealNumber::rational(1), RealNumber::random()});
 
-  Element<IntegerRingTraits> elements[]{Element(m, 0), Element(m, 1)};
+  Element<IntegerRing> elements[]{Element(m, 0), Element(m, 1)};
 
   for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
     auto x = elements[i];
@@ -70,11 +70,11 @@ TEST(ElementZZ, Additive) {
 }
 
 TEST(ElementZZ, PromotionFromTrivial) {
-  auto m = Module<IntegerRingTraits>::make({RealNumber::rational(1), RealNumber::random()});
+  auto m = Module<IntegerRing>::make({RealNumber::rational(1), RealNumber::random()});
 
   auto gen = Element(m, 1);
   auto zero = Element(m);
-  auto trivial = Element<IntegerRingTraits>();
+  auto trivial = Element<IntegerRing>();
 
   EXPECT_EQ(zero, trivial);
   EXPECT_NE(gen, trivial);
@@ -86,8 +86,8 @@ TEST(ElementZZ, PromotionFromTrivial) {
 }
 
 TEST(ElementZZ, PromotionFromSubmodule) {
-  auto m = Module<IntegerRingTraits>::make({RealNumber::rational(1)});
-  auto n = Module<IntegerRingTraits>::make({RealNumber::rational(1), RealNumber::random()});
+  auto m = Module<IntegerRing>::make({RealNumber::rational(1)});
+  auto n = Module<IntegerRing>::make({RealNumber::rational(1), RealNumber::random()});
 
   EXPECT_EQ(Element(m, 0), Element(n, 0));
   EXPECT_NE(Element(m, 0), Element(n, 1));
@@ -95,9 +95,9 @@ TEST(ElementZZ, PromotionFromSubmodule) {
 }
 
 TEST(ElementZZ, Scalars) {
-  auto m = Module<IntegerRingTraits>::make({RealNumber::rational(1), RealNumber::random()});
+  auto m = Module<IntegerRing>::make({RealNumber::rational(1), RealNumber::random()});
 
-  Element<IntegerRingTraits> elements[]{Element(m, 0), Element(m, 1)};
+  Element<IntegerRing> elements[]{Element(m, 0), Element(m, 1)};
 
   for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
     auto x = elements[i];
@@ -128,15 +128,15 @@ TEST(ElementZZ, Scalars) {
 }
 
 TEST(ElementZZ, Printing) {
-  auto m = Module<IntegerRingTraits>::make({RealNumber::rational(1), RealNumber::random()});
+  auto m = Module<IntegerRing>::make({RealNumber::rational(1), RealNumber::random()});
 
   EXPECT_EQ(lexical_cast<string>(Element(m, 0)), "1");
-  EXPECT_EQ(lexical_cast<string>(Element(m, 1)), "ℝ(0.621222…)");
-  EXPECT_EQ(lexical_cast<string>(Element(m, 0) + Element(m, 1)), "1 + ℝ(0.621222…)");
+  EXPECT_EQ(lexical_cast<string>(Element(m, 1)), "ℝ(0.673083…)");
+  EXPECT_EQ(lexical_cast<string>(Element(m, 0) + Element(m, 1)), "1 + ℝ(0.673083…)");
 }
 
 TEST(ElementZZ, Multiplication) {
-  auto m = Module<IntegerRingTraits>::make({RealNumber::rational(1), RealNumber::random()});
+  auto m = Module<IntegerRing>::make({RealNumber::rational(1), RealNumber::random()});
 
   auto one = Element(m, 0);
   auto rnd = Element(m, 1);
@@ -149,9 +149,9 @@ TEST(ElementZZ, Multiplication) {
 }
 
 TEST(ElementQQ, Scalars) {
-  auto m = Module<RationalFieldTraits>::make({RealNumber::rational(1), RealNumber::random()});
+  auto m = Module<RationalField>::make({RealNumber::rational(1), RealNumber::random()});
 
-  Element<RationalFieldTraits> elements[]{Element(m, 0), Element(m, 1)};
+  Element<RationalField> elements[]{Element(m, 0), Element(m, 1)};
 
   for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
     auto x = elements[i];
@@ -192,9 +192,9 @@ TEST(ElementQQ, Scalars) {
 
 TEST(ElementNF, Scalars) {
   auto K = renf_class::make("a^2 - 2", "a", "1.41 +/- 0.1", 64);
-  auto m = Module<NumberFieldTraits>::make({RealNumber::rational(1), RealNumber::random()}, K);
+  auto m = Module<NumberField>::make({RealNumber::rational(1), RealNumber::random()}, K);
 
-  Element<NumberFieldTraits> elements[]{Element(m, 0), Element(m, 1)};
+  Element<NumberField> elements[]{Element(m, 0), Element(m, 1)};
 
   for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
     auto x = elements[i];
@@ -241,6 +241,7 @@ TEST(ElementNF, Scalars) {
         EXPECT_EQ((x + x) / elements[j], std::optional<renf_elem_class>{});
     }
   }
+}
 }
 
 TEST(ElementNF, Coefficients) {

@@ -27,7 +27,6 @@
 
 #include "exact-real/exact-real.hpp"
 #include "exact-real/forward.hpp"
-#include "exact-real/ring_traits.hpp"
 
 namespace exactreal {
 template <typename Ring>
@@ -35,23 +34,17 @@ class Module : public std::enable_shared_from_this<Module<Ring>>, boost::equalit
  public:
   using Basis = std::vector<std::shared_ptr<const RealNumber>>;
 
-  template <typename RingWithoutParameters = Ring>
-  static std::shared_ptr<Module<Ring>> make(const Basis&);
+  static std::shared_ptr<const Module<Ring>> make(const Basis&);
 
-  template <typename RingWithParameters = Ring>
-  static std::shared_ptr<Module<Ring>> make(const Basis&, const typename RingWithParameters::Parameters&);
+  static std::shared_ptr<const Module<Ring>> make(const Basis&, const Ring&);
 
-  // Return the specific ring (e.g., the number field); only enabled if the
-  // ring has such data, e.g., not for the integers or the rationals.
-  template <class RingWithParameters = Ring>
-  const typename RingWithParameters::Parameters& ring() const;
+  // Return the underlying ring (e.g., the number field)
+  const Ring& ring() const;
 
   size rank() const;
 
   const Basis& basis() const;
   Element<Ring> gen(size i) const;
-
-  static const std::shared_ptr<const Module> trivial;
 
   // Return whether this module has the same generators in the same order over the same ring.
   bool operator==(const Module<Ring>& rhs) const;

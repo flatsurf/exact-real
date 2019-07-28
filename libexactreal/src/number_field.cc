@@ -18,24 +18,19 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBEXACTREAL_NUMBER_FIELD_HPP
-#define LIBEXACTREAL_NUMBER_FIELD_HPP
+#include <e-antic/renfxx.h>
 
-#include <memory>
-
-#include "e-antic/renfxx_fwd.h"
-#include "exact-real/exact-real.hpp"
-#include "exact-real/forward.hpp"
+#include "exact-real/number_field.hpp"
+#include "exact-real/arb.hpp"
 
 namespace exactreal {
+Arb NumberField::arb(const ElementClass& x, mp_limb_signed_t prec) { return Arb(x, prec); }
 
-struct NumberFieldTraits {
-  typedef eantic::renf_elem_class ElementClass;
-  static constexpr bool isField = true;
-  typedef std::shared_ptr<const eantic::renf_class> Parameters;
-  static Arb arb(const ElementClass& x, long prec);
-};
+bool NumberField::operator==(const NumberField& rhs) const { return parameters == rhs.parameters; }
 
+NumberField::NumberField(const std::shared_ptr<const eantic::renf_class>& parameters) : parameters(parameters) {
+  assert(parameters && "number field must not be null");
+}
+
+NumberField::NumberField() : NumberField(eantic::renf_class::make()) {}
 }  // namespace exactreal
-
-#endif

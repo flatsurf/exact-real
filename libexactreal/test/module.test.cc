@@ -23,30 +23,30 @@
 #include <boost/lexical_cast.hpp>
 
 #include <exact-real/element.hpp>
-#include <exact-real/integer_ring_traits.hpp>
+#include <exact-real/integer_ring.hpp>
 #include <exact-real/module.hpp>
 #include <exact-real/real_number.hpp>
 
-using namespace exactreal;
 using boost::lexical_cast;
 using std::make_shared;
 using std::shared_ptr;
 using std::string;
 using std::vector;
 
+namespace exactreal {
 TEST(ModuleZZ, Create) {
-  auto trivial = Module<IntegerRingTraits>::trivial;
+  auto trivial = Module<IntegerRing>::make({});
   EXPECT_EQ(trivial->rank(), 0);
   EXPECT_EQ(lexical_cast<string>(*trivial), "ℤ-Module()");
 
-  auto m = Module<IntegerRingTraits>::make({RealNumber::random(), RealNumber::random()});
+  auto m = Module<IntegerRing>::make({RealNumber::random(), RealNumber::random()});
   EXPECT_EQ(m->rank(), 2);
-  EXPECT_EQ(lexical_cast<string>(*m), "ℤ-Module(ℝ(0.303644…), ℝ(0.120809…))");
+  EXPECT_EQ(lexical_cast<string>(*m), "ℤ-Module(ℝ(0.120809…), ℝ(0.178808…))");
 }
 
 TEST(ModuleZZ, Multiplication) {
-  auto m = Module<IntegerRingTraits>::make({RealNumber::random(), RealNumber::rational(1)});
-  auto n = Module<IntegerRingTraits>::make({RealNumber::rational(1)});
+  auto m = Module<IntegerRing>::make({RealNumber::random(), RealNumber::rational(1)});
+  auto n = Module<IntegerRing>::make({RealNumber::rational(1)});
 
   auto one = n->gen(0);
   auto rnd = m->gen(0);
@@ -59,6 +59,7 @@ TEST(ModuleZZ, Multiplication) {
   EXPECT_EQ((rnd * rnd).module(), (rnd * rnd).module());
   EXPECT_EQ((rnd * rnd * rnd).module()->rank(), 4);
   EXPECT_NE((rnd * rnd * rnd).module(), (rnd * rnd).module());
+}
 }
 
 #include "main.hpp"

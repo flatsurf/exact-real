@@ -23,6 +23,7 @@
 #include "exact-real/arb.hpp"
 #include "exact-real/real_number.hpp"
 #include "exact-real/yap/arf.hpp"
+#include "exact-real/cereal.hpp"
 
 using std::max;
 using std::ostream;
@@ -124,6 +125,56 @@ bool RealNumber::operator==(const mpq_class& rat) const {
 ostream& operator<<(ostream& os, const RealNumber& self) {
   self >> os;
   return os;
+}
+
+const static std::optional<unsigned int> noSeed = 0;
+const static std::type_info& RATIONAL = typeid(*RealNumber::rational(0));
+const static std::type_info& RANDOM = typeid(*RealNumber::random(noSeed));
+const static std::type_info& CONSTRAINED = typeid(*RealNumber::random(Arf(1), Arf(2), noSeed));
+const static std::type_info& PRODUCT = typeid(*((*RealNumber::random(noSeed)) * (*RealNumber::random(noSeed))));
+
+void save_rational(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& self);
+void save_random(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& self);
+void save_constrained(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& self);
+void save_product(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& self);
+
+void RealNumberCereal::save(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& self) {
+  if (typeid(*self) == RATIONAL) {
+    archive(cereal::make_nvp("kind", std::string("rational")));
+    save_rational(archive, self);
+  } else if (typeid(*self) == RANDOM) {
+    archive(cereal::make_nvp("kind", std::string("random")));
+    save_random(archive, self);
+  } else if (typeid(*self) == CONSTRAINED) {
+    archive(cereal::make_nvp("kind", std::string("constrained")));
+    save_constrained(archive, self);
+  } else if (typeid(*self) == PRODUCT) {
+    archive(cereal::make_nvp("kind", std::string("product")));
+    save_product(archive, self);
+  } else {
+    throw std::logic_error("not implemented -- RealNumberCereal::save");
+  }
+}
+
+void load_rational(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& self);
+void load_random(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& self);
+void load_constrained(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& self);
+void load_product(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& self);
+
+void RealNumberCereal::load(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& self) {
+  std::string kind;
+  archive(cereal::make_nvp("kind", kind));
+  if (kind == "rational") {
+    load_rational(archive, self);
+  } else if (kind == "random") {
+    load_random(archive, self);
+  } else if (kind == "constrained") {
+    load_constrained(archive, self);
+  } else if (kind == "product") {
+    load_product(archive, self);
+  } else {
+    throw std::logic_error("not implemented - RealNumberCereal::load()");
+  }
 }
 
 }  // namespace exactreal

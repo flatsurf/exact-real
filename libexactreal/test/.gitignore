@@ -42,6 +42,7 @@ module
 element
 rational_real_number
 constraint_random_real_number
+cereal
 
 ### Autotools Generated Files
 /.deps

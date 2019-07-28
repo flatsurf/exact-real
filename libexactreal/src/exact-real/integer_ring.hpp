@@ -18,9 +18,24 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include "exact-real/number_field_traits.hpp"
-#include "exact-real/arb.hpp"
+#ifndef LIBEXACTREAL_INTEGER_RING_HPP
+#define LIBEXACTREAL_INTEGER_RING_HPP
+
+#include <gmpxx.h>
+#include <boost/operators.hpp>
+
+#include "exact-real/exact-real.hpp"
+#include "exact-real/forward.hpp"
 
 namespace exactreal {
-Arb NumberFieldTraits::arb(const ElementClass& x, mp_limb_signed_t prec) { return Arb(x, prec); }
+
+struct IntegerRing : boost::equality_comparable<IntegerRing> {
+  typedef mpz_class ElementClass;
+  static constexpr bool isField = false;
+  static Arb arb(const ElementClass& x, long prec);
+  bool operator==(const IntegerRing&) const { return true; }
+};
+
 }  // namespace exactreal
+
+#endif

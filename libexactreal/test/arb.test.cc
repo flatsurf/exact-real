@@ -24,10 +24,10 @@
 
 #include <exact-real/arb.hpp>
 
-using namespace exactreal;
 using boost::lexical_cast;
 using std::string;
 
+namespace exactreal {
 TEST(ArbTest, CreateDestroy) { delete new Arb(); }
 
 TEST(ArbTest, Relations) {
@@ -64,6 +64,7 @@ TEST(ArbTest, Printing) {
   EXPECT_EQ(lexical_cast<string>(Arb("." + string(1337, '0') + "1", 1024)), "[1.00000e-1338 +/- 3e-1348]");
   ASSERT_EQ(lexical_cast<string>(Arb(mpq_class(1, 2), 1)), "0.500000");
   ASSERT_EQ(lexical_cast<string>(Arb(mpq_class(1, 3), 64)), "[0.333333 +/- 3.34e-7]");
+}
 }
 
 #include "main.hpp"

@@ -43,7 +43,7 @@ class Element : boost::additive<Element<Ring>>,
                 boost::totally_ordered<Element<Ring>, mpz_class>,
                 boost::totally_ordered<Element<Ring>, long long>,
                 boost::multiplicative<Element<Ring>, typename Ring::ElementClass>,
-                std::conditional_t<std::is_same<typename Ring::ElementClass, mpz_class>::value, boost::blank,
+                std::conditional_t<std::is_same_v<typename Ring::ElementClass, mpz_class>, boost::blank,
                                    boost::multiplicative<Element<Ring>, mpz_class>>,
                 boost::multiplicative<Element<Ring>, int> {
  public:
@@ -111,9 +111,6 @@ class Element : boost::additive<Element<Ring>>,
 
 template <typename Ring, typename... Args>
 Element(const std::shared_ptr<const Module<Ring>>&, Args...)->Element<Ring>;
-
-template <typename Ring, typename... Args>
-Element(const std::shared_ptr<Module<Ring>>&, Args...)->Element<Ring>;
 
 }  // namespace exactreal
 

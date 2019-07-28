@@ -22,16 +22,18 @@
 #define LIBEXACTREAL_RATIONAL_FIELD_HPP
 
 #include <gmpxx.h>
+#include <boost/operators.hpp>
 
 #include "exact-real/exact-real.hpp"
 #include "exact-real/forward.hpp"
 
 namespace exactreal {
 
-struct RationalFieldTraits {
+struct RationalField : boost::equality_comparable<RationalField> {
   typedef mpq_class ElementClass;
   static constexpr bool isField = true;
   static Arb arb(const ElementClass& x, long prec);
+  bool operator==(const RationalField&) const { return true; }
 };
 
 }  // namespace exactreal

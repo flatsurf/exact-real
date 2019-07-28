@@ -24,8 +24,7 @@
 #include <exact-real/yap/arb.hpp>
 #include "arb.hpp"
 
-using namespace exactreal;
-
+namespace exactreal {
 ArbTester tester;
 
 TEST(ArbYapTest, Arithmetic) {
@@ -116,6 +115,7 @@ TEST(ArbYapTest, ArithmeticInplace) {
   ASSERT_TRUE(((z = Arb(1337)) -= x(prec)).equal((Arb(1337) - x)(prec)));
   ASSERT_TRUE(((z = Arb(1337)) *= x(prec)).equal((Arb(1337) * x)(prec)));
   ASSERT_TRUE(((z = Arb(1337)) /= x(prec)).equal((Arb(1337) / x)(prec)));
+}
 }
 
 #include "main.hpp"

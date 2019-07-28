@@ -21,8 +21,6 @@
 #ifndef LIBEXACTREAL_YAP_ARF_ASSIGN_TRANSFORMATION_HPP
 #define LIBEXACTREAL_YAP_ARF_ASSIGN_TRANSFORMATION_HPP
 
-#include <iostream>
-
 #include "exact-real/arf.hpp"
 #include "exact-real/exact-real.hpp"
 #include "exact-real/yap/assign_transformation.hpp"

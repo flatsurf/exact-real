@@ -31,6 +31,8 @@ using std::make_unique;
 using std::unique_ptr;
 
 struct ArfTester {
+  ArfTester() { reset(); }
+
   unique_ptr<flint::frandxx> flint_rand;
 
   void reset() { flint_rand = make_unique<flint::frandxx>(); }

@@ -24,10 +24,10 @@
 #include <memory>
 
 #include "exact-real/element.hpp"
-#include "exact-real/integer_ring_traits.hpp"
+#include "exact-real/integer_ring.hpp"
 #include "exact-real/module.hpp"
-#include "exact-real/number_field_traits.hpp"
-#include "exact-real/rational_field_traits.hpp"
+#include "exact-real/number_field.hpp"
+#include "exact-real/rational_field.hpp"
 #include "exact-real/real_number.hpp"
 #include "exact-real/yap/arb.hpp"
 #include "exact-real/yap/arf.hpp"
@@ -77,20 +77,15 @@ auto boost_binary(const S &lhs, const T &rhs) {
 }  // namespace exactreal
 
 // Work around https://bitbucket.org/wlav/cppyy/issues/96/cannot-make-wrapper-for-a-function
-extern template std::ostream &exactreal::operator<<<exactreal::IntegerRingTraits>(std::ostream &, const exactreal::Module<exactreal::IntegerRingTraits> &);
-extern template std::ostream &exactreal::operator<<<exactreal::RationalFieldTraits>(std::ostream &, const exactreal::Module<exactreal::RationalFieldTraits> &);
-extern template std::ostream &exactreal::operator<<<exactreal::NumberFieldTraits>(std::ostream &, const exactreal::Module<exactreal::NumberFieldTraits> &);
-extern template std::ostream &exactreal::operator<<<exactreal::IntegerRingTraits>(std::ostream &, const exactreal::Element<exactreal::IntegerRingTraits> &);
-extern template std::ostream &exactreal::operator<<<exactreal::RationalFieldTraits>(std::ostream &, const exactreal::Element<exactreal::RationalFieldTraits> &);
-extern template std::ostream &exactreal::operator<<<exactreal::NumberFieldTraits>(std::ostream &, const exactreal::Element<exactreal::NumberFieldTraits> &);
+extern template std::ostream &exactreal::operator<<<exactreal::IntegerRing>(std::ostream &, const exactreal::Module<exactreal::IntegerRing> &);
+extern template std::ostream &exactreal::operator<<<exactreal::RationalField>(std::ostream &, const exactreal::Module<exactreal::RationalField> &);
+extern template std::ostream &exactreal::operator<<<exactreal::NumberField>(std::ostream &, const exactreal::Module<exactreal::NumberField> &);
+extern template std::ostream &exactreal::operator<<<exactreal::IntegerRing>(std::ostream &, const exactreal::Element<exactreal::IntegerRing> &);
+extern template std::ostream &exactreal::operator<<<exactreal::RationalField>(std::ostream &, const exactreal::Element<exactreal::RationalField> &);
+extern template std::ostream &exactreal::operator<<<exactreal::NumberField>(std::ostream &, const exactreal::Element<exactreal::NumberField> &);
 
-extern template std::shared_ptr<exactreal::Module<exactreal::IntegerRingTraits>> exactreal::Module<exactreal::IntegerRingTraits>::make(const std::vector<std::shared_ptr<const exactreal::RealNumber>> &);
-extern template std::shared_ptr<exactreal::Module<exactreal::RationalFieldTraits>> exactreal::Module<exactreal::RationalFieldTraits>::make(const std::vector<std::shared_ptr<const exactreal::RealNumber>> &);
-extern template std::shared_ptr<exactreal::Module<exactreal::NumberFieldTraits>> exactreal::Module<exactreal::NumberFieldTraits>::make(const std::vector<std::shared_ptr<const exactreal::RealNumber>> &, const exactreal::NumberFieldTraits::Parameters &);
-
-// Squash some compiler warnings that come out of cppyy otherwise
-extern template const std::shared_ptr<const exactreal::Module<exactreal::IntegerRingTraits>> exactreal::Module<exactreal::IntegerRingTraits>::trivial;
-extern template const std::shared_ptr<const exactreal::Module<exactreal::NumberFieldTraits>> exactreal::Module<exactreal::NumberFieldTraits>::trivial;
-extern template const std::shared_ptr<const exactreal::Module<exactreal::RationalFieldTraits>> exactreal::Module<exactreal::RationalFieldTraits>::trivial;
+extern template std::shared_ptr<const exactreal::Module<exactreal::IntegerRing>> exactreal::Module<exactreal::IntegerRing>::make(const std::vector<std::shared_ptr<const exactreal::RealNumber>> &, const exactreal::IntegerRing&);
+extern template std::shared_ptr<const exactreal::Module<exactreal::RationalField>> exactreal::Module<exactreal::RationalField>::make(const std::vector<std::shared_ptr<const exactreal::RealNumber>> &, const exactreal::RationalField&);
+extern template std::shared_ptr<const exactreal::Module<exactreal::NumberField>> exactreal::Module<exactreal::NumberField>::make(const std::vector<std::shared_ptr<const exactreal::RealNumber>> &, const exactreal::NumberField&);
 
 #endif

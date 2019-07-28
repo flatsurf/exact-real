@@ -19,10 +19,13 @@
  *********************************************************************/
 
 #include <gmpxx.h>
+#include <cereal/cereal.hpp>
+#include <cereal/archives/json.hpp>
 
-#include "exact-real/detail/unique_factory.hpp"
+#include "external/unique-factory/unique_factory.hpp"
 #include "exact-real/real_number.hpp"
 #include "exact-real/yap/arf.hpp"
+#include "exact-real/cereal.hpp"
 
 using namespace exactreal;
 using std::make_shared;
@@ -34,6 +37,7 @@ namespace {
 // An exact rational number
 class RationalRealNumber final : public RealNumber {
  public:
+  RationalRealNumber() : RationalRealNumber(0) {}
   explicit RationalRealNumber(const mpq_class& value) : value(value) {}
 
   virtual Arf arf(long prec) const override {
@@ -59,6 +63,11 @@ class RationalRealNumber final : public RealNumber {
     throw std::logic_error("not implemented - multiplication with non-trivial rational");
   }
 
+  template <typename Archive>
+  void save(Archive& archive) const {
+    archive(cereal::make_nvp("value", CerealWrap{value}));
+  }
+
  private:
   mpq_class value;
 };
@@ -66,8 +75,19 @@ class RationalRealNumber final : public RealNumber {
 }  // namespace
 
 namespace exactreal {
-shared_ptr<RealNumber> RealNumber::rational(const mpq_class& value) {
+shared_ptr<const RealNumber> RealNumber::rational(const mpq_class& value) {
   static UniqueFactory<RationalRealNumber, mpq_class> factory;
-  return factory.get(value, [](const mpq_class& v) { return new RationalRealNumber(v); });
+  return factory.get(value, [&]() { return new RationalRealNumber(value); });
 }
+
+void save_rational(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& base) {
+  std::dynamic_pointer_cast<const RationalRealNumber>(base)->save(archive);
+}
+
+void load_rational(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& base) {
+  CerealWrap<mpq_class> value;
+  archive(cereal::make_nvp("value", value));
+  base = RealNumber::rational(*value);
+}
+
 }  // namespace exactreal

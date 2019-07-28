@@ -18,17 +18,21 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
+#include <memory>
+#include <sstream>
 #include <arb.h>
 #include <gmpxx.h>
 #include <boost/lexical_cast.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/random/linear_congruential.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
-#include <sstream>
+#include <cereal/cereal.hpp>
+#include <cereal/archives/json.hpp>
 
-#include "exact-real/detail/unique_factory.hpp"
+#include "external/unique-factory/unique_factory.hpp"
 #include "exact-real/real_number.hpp"
 #include "exact-real/yap/arf.hpp"
+#include "exact-real/cereal.hpp"
 
 using namespace exactreal;
 using boost::lexical_cast;
@@ -46,54 +50,6 @@ unsigned int nextSeed = 1337;
 // A random real number in [a, b]
 class ConstraintRandomRealNumber final : public RealNumber {
  public:
-  ConstraintRandomRealNumber(const Arf& a, const Arf& b, unsigned int seed) : inner(RealNumber::random()) {
-    if (a >= b) {
-      throw std::logic_error("interval must have an interior");
-    }
-
-    // We first rewrite a and b as mantissa + 2^exponent with the same exponent
-    // and then select a random mantissa. Our random number is then going to be
-    // this "mantissa" followed by random bits. Specifically, if we write
-    // initial = m·2^e, then this returns initial + inner·2^(e - 1)
-
-    auto a_mantissa = a.mantissa();
-    auto a_exponent = a.exponent();
-
-    auto b_mantissa = b.mantissa();
-    auto b_exponent = b.exponent();
-
-    // If a and b are very different in size, these shifts could lead to Out Of
-    // Memory situations.
-
-    if (a_exponent < b_exponent) {
-      mpz_class delta = b_exponent - a_exponent;
-      mpz_mul_2exp(b_mantissa.get_mpz_t(), b_mantissa.get_mpz_t(), delta.get_si());
-      b_exponent = a_exponent;
-    }
-
-    if (b_exponent < a_exponent) {
-      mpz_class delta = a_exponent - b_exponent;
-      mpz_mul_2exp(a_mantissa.get_mpz_t(), a_mantissa.get_mpz_t(), delta.get_si());
-      a_exponent = b_exponent;
-    }
-
-    mpz_class length = b_mantissa - a_mantissa;
-    assert(length > 0);
-
-    mpz_class mantissa;
-
-    gmp_randstate_t rnd;
-    gmp_randinit_default(rnd);
-    gmp_randseed_ui(rnd, seed);
-    mpz_urandomm(mantissa.get_mpz_t(), rnd, length.get_mpz_t());
-    gmp_randclear(rnd);
-
-    mantissa += a_mantissa;
-
-    e = a_exponent.get_si();
-    initial = Arf(mantissa, e);
-  }
-
   ConstraintRandomRealNumber(const Arf& initial, long e, const shared_ptr<const RealNumber>& inner) : initial(initial), e(e), inner(inner) {}
 
   virtual Arf arf(long prec) const override {
@@ -134,26 +90,87 @@ class ConstraintRandomRealNumber final : public RealNumber {
     return *this;
   }
 
+  template <typename Archive>
+  void save(Archive& archive) const {
+    archive(cereal::make_nvp("initial", initial),
+        cereal::make_nvp("e", e),
+        cereal::make_nvp("inner", inner));
+  }
+
  private:
   Arf initial;
   long e;
   shared_ptr<const RealNumber> inner;
 };
+
+auto& factory() {
+  static UniqueFactory<ConstraintRandomRealNumber, Arf, long, std::shared_ptr<const RealNumber>> factory;
+  return factory;
+}
 }  // namespace
 
 namespace exactreal {
-shared_ptr<RealNumber> RealNumber::random(const Arf& lower, const Arf& upper) {
+shared_ptr<const RealNumber> RealNumber::random(const Arf& lower, const Arf& upper, std::optional<unsigned int> seed) {
   if (lower == 0 && upper == 1) {
-    return RealNumber::random();
+    return RealNumber::random(seed);
   } else {
-    static UniqueFactory<ConstraintRandomRealNumber, Arf, Arf, unsigned int> factory;
-    return factory.get(lower, upper, nextSeed++, [](const Arf& l, const Arf& u, const unsigned int& seed) {
-      return new ConstraintRandomRealNumber(l, u, seed);
+    if (!seed)
+      seed = nextSeed++;
+
+    if (lower >= upper) {
+      throw std::logic_error("interval must have an interior");
+    }
+
+    // We first rewrite a and b as mantissa + 2^exponent with the same exponent
+    // and then select a random mantissa. Our random number is then going to be
+    // this "mantissa" followed by random bits. Specifically, if we write
+    // initial = m·2^e, then this returns initial + inner·2^(e - 1)
+
+    auto lower_mantissa = lower.mantissa();
+    auto lower_exponent = lower.exponent();
+
+    auto upper_mantissa = upper.mantissa();
+    auto upper_exponent = upper.exponent();
+
+    // If a and b are very different in size, these shifts could lead to Out Of
+    // Memory situations.
+
+    if (lower_exponent < upper_exponent) {
+      mpz_class delta = upper_exponent - lower_exponent;
+      mpz_mul_2exp(upper_mantissa.get_mpz_t(), upper_mantissa.get_mpz_t(), delta.get_si());
+      upper_exponent = lower_exponent;
+    }
+
+    if (upper_exponent < lower_exponent) {
+      mpz_class delta = lower_exponent - upper_exponent;
+      mpz_mul_2exp(lower_mantissa.get_mpz_t(), lower_mantissa.get_mpz_t(), delta.get_si());
+      lower_exponent = upper_exponent;
+    }
+
+    mpz_class length = upper_mantissa - lower_mantissa;
+    assert(length > 0);
+
+    mpz_class mantissa;
+
+    gmp_randstate_t rnd;
+    gmp_randinit_default(rnd);
+    gmp_randseed_ui(rnd, *seed);
+    mpz_urandomm(mantissa.get_mpz_t(), rnd, length.get_mpz_t());
+    gmp_randclear(rnd);
+
+    mantissa += lower_mantissa;
+
+    long e = lower_exponent.get_si();
+    Arf initial = Arf(mantissa, e);
+    auto inner = RealNumber::random();
+
+    return factory().get(initial, e, inner, [&]() {
+      return new ConstraintRandomRealNumber(initial, e, inner);
     });
   }
 }
 
-shared_ptr<RealNumber> RealNumber::random(const double x) {
+shared_ptr<const RealNumber> RealNumber::random(const double x, std::optional<unsigned int> seed) {
   if (!isfinite(x)) {
     throw std::logic_error("not implemented - random number close to non-finite");
   }
@@ -177,6 +194,19 @@ shared_ptr<RealNumber> RealNumber::random(const double x) {
 
   // Note that the result is smaller than 2^-1023 if x == 0 (which is probably
   // not what you wanted.)
-  return random(lower, upper);
+  return random(lower, upper, seed);
+}
+
+void save_constrained(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& base) {
+  std::dynamic_pointer_cast<const ConstraintRandomRealNumber>(base)->save(archive);
+}
+
+void load_constrained(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& base) {
+  Arf initial;
+  long e;
+  shared_ptr<const RealNumber> inner;
+  archive(initial, e, inner);
+
+  base = factory().get(initial, e, inner, [&]() { return new ConstraintRandomRealNumber(initial, e, inner); });
 }
 }  // namespace exactreal

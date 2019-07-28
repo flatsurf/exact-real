@@ -57,7 +57,7 @@ struct smart_less {
 template <typename Ring>
 class ElementImplementation {
  public:
-  ElementImplementation() : ElementImplementation(Module<Ring>::trivial) {}
+  ElementImplementation() : ElementImplementation(Module<Ring>::make({})) {}
 
   explicit ElementImplementation(const shared_ptr<const Module<Ring>>& parent)
       : ElementImplementation(parent, vector<typename Ring::ElementClass>(parent->rank())) {}
@@ -183,10 +183,8 @@ Element<Ring>& Element<Ring>::operator-=(const Element<Ring>& rhs) {
 
 template <typename Ring>
 Element<Ring>& Element<Ring>::operator*=(const Element<Ring>& rhs) {
-  if constexpr (is_parametrized_v<Ring>) {
-    if (this->module()->ring() != rhs.module()->ring()) {
-      throw std::logic_error("not implemented - multiplication in modules over different rings");
-    }
+  if (this->module()->ring() != rhs.module()->ring()) {
+    throw std::logic_error("not implemented - multiplication in modules over different rings");
   }
 
   // Order coefficients by size so we get a reproducible order of the
@@ -209,11 +207,7 @@ Element<Ring>& Element<Ring>::operator*=(const Element<Ring>& rhs) {
     coefficients.push_back(v.second);
   }
 
-  if constexpr (is_parametrized_v<Ring>) {
-    this->impl->parent = Module<Ring>::make(basis, this->impl->parent->ring());
-  } else {
-    this->impl->parent = Module<Ring>::make(basis);
-  }
+  this->impl->parent = Module<Ring>::make(basis, this->impl->parent->ring());
   this->impl->coefficients = coefficients;
 
   return *this;
@@ -454,20 +448,19 @@ ostream& operator<<(ostream& out, const Element<Ring>& self) {
 
 // Explicit instantiations of templates so that code is generated for the
 // linker.
-#include "exact-real/integer_ring_traits.hpp"
-#include "exact-real/number_field_traits.hpp"
-#include "exact-real/rational_field_traits.hpp"
+#include "exact-real/integer_ring.hpp"
+#include "exact-real/number_field.hpp"
+#include "exact-real/rational_field.hpp"
 
-template class exactreal::Element<IntegerRingTraits>;
-template ostream& exactreal::operator<<<IntegerRingTraits>(ostream&, const Element<IntegerRingTraits>&);
-template std::vector<typename IntegerRingTraits::ElementClass> exactreal::Element<IntegerRingTraits>::coefficients() const;
-template class exactreal::Element<RationalFieldTraits>;
-template ostream& exactreal::operator<<<RationalFieldTraits>(ostream&, const Element<RationalFieldTraits>&);
-template Element<RationalFieldTraits>& exactreal::Element<RationalFieldTraits>::operator*=
-    <mpz_class>(const mpz_class& rhs);
-template std::vector<typename RationalFieldTraits::ElementClass> exactreal::Element<RationalFieldTraits>::coefficients() const;
-template class exactreal::Element<NumberFieldTraits>;
-template ostream& exactreal::operator<<<NumberFieldTraits>(ostream&, const Element<NumberFieldTraits>&);
-template Element<NumberFieldTraits>& exactreal::Element<NumberFieldTraits>::operator*=<mpz_class>(const mpz_class& rhs);
-template std::vector<typename NumberFieldTraits::ElementClass> exactreal::Element<NumberFieldTraits>::coefficients() const;
-template std::vector<mpq_class> exactreal::Element<NumberFieldTraits>::coefficients<mpq_class>() const;
+template class exactreal::Element<IntegerRing>;
+template ostream& exactreal::operator<<<IntegerRing>(ostream&, const Element<IntegerRing>&);
+template class exactreal::Element<RationalField>;
+template std::vector<typename IntegerRing::ElementClass> exactreal::Element<IntegerRing>::coefficients() const;
+template ostream& exactreal::operator<<<RationalField>(ostream&, const Element<RationalField>&);
+template Element<RationalField>& exactreal::Element<RationalField>::operator*=<mpz_class>(const mpz_class& rhs);
+
+template std::vector<typename RationalField::ElementClass> exactreal::Element<RationalField>::coefficients() const;
+template class exactreal::Element<NumberField>;
+template ostream& exactreal::operator<<<NumberField>(ostream&, const Element<NumberField>&);
+template Element<NumberField>& exactreal::Element<NumberField>::operator*=<mpz_class>(const mpz_class& rhs);
+template std::vector<mpq_class> exactreal::Element<NumberField>::coefficients<mpq_class>() const;
