@@ -58,22 +58,22 @@ struct CerealWrap {
 
 // This should go int arb: https://github.com/fredrik-johansson/arb/issues/283
 namespace {
-const char* arf_serialize_zero = "0 0";
-const char* arf_serialize_pos_inf = "0 -1";
-const char* arf_serialize_neg_inf = "0 -2";
-const char* arf_serialize_nan = "0 -3";
+const char* arf_serialized_zero = "0 0";
+const char* arf_serialized_pos_inf = "0 -1";
+const char* arf_serialized_neg_inf = "0 -2";
+const char* arf_serialized_nan = "0 -3";
 
-char* arf_serialize(const arf_t x) {
+char* arf_dump_str(const arf_t x) {
   if (arf_is_special(x)) {
     const char* ret;
     if (arf_is_zero(x)) {
-      ret = arf_serialize_zero;
+      ret = arf_serialized_zero;
     } else if (arf_is_pos_inf(x)) {
-      ret = arf_serialize_pos_inf;
+      ret = arf_serialized_pos_inf;
     } else if (arf_is_neg_inf(x)) {
-      ret = arf_serialize_neg_inf;
+      ret = arf_serialized_neg_inf;
     } else if (arf_is_nan(x)) {
-      ret = arf_serialize_nan;
+      ret = arf_serialized_nan;
     } else {
       // Impossible to happen; all the special values have been treated above.
       assert(false);
@@ -102,14 +102,14 @@ char* arf_serialize(const arf_t x) {
   }
 }
 
-int arf_deserialize(arf_t x, const char* data) {
-  if (strcmp(data, arf_serialize_zero) == 0) {
+int arf_load_str(arf_t x, const char* data) {
+  if (strcmp(data, arf_serialized_zero) == 0) {
     arf_zero(x);
-  } else if (strcmp(data, arf_serialize_neg_inf) == 0) {
+  } else if (strcmp(data, arf_serialized_neg_inf) == 0) {
     arf_neg_inf(x);
-  } else if (strcmp(data, arf_serialize_pos_inf) == 0) {
+  } else if (strcmp(data, arf_serialized_pos_inf) == 0) {
     arf_pos_inf(x);
-  } else if (strcmp(data, arf_serialize_nan) == 0) {
+  } else if (strcmp(data, arf_serialized_nan) == 0) {
     arf_nan(x);
   } else {
     fmpz_t mantissa, exponent;
@@ -154,20 +154,20 @@ int arf_deserialize(arf_t x, const char* data) {
   return 0;
 }
 
-char* mag_serialize(const mag_t x) {
+char* mag_dump_str(const mag_t x) {
   arf_t y;
   arf_init(y);
   arf_set_mag(y, x);
-  char* res = arf_serialize(y);
+  char* res = arf_dump_str(y);
   arf_clear(y);
   return res;
 }
 
-int mag_deserialize(mag_t x, const char* data) {
+int mag_load_str(mag_t x, const char* data) {
   arf_t y;
   arf_init(y);
 
-  int err = arf_deserialize(y, data);
+  int err = arf_load_str(y, data);
   if (err) {
     arf_clear(y);
     return err;
@@ -192,9 +192,9 @@ int mag_deserialize(mag_t x, const char* data) {
   return err;
 }
 
-char* arb_serialize(const arb_t x) {
-  char* mid = arf_serialize(arb_midref(x));
-  char* mag = mag_serialize(arb_radref(x));
+char* arb_dump_str(const arb_t x) {
+  char* mid = arf_dump_str(arb_midref(x));
+  char* mag = mag_dump_str(arb_radref(x));
 
   char* res = (char*)flint_malloc(strlen(mid) + 1 + strlen(mag) + 1);
   strcpy(res, mid);
@@ -207,7 +207,7 @@ char* arb_serialize(const arb_t x) {
   return res;
 }
 
-int arb_deserialize(arb_t x, const char* data) {
+int arb_load_str(arb_t x, const char* data) {
   const char* split = strchr(data, ' ');
   if (split == NULL) {
     return 1;
@@ -227,10 +227,10 @@ int arb_deserialize(arb_t x, const char* data) {
   strncpy(mag, split + 1, maglen);
   mag[maglen] = '\0';
 
-  int err = arf_deserialize(arb_midref(x), mid);
+  int err = arf_load_str(arb_midref(x), mid);
 
   if (!err) {
-    err = mag_deserialize(arb_radref(x), mag);
+    err = mag_load_str(arb_radref(x), mag);
   }
 
   flint_free(mid);
@@ -241,7 +241,7 @@ int arb_deserialize(arb_t x, const char* data) {
 
 template <typename Archive>
 void save(Archive& archive, const Arb& self) {
-  char* serialized = arb_serialize(self.arb_t());
+  char* serialized = arb_dump_str(self.arb_t());
   archive(
       cereal::make_nvp("data", std::string(serialized)),
       cereal::make_nvp("approximation", static_cast<double>(self)));
@@ -254,14 +254,14 @@ void load(Archive& archive, Arb& self) {
   double ignored;
   archive(data, ignored);
 
-  if (arb_deserialize(self.arb_t(), data.c_str())) {
+  if (arb_load_str(self.arb_t(), data.c_str())) {
     throw std::logic_error("malformed archive, failed to parse Arb");
   }
 }
 
 template <typename Archive>
 void save(Archive& archive, const Arf& self) {
-  char* serialized = arf_serialize(self.arf_t());
+  char* serialized = arf_dump_str(self.arf_t());
   archive(
       cereal::make_nvp("data", std::string(serialized)),
       cereal::make_nvp("approximation", static_cast<double>(self)));
@@ -274,7 +274,7 @@ void load(Archive& archive, Arf& self) {
   double ignored;
   archive(data, ignored);
 
-  if (arf_deserialize(self.arf_t(), data.c_str())) {
+  if (arf_load_str(self.arf_t(), data.c_str())) {
     throw std::logic_error("malformed archive, failed to parse Arf");
   }
 }
