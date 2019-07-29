@@ -38,10 +38,10 @@
 #include "real_number.hpp"
 
 extern "C" {
-int arb_load_str(arb_t res, const char * data);
-char * arb_dump_str(const arb_t x);
-int arf_load_str(arf_t res, const char * data);
-char * arf_dump_str(const arf_t x);
+int arb_load_str(arb_t res, const char* data);
+char* arb_dump_str(const arb_t x);
+int arf_load_str(arf_t res, const char* data);
+char* arf_dump_str(const arf_t x);
 }
 
 namespace exactreal {
