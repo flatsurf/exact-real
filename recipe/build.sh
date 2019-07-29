@@ -37,6 +37,9 @@ if [[ "$build_flavour" == "release" ]]; then
 
     # Enforce proper formatting of C++ code
     clang-format -i -style=file `git ls-files '*.cc' '*.hpp' '*.ipp' '*.h' '*.h.in' '*.hpp.in'`
+    # Ignore submodules
+    git submodule foreach git clean -fd
+    git submodule foreach git reset --hard
     git diff --exit-code
 
     # Make sure there's no pending todos
