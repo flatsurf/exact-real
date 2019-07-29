@@ -27,8 +27,7 @@
 
 #include "arf.test.hpp"
 
-using namespace exactreal;
-
+namespace exactreal {
 TEST(RandomRealNumberTest, Equality) {
   auto rnd = RealNumber::random();
   EXPECT_EQ(*rnd, *rnd);
@@ -76,7 +75,7 @@ TEST(RandomRealNumberTest, comparison) {
 }
 
 struct RandomRealNumberFixture : benchmark::Fixture {
-  std::shared_ptr<RealNumber> rnd = RealNumber::random();
+  std::shared_ptr<const RealNumber> rnd = RealNumber::random();
 };
 
 BENCHMARK_F(RandomRealNumberFixture, Double)
@@ -94,5 +93,6 @@ BENCHMARK_DEFINE_F(RandomRealNumberFixture, arf)
 }
 
 BENCHMARK_REGISTER_F(RandomRealNumberFixture, arf)->Range(16, 1 << 16);
+}  // namespace exactreal
 
 #include "main.hpp"

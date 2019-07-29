@@ -18,9 +18,9 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include "exact-real/integer_ring_traits.hpp"
+#include "exact-real/integer_ring.hpp"
 #include "exact-real/arb.hpp"
 
 namespace exactreal {
-Arb IntegerRingTraits::arb(const ElementClass& x, long) { return Arb(x); }
+Arb IntegerRing::arb(const ElementClass& x, long) { return Arb(x); }
 }  // namespace exactreal

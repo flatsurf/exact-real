@@ -24,8 +24,7 @@
 #include <exact-real/yap/arb.hpp>
 #include "arb.hpp"
 
-using namespace exactreal;
-
+namespace exactreal {
 struct ArbBenchmark : public benchmark::Fixture {
   void SetUp(const benchmark::State& state) override { SetUp(const_cast<benchmark::State&>(state)); }
 
@@ -200,4 +199,5 @@ BENCHMARK_DEFINE_F(ArbBenchmark, Arithmetic_C_optimized)
   }
 }
 BENCHMARK_REGISTER_F(ArbBenchmark, Arithmetic_C_optimized)->Apply(ArbBenchmark::BenchmarkedSizes);
+}  // namespace exactreal
 #include "main.hpp"

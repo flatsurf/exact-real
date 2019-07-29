@@ -27,12 +27,12 @@
 
 #include "arf.test.hpp"
 
-using namespace exactreal;
 using std::nextafter;
 using std::numeric_limits;
 using std::swap;
 using std::vector;
 
+namespace exactreal {
 TEST(ConstraintRandomRealNumberFromDoubleTest, Equality) {
   auto rnd = RealNumber::random(13.37);
   ASSERT_EQ(*rnd, *rnd);
@@ -96,5 +96,6 @@ TEST(ConstraintRandomRealNumberFromIntervalTest, arf) {
   testArf(RealNumber::random(Arf(-13e-37), Arf(0)));
   testArf(RealNumber::random(Arf(0), Arf(13e37)));
 }
+}  // namespace exactreal
 
 #include "main.hpp"

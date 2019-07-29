@@ -57,7 +57,7 @@ class Expression:
         return cppyy.gbl.exactreal.binary(self.lhs, self.rhs, self.op, *args)
 
 def enable_arithmetic(proxy, name):
-    elements = ["Element<exactreal::IntegerRingTraits>", "Element<exactreal::RationalFieldTraits>", "Element<exactreal::NumberFieldTraits>"]
+    elements = ["Element<exactreal::IntegerRing>", "Element<exactreal::RationalField>", "Element<exactreal::NumberField>"]
     with_precision = ["Arb", "Arf"]
     if name in with_precision:
         for (n, op) in [('add', ord('+')), ('sub', ord('-')), ('mul', ord('*')), ('div', ord('/'))]:
@@ -110,16 +110,18 @@ from cppyy.gbl import exactreal
 def makeModule(traits, gens, ring=None):
     vector = cppyy.gbl.std.vector['std::shared_ptr<const exactreal::RealNumber>']
     basis = vector(gens)
-    make = exactreal.Module[traits].make[traits]
+    print(exactreal.Module)
+    make = exactreal.Module[traits].make
     if ring is None:
-        return make(basis)
-    else:
-        return make(basis, ring)
+        ring = traits()
+    return make(basis, ring)
 
-exactreal.ZZModule = lambda *gens: makeModule(exactreal.IntegerRingTraits, gens)
-exactreal.QQModule = lambda *gens: makeModule(exactreal.RationalFieldTraits, gens)
-exactreal.NumberFieldModule = lambda field, *gens: makeModule(exactreal.NumberFieldTraits, gens, field)
+NumberFieldTraits = exactreal.NumberField
+exactreal.ZZModule = lambda *gens: makeModule(exactreal.IntegerRing, gens)
+exactreal.QQModule = lambda *gens: makeModule(exactreal.RationalField, gens)
+exactreal.NumberFieldModule = lambda field, *gens: makeModule(NumberFieldTraits, gens, field)
 
 from pyeantic import eantic
 exactreal.NumberField = eantic.renf
 exactreal.NumberFieldElement = eantic.renf_elem
+

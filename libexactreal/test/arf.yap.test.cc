@@ -24,8 +24,7 @@
 #include <exact-real/yap/arf.hpp>
 #include "arf.hpp"
 
-using namespace exactreal;
-
+namespace exactreal {
 ArfTester tester;
 const prec working_prec = 64;
 const arf_rnd_t rnd_t = ARF_RND_NEAR;
@@ -90,5 +89,6 @@ TEST(ArfYapTest, ArithmeticInplace) {
   ASSERT_EQ(((z = Arf(1337)) *= x(working_prec, rnd)), ((Arf(1337) * x)(working_prec, rnd)));
   ASSERT_EQ(((z = Arf(1337)) /= x(working_prec, rnd)), ((Arf(1337) / x)(working_prec, rnd)));
 }
+}  // namespace exactreal
 
 #include "main.hpp"

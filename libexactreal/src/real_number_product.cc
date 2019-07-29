@@ -19,13 +19,17 @@
  *********************************************************************/
 
 #include <cassert>
+#include <cereal/archives/json.hpp>
+#include <cereal/cereal.hpp>
+#include <cereal/types/vector.hpp>
 #include <memory>
 #include <set>
 #include <vector>
 
-#include "exact-real/detail/unique_factory.hpp"
+#include "exact-real/cereal.hpp"
 #include "exact-real/real_number.hpp"
 #include "exact-real/yap/arf.hpp"
+#include "external/unique-factory/unique_factory.hpp"
 
 using namespace exactreal;
 using std::make_shared;
@@ -68,7 +72,17 @@ class RealNumberProduct final : public RealNumber {
   }
 
   multiset<shared_ptr<const RealNumber>> factors;
+
+  template <typename Archive>
+  void save(Archive& archive) const {
+    archive(cereal::make_nvp("factors", vector<shared_ptr<const RealNumber>>(factors.begin(), factors.end())));
+  }
 };
+
+auto& factory() {
+  static UniqueFactory<RealNumberProduct, multiset<shared_ptr<const RealNumber>>> factory;
+  return factory;
+}
 }  // namespace
 
 namespace exactreal {
@@ -90,8 +104,16 @@ shared_ptr<const RealNumber> RealNumber::operator*(const RealNumber& rhs) const 
     }
   }
 
-  static UniqueFactory<RealNumberProduct, multiset<shared_ptr<const RealNumber>>> factory;
-  return factory.get(factors, [](const multiset<shared_ptr<const RealNumber>>& fs) { return new RealNumberProduct(fs); });
+  return factory().get(factors, [&]() { return new RealNumberProduct(factors); });
 }
 
+void save_product(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& base) {
+  std::dynamic_pointer_cast<const RealNumberProduct>(base)->save(archive);
+}
+
+void load_product(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& base) {
+  vector<shared_ptr<const RealNumber>> factors;
+  archive(cereal::make_nvp("factors", factors));
+  base = factory().get(multiset<shared_ptr<const RealNumber>>(factors.begin(), factors.end()), [&]() { return new RealNumberProduct(multiset<shared_ptr<const RealNumber>>(factors.begin(), factors.end())); });
+}
 }  // namespace exactreal

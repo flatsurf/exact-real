@@ -29,7 +29,7 @@
 #include <optional>
 
 #include "exact-real/arf.hpp"
-#include "exact-real/exact-real.hpp"
+#include "exact-real/forward.hpp"
 
 namespace exactreal {
 // After some discussion with the Arb author, it seems that 64 and 128 are good
@@ -124,6 +124,8 @@ class Arb : yap::Terminal<Arb, yap::ArbExpr> {
   explicit operator std::pair<Arf, Arf>() const noexcept;
   // A double representation, actually a double representation of the midpoint of this ball.
   explicit operator double() const noexcept;
+  // The midpoint of this ball.
+  explicit operator Arf() const noexcept;
 
   friend std::ostream& operator<<(std::ostream&, const Arb&);
 

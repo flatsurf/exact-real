@@ -18,9 +18,9 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include "exact-real/rational_field_traits.hpp"
+#include "exact-real/rational_field.hpp"
 #include "exact-real/arb.hpp"
 
 namespace exactreal {
-Arb RationalFieldTraits::arb(const ElementClass& x, prec prec) { return Arb(x, prec); }
+Arb RationalField::arb(const ElementClass& x, prec prec) { return Arb(x, prec); }
 }  // namespace exactreal

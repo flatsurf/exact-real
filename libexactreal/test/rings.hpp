@@ -18,22 +18,14 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBEXACTREAL_INTEGER_RING_HPP
-#define LIBEXACTREAL_INTEGER_RING_HPP
+#include <gtest/gtest.h>
 
-#include <gmpxx.h>
+#include <exact-real/integer_ring.hpp>
+#include <exact-real/number_field.hpp>
+#include <exact-real/rational_field.hpp>
 
-#include "exact-real/exact-real.hpp"
-#include "exact-real/forward.hpp"
+namespace {
+using testing::Types;
 
-namespace exactreal {
-
-struct IntegerRingTraits {
-  typedef mpz_class ElementClass;
-  static constexpr bool isField = false;
-  static Arb arb(const ElementClass& x, long prec);
-};
-
-}  // namespace exactreal
-
-#endif
+using Rings = Types<exactreal::IntegerRing, exactreal::RationalField, exactreal::NumberField>;
+}  // namespace

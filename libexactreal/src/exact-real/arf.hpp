@@ -27,7 +27,7 @@
 #include <boost/operators.hpp>
 #include <optional>
 
-#include "exact-real/exact-real.hpp"
+#include "exact-real/forward.hpp"
 #include "exact-real/yap/terminal.hpp"
 
 namespace exactreal {

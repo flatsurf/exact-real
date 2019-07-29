@@ -22,12 +22,14 @@
 #include <gmpxx.h>
 #include <boost/random/linear_congruential.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
+#include <cereal/archives/json.hpp>
+#include <cereal/cereal.hpp>
 #include <sstream>
 
 #include "exact-real/arb.hpp"
 #include "exact-real/arf.hpp"
-#include "exact-real/detail/unique_factory.hpp"
 #include "exact-real/real_number.hpp"
+#include "external/unique-factory/unique_factory.hpp"
 
 using namespace exactreal;
 using boost::random::rand48;
@@ -86,6 +88,11 @@ class RandomRealNumber final : public RealNumber {
     return *this;
   }
 
+  template <typename Archive>
+  void save(Archive& archive) const {
+    archive(cereal::make_nvp("seed", seed));
+  }
+
  private:
   unsigned int seed;
   // We use a Random Number Generator that is fast and has a small memory
@@ -96,11 +103,27 @@ class RandomRealNumber final : public RealNumber {
   // periodicity.
   rand48 rng() const { return rand48(seed); }
 };
+
+auto& factory() {
+  static UniqueFactory<RandomRealNumber, unsigned int> factory;
+  return factory;
+}
 }  // namespace
 
 namespace exactreal {
-shared_ptr<RealNumber> RealNumber::random() {
-  static UniqueFactory<RandomRealNumber, unsigned int> factory;
-  return factory.get(nextSeed++, [](const unsigned int& seed) { return new RandomRealNumber(seed); });
+shared_ptr<const RealNumber> RealNumber::random(std::optional<unsigned int> seed) {
+  if (!seed)
+    seed = nextSeed++;
+  return factory().get(*seed, [&]() { return new RandomRealNumber(*seed); });
+}
+
+void save_random(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& base) {
+  std::dynamic_pointer_cast<const RandomRealNumber>(base)->save(archive);
+}
+
+void load_random(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& base) {
+  unsigned int seed;
+  archive(cereal::make_nvp("seed", seed));
+  base = factory().get(seed, [&]() { return new RandomRealNumber(seed); });
 }
 }  // namespace exactreal

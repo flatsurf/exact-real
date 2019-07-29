@@ -18,15 +18,30 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
-#define LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
+#ifndef LIBEXACTREAL_NUMBER_FIELD_HPP
+#define LIBEXACTREAL_NUMBER_FIELD_HPP
 
+#include <boost/operators.hpp>
+#include <memory>
+
+#include "e-antic/renfxx_fwd.h"
 #include "exact-real/exact-real.hpp"
+#include "exact-real/forward.hpp"
 
 namespace exactreal {
 
-struct NumberFieldIdealTraits {
-  // No support for this in E-ANTIC yet
+class NumberField : boost::equality_comparable<NumberField> {
+ public:
+  NumberField();
+  NumberField(const std::shared_ptr<const eantic::renf_class>&);
+
+  std::shared_ptr<const eantic::renf_class> parameters;
+
+  bool operator==(const NumberField&) const;
+
+  typedef eantic::renf_elem_class ElementClass;
+  static constexpr bool isField = true;
+  static Arb arb(const ElementClass& x, long prec);
 };
 
 }  // namespace exactreal
