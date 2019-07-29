@@ -6,7 +6,7 @@ AC_INIT([libexactreal], [0.0.1], [julian.rueth@fsfe.org])
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([.])
-AM_INIT_AUTOMAKE([1.14.1])
+AM_INIT_AUTOMAKE([1.14.1 subdir-objects])
 
 dnl Version number of the library c:r:a.
 dnl Set to c+1:0:0 on a non-backwards-compatible change.

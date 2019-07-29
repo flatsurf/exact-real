@@ -37,6 +37,13 @@
 #include "rational_field.hpp"
 #include "real_number.hpp"
 
+extern "C" {
+int arb_load_str(arb_t res, const char * data);
+char * arb_dump_str(const arb_t x);
+int arf_load_str(arf_t res, const char * data);
+char * arf_dump_str(const arf_t x);
+}
+
 namespace exactreal {
 
 // A trivial wrapper for a T so we do not pollute the global namespace with our
@@ -55,189 +62,6 @@ struct CerealWrap {
   T& operator*() { return inner; }
   const T& operator*() const { return inner; }
 };
-
-// This should go int arb: https://github.com/fredrik-johansson/arb/issues/283
-namespace {
-const char* arf_serialized_zero = "0 0";
-const char* arf_serialized_pos_inf = "0 -1";
-const char* arf_serialized_neg_inf = "0 -2";
-const char* arf_serialized_nan = "0 -3";
-
-char* arf_dump_str(const arf_t x) {
-  if (arf_is_special(x)) {
-    const char* ret;
-    if (arf_is_zero(x)) {
-      ret = arf_serialized_zero;
-    } else if (arf_is_pos_inf(x)) {
-      ret = arf_serialized_pos_inf;
-    } else if (arf_is_neg_inf(x)) {
-      ret = arf_serialized_neg_inf;
-    } else if (arf_is_nan(x)) {
-      ret = arf_serialized_nan;
-    } else {
-      // Impossible to happen; all the special values have been treated above.
-      assert(false);
-    }
-    char* res = (char*)flint_malloc(strlen(ret) + 1);
-    strcpy(res, ret);
-    return res;
-  } else {
-    fmpz_t mantissa, exponent;
-
-    fmpz_init(mantissa);
-    fmpz_init(exponent);
-
-    arf_get_fmpz_2exp(mantissa, exponent, x);
-
-    char* res = (char*)flint_malloc(fmpz_sizeinbase(mantissa, 16) + 1 + fmpz_sizeinbase(exponent, 16));
-
-    fmpz_get_str(res, 16, mantissa);
-    strcat(res, " ");
-    fmpz_get_str(res + strlen(res), 16, exponent);
-
-    fmpz_clear(mantissa);
-    fmpz_clear(exponent);
-
-    return res;
-  }
-}
-
-int arf_load_str(arf_t x, const char* data) {
-  if (strcmp(data, arf_serialized_zero) == 0) {
-    arf_zero(x);
-  } else if (strcmp(data, arf_serialized_neg_inf) == 0) {
-    arf_neg_inf(x);
-  } else if (strcmp(data, arf_serialized_pos_inf) == 0) {
-    arf_pos_inf(x);
-  } else if (strcmp(data, arf_serialized_nan) == 0) {
-    arf_nan(x);
-  } else {
-    fmpz_t mantissa, exponent;
-
-    fmpz_init(mantissa);
-    fmpz_init(exponent);
-
-    const char* e_str = strchr(data, ' ');
-
-    if (e_str == NULL) {
-      return 1;
-    }
-
-    char* m_str = (char*)flint_malloc(e_str - data + 1);
-    strncpy(m_str, data, e_str - data);
-    m_str[e_str - data] = '\0';
-
-    int err = fmpz_set_str(mantissa, m_str, 16);
-
-    flint_free(m_str);
-
-    if (err) {
-      fmpz_clear(exponent);
-      fmpz_clear(mantissa);
-      return err;
-    }
-
-    err = fmpz_set_str(exponent, e_str + 1, 16);
-
-    if (err) {
-      fmpz_clear(exponent);
-      fmpz_clear(mantissa);
-      return err;
-    }
-
-    arf_set_fmpz_2exp(x, mantissa, exponent);
-
-    fmpz_clear(exponent);
-    fmpz_clear(mantissa);
-  }
-
-  return 0;
-}
-
-char* mag_dump_str(const mag_t x) {
-  arf_t y;
-  arf_init(y);
-  arf_set_mag(y, x);
-  char* res = arf_dump_str(y);
-  arf_clear(y);
-  return res;
-}
-
-int mag_load_str(mag_t x, const char* data) {
-  arf_t y;
-  arf_init(y);
-
-  int err = arf_load_str(y, data);
-  if (err) {
-    arf_clear(y);
-    return err;
-  }
-
-  fmpz_t mantissa, exponent;
-  fmpz_init(mantissa);
-  fmpz_init(exponent);
-
-  arf_get_fmpz_2exp(mantissa, exponent, y);
-
-  assert(fmpz_cmp_ui(mantissa, 1 << MAG_BITS) < 0);
-
-  mag_set_ui(x, fmpz_get_ui(mantissa));
-
-  mag_mul_2exp_fmpz(x, x, exponent);
-
-  fmpz_clear(exponent);
-  fmpz_clear(mantissa);
-  arf_clear(y);
-
-  return err;
-}
-
-char* arb_dump_str(const arb_t x) {
-  char* mid = arf_dump_str(arb_midref(x));
-  char* mag = mag_dump_str(arb_radref(x));
-
-  char* res = (char*)flint_malloc(strlen(mid) + 1 + strlen(mag) + 1);
-  strcpy(res, mid);
-  strcat(res, " ");
-  strcat(res, mag);
-
-  flint_free(mid);
-  flint_free(mag);
-
-  return res;
-}
-
-int arb_load_str(arb_t x, const char* data) {
-  const char* split = strchr(data, ' ');
-  if (split == NULL) {
-    return 1;
-  }
-  split = strchr(split + 1, ' ');
-  if (split == NULL) {
-    return 1;
-  }
-
-  size_t midlen = (size_t)(split - data);
-  char* mid = (char*)flint_malloc(midlen + 1);
-  strncpy(mid, data, midlen);
-  mid[midlen] = '\0';
-
-  size_t maglen = strlen(data) - midlen - 1;
-  char* mag = (char*)flint_malloc(maglen + 1);
-  strncpy(mag, split + 1, maglen);
-  mag[maglen] = '\0';
-
-  int err = arf_load_str(arb_midref(x), mid);
-
-  if (!err) {
-    err = mag_load_str(arb_radref(x), mag);
-  }
-
-  flint_free(mid);
-  flint_free(mag);
-  return err;
-}
-}  // namespace
 
 template <typename Archive>
 void save(Archive& archive, const Arb& self) {
