@@ -4,9 +4,7 @@ set -exo pipefail
 # Install gcov
 conda install -y --quiet gcc_linux-64
 
-# gcov should be invoked in the directory where the compiler was invorked
-# originally, i.e., in the place where the Makefile resides
-cd $SRC_DIR/libexactreal/src
+cd $SRC_DIR
 
 git remote remove origin || true
 git remote add origin https://github.com/flatsurf/flatsurf.git
@@ -17,6 +15,7 @@ git branch -u origin/master
 set +x
 # Do not upload; print what would have been uploaded instead…
 COVERALLS_FLAGS="-d"
+
 if [ ${#COVERALLS_REPO_TOKEN} = 36 ];then
   # … unless we have the token, then actually upload.
   COVERALLS_FLAGS="-t $COVERALLS_REPO_TOKEN"
