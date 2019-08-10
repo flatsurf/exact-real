@@ -13,7 +13,7 @@ fi
 make CXXFLAGS="$CXXFLAGS $EXTRA_CXXFLAGS"
 
 # Run all our test suites
-make check
+make check CXXFLAGS="$CXXFLAGS $EXTRA_CXXFLAGS"
 if [[ "$build_flavour" == "release" ]]; then
     pushd libexactreal
     make check-valgrind

@@ -1,9 +1,6 @@
 #!/bin/bash
 set -exo pipefail
 
-# Create coverage statistics
-make check
-
 # Install gcov
 conda install -y --quiet gcc_linux-64
 
