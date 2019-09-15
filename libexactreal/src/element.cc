@@ -433,15 +433,32 @@ template <typename Ring>
 ostream& operator<<(ostream& out, const Element<Ring>& self) {
   bool empty = true;
   for (size i = 0; i < self.impl->parent->rank(); i++) {
-    if (self.impl->coefficients[i] != 0) {
-      if (!empty) {
-        out << " + ";
+    auto c = self.impl->coefficients[i];
+    if (c != 0) {
+      if (c > 0) {
+        if (empty) {
+          ;
+        } else {
+          out << " + ";
+        }
+      } else {
+        if (empty) {
+          out << "-";
+        } else {
+          out << " - ";
+        }
+        c = -c;
       }
       empty = false;
-      if (self.impl->coefficients[i] != 1) {
-        out << self.impl->coefficients[i] << "*";
+      auto g = self.impl->parent->basis()[i];
+      if (c != 1) {
+        out << c;
+        if (*g != 1) {
+          out << "*" << *g;
+        }
+      } else {
+        out << *g;
       }
-      out << *self.impl->parent->basis()[i];
     }
   }
   if (empty) {
