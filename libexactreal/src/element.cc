@@ -255,6 +255,11 @@ Element<Ring>& Element<Ring>::operator*=(
 
 template <typename Ring>
 std::optional<typename Ring::ElementClass> Element<Ring>::operator/(const Element<Ring>& rhs) const {
+  if (impl->parent != rhs.impl->parent) {
+    auto parent = Module<Ring>::span(this->impl->parent, rhs.impl->parent);
+    return Element<Ring>(*this).promote(parent) / Element<Ring>(rhs).promote(parent);
+  }
+
   std::optional<typename Ring::ElementClass> ret;
 
   for (size i = 0; i < impl->parent->rank(); i++) {
