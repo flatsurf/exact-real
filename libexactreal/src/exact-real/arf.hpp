@@ -84,6 +84,8 @@ class Arf : yap::Terminal<Arf, yap::ArfExpr>, boost::totally_ordered<Arf>, boost
   Arf& operator=(slong) noexcept;
   Arf& operator=(double) noexcept;
 
+  Arf operator-() const noexcept;
+
   explicit operator double() const noexcept;
 
   Arf abs() const noexcept;
