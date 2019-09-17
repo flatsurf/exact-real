@@ -1,4 +1,7 @@
-TESTS = arf.py arb.py real_number.py module.py binder.py element.py
+if HAVE_SAGE
+  MAYBE_SAGE = sage-doctest.sh
+endif
+TESTS = arf.py arb.py real_number.py module.py binder.py element.py python-doctest.sh ${MAYBE_SAGE}
 EXTRA_DIST = $(TESTS)
 
 AM_TESTS_ENVIRONMENT = . $(builddir)/test-env.sh;

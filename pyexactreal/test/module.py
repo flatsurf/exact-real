@@ -24,12 +24,8 @@
 import sys
 import pytest
 
-from pyexactreal import exactreal
+from pyexactreal import exactreal, ZZModule, QQModule, NumberFieldModule, NumberField
 RealNumber = exactreal.RealNumber
-ZZModule = exactreal.ZZModule
-QQModule = exactreal.QQModule
-NumberFieldModule = exactreal.NumberFieldModule
-NumberField = exactreal.NumberField
 
 def test_ZZ_module():
     trivial = ZZModule()

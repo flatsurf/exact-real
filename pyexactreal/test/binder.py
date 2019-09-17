@@ -28,9 +28,7 @@ import pytest
 # /binder/Sample.pyexactreal.ipynb
 
 def test_binder():
-    from pyexactreal import exactreal
-    ZZModule = exactreal.ZZModule
-    RealNumber = exactreal.RealNumber
+    from pyexactreal import RealNumber, ZZModule
 
     M = ZZModule(RealNumber.rational(1), RealNumber.random())
     assert str(M) == "ℤ-Module(1, ℝ(0.120809…))"

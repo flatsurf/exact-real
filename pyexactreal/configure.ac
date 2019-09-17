@@ -36,6 +36,17 @@ AS_IF([test "x$with_pytest" != "xno" && test "x$have_python" = "xyes"],
       ], [])
 AM_CONDITIONAL([HAVE_PYTEST], [test "x$with_pytest" = "xyes"])
 
+dnl Some bits require SageMath to be installed. We can build without it since it is a pure Python package but we cannot test it then.
+AC_ARG_WITH([sage], AS_HELP_STRING([--without-sage], [Do not run SageMath tests]))
+AS_IF([test "x$with_sage" != "xno" && test "x$with_pytest" = "xyes"],
+      [
+       with_sage=yes
+       AC_MSG_CHECKING([for sage module])
+       AS_IF([$PYTHON -c 'import sage'], , AC_MSG_ERROR([SageMath for make check not found; run --without-sage to disable SageMath tests in make check]))
+       AC_MSG_RESULT([yes])
+      ], [])
+AM_CONDITIONAL([HAVE_SAGE], [test "x$with_sage" = "xyes"])
+
 AC_CONFIG_FILES([Makefile src/Makefile test/Makefile])
 
 dnl Python's setuptools absolutely want to run in the source directory of the
