@@ -50,7 +50,7 @@ class Module<Ring>::Implementation {
   explicit Implementation(const Basis& basis, const Ring& parameters) : basis(basis), parameters(parameters) {
     for (auto it = basis.begin(); it != basis.end(); it++) {
       for (auto jt = it + 1; jt != basis.end(); jt++) {
-        if(static_cast<std::optional<mpq_class>>(**it) && static_cast<std::optional<mpq_class>>(**jt)) {
+        if (static_cast<std::optional<mpq_class>>(**it) && static_cast<std::optional<mpq_class>>(**jt)) {
           throw std::logic_error("at most one generator can be rational");
         }
         if (**it == **jt) {

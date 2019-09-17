@@ -20,8 +20,8 @@
 
 #include <gtest/gtest.h>
 
-#include <exact-real/yap/arb.hpp>
 #include <exact-real/cppyy.hpp>
+#include <exact-real/yap/arb.hpp>
 
 namespace exactreal {
 TEST(ArbCppyyTest, Eval) {
@@ -30,6 +30,6 @@ TEST(ArbCppyyTest, Eval) {
   Arb z = exactreal::cppyy::eval(std::move(y), 10);
   ASSERT_TRUE(z.equal(Arb(2)));
 }
-}
+}  // namespace exactreal
 
 #include "main.hpp"

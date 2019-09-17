@@ -23,14 +23,14 @@
 #include <iosfwd>
 #include <memory>
 
-#include "exact-real/yap/arb.hpp"
-#include "exact-real/yap/arf.hpp"
 #include "exact-real/element.hpp"
 #include "exact-real/integer_ring.hpp"
 #include "exact-real/module.hpp"
 #include "exact-real/number_field.hpp"
 #include "exact-real/rational_field.hpp"
 #include "exact-real/real_number.hpp"
+#include "exact-real/yap/arb.hpp"
+#include "exact-real/yap/arf.hpp"
 
 // See https://bitbucket.org/wlav/cppyy/issues/95/lookup-of-friend-operator
 namespace exactreal {
@@ -61,15 +61,15 @@ Arf eval(T expression, prec prec, int round) {
 // cppyy does not see the operators provided by boost::operators so we provide
 // something to make them explicit here:
 template <typename S, typename T>
-auto add(const S& lhs, const T& rhs) { return lhs + rhs; }
+auto add(const S &lhs, const T &rhs) { return lhs + rhs; }
 template <typename S, typename T>
-auto sub(const S& lhs, const T& rhs) { return lhs - rhs; }
+auto sub(const S &lhs, const T &rhs) { return lhs - rhs; }
 template <typename S, typename T>
-auto mul(const S& lhs, const T& rhs) { return lhs * rhs; }
+auto mul(const S &lhs, const T &rhs) { return lhs * rhs; }
 template <typename S, typename T>
-auto truediv(const S& lhs, const T& rhs) { return lhs / rhs; }
+auto truediv(const S &lhs, const T &rhs) { return lhs / rhs; }
 template <typename T>
-auto neg(const T& value) { return -value; }
+auto neg(const T &value) { return -value; }
 }  // namespace cppyy
 
 }  // namespace exactreal
