@@ -50,7 +50,7 @@ struct ArbExpr {
   static const boost::yap::expr_kind kind = Kind;
   Tuple elements;
 
-  decltype(auto) operator()(prec prec) const&& {
+  decltype(auto) operator()(prec prec) && {
     return boost::yap::make_expression<ArbExpr, boost::yap::expr_kind::call>(std::move(*this), PrecExpr{{prec}});
   }
 };
