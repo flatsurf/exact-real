@@ -43,6 +43,8 @@ class Module : public std::enable_shared_from_this<Module<Ring>>, boost::equalit
 
   size rank() const;
 
+  bool submodule(const Module&) const;
+
   const Basis& basis() const;
   Element<Ring> gen(size i) const;
 
