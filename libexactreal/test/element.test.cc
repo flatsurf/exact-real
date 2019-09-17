@@ -233,6 +233,7 @@ TEST(ElementNF, Scalars) {
     EXPECT_EQ(-(renf_elem_class(K, "a") * x), renf_elem_class(K, "-a") * x);
     EXPECT_GT(renf_elem_class(K, "a") * x, x);
     EXPECT_GT(2 * x, renf_elem_class(K, "a") * x);
+    EXPECT_EQ(mpq_class(1, 2) * x, x / 2);
 
     for (size_t j = 0; j < sizeof(elements) / sizeof(elements[0]); j++) {
       if (i == j)
