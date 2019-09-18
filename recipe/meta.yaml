@@ -58,6 +58,8 @@ requirements:
     - valgrind
     # requirements for ASV benchmarks
     - asv
+    # to run optional SageMath tests
+    - sage
 
 outputs:
   - name: libexactreal
