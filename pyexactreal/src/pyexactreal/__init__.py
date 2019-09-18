@@ -78,6 +78,10 @@ def ExactReals(base=None, *args, **kwargs):
         (1/10 ~ 0.100000)*ℝ(0.178808…)
         sage: g / g
         1
+        sage: R.random_element() / R.random_element()
+        Traceback (most recent call last):
+        ...
+        pyexactreal.cppyy_exactreal.NotRepresentableError: ...
 
     Comparisons should work without limitations. The underlying exact-real
     compares ball-arithmetic representation, going to higher precisions as
