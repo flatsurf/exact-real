@@ -5,7 +5,7 @@ EXAMPLES::
 
     >>> from pyexactreal import RealNumber
     >>> RealNumber.random()
-    ℝ(0.120809…)
+    ℝ(0...)
 
 """
 # ********************************************************************
