@@ -73,7 +73,7 @@ class Element : boost::additive<Element<Ring>>,
   Element& operator*=(const T&);
   // Define operator/= and operator/ if we're in a field in the same way.
   // (until we figure out how to dynamically inherit from boost::multiplicative for such T, we do not get operator/ here.)
-  template <typename T, typename = decltype(std::declval<const typename Ring::ElementClass&>() / std::declval<const T&>()), typename = std::enable_if_t<Ring::isField, void>>
+  template <typename T, typename = decltype(std::declval<const typename Ring::ElementClass&>() / std::declval<const T&>()), typename = std::enable_if_t<Ring::isField || false_t<T>, void>>
   Element& operator/=(const T&);
   std::optional<typename Ring::ElementClass> operator/(const Element&) const;
 
