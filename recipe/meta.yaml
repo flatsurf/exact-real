@@ -59,7 +59,7 @@ requirements:
     # requirements for ASV benchmarks
     - asv
     # to run optional SageMath tests
-    - sage
+    - sagelib
 
 outputs:
   - name: libexactreal
