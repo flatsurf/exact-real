@@ -43,9 +43,12 @@ class Element : boost::additive<Element<Ring>>,
                 boost::totally_ordered<Element<Ring>, mpz_class>,
                 boost::totally_ordered<Element<Ring>, long long>,
                 boost::multiplicative<Element<Ring>, typename Ring::ElementClass>,
-                std::conditional_t<std::is_same_v<typename Ring::ElementClass, mpz_class>, boost::blank, boost::multiplicative<Element<Ring>, mpz_class>>,
-                std::conditional_t<std::is_same_v<typename Ring::ElementClass, mpq_class>, boost::blank, boost::multiplicative<Element<Ring>, mpq_class>>,
-                std::conditional_t<std::is_same_v<typename Ring::ElementClass, int>, boost::blank, boost::multiplicative<Element<Ring>, int>> {
+                std::conditional_t<std::is_same_v<typename Ring::ElementClass, mpz_class>, boost::blank,
+                  std::conditional_t<Ring::isField, boost::multiplicative<Element<Ring>, mpz_class>, boost::multipliable<Element<Ring>, mpz_class>>>,
+                std::conditional_t<std::is_same_v<typename Ring::ElementClass, mpq_class>, boost::blank,
+                  std::conditional_t<Ring::isField, boost::multiplicative<Element<Ring>, mpq_class>, boost::multipliable<Element<Ring>, mpq_class>>>,
+                std::conditional_t<std::is_same_v<typename Ring::ElementClass, int>, boost::blank,
+                  std::conditional_t<Ring::isField, boost::multiplicative<Element<Ring>, int>, boost::multipliable<Element<Ring>, int>>> {
  public:
   Element();
   explicit Element(const std::shared_ptr<const Module<Ring>>& parent);
