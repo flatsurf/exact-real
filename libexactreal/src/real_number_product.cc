@@ -21,7 +21,7 @@
 #include <cassert>
 #include <cereal/archives/json.hpp>
 #include <cereal/cereal.hpp>
-#include <cereal/types/vector.hpp>
+#include <cereal/types/map.hpp>
 #include <memory>
 #include <set>
 #include <vector>
@@ -33,23 +33,34 @@
 
 using namespace exactreal;
 using std::make_shared;
-using std::multiset;
+using std::map;
 using std::optional;
 using std::shared_ptr;
 using std::vector;
+
+using Factors = map<shared_ptr<const RealNumber>, int>;
 
 namespace {
 // A product of transcendental reals
 class RealNumberProduct final : public RealNumber {
  public:
-  RealNumberProduct(const multiset<shared_ptr<const RealNumber>>& factors) : factors(factors) {}
+  RealNumberProduct(const Factors& factors) : factors(factors) {
+    for (auto& factor : factors) {
+      assert(factor.second >= 1 && "factors must appear at least one");
+      assert(!static_cast<std::optional<mpq_class>>(*factor.first) && "all factors must be transcendental");
+    }
+  }
 
   RealNumber const& operator>>(std::ostream& os) const override {
     bool first = true;
     for (auto& factor : factors) {
       if (!first) os << "*";
       first = false;
-      os << *factor;
+      os << *factor.first;
+
+      if (factor.second != 1) {
+        os << "^" << factor.second;
+      }
     }
     return *this;
   }
@@ -66,21 +77,22 @@ class RealNumberProduct final : public RealNumber {
 
     Arf ret(1);
     for (auto& factor : factors)
-      ret *= factor->arf(prec)(prec, Arf::Round::NEAR);
+      for (int i = 0; i < factor.second; i++)
+        ret *= factor.first->arf(prec)(prec, Arf::Round::NEAR);
 
     return ret;
   }
 
-  multiset<shared_ptr<const RealNumber>> factors;
+  Factors factors;
 
   template <typename Archive>
   void save(Archive& archive) const {
-    archive(cereal::make_nvp("factors", vector<shared_ptr<const RealNumber>>(factors.begin(), factors.end())));
+    archive(cereal::make_nvp("factors", factors));
   }
 };
 
 auto& factory() {
-  static UniqueFactory<RealNumberProduct, multiset<shared_ptr<const RealNumber>>> factory;
+  static UniqueFactory<RealNumberProduct, Factors> factory;
   return factory;
 }
 }  // namespace
@@ -92,15 +104,15 @@ shared_ptr<const RealNumber> RealNumber::operator*(const RealNumber& rhs) const 
     return rhs * *this;
   }
 
-  multiset<shared_ptr<const RealNumber>> factors;
+  Factors factors;
   for (auto factor : {this->shared_from_this(), rhs.shared_from_this()}) {
     assert(!static_cast<optional<mpq_class>>(*factor) && "All factors must be transcendental");
     if (typeid(factor) == typeid(std::shared_ptr<const RealNumberProduct>)) {
       for (auto& f : static_cast<const RealNumberProduct*>(&*factor)->factors) {
-        factors.insert(f);
+        factors[f.first] += f.second;
       }
     } else {
-      factors.insert(factor);
+      factors[factor] += 1;
     }
   }
 
@@ -112,8 +124,10 @@ void save_product(cereal::JSONOutputArchive& archive, const std::shared_ptr<cons
 }
 
 void load_product(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& base) {
-  vector<shared_ptr<const RealNumber>> factors;
+  Factors factors;
   archive(cereal::make_nvp("factors", factors));
-  base = factory().get(multiset<shared_ptr<const RealNumber>>(factors.begin(), factors.end()), [&]() { return new RealNumberProduct(multiset<shared_ptr<const RealNumber>>(factors.begin(), factors.end())); });
+  base = factory().get(factors, [&]() {
+      return new RealNumberProduct(Factors(factors.begin(), factors.end()));
+  });
 }
 }  // namespace exactreal

@@ -69,7 +69,7 @@ def ExactReals(base=None, *args, **kwargs):
     as these modules get constructed automatically as required::
 
         sage: g*g + g + a
-        ℝ(0.178808…)*ℝ(0.178808…) + ℝ(0.178808…) + (a ~ 1.414214)
+        ℝ(0.178808…)^2 + ℝ(0.178808…) + (a ~ 1.414214)
 
     Basic arithmetic is supported, though some operations, such as divisions,
     only work in special cases::

@@ -31,7 +31,7 @@ def test_module():
 
     x = M.gen(1)
     # there used to be a segfault in calling module() on a temporary
-    assert str((x*x).module()) == "ℤ-Module(ℝ(0.120809…)*ℝ(0.120809…), ℝ(0.120809…), 1)"
+    assert str((x*x).module()) == "ℤ-Module(ℝ(0.120809…)^2, ℝ(0.120809…), 1)"
 
 def test_multiplication():
     from pyexactreal import RealNumber, NumberFieldModule, NumberField
