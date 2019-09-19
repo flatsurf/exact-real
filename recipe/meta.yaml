@@ -55,7 +55,7 @@ requirements:
     - gtest
     - benchmark
     # enable check-valgrind in ./configure
-    - valgrind
+    - valgrind >=3.15.0
     # requirements for ASV benchmarks
     - asv
     # to run optional SageMath tests
