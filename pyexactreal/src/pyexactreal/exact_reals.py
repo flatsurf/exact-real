@@ -98,6 +98,17 @@ class ExactRealElement(FieldElement):
             sage: ExactReals()(1).module()
             ℚ-Module(1)
 
+        TESTS:
+
+        Check that modules are unique::
+
+            sage: R = ExactReals()
+            sage: R(1).module() is R(1).module()
+            True
+            sage: g = R.random_element()
+            sage: R(g).module() is R(g).module()
+            True
+
         """
         return self._backend.module()
 
@@ -143,6 +154,27 @@ class ExactRealElement(FieldElement):
             sage: R = ExactReals()
             sage: R.random_element() * R.random_element() # order of factors not deterministic
             ℝ(...)*ℝ(...)
+
+        TESTS:
+
+        Test that integers coerce correctly::
+
+            sage: 0 * R.random_element()
+            0
+            sage: R(0) * R.random_element()
+            0
+            sage: R.random_element() * 0
+            0
+            sage: R.random_element() * R(0)
+            0
+            sage: 1 * R.random_element()
+            ℝ(...)
+            sage: R(1) * R.random_element()
+            ℝ(...)
+            sage: R.random_element() * 1
+            ℝ(...)
+            sage: R.random_element() * R(1)
+            ℝ(...)
 
         """
         return self.parent()(self._backend * rhs._backend)
@@ -273,11 +305,16 @@ class ExactReals(UniqueRepresentation, Field):
     EXAMPLES::
 
         sage: from pyexactreal import ExactReals
-        sage: ExactReals()
+        sage: R = ExactReals(); R
         Real Numbers as (Rational Field)-Module
         sage: K.<a> = NumberField(x^2 - 2, embedding=AA(sqrt(2)))
-        sage: ExactReals(K)
+        sage: RK = ExactReals(K); RK
         Real Numbers as (Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?)-Module
+
+    TESTS::
+
+        sage: TestSuite(R).run()
+        sage: TestSuite(RK).run()
 
     """
     @staticmethod
@@ -293,7 +330,7 @@ class ExactReals(UniqueRepresentation, Field):
 
         """
         base = base or QQ
-        category = category or Fields(base)
+        category = category or Fields(base).Infinite()
         return super(ExactReals, cls).__classcall__(cls, base, category)
 
     def __init__(self, base=None, category=None):
