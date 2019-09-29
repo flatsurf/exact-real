@@ -68,7 +68,7 @@ class Module<Ring>::Implementation {
   Basis basis;
   Ring parameters;
 
-  using Factory = UniqueFactory<Module<Ring>, Basis, const Ring>;
+  using Factory = unique_factory::UniqueFactory<std::weak_ptr<Module<Ring>>, Basis, const Ring>;
   static Factory& factory() {
     static Factory* factory = new Factory();
     return *factory;

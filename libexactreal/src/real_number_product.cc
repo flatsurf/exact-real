@@ -92,7 +92,7 @@ class RealNumberProduct final : public RealNumber {
 };
 
 auto& factory() {
-  static UniqueFactory<RealNumberProduct, Factors> factory;
+  static unique_factory::UniqueFactory<std::weak_ptr<RealNumberProduct>, Factors> factory;
   return factory;
 }
 }  // namespace

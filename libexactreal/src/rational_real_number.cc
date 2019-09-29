@@ -76,7 +76,7 @@ class RationalRealNumber final : public RealNumber {
 
 namespace exactreal {
 shared_ptr<const RealNumber> RealNumber::rational(const mpq_class& value) {
-  static UniqueFactory<RationalRealNumber, mpq_class> factory;
+  static unique_factory::UniqueFactory<std::weak_ptr<RationalRealNumber>, mpq_class> factory;
   return factory.get(value, [&]() { return new RationalRealNumber(value); });
 }
 
