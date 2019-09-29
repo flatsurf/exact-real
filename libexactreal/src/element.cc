@@ -40,20 +40,6 @@ using std::shared_ptr;
 using std::vector;
 
 namespace {
-// Forward a smart pointers < to the underlying type
-template <class P>
-struct smart_less {
-  constexpr bool operator()(const P& lhs, const P& rhs) const {
-    if (lhs == nullptr) {
-      return rhs == nullptr;
-    }
-    if (rhs == nullptr) {
-      return false;
-    }
-    return *lhs < *rhs;
-  }
-};
-
 template <typename Ring>
 class ElementImplementation {
  public:
@@ -183,13 +169,16 @@ Element<Ring>& Element<Ring>::operator-=(const Element<Ring>& rhs) {
 
 template <typename Ring>
 Element<Ring>& Element<Ring>::operator*=(const Element<Ring>& rhs) {
+  if (!*this)
+    return *this;
+  if (!rhs)
+    return *this = rhs;
+
   if (this->module()->ring() != rhs.module()->ring()) {
     throw std::logic_error("not implemented - multiplication in modules over different rings");
   }
 
-  // Order coefficients by size so we get a reproducible order of the
-  // generators (helps with reproducible testing.)
-  map<shared_ptr<const RealNumber>, typename Ring::ElementClass, smart_less<shared_ptr<const RealNumber>>> products;
+  map<shared_ptr<const RealNumber>, typename Ring::ElementClass> products;
 
   for (size_t i = 0; i < impl->parent->basis().size(); i++) {
     for (size_t j = 0; j < rhs.impl->parent->basis().size(); j++) {
@@ -200,9 +189,14 @@ Element<Ring>& Element<Ring>::operator*=(const Element<Ring>& rhs) {
     }
   }
 
-  vector<typename Ring::ElementClass> coefficients;
+  vector<std::pair<shared_ptr<const RealNumber>, typename Ring::ElementClass>> sorted(products.begin(), products.end());
+  std::sort(sorted.begin(), sorted.end(), [](const auto & lhs, const auto & rhs) {
+    return *lhs.first < *rhs.first;
+  });
+
   vector<shared_ptr<const RealNumber>> basis;
-  for (auto& v : products) {
+  vector<typename Ring::ElementClass> coefficients;
+  for (auto& v : sorted) {
     basis.push_back(v.first);
     coefficients.push_back(v.second);
   }
@@ -419,9 +413,21 @@ Element<Ring>& Element<Ring>::promote(const shared_ptr<const Module<Ring>>& pare
 
 template <typename Ring>
 ostream& operator<<(ostream& out, const Element<Ring>& self) {
-  bool empty = true;
+  // Print summands sorted by absolute generator value to get stable outputs.
+  // (additionally, print positive coefficients first so that we do not get
+  // leading minus signs.)
+  std::set<std::tuple<bool, Element<Ring>, typename Ring::ElementClass>> coefficients;
   for (size i = 0; i < self.impl->parent->rank(); i++) {
-    auto c = self.impl->coefficients[i];
+    coefficients.insert(std::tuple(
+      self.impl->coefficients[i] < 0,
+      Element<Ring>(Module<Ring>::make({self.impl->parent->basis()[i]}, self.impl->parent->ring()), std::vector<typename Ring::ElementClass>({1})),
+      self.impl->coefficients[i]
+    ));
+  }
+
+  bool empty = true;
+  for (auto& gc : coefficients) {
+    auto c = std::get<2>(gc);
     if (c != 0) {
       if (c > 0) {
         if (empty) {
@@ -438,7 +444,7 @@ ostream& operator<<(ostream& out, const Element<Ring>& self) {
         c = -c;
       }
       empty = false;
-      auto g = self.impl->parent->basis()[i];
+      auto g = std::get<1>(gc).module()->basis()[0];
       if (c != 1) {
         out << c;
         if (*g != 1) {

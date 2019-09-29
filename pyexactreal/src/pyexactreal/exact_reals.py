@@ -121,9 +121,9 @@ class ExactRealElement(FieldElement):
             sage: from pyexactreal import ExactReals
             sage: R = ExactReals()
             sage: R.random_element() + R.random_element()
-            ℝ(0.478968…) + ℝ(0.782515…)
+            ℝ(...) + ℝ(...)
             sage: R.random_element() + 1337
-            ℝ(0.621222…) + 1337
+            ℝ(...) + 1337
 
         """
         return self.parent()(self._backend + rhs._backend)
@@ -137,9 +137,9 @@ class ExactRealElement(FieldElement):
             sage: from pyexactreal import ExactReals
             sage: R = ExactReals()
             sage: R.random_element() - R.random_element()
-            ℝ(0.673083…) - ℝ(0.982253…)
+            ℝ(...) - ℝ(...)
             sage: R.random_element() - 1337
-            ℝ(0.108391…) - 1337
+            ℝ(...) - 1337
 
         """
         return self.parent()(self._backend - rhs._backend)

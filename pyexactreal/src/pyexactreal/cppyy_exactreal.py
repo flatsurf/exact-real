@@ -417,7 +417,7 @@ def makeModule(traits, gens, ring=None):
         >>> from pyexactreal import exactreal, RealNumber
         >>> import pyexactreal.cppyy_exactreal
         >>> pyexactreal.cppyy_exactreal.makeModule(exactreal.IntegerRing, [RealNumber.random()], ring=None)
-        ℤ-Module(ℝ(0.673083…))
+        ℤ-Module(ℝ(...))
 
     """
     vector = cppyy.gbl.std.vector['std::shared_ptr<const exactreal::RealNumber>']
