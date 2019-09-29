@@ -60,6 +60,8 @@ requirements:
     - asv
     # to run optional SageMath tests
     - sagelib
+    # to enable serialization in Python/SageMath tests
+    - cereal
 
 outputs:
   - name: libexactreal
@@ -105,6 +107,7 @@ outputs:
         - pyeantic
         - python
         - boost-cpp
+        - cereal
 {%- if build_flavour == 'release' %}
     test:
       imports:
