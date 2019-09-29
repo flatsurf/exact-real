@@ -325,7 +325,7 @@ class ExactReals(UniqueRepresentation, IntegralDomain):
 
     TESTS::
 
-        sage: R._test_pickling() # first run prints some warnings from third-party C++ header files
+        sage: R.one()._test_pickling() # first run prints some warnings from third-party C++ header files
         ...
         sage: TestSuite(R).run()
         sage: TestSuite(RK).run()
