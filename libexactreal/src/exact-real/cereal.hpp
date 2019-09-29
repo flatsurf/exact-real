@@ -21,7 +21,6 @@
 #ifndef LIBEXACTREAL_CEREAL_HPP
 #define LIBEXACTREAL_CEREAL_HPP
 
-#include <e-antic/renfxx.h>
 #include <boost/lexical_cast.hpp>
 #include <cereal/archives/json.hpp>
 #include <cereal/cereal.hpp>

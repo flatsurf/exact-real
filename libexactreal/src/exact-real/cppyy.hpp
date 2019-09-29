@@ -21,6 +21,7 @@
 #define LIBEXACTREAL_CPPYY_HPP
 
 #include <iosfwd>
+#include <sstream>
 #include <memory>
 
 #include "exact-real/element.hpp"
@@ -70,6 +71,29 @@ template <typename S, typename T>
 auto truediv(const S &lhs, const T &rhs) { return lhs / rhs; }
 template <typename T>
 auto neg(const T &value) { return -value; }
+
+// A helper to get RAII that cereal needs to make sure that its output has been flushed.
+template <typename T, typename Archive>
+std::string serialize(const T& value) {
+  std::stringstream serialized;
+  {
+    Archive archive(serialized);
+    archive(value);
+  }
+  return serialized.str();
+}
+
+// For the sake of symmetry, the same for deserialization.
+template <typename T, typename Archive>
+T deserialize(const std::string& serialized) {
+  std::stringstream stream(serialized);
+  T value;
+  {
+    Archive archive(stream);
+    archive(value);
+  }
+  return value;
+}
 }  // namespace cppyy
 
 }  // namespace exactreal

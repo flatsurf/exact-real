@@ -49,15 +49,14 @@ The module is automatically enlarged as needed::
 #  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 
-from sage.all import QQ, UniqueRepresentation, ZZ, RR, Fields, Field, Morphism, Hom, SetsWithPartialMaps, NumberFieldElement, Parent, coerce
-from sage.structure.element import FieldElement
+from sage.all import QQ, UniqueRepresentation, ZZ, RR, IntegralDomains, IntegralDomain, Morphism, Hom, SetsWithPartialMaps, NumberFieldElement, Parent, coerce
+from sage.structure.element import IntegralDomainElement
 from sage.categories.action import Action
 from sage.structure.coerce import RightModuleAction
 from pyexactreal import exactreal, QQModule, ZZModule, NumberFieldModule
 from pyeantic import eantic, RealEmbeddedNumberField
 
-
-class ExactRealElement(FieldElement):
+class ExactRealElement(IntegralDomainElement):
     r"""
     An element of :class:`ExactReals`
 
@@ -83,7 +82,7 @@ class ExactRealElement(FieldElement):
         if not isinstance(value, parent._element_factory):
             raise TypeError("element must be an %s" % (parent._element_factory,))
         self._backend = value
-        FieldElement.__init__(self, parent)
+        IntegralDomainElement.__init__(self, parent)
 
     def module(self):
         r"""
@@ -100,13 +99,26 @@ class ExactRealElement(FieldElement):
 
         TESTS:
 
-        Check that modules are unique::
+        Since modules are internally shared pointers they are not unique::
 
             sage: R = ExactReals()
-            sage: R(1).module() is R(1).module()
+            sage: R(1).module() == R(1).module()
             True
+            sage: R(1).module() is R(1).module()
+            False
             sage: g = R.random_element()
+            sage: R(g).module() == R(g).module()
+            True
             sage: R(g).module() is R(g).module()
+            False
+
+        However, the objects backing these shared pointers are unique::
+
+            sage: M,N = R(1).module(), R(1).module()
+            sage: M.__smartptr__().get() is N.__smartptr__().get()
+            True
+            sage: M,N = R(g).module(), R(g).module()
+            sage: M.__smartptr__().get() is N.__smartptr__().get()
             True
 
         """
@@ -295,7 +307,7 @@ class ExactRealElement(FieldElement):
             # assuming that this is a module element as well
             return self.parent()(c._backend * self._backend)
 
-class ExactReals(UniqueRepresentation, Field):
+class ExactReals(UniqueRepresentation, IntegralDomain):
     r"""
     The Real Numbers as a module over the number field ``base``.
 
@@ -313,6 +325,8 @@ class ExactReals(UniqueRepresentation, Field):
 
     TESTS::
 
+        sage: R._test_pickling() # first run prints some warnings from third-party C++ header files
+        ...
         sage: TestSuite(R).run()
         sage: TestSuite(RK).run()
 
@@ -330,7 +344,7 @@ class ExactReals(UniqueRepresentation, Field):
 
         """
         base = base or QQ
-        category = category or Fields(base).Infinite()
+        category = category or IntegralDomains(base).Infinite()
         return super(ExactReals, cls).__classcall__(cls, base, category)
 
     def __init__(self, base=None, category=None):
@@ -343,10 +357,41 @@ class ExactReals(UniqueRepresentation, Field):
             self._element_factory = exactreal.Element[type(ring)]
             self._module_factory = lambda gens: NumberFieldModule(ring, *gens)
 
-        Field.__init__(self, base, category=category or Fields())
+        IntegralDomain.__init__(self, base, category=category)
         H = Hom(base, self)
         coercion = H.__make_element_class__(CoercionExactRealsNumberField)(H)
         self.register_coercion(coercion)
+
+    def some_elements(self):
+        r"""
+        Return some typical elements of this ring.
+
+        EXAMPLES::
+
+            sage: from pyexactreal import ExactReals
+            sage: ExactReals().some_elements()
+            [0,
+             1,
+             1,
+             ℝ(0...…),
+             ℝ(0...…) + 1,
+             ℝ(0...…) + 1,
+             ℝ(0...…) + ℝ(0...…),
+             ℝ(0...…)*ℝ(0...…),
+             ℝ(0...…)^2]
+
+        """
+        return [
+            self.zero(),
+            self.one(),
+            self(self.base_ring().gen()),
+            self.random_element(),
+            self.random_element() + self.one(),
+            self.random_element() + self.base_ring().gen(),
+            self.random_element() + self.random_element(),
+            self.random_element() * self.random_element(),
+            self.random_element() ** 2
+        ]
 
     def _repr_(self):
         r"""

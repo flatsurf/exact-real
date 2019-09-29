@@ -221,6 +221,76 @@ def pretty_print_gmp(proxy, name):
 
 cppyy.py.add_pythonization(pretty_print_gmp)
 
+def unpickle_from_cereal(t, json):
+    r"""
+    A global unpickler for everything pickled with cereal.
+
+    To make unpickling with ``__reduce__`` work, we need a global factory
+    function that the unpickler can call to unpickle a ``t`` whose data is in
+    ``json``.
+    """
+    import cppyy
+    cppyy.include("cereal/archives/json.hpp")
+    cppyy.include("e-antic/renfxx_cereal.h")
+    cppyy.include("exact-real/cereal.hpp")
+
+    return cppyy.gbl.exactreal.cppyy.deserialize[t, cppyy.gbl.cereal.JSONInputArchive](json)
+
+def enable_cereal(proxy, name):
+    r"""
+    Enable pickling through the cereal serialization interface.
+
+    EXAMPLES::
+
+        >>> from pyexactreal import ZZModule, RealNumber
+        >>> from pickle import loads, dumps
+        >>> M = ZZModule(RealNumber.random(), RealNumber.random())
+        >>> N = loads(dumps(M))
+        >>> M == N
+        True
+
+    Note that deduplication might not work in some cases, creating very large
+    pickles with duplication objects::
+
+        >>> items = [M.gen(0)]
+        >>> len(dumps(items)) < 800
+        True
+
+    Pickling two items would ideally only pickle the containing module, number
+    field and such once. However, due to how we call into cereal, everything is
+    stored twice::
+
+        >>> items = [M.gen(0), M.gen(0)]
+        >>> len(dumps(items)) > 1300
+        True
+
+    Importantly, things are properly deduplicated upon load::
+
+        >>> import cppyy
+        >>> items = loads(dumps(items))
+        >>> cppyy.addressof(items[0].module()) == cppyy.addressof(items[1].module())
+        True
+
+    """
+    def reduce(self):
+        r"""
+        A generic ``__reduce__`` implementation that delegates to cereal.
+        """
+        ptr = self.__smartptr__()
+        if ptr is not None: self = ptr
+
+        import cppyy
+        cppyy.include("exact-real/cereal.hpp")
+        cppyy.include("cereal/archives/json.hpp")
+
+        return (unpickle_from_cereal, (type(self), cppyy.gbl.exactreal.cppyy.serialize[type(self), cppyy.gbl.cereal.JSONOutputArchive](self)))
+
+    proxy.__reduce__ = reduce
+
+
+cppyy.py.add_pythonization(enable_cereal, "exactreal")
+
+
 for path in os.environ.get('PYEXACTREAL_INCLUDE','').split(':'):
     if path: cppyy.add_include_path(path)
 
