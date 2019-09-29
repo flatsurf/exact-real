@@ -50,16 +50,20 @@ class RealNumber : public std::enable_shared_from_this<RealNumber>,
   explicit operator bool() const;
   explicit virtual operator std::optional<mpq_class>() const = 0;
 
-  // Return an Arf float with prec bits of relative accuracy approximating this
-  // number.
+  // Return an approximation of this number as an Arf float with prec bits of
+  // relative accuracy, i.e., if e = (x - ~x) / x is the relative error, then
+  // floor(log2(1/e)) >= prec.
+  // For example, for a random real number, this method just returns the first
+  // prec binary digits after the first non-zero digit.
   virtual Arf arf(long prec) const = 0;
 
   // Return an Arb with prec bits of relative accuracy which contains this
-  // number.
+  // number, i.e., the returned value satisfies
+  // arb_rel_accuracy_bits(x.arb_t()) == prec.
   Arb arb(long prec) const;
 
-  // Ensure that arb contains this number and that the resulting arb number
-  // has at least prec bits of relative accuracy.
+  // Ensure that arb contains this number and has prec bits of
+  // relative accuracy, i.e., arb_rel_accuracy_bits(arb.arb_t()) >= prec.
   void refine(Arb& arb, long prec) const;
 
   Arb& iadd(Arb& self, long prec);

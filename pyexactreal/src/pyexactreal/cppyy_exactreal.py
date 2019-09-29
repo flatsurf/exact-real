@@ -351,7 +351,6 @@ class Yap(object):
 
         """
         operands = [self.value] + [Yap.wrap(x).value for x in rhs]
-        # There seems to be a bug in cppyy as of mid-2019. Arb() and 
         lifelines = [operands, self, rhs]
         ret = Yap(op(*operands), lifelines)
         return ret

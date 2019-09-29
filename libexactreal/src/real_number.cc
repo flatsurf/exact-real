@@ -63,6 +63,9 @@ void RealNumber::refine(Arb& arb, long prec) const {
   Arf midpoint = arf(prec);
   arb_set_arf(arb.arb_t(), midpoint.arf_t());
   arb_add_error_2exp_si(arb.arb_t(), (fmpz_get_si(&midpoint.arf_t()[0].exp) - 1) - (prec + 1));
+
+  assert(this->cmp(arb) == 0);
+  assert(!*this || arb_rel_accuracy_bits(arb.arb_t()) >= prec);
 }
 
 Arb RealNumber::arb(long prec) const {
