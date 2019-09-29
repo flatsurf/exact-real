@@ -13,14 +13,14 @@ fi
 make CXXFLAGS="$CXXFLAGS $EXTRA_CXXFLAGS"
 
 # Run all our test suites
-make check CXXFLAGS="$CXXFLAGS $EXTRA_CXXFLAGS"
+make check CXXFLAGS="$CXXFLAGS $EXTRA_CXXFLAGS" || (cat */test/test-suite.log; false)
 if [[ "$build_flavour" == "release" ]]; then
     pushd libexactreal
-    make check-valgrind
+    make check-valgrind || (cat test/test-suite*.log; false)
     make distcheck
     popd
     pushd pyexactreal
-    make check-valgrind
+    make check-valgrind || (cat test/test-suite*.log; false)
     # Check would fail since libexactreal is not installed
     # make distcheck
     popd
