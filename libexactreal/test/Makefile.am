@@ -1,5 +1,5 @@
 if HAVE_GOOGLETEST
-  check_PROGRAMS = arb arb_yap arb_benchmark random_real_number rational_real_number module element constraint_random_real_number arf_yap arf cereal cppyy
+  check_PROGRAMS = arb arb_yap arb_benchmark real_number_product random_real_number rational_real_number module element constraint_random_real_number arf_yap arf cereal cppyy
   TESTS = $(check_PROGRAMS)
 endif
 
@@ -15,6 +15,7 @@ module_SOURCES = module.test.cc main.hpp
 element_SOURCES = element.test.cc main.hpp
 constraint_random_real_number_SOURCES = constraint_random_real_number.test.cc main.hpp arf.test.hpp
 cppyy_SOURCES = cppyy.test.cc main.hpp
+real_number_product_SOURCES = real_number_product.test.cc main.hpp arf.test.hpp
 
 # We vendor the header-only library Cereal (serialization with C++ to be able
 # to run the tests even when cereal is not installed.
