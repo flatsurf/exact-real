@@ -46,7 +46,7 @@ requirements:
     # noarch:python, the version does not matter. However, we need the same
     # version when doing "make install" so that files go into the site-packages
     # directory that was determined by ./configure.
-    - python ==3.7
+    - python 3.7.*
     # enable test/pyexactreal tests in ./configure
     - pytest
     - cppyy
@@ -95,7 +95,7 @@ outputs:
     script: install-pyexactreal.sh
     requirements:
       host:
-        - python ==3.7
+        - python 3.7.*
         - setuptools
       run:
         # We pin the version of libexactreal exactly since we do not want to
