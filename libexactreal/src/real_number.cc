@@ -33,6 +33,11 @@ RealNumber::~RealNumber() {}
 
 RealNumber::operator double() const { return static_cast<double>(arf(54)); }
 
+RealNumber::operator bool() const {
+  auto q = static_cast<std::optional<mpq_class>>(*this);
+  return !q || *q;
+}
+
 int RealNumber::cmp(const Arb& arb) const {
   auto interval = static_cast<std::pair<Arf, Arf>>(arb);
   auto a = interval.first, b = interval.second;

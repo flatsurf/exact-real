@@ -47,6 +47,7 @@ class RealNumber : public std::enable_shared_from_this<RealNumber>,
  public:
   virtual ~RealNumber();
   explicit operator double() const;
+  explicit operator bool() const;
   explicit virtual operator std::optional<mpq_class>() const = 0;
 
   // Return an Arf float with prec bits of relative accuracy approximating this
