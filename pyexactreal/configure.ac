@@ -54,7 +54,8 @@ dnl module. Since this is incompatible with out-of-tree builds of
 dnl autoconfiscated packages, we have to copy all the Python bits over to the
 dnl build dir manually so that Python can't tell the difference.
 AC_CONFIG_LINKS([src/pyexactreal/__init__.py:src/pyexactreal/__init__.py
-                 src/pyexactreal/cppyy_exactreal.py:src/pyexactreal/cppyy_exactreal.py])
+                 src/pyexactreal/cppyy_exactreal.py:src/pyexactreal/cppyy_exactreal.py
+                 src/pyexactreal/exact_reals.py:src/pyexactreal/exact_reals.py])
 
 AC_OUTPUT
 
