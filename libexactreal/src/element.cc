@@ -190,7 +190,7 @@ Element<Ring>& Element<Ring>::operator*=(const Element<Ring>& rhs) {
   }
 
   vector<std::pair<shared_ptr<const RealNumber>, typename Ring::ElementClass>> sorted(products.begin(), products.end());
-  std::sort(sorted.begin(), sorted.end(), [](const auto & lhs, const auto & rhs) {
+  std::sort(sorted.begin(), sorted.end(), [](const auto& lhs, const auto& rhs) {
     return *lhs.first < *rhs.first;
   });
 
@@ -419,10 +419,9 @@ ostream& operator<<(ostream& out, const Element<Ring>& self) {
   std::set<std::tuple<bool, Element<Ring>, typename Ring::ElementClass>> coefficients;
   for (size i = 0; i < self.impl->parent->rank(); i++) {
     coefficients.insert(std::tuple(
-      self.impl->coefficients[i] < 0,
-      Element<Ring>(Module<Ring>::make({self.impl->parent->basis()[i]}, self.impl->parent->ring()), std::vector<typename Ring::ElementClass>({1})),
-      self.impl->coefficients[i]
-    ));
+        self.impl->coefficients[i] < 0,
+        Element<Ring>(Module<Ring>::make({self.impl->parent->basis()[i]}, self.impl->parent->ring()), std::vector<typename Ring::ElementClass>({1})),
+        self.impl->coefficients[i]));
   }
 
   bool empty = true;

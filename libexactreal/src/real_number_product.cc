@@ -83,7 +83,7 @@ class RealNumberProduct final : public RealNumber {
       nfactors += factor.second;
 
     long workingPrec = prec + static_cast<long>(ceil(log2(nfactors * 2 + (nfactors - 1)) + 1));
- 
+
     Arf ret(1);
     for (auto& factor : factors)
       for (int i = 0; i < factor.second; i++)
@@ -94,7 +94,7 @@ class RealNumberProduct final : public RealNumber {
     // the error might bee too big. As a consequence, the bit sequence here
     // might not be stable, unlike for the random numbers, i.e., for one
     // digit we might see 0.1 but for two digits 0.01.
-    fmpz_t m,e;
+    fmpz_t m, e;
     fmpz_init(m);
     fmpz_init(e);
     arf_get_fmpz_2exp(m, e, ret.arf_t());
@@ -150,7 +150,7 @@ void load_product(cereal::JSONInputArchive& archive, std::shared_ptr<const RealN
   Factors factors;
   archive(cereal::make_nvp("factors", factors));
   base = factory().get(factors, [&]() {
-      return new RealNumberProduct(Factors(factors.begin(), factors.end()));
+    return new RealNumberProduct(Factors(factors.begin(), factors.end()));
   });
 }
 }  // namespace exactreal

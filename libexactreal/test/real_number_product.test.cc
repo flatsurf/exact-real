@@ -29,8 +29,8 @@
 
 namespace exactreal {
 TEST(ProductRealNumberTest, Equality) {
-  for (auto da : { .424554, 13.37, .012345, 1.00112233 }) {
-    for (auto db : { .910621, 1.020304, 0.5 }) {
+  for (auto da : {.424554, 13.37, .012345, 1.00112233}) {
+    for (auto db : {.910621, 1.020304, 0.5}) {
       auto a = RealNumber::random(da);
       auto b = RealNumber::random(db);
       auto a2 = *a * (*a);
@@ -48,8 +48,8 @@ TEST(ProductRealNumberTest, Equality) {
 }
 
 TEST(ProductRealNumberTest, arf) {
-  for (auto da : { .424554, 13.37, .012345, 1.00112233 }) {
-    for (auto db : { .910621, 1.020304, 0.5 }) {
+  for (auto da : {.424554, 13.37, .012345, 1.00112233}) {
+    for (auto db : {.910621, 1.020304, 0.5}) {
       auto a = RealNumber::random(da);
       auto b = RealNumber::random(db);
       auto a2 = *a * (*a);

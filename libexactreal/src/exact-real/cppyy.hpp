@@ -21,8 +21,8 @@
 #define LIBEXACTREAL_CPPYY_HPP
 
 #include <iosfwd>
-#include <sstream>
 #include <memory>
+#include <sstream>
 
 #include "exact-real/element.hpp"
 #include "exact-real/integer_ring.hpp"
@@ -74,7 +74,7 @@ auto neg(const T &value) { return -value; }
 
 // A helper to get RAII that cereal needs to make sure that its output has been flushed.
 template <typename T, typename Archive>
-std::string serialize(const T& value) {
+std::string serialize(const T &value) {
   std::stringstream serialized;
   {
     Archive archive(serialized);
@@ -85,7 +85,7 @@ std::string serialize(const T& value) {
 
 // For the sake of symmetry, the same for deserialization.
 template <typename T, typename Archive>
-T deserialize(const std::string& serialized) {
+T deserialize(const std::string &serialized) {
   std::stringstream stream(serialized);
   T value;
   {
