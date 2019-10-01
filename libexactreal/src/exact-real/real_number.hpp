@@ -52,7 +52,7 @@ class RealNumber : public std::enable_shared_from_this<RealNumber>,
 
   // Return an approximation of this number as an Arf float with prec bits of
   // relative accuracy, i.e., if e = (x - ~x) / x is the relative error, then
-  // floor(log2(1/e)) >= prec.
+  // log2(1/e) >= prec.
   // For example, for a random real number, this method just returns the first
   // prec binary digits after the first non-zero digit.
   virtual Arf arf(long prec) const = 0;
