@@ -62,6 +62,7 @@ requirements:
     - sagelib
     - pip
     - ipywidgets
+    - sympy
     # to enable serialization in Python/SageMath tests
     - cereal
 
