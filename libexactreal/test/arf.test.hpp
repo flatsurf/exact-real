@@ -52,7 +52,7 @@ long relativeAccuracy(const Arf& expected, const Arf& actual) {
 }
 
 void testArf(std::shared_ptr<const RealNumber> x) {
-  if (*x == 0) {
+  if (!*x) {
     return;
   }
 

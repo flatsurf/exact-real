@@ -50,8 +50,12 @@ class Module<Ring>::Implementation {
   explicit Implementation(const Basis& basis, const Ring& parameters) : basis(basis), parameters(parameters) {
     for (auto it = basis.begin(); it != basis.end(); it++) {
       for (auto jt = it + 1; jt != basis.end(); jt++) {
-        assert((!static_cast<std::optional<mpq_class>>(**it) || !static_cast<std::optional<mpq_class>>(**jt)) && "at most one generator can be rational");
-        assert(**it != **jt && "generators must be distinct");
+        if (static_cast<std::optional<mpq_class>>(**it) && static_cast<std::optional<mpq_class>>(**jt)) {
+          throw std::logic_error("at most one generator can be rational");
+        }
+        if (**it == **jt) {
+          throw std::logic_error("generators must be distinct");
+        }
       }
     }
   }
@@ -64,7 +68,7 @@ class Module<Ring>::Implementation {
   Basis basis;
   Ring parameters;
 
-  using Factory = UniqueFactory<Module<Ring>, Basis, const Ring>;
+  using Factory = unique_factory::UniqueFactory<std::weak_ptr<Module<Ring>>, Basis, const Ring>;
   static Factory& factory() {
     static Factory* factory = new Factory();
     return *factory;
@@ -123,22 +127,36 @@ shared_ptr<const Module<Ring>> Module<Ring>::span(const shared_ptr<const Module<
   }
 
   if (m->impl->parameters != n->impl->parameters) {
-    throw std::logic_error("Module::span() not implemented when a new module would need to be constructed");
+    throw std::logic_error("Module::span() not implemented when base rings are incompatible");
   }
 
-  // This is a very naive O(n²) implementation. Doing something smart here used
-  // to be very difficult due to some unique_ptr mess.
-  for (auto& mgen : m->basis()) {
-    if (find_if(n->basis().begin(), n->basis().end(), [&](const auto& gen) { return *gen == *mgen; }) == n->basis().end()) {
-      for (auto& ngen : n->basis()) {
-        if (find_if(m->basis().begin(), m->basis().end(), [&](const auto& gen) { return *gen == *ngen; }) == m->basis().end()) {
-          throw std::logic_error("Module::span() not implemented when a new module would need to be constructed");
-        }
-      }
-      return m;
+  if (n->submodule(*m)) {
+    return m;
+  }
+
+  if (m->submodule(*n)) {
+    return n;
+  }
+
+  auto basis = m->basis();
+  for (auto& ngen : n->basis()) {
+    if (find_if(basis.begin(), basis.end(), [&](const auto& gen) { return *gen == *ngen; }) == basis.end()) {
+      basis.push_back(ngen);
     }
   }
-  return n;
+
+  return Module<Ring>::make(basis, m->impl->parameters);
+}
+
+template <typename Ring>
+bool Module<Ring>::submodule(const Module<Ring>& supermodule) const {
+  auto super = supermodule.basis();
+  for (auto& gen : basis()) {
+    if (find_if(super.begin(), super.end(), [&](const auto& sgen) { return *gen == *sgen; }) == super.end()) {
+      return false;
+    }
+  }
+  return true;
 }
 
 template <typename R>

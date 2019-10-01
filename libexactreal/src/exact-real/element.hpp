@@ -44,8 +44,11 @@ class Element : boost::additive<Element<Ring>>,
                 boost::totally_ordered<Element<Ring>, long long>,
                 boost::multiplicative<Element<Ring>, typename Ring::ElementClass>,
                 std::conditional_t<std::is_same_v<typename Ring::ElementClass, mpz_class>, boost::blank,
-                                   boost::multiplicative<Element<Ring>, mpz_class>>,
-                boost::multiplicative<Element<Ring>, int> {
+                                   std::conditional_t<Ring::isField, boost::multiplicative<Element<Ring>, mpz_class>, boost::multipliable<Element<Ring>, mpz_class>>>,
+                std::conditional_t<std::is_same_v<typename Ring::ElementClass, mpq_class>, boost::blank,
+                                   std::conditional_t<Ring::isField, boost::multiplicative<Element<Ring>, mpq_class>, boost::multipliable<Element<Ring>, mpq_class>>>,
+                std::conditional_t<std::is_same_v<typename Ring::ElementClass, int>, boost::blank,
+                                   std::conditional_t<Ring::isField, boost::multiplicative<Element<Ring>, int>, boost::multipliable<Element<Ring>, int>>> {
  public:
   Element();
   explicit Element(const std::shared_ptr<const Module<Ring>>& parent);
@@ -64,16 +67,14 @@ class Element : boost::additive<Element<Ring>>,
   Element& operator-=(const Element&);
   Element& operator*=(const Element&);
   Element operator-() const;
-  Element& operator*=(const typename Ring::ElementClass&);
-  // Define a operator*=(const mpz_class&) if Ring::ElementClass != mpz_class
-  template <typename mpz = mpz_class>
-  Element& operator*=(const typename std::enable_if_t<
-                      std::is_same_v<mpz, mpz_class> && !std::is_same_v<typename Ring::ElementClass, mpz_class>, mpz>&);
-  Element& operator*=(const int&);
-  // Define a operator/=(const Ring::ElementClass&) if Ring is a field
-  template <typename element = typename Ring::ElementClass>
-  Element& operator/=(
-      const typename std::enable_if_t<std::is_same_v<element, typename Ring::ElementClass> && Ring::isField, element>&);
+  // Define operator*= for every type that multiplies with Ring::ElementClass.
+  // (until we figure out how to dynamically inherit from boost::multiplicative for such T, we do not get operator* here.)
+  template <typename T, typename = decltype(std::declval<const typename Ring::ElementClass&>() * std::declval<const T&>())>
+  Element& operator*=(const T&);
+  // Define operator/= and operator/ if we're in a field in the same way.
+  // (until we figure out how to dynamically inherit from boost::multiplicative for such T, we do not get operator/ here.)
+  template <typename T, typename = decltype(std::declval<const typename Ring::ElementClass&>() / std::declval<const T&>()), typename = std::enable_if_t<Ring::isField || false_t<T>, void>>
+  Element& operator/=(const T&);
   std::optional<typename Ring::ElementClass> operator/(const Element&) const;
 
   bool operator==(const Element&) const;

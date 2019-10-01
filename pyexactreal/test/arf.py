@@ -32,16 +32,13 @@ def test_arithmetic():
     b = Arf(2)
 
     # Expressions do not get evaluated without specifying a precision/rounding
-    assert str(a + a) == "(1 + 1)"
+    assert str(a + a).startswith("expr<+>")
 
-    # They get evaluated when only a precision is specified since the Arf then
-    # gets implicitly cast to an Arb (maybe we don't want that actually)
-    assert (a + a)(64) == b
+    assert (a + a)(64, Arf.Round.DOWN) == b
 
-    assert (a + a)(64, Arf.DOWN) == b
+    b += a
 
-    with pytest.raises(NotImplementedError):
-        a+=b
+    assert b(64, Arf.Round.DOWN) == 3 
 
     assert -(-a) == a
 

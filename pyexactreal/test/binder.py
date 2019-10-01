@@ -28,9 +28,7 @@ import pytest
 # /binder/Sample.pyexactreal.ipynb
 
 def test_binder():
-    from pyexactreal import exactreal
-    ZZModule = exactreal.ZZModule
-    RealNumber = exactreal.RealNumber
+    from pyexactreal import RealNumber, ZZModule
 
     M = ZZModule(RealNumber.rational(1), RealNumber.random())
     assert str(M) == "ℤ-Module(1, ℝ(0.120809…))"
@@ -42,8 +40,8 @@ def test_binder():
     assert str(y) == "3*ℝ(0.120809…)"
 
     z = x*x + y;
-    assert str(z) == "ℝ(0.120809…)*ℝ(0.120809…) + 3*ℝ(0.120809…)"
+    assert str(z) == "ℝ(0.120809…)^2 + 3*ℝ(0.120809…)"
 
-    assert str(z.module()) == "ℤ-Module(ℝ(0.120809…)*ℝ(0.120809…), ℝ(0.120809…), 1)"
+    assert str(z.module()) == "ℤ-Module(ℝ(0.120809…)^2, ℝ(0.120809…), 1)"
 
 if __name__ == '__main__': sys.exit(pytest.main(sys.argv))

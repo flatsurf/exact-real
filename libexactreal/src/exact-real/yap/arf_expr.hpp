@@ -53,15 +53,15 @@ struct ArfExpr {
   Tuple elements;
 
   template <typename T, typename S>
-  decltype(auto) operator()(T t, S s) const&& {
+  decltype(auto) operator()(T t, S s) && {
     return std::move(*this)(t)(s);
   }
 
-  decltype(auto) operator()(Arf::Round round) const&& {
+  decltype(auto) operator()(Arf::Round round) && {
     return boost::yap::make_expression<ArfExpr, boost::yap::expr_kind::call>(std::move(*this), RoundExpr{{round}});
   }
 
-  decltype(auto) operator()(prec prec) const&& {
+  decltype(auto) operator()(prec prec) && {
     return boost::yap::make_expression<ArfExpr, boost::yap::expr_kind::call>(std::move(*this), PrecExpr{{prec}});
   }
 };

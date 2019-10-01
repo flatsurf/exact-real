@@ -33,11 +33,10 @@ def test_arithmetic():
 
     assert (a + a)(64) == b
 
-    with pytest.raises(NotImplementedError):
-        a+=b
+    b += a
 
     # expressions do not get evaluated without specifying a precision
-    assert str(a + a) == "(1.00000 + 1.00000)"
+    assert str(a + a).startswith("expr<+>")
 
     assert -(-a) == a
 

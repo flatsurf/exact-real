@@ -25,29 +25,24 @@ import sys
 import pytest
 
 def test_module():
-    from pyexactreal import exactreal
-    ZZModule = exactreal.ZZModule
-    RealNumber = exactreal.RealNumber
+    from pyexactreal import ZZModule, RealNumber
 
     M = ZZModule(RealNumber.rational(1), RealNumber.random())
 
     x = M.gen(1)
     # there used to be a segfault in calling module() on a temporary
-    assert str((x*x).module()) == "ℤ-Module(ℝ(0.120809…)*ℝ(0.120809…), ℝ(0.120809…), 1)"
+    assert str((x*x).module()) == "ℤ-Module(ℝ(0.120809…)^2, ℝ(0.120809…), 1)"
 
 def test_multiplication():
-    from pyexactreal import exactreal
-    RealNumber = exactreal.RealNumber
-    Module = exactreal.NumberFieldModule
-    NumberField = exactreal.NumberField
+    from pyexactreal import RealNumber, NumberFieldModule, NumberField
 
     # The following came up when doing arithmetic between renf_elem_class and
-    # Element<NumberFieldTraits> when trying to construct a hexagon with random side
+    # Element<NumberField> when trying to construct a hexagon with random side
     # lengths
     K = NumberField("x^2 - 3", "x", "1.73 +/- 0.1")
     x = K.gen()
 
-    M = Module(K, RealNumber.rational(1), RealNumber.random(), RealNumber.random())
+    M = NumberFieldModule(K, RealNumber.rational(1), RealNumber.random(), RealNumber.random())
     one = M.gen(0)
     μ = M.gen(1)
     ν = M.gen(2)

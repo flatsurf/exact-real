@@ -104,7 +104,7 @@ class ConstraintRandomRealNumber final : public RealNumber {
 };
 
 auto& factory() {
-  static UniqueFactory<ConstraintRandomRealNumber, Arf, long, std::shared_ptr<const RealNumber>> factory;
+  static unique_factory::UniqueFactory<std::weak_ptr<ConstraintRandomRealNumber>, Arf, long, std::weak_ptr<const RealNumber>> factory;
   return factory;
 }
 }  // namespace

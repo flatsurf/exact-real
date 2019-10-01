@@ -129,6 +129,12 @@ bool Arf::operator>(long rhs) const noexcept { return arf_cmp_si(t, rhs) > 0; }
 
 bool Arf::operator==(long rhs) const noexcept { return arf_equal_si(t, rhs); }
 
+Arf Arf::operator-() const noexcept {
+  Arf ret;
+  arf_neg(ret.t, t);
+  return ret;
+}
+
 Arf Arf::abs() const noexcept {
   Arf ret;
   arf_abs(ret.t, t);

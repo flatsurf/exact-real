@@ -33,6 +33,11 @@ RealNumber::~RealNumber() {}
 
 RealNumber::operator double() const { return static_cast<double>(arf(54)); }
 
+RealNumber::operator bool() const {
+  auto q = static_cast<std::optional<mpq_class>>(*this);
+  return !q || *q;
+}
+
 int RealNumber::cmp(const Arb& arb) const {
   auto interval = static_cast<std::pair<Arf, Arf>>(arb);
   auto a = interval.first, b = interval.second;
@@ -58,6 +63,9 @@ void RealNumber::refine(Arb& arb, long prec) const {
   Arf midpoint = arf(prec);
   arb_set_arf(arb.arb_t(), midpoint.arf_t());
   arb_add_error_2exp_si(arb.arb_t(), (fmpz_get_si(&midpoint.arf_t()[0].exp) - 1) - (prec + 1));
+
+  assert(this->cmp(arb) == 0);
+  assert(!*this || arb_rel_accuracy_bits(arb.arb_t()) >= prec);
 }
 
 Arb RealNumber::arb(long prec) const {

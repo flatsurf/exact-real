@@ -43,6 +43,8 @@
 /rational_real_number
 /constraint_random_real_number
 /cereal
+/cppyy
+/real_number_product
 
 ### Autotools Generated Files
 /.deps

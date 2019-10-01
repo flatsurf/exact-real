@@ -40,20 +40,6 @@ using std::shared_ptr;
 using std::vector;
 
 namespace {
-// Forward a smart pointers < to the underlying type
-template <class P>
-struct smart_less {
-  constexpr bool operator()(const P& lhs, const P& rhs) const {
-    if (lhs == nullptr) {
-      return rhs == nullptr;
-    }
-    if (rhs == nullptr) {
-      return false;
-    }
-    return *lhs < *rhs;
-  }
-};
-
 template <typename Ring>
 class ElementImplementation {
  public:
@@ -183,13 +169,16 @@ Element<Ring>& Element<Ring>::operator-=(const Element<Ring>& rhs) {
 
 template <typename Ring>
 Element<Ring>& Element<Ring>::operator*=(const Element<Ring>& rhs) {
+  if (!*this)
+    return *this;
+  if (!rhs)
+    return *this = rhs;
+
   if (this->module()->ring() != rhs.module()->ring()) {
     throw std::logic_error("not implemented - multiplication in modules over different rings");
   }
 
-  // Order coefficients by size so we get a reproducible order of the
-  // generators (helps with reproducible testing.)
-  map<shared_ptr<const RealNumber>, typename Ring::ElementClass, smart_less<shared_ptr<const RealNumber>>> products;
+  map<shared_ptr<const RealNumber>, typename Ring::ElementClass> products;
 
   for (size_t i = 0; i < impl->parent->basis().size(); i++) {
     for (size_t j = 0; j < rhs.impl->parent->basis().size(); j++) {
@@ -200,9 +189,14 @@ Element<Ring>& Element<Ring>::operator*=(const Element<Ring>& rhs) {
     }
   }
 
-  vector<typename Ring::ElementClass> coefficients;
+  vector<std::pair<shared_ptr<const RealNumber>, typename Ring::ElementClass>> sorted(products.begin(), products.end());
+  std::sort(sorted.begin(), sorted.end(), [](const auto& lhs, const auto& rhs) {
+    return *lhs.first < *rhs.first;
+  });
+
   vector<shared_ptr<const RealNumber>> basis;
-  for (auto& v : products) {
+  vector<typename Ring::ElementClass> coefficients;
+  for (auto& v : sorted) {
     basis.push_back(v.first);
     coefficients.push_back(v.second);
   }
@@ -224,37 +218,30 @@ Element<Ring> Element<Ring>::operator-() const {
 }
 
 template <typename Ring>
-Element<Ring>& Element<Ring>::operator*=(const int& rhs) {
+template <typename T, typename>
+Element<Ring>& Element<Ring>::operator*=(const T& rhs) {
   for (auto& c : impl->coefficients) {
-    // cppcheck-suppress useStlAlgorithm
     c *= rhs;
   }
   return *this;
 }
 
 template <typename Ring>
-Element<Ring>& Element<Ring>::operator*=(const typename Ring::ElementClass& rhs) {
+template <typename T, typename, typename>
+Element<Ring>& Element<Ring>::operator/=(const T& rhs) {
   for (auto& c : impl->coefficients) {
-    // cppcheck-suppress useStlAlgorithm
-    c *= rhs;
-  }
-  return *this;
-}
-
-template <typename Ring>
-template <typename mpz>
-Element<Ring>& Element<Ring>::operator*=(
-    const typename std::enable_if_t<
-        std::is_same_v<mpz, mpz_class> && !std::is_same_v<typename Ring::ElementClass, mpz_class>, mpz>& rhs) {
-  for (auto& c : impl->coefficients) {
-    // cppcheck-suppress useStlAlgorithm
-    c *= rhs;
+    c /= rhs;
   }
   return *this;
 }
 
 template <typename Ring>
 std::optional<typename Ring::ElementClass> Element<Ring>::operator/(const Element<Ring>& rhs) const {
+  if (impl->parent != rhs.impl->parent) {
+    auto parent = Module<Ring>::span(this->impl->parent, rhs.impl->parent);
+    return Element<Ring>(*this).promote(parent) / Element<Ring>(rhs).promote(parent);
+  }
+
   std::optional<typename Ring::ElementClass> ret;
 
   for (size i = 0; i < impl->parent->rank(); i++) {
@@ -426,17 +413,45 @@ Element<Ring>& Element<Ring>::promote(const shared_ptr<const Module<Ring>>& pare
 
 template <typename Ring>
 ostream& operator<<(ostream& out, const Element<Ring>& self) {
-  bool empty = true;
+  // Print summands sorted by absolute generator value to get stable outputs.
+  // (additionally, print positive coefficients first so that we do not get
+  // leading minus signs.)
+  std::set<std::tuple<bool, Element<Ring>, typename Ring::ElementClass>> coefficients;
   for (size i = 0; i < self.impl->parent->rank(); i++) {
-    if (self.impl->coefficients[i] != 0) {
-      if (!empty) {
-        out << " + ";
+    coefficients.insert(std::tuple(
+        self.impl->coefficients[i] < 0,
+        Element<Ring>(Module<Ring>::make({self.impl->parent->basis()[i]}, self.impl->parent->ring()), std::vector<typename Ring::ElementClass>({1})),
+        self.impl->coefficients[i]));
+  }
+
+  bool empty = true;
+  for (auto& gc : coefficients) {
+    auto c = std::get<2>(gc);
+    if (c != 0) {
+      if (c > 0) {
+        if (empty) {
+          ;
+        } else {
+          out << " + ";
+        }
+      } else {
+        if (empty) {
+          out << "-";
+        } else {
+          out << " - ";
+        }
+        c = -c;
       }
       empty = false;
-      if (self.impl->coefficients[i] != 1) {
-        out << self.impl->coefficients[i] << "*";
+      auto g = std::get<1>(gc).module()->basis()[0];
+      if (c != 1) {
+        out << c;
+        if (*g != 1) {
+          out << "*" << *g;
+        }
+      } else {
+        out << *g;
       }
-      out << *self.impl->parent->basis()[i];
     }
   }
   if (empty) {
@@ -454,14 +469,28 @@ ostream& operator<<(ostream& out, const Element<Ring>& self) {
 
 template class exactreal::Element<IntegerRing>;
 template ostream& exactreal::operator<<<IntegerRing>(ostream&, const Element<IntegerRing>&);
+template Element<IntegerRing>& exactreal::Element<IntegerRing>::operator*=(const int&);
+template Element<IntegerRing>& exactreal::Element<IntegerRing>::operator*=(const mpz_class&);
 template class exactreal::Element<RationalField>;
 template std::vector<typename IntegerRing::ElementClass> exactreal::Element<IntegerRing>::coefficients() const;
 template ostream& exactreal::operator<<<RationalField>(ostream&, const Element<RationalField>&);
-template Element<RationalField>& exactreal::Element<RationalField>::operator*=<mpz_class>(const mpz_class& rhs);
+template Element<RationalField>& exactreal::Element<RationalField>::operator*=(const int&);
+template Element<RationalField>& exactreal::Element<RationalField>::operator*=(const mpz_class&);
+template Element<RationalField>& exactreal::Element<RationalField>::operator*=(const mpq_class&);
+template Element<RationalField>& exactreal::Element<RationalField>::operator/=(const int&);
+template Element<RationalField>& exactreal::Element<RationalField>::operator/=(const mpz_class&);
+template Element<RationalField>& exactreal::Element<RationalField>::operator/=(const mpq_class&);
 
 template std::vector<typename RationalField::ElementClass> exactreal::Element<RationalField>::coefficients() const;
 template class exactreal::Element<NumberField>;
 template ostream& exactreal::operator<<<NumberField>(ostream&, const Element<NumberField>&);
-template Element<NumberField>& exactreal::Element<NumberField>::operator*=<mpz_class>(const mpz_class& rhs);
+template Element<NumberField>& exactreal::Element<NumberField>::operator*=(const int&);
+template Element<NumberField>& exactreal::Element<NumberField>::operator*=(const mpz_class&);
+template Element<NumberField>& exactreal::Element<NumberField>::operator*=(const mpq_class&);
+template Element<NumberField>& exactreal::Element<NumberField>::operator*=(const eantic::renf_elem_class&);
+template Element<NumberField>& exactreal::Element<NumberField>::operator/=(const int&);
+template Element<NumberField>& exactreal::Element<NumberField>::operator/=(const mpz_class&);
+template Element<NumberField>& exactreal::Element<NumberField>::operator/=(const mpq_class&);
+template Element<NumberField>& exactreal::Element<NumberField>::operator/=(const eantic::renf_elem_class&);
 template std::vector<mpq_class> exactreal::Element<NumberField>::coefficients<mpq_class>() const;
 template std::vector<eantic::renf_elem_class> exactreal::Element<NumberField>::coefficients<eantic::renf_elem_class>() const;

@@ -39,7 +39,7 @@ if [ -z "$CONFIG" ]; then
 fi
 
 if [ -z "${DOCKER_IMAGE}" ]; then
-    SHYAML_INSTALLED="$(shyaml --version || echo NO)"
+    SHYAML_INSTALLED="$(shyaml -h || echo NO)"
     if [ "${SHYAML_INSTALLED}" == "NO" ]; then
         echo "WARNING: DOCKER_IMAGE variable not set and shyaml not installed. Falling back to condaforge/linux-anvil-comp7"
         DOCKER_IMAGE="condaforge/linux-anvil-comp7"
@@ -66,6 +66,8 @@ docker run ${DOCKER_RUN_ARGS} \
            -e COVERALLS_REPO_TOKEN \
            -e ASV_SECRET_KEY \
            -e UPLOAD_PACKAGES \
+           -e GIT_BRANCH \
+           -e UPLOAD_ON_BRANCH \
            -e CI \
            $DOCKER_IMAGE \
            bash \

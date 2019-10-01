@@ -21,7 +21,7 @@
 #include <cassert>
 #include <cereal/archives/json.hpp>
 #include <cereal/cereal.hpp>
-#include <cereal/types/vector.hpp>
+#include <cereal/types/map.hpp>
 #include <memory>
 #include <set>
 #include <vector>
@@ -33,23 +33,32 @@
 
 using namespace exactreal;
 using std::make_shared;
-using std::multiset;
+using std::map;
 using std::optional;
 using std::shared_ptr;
 using std::vector;
+
+using Factors = map<shared_ptr<const RealNumber>, int>;
 
 namespace {
 // A product of transcendental reals
 class RealNumberProduct final : public RealNumber {
  public:
-  RealNumberProduct(const multiset<shared_ptr<const RealNumber>>& factors) : factors(factors) {}
+  explicit RealNumberProduct(const Factors& factors) : factors(factors) {
+    assert(std::all_of(factors.begin(), factors.end(), [](auto& factor) { return factor.second >= 1; }) && "factors must appear at least once");
+    assert(std::all_of(factors.begin(), factors.end(), [](auto& factor) { return !static_cast<std::optional<mpq_class>>(*factor.first); }) && "factors must be transcendental");
+  }
 
   RealNumber const& operator>>(std::ostream& os) const override {
     bool first = true;
     for (auto& factor : factors) {
       if (!first) os << "*";
       first = false;
-      os << *factor;
+      os << *factor.first;
+
+      if (factor.second != 1) {
+        os << "^" << factor.second;
+      }
     }
     return *this;
   }
@@ -59,28 +68,53 @@ class RealNumberProduct final : public RealNumber {
   }
 
   Arf arf(long prec) const override {
-    // Multiplications are quite stable, so adding that many digits of
-    // precision is probably too much. Currently, factors.size() == 2 in our
-    // application, so it does not matter.
-    prec += factors.size() - 1;
+    // We naively compute the product of all the factors, i.e., we do
+    // nothing smart about repeated factors.
+    // The following analysis could certainly be done much more sharply but
+    // since we usually only have very few factors, it does not matter that
+    // much that it's using too much precision.
+    // We get an approximation for every factor with arf(). Since this
+    // rounds down, every factor has an error of 1 ulp.
+    // These errors essentially sum (plus the product of the errors.)
+    // Additionally, each multiplication introduces a rounding error of 1
+    // ulp.
+    long nfactors = 0;
+    for (auto& factor : factors)
+      nfactors += factor.second;
+
+    long workingPrec = prec + static_cast<long>(ceil(log2(nfactors * 2 + (nfactors - 1)) + 1));
 
     Arf ret(1);
     for (auto& factor : factors)
-      ret *= factor->arf(prec)(prec, Arf::Round::NEAR);
+      for (int i = 0; i < factor.second; i++)
+        ret *= factor.first->arf(workingPrec)(workingPrec, Arf::Round::NEAR);
+
+    // The calling code assumes that no extra digits are present, so we drop
+    // everything beyond prec bits (we must use NEAR here since otherwise
+    // the error might bee too big. As a consequence, the bit sequence here
+    // might not be stable, unlike for the random numbers, i.e., for one
+    // digit we might see 0.1 but for two digits 0.01.
+    fmpz_t m, e;
+    fmpz_init(m);
+    fmpz_init(e);
+    arf_get_fmpz_2exp(m, e, ret.arf_t());
+    arf_set_round_fmpz_2exp(ret.arf_t(), m, e, prec + 1, ARF_RND_NEAR);
+    fmpz_clear(m);
+    fmpz_clear(e);
 
     return ret;
   }
 
-  multiset<shared_ptr<const RealNumber>> factors;
+  Factors factors;
 
   template <typename Archive>
   void save(Archive& archive) const {
-    archive(cereal::make_nvp("factors", vector<shared_ptr<const RealNumber>>(factors.begin(), factors.end())));
+    archive(cereal::make_nvp("factors", factors));
   }
 };
 
 auto& factory() {
-  static UniqueFactory<RealNumberProduct, multiset<shared_ptr<const RealNumber>>> factory;
+  static unique_factory::UniqueFactory<std::weak_ptr<RealNumberProduct>, Factors> factory;
   return factory;
 }
 }  // namespace
@@ -92,15 +126,16 @@ shared_ptr<const RealNumber> RealNumber::operator*(const RealNumber& rhs) const 
     return rhs * *this;
   }
 
-  multiset<shared_ptr<const RealNumber>> factors;
+  Factors factors;
   for (auto factor : {this->shared_from_this(), rhs.shared_from_this()}) {
     assert(!static_cast<optional<mpq_class>>(*factor) && "All factors must be transcendental");
-    if (typeid(factor) == typeid(std::shared_ptr<const RealNumberProduct>)) {
-      for (auto& f : static_cast<const RealNumberProduct*>(&*factor)->factors) {
-        factors.insert(f);
+    auto product = std::dynamic_pointer_cast<const RealNumberProduct>(factor);
+    if (product) {
+      for (auto& f : product->factors) {
+        factors[f.first] += f.second;
       }
     } else {
-      factors.insert(factor);
+      factors[factor] += 1;
     }
   }
 
@@ -112,8 +147,10 @@ void save_product(cereal::JSONOutputArchive& archive, const std::shared_ptr<cons
 }
 
 void load_product(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& base) {
-  vector<shared_ptr<const RealNumber>> factors;
+  Factors factors;
   archive(cereal::make_nvp("factors", factors));
-  base = factory().get(multiset<shared_ptr<const RealNumber>>(factors.begin(), factors.end()), [&]() { return new RealNumberProduct(multiset<shared_ptr<const RealNumber>>(factors.begin(), factors.end())); });
+  base = factory().get(factors, [&]() {
+    return new RealNumberProduct(Factors(factors.begin(), factors.end()));
+  });
 }
 }  // namespace exactreal

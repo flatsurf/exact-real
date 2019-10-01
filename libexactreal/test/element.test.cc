@@ -106,6 +106,7 @@ TEST(ElementZZ, Scalars) {
     EXPECT_EQ(-1 * x, -x);
     EXPECT_EQ(1 * x, x);
     EXPECT_EQ(0 * x, Element(m));
+    EXPECT_EQ(Element<IntegerRing>() * x, Element<IntegerRing>());
   }
 
   for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
@@ -132,7 +133,7 @@ TEST(ElementZZ, Printing) {
 
   EXPECT_EQ(lexical_cast<string>(Element(m, 0)), "1");
   EXPECT_EQ(lexical_cast<string>(Element(m, 1)), "ℝ(0.673083…)");
-  EXPECT_EQ(lexical_cast<string>(Element(m, 0) + Element(m, 1)), "1 + ℝ(0.673083…)");
+  EXPECT_EQ(lexical_cast<string>(Element(m, 0) + Element(m, 1)), "ℝ(0.673083…) + 1");
 }
 
 TEST(ElementZZ, Multiplication) {
@@ -160,6 +161,7 @@ TEST(ElementQQ, Scalars) {
     EXPECT_EQ(-1 * x, -x);
     EXPECT_EQ(1 * x, x);
     EXPECT_EQ(0 * x, Element(m));
+    EXPECT_EQ(Element<RationalField>() * x, Element<RationalField>());
   }
 
   for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
@@ -203,6 +205,7 @@ TEST(ElementNF, Scalars) {
     EXPECT_EQ(-1 * x, -x);
     EXPECT_EQ(1 * x, x);
     EXPECT_EQ(0 * x, Element(m));
+    EXPECT_EQ(Element<NumberField>() * x, Element<NumberField>());
   }
 
   for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
@@ -233,6 +236,7 @@ TEST(ElementNF, Scalars) {
     EXPECT_EQ(-(renf_elem_class(K, "a") * x), renf_elem_class(K, "-a") * x);
     EXPECT_GT(renf_elem_class(K, "a") * x, x);
     EXPECT_GT(2 * x, renf_elem_class(K, "a") * x);
+    EXPECT_EQ(mpq_class(1, 2) * x, x / 2);
 
     for (size_t j = 0; j < sizeof(elements) / sizeof(elements[0]); j++) {
       if (i == j)
