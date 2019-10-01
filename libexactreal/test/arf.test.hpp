@@ -77,7 +77,7 @@ void testArf(std::shared_ptr<const RealNumber> x) {
 
     // As we are assuming that digits that we did not ask for are 0, approx can
     // have at most prec + 1 digits (as trailing zeros are not counted.)
-    EXPECT_LE(arf_bits(approx.arf_t()), prec + 1);
+    ASSERT_LE(arf_bits(approx.arf_t()), prec + 1);
 
     ASSERT_FALSE(arf_is_zero(approx.arf_t()));
 
