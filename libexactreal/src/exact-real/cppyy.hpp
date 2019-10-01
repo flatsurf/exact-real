@@ -55,7 +55,7 @@ Arb eval(T expression, prec prec) {
 template <typename T>
 Arf eval(T expression, prec prec, int round) {
   Arf ret;
-  ret = std::move(expression)(prec, (Arf::Round)round);
+  ret = std::move(expression)(prec, static_cast<Arf::Round>(round));
   return ret;
 }
 
