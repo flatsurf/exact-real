@@ -44,11 +44,9 @@ namespace {
 // A product of transcendental reals
 class RealNumberProduct final : public RealNumber {
  public:
-  RealNumberProduct(const Factors& factors) : factors(factors) {
-    for (auto& factor : factors) {
-      assert(factor.second >= 1 && "factors must appear at least one");
-      assert(!static_cast<std::optional<mpq_class>>(*factor.first) && "all factors must be transcendental");
-    }
+  explicit RealNumberProduct(const Factors& factors) : factors(factors) {
+    assert(std::all_of(factors.begin(), factors.end(), [](auto& factor) { return factor.second >= 1; }) && "factors must appear at least once");
+    assert(std::all_of(factors.begin(), factors.end(), [](auto& factor) { return static_cast<std::optional<mpq_class>>(*factor.first); }) && "factors must be transcendental");
   }
 
   RealNumber const& operator>>(std::ostream& os) const override {
