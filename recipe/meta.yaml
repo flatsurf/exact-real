@@ -60,6 +60,7 @@ requirements:
     - asv
     # to run optional SageMath tests
     - sagelib
+    - pip
     # to enable serialization in Python/SageMath tests
     - cereal
 
