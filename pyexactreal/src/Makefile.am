@@ -9,7 +9,7 @@ uninstall-local:
 	rm -rf $(DESTDIR)$(pythondir)/pyexactreal
 
 clean-local:
-	-rm -rf pyexactreal/__pycache__ pyexactreal.egg-info build
+	-rm -rf pyexactreal/__pycache__ pyexactreal.egg-info build .pytest_cache
 
 BUILT_SOURCES = setup.py
 EXTRA_DIST = setup.py.in
