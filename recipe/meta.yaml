@@ -61,6 +61,7 @@ requirements:
     # to run optional SageMath tests
     - sagelib
     - pip
+    - ipywidgets
     # to enable serialization in Python/SageMath tests
     - cereal
 
