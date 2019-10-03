@@ -1,7 +1,7 @@
 boost_cpp:
 - 1.70.0
 build_flavour:
-- release
+- ''
 channel_sources:
 - flatsurf,conda-forge,defaults
 channel_targets:

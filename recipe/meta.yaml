@@ -3,7 +3,7 @@
 # conda-smithy assumes that the build number is >= 1000 when building with the new anaconda compilers,
 # this probably is not important but make_build_number otherwise complains during the build
 {% set build_number = (environ.get('GIT_DESCRIBE_NUMBER')|int + 1000)|string %}
-{% set build_string = "master_" + ((build_flavour + "_") if build_flavour != "release" else "") + build_number %}
+{% set build_string = "master_" + ((build_flavour + "_") if build_flavour else "") + build_number %}
 
 package:
   name: exact-real
@@ -11,8 +11,6 @@ package:
 
 source:
   git_url: {{ environ.get('FEEDSTOCK_ROOT', '..') }}
-
-_build: &build
 
 build:
   number: {{ build_number }}
@@ -72,7 +70,7 @@ outputs:
     build:
       number: {{ build_number }}
       string: {{ build_string }}
-{%- if build_flavour and build_flavour != 'release' %}
+{%- if build_flavour %}
       features:
         - {{ build_flavour }}
 {% endif %}
@@ -92,7 +90,7 @@ outputs:
     build:
       number: {{ build_number }}
       string: {{ build_string }}
-{%- if build_flavour and build_flavour != 'release' %}
+{%- if build_flavour %}
       features:
         - {{ build_flavour }}
 {% endif %}
@@ -111,7 +109,7 @@ outputs:
         - python
         - boost-cpp
         - cereal
-{%- if build_flavour == 'release' %}
+{%- if not build_flavour %}
     test:
       imports:
         - pyexactreal

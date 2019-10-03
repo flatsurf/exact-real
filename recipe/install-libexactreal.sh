@@ -1,4 +1,4 @@
 #!/bin/bash
-cd libexactreal
 
+cd libexactreal
 make install

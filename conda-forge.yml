@@ -7,3 +7,9 @@ azure:
   user_or_org: flatsurf
   project_name: conda
 channel_name: flatsurf
+skip_render:
+  - README.md
+  - LICENSE.txt
+  - .gitattributes
+  - .gitignore
+  - build-locally.py
