@@ -13,4 +13,5 @@ setup(
         'cppyy'
     ],
     long_description = open('@top_srcdir@/README').read(),
+    include_package_data=True,
 )
