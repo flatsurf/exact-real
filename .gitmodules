@@ -13,3 +13,6 @@
 [submodule "libexactreal/src/external/arb"]
 	path = libexactreal/src/external/arb
 	url = https://github.com/saraedum/arb.git
+[submodule "recipe/snippets"]
+	path = recipe/snippets
+	url = https://github.com/flatsurf/conda-recipes.git

@@ -1,4 +1,4 @@
 #!/bin/bash
-cd pyexactreal
 
+cd pyexactreal
 make install

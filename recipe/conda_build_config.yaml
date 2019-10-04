@@ -3,5 +3,5 @@ channel_targets:
 channel_sources:
   - flatsurf,conda-forge,defaults
 build_flavour:
-  - release
+  - ""
   - coverage

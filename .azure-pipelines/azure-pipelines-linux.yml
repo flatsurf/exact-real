@@ -10,12 +10,12 @@ jobs:
   strategy:
     maxParallel: 8
     matrix:
-      linux_build_flavourcoverage:
-        CONFIG: linux_build_flavourcoverage
+      linux_build_flavour:
+        CONFIG: linux_build_flavour
         UPLOAD_PACKAGES: True
         DOCKER_IMAGE: condaforge/linux-anvil-comp7
-      linux_build_flavourrelease:
-        CONFIG: linux_build_flavourrelease
+      linux_build_flavourcoverage:
+        CONFIG: linux_build_flavourcoverage
         UPLOAD_PACKAGES: True
         DOCKER_IMAGE: condaforge/linux-anvil-comp7
   steps:
@@ -34,5 +34,5 @@ jobs:
     displayName: Run docker build
     env:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
-      COVERALLS_REPO_TOKEN: $(COVERALLS_REPO_TOKEN)
+      CODECOV_TOKEN: $(CODECOV_TOKEN)
       ASV_SECRET_KEY: $(ASV_SECRET_KEY)

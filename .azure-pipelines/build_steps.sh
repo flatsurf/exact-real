@@ -14,8 +14,8 @@ export CONFIG_FILE="${CI_SUPPORT}/${CONFIG}.yaml"
 
 # Inject secrets into conda-build which filters the environment. If we
 # whitelisted explicitly in meta.yaml, these would be publicly readable in the
-# uploaded package at anaconda.org.
-export -p | grep COVERALLS_REPO_TOKEN >> /tmp/secrets || true
+# CI logs.
+export -p | grep CODECOV_TOKEN >> /tmp/secrets || true
 export -p | grep ASV_SECRET_KEY >> /tmp/secrets || true
 
 cat >~/.condarc <<CONDARC
