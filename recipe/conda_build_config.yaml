@@ -5,3 +5,4 @@ channel_sources:
 build_flavour:
   - ""
   - coverage
+  - style
