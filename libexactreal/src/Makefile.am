@@ -18,10 +18,11 @@ libexactreal_la_SOURCES =               \
 # We vendor https://github.com/fredrik-johansson/arb/pull/286 until it's
 # released
 libexactreal_la_SOURCES +=              \
-    external/arb/arf/load_str.c         \
+    external/arb/arf/load.c             \
+    external/arb/arf/dump_str.c         \
     external/arb/arb/load_str.c         \
     external/arb/arb/dump_str.c         \
-    external/arb/mag/load_str.c         \
+    external/arb/mag/load.c             \
     external/arb/mag/dump_str.c
 
 libexactreal_la_LDFLAGS = -version-info $(libexactreal_version_info)
