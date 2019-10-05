@@ -294,7 +294,7 @@ cppyy.py.add_pythonization(enable_cereal, "exactreal")
 for path in os.environ.get('PYEXACTREAL_INCLUDE','').split(':'):
     if path: cppyy.add_include_path(path)
 
-cppyy.add_include_path(os.path.join(os.path.dirname(__file__), 'include', 'cereal'))
+cppyy.add_include_path(os.path.join(os.path.dirname(__file__), 'include'))
 
 cppyy.include("exact-real/cppyy.hpp")
 cppyy.include("e-antic/renfxx.h")
