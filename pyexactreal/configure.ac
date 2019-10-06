@@ -66,6 +66,7 @@ AC_CONFIG_LINKS([src/pyexactreal/__init__.py:src/pyexactreal/__init__.py
                  src/pyexactreal/include/cereal/types/base_class.hpp:src/pyexactreal/include/cereal/types/base_class.hpp
                  src/pyexactreal/include/cereal/details/polymorphic_impl_fwd.hpp:src/pyexactreal/include/cereal/details/polymorphic_impl_fwd.hpp
                  src/pyexactreal/include/cereal/details/util.hpp:src/pyexactreal/include/cereal/details/util.hpp
+                 src/pyexactreal/include/cereal/types/common.hpp:src/pyexactreal/include/cereal/types/common.hpp
 ])
 
 AC_OUTPUT
