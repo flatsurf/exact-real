@@ -55,7 +55,18 @@ dnl autoconfiscated packages, we have to copy all the Python bits over to the
 dnl build dir manually so that Python can't tell the difference.
 AC_CONFIG_LINKS([src/pyexactreal/__init__.py:src/pyexactreal/__init__.py
                  src/pyexactreal/cppyy_exactreal.py:src/pyexactreal/cppyy_exactreal.py
-                 src/pyexactreal/exact_reals.py:src/pyexactreal/exact_reals.py])
+                 src/pyexactreal/exact_reals.py:src/pyexactreal/exact_reals.py
+                 src/pyexactreal/include/cereal/archives/json.hpp:src/pyexactreal/include/cereal/archives/json.hpp
+                 src/pyexactreal/include/cereal/cereal.hpp:src/pyexactreal/include/cereal/cereal.hpp
+                 src/pyexactreal/include/cereal/macros.hpp:src/pyexactreal/include/cereal/macros.hpp
+                 src/pyexactreal/include/cereal/details/traits.hpp:src/pyexactreal/include/cereal/details/traits.hpp
+                 src/pyexactreal/include/cereal/access.hpp:src/pyexactreal/include/cereal/access.hpp
+                 src/pyexactreal/include/cereal/details/helpers.hpp:src/pyexactreal/include/cereal/details/helpers.hpp
+                 src/pyexactreal/include/cereal/details/static_object.hpp:src/pyexactreal/include/cereal/details/static_object.hpp
+                 src/pyexactreal/include/cereal/types/base_class.hpp:src/pyexactreal/include/cereal/types/base_class.hpp
+                 src/pyexactreal/include/cereal/details/polymorphic_impl_fwd.hpp:src/pyexactreal/include/cereal/details/polymorphic_impl_fwd.hpp
+                 src/pyexactreal/include/cereal/details/util.hpp:src/pyexactreal/include/cereal/details/util.hpp
+])
 
 AC_OUTPUT
 
