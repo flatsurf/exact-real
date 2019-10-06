@@ -22,5 +22,5 @@
 
 set -ex
 
-TARGETS=`grep -l 'sage: ' ../src/pyexactreal/*.py`
+TARGETS=`grep -l 'sage: ' @srcdir@/../src/pyexactreal/*.py`
 sage -t --long --force-lib $TARGETS

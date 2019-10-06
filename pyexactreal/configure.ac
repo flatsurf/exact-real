@@ -49,25 +49,5 @@ AM_CONDITIONAL([HAVE_SAGE], [test "x$with_sage" = "xyes"])
 
 AC_CONFIG_FILES([Makefile src/Makefile test/Makefile])
 
-dnl Python's setuptools absolutely want to run in the source directory of the
-dnl module. Since this is incompatible with out-of-tree builds of
-dnl autoconfiscated packages, we have to copy all the Python bits over to the
-dnl build dir manually so that Python can't tell the difference.
-AC_CONFIG_LINKS([src/pyexactreal/__init__.py:src/pyexactreal/__init__.py
-                 src/pyexactreal/cppyy_exactreal.py:src/pyexactreal/cppyy_exactreal.py
-                 src/pyexactreal/exact_reals.py:src/pyexactreal/exact_reals.py
-                 src/pyexactreal/include/cereal/archives/json.hpp:src/pyexactreal/include/cereal/archives/json.hpp
-                 src/pyexactreal/include/cereal/cereal.hpp:src/pyexactreal/include/cereal/cereal.hpp
-                 src/pyexactreal/include/cereal/macros.hpp:src/pyexactreal/include/cereal/macros.hpp
-                 src/pyexactreal/include/cereal/details/traits.hpp:src/pyexactreal/include/cereal/details/traits.hpp
-                 src/pyexactreal/include/cereal/access.hpp:src/pyexactreal/include/cereal/access.hpp
-                 src/pyexactreal/include/cereal/details/helpers.hpp:src/pyexactreal/include/cereal/details/helpers.hpp
-                 src/pyexactreal/include/cereal/details/static_object.hpp:src/pyexactreal/include/cereal/details/static_object.hpp
-                 src/pyexactreal/include/cereal/types/base_class.hpp:src/pyexactreal/include/cereal/types/base_class.hpp
-                 src/pyexactreal/include/cereal/details/polymorphic_impl_fwd.hpp:src/pyexactreal/include/cereal/details/polymorphic_impl_fwd.hpp
-                 src/pyexactreal/include/cereal/details/util.hpp:src/pyexactreal/include/cereal/details/util.hpp
-                 src/pyexactreal/include/cereal/types/common.hpp:src/pyexactreal/include/cereal/types/common.hpp
-])
-
 AC_OUTPUT
 
