@@ -49,13 +49,5 @@ AM_CONDITIONAL([HAVE_SAGE], [test "x$with_sage" = "xyes"])
 
 AC_CONFIG_FILES([Makefile src/Makefile test/Makefile])
 
-dnl Python's setuptools absolutely want to run in the source directory of the
-dnl module. Since this is incompatible with out-of-tree builds of
-dnl autoconfiscated packages, we have to copy all the Python bits over to the
-dnl build dir manually so that Python can't tell the difference.
-AC_CONFIG_LINKS([src/pyexactreal/__init__.py:src/pyexactreal/__init__.py
-                 src/pyexactreal/cppyy_exactreal.py:src/pyexactreal/cppyy_exactreal.py
-                 src/pyexactreal/exact_reals.py:src/pyexactreal/exact_reals.py])
-
 AC_OUTPUT
 

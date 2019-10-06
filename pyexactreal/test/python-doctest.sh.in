@@ -22,5 +22,5 @@
 
 set -ex
 
-TARGETS=`grep -l '>>> ' ../src/pyexactreal/*.py`
+TARGETS=`grep -l '>>>' @srcdir@/../src/pyexactreal/*.py`
 pytest --doctest-modules $TARGETS

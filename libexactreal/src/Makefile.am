@@ -70,8 +70,8 @@ VPATH = $(srcdir) $(builddir)
 BUILT_SOURCES = exact-real/exact-real.hpp
 # Distribute exact-real.hpp.in as part of the tarball, but not exact-real.hpp
 EXTRA_DIST = exact-real/exact-real.hpp.in
-# Distribute the bits of arb that we vendor until they are release
-EXTRA_DIST += external/arb/arb.h external/arb/arf.h external/arb/mag.h external/arb/arb/load_str.c external/arb/arb/dump_str.c external/arb/arf/load_str.c external/arb/mag/load_str.c external/arb/mag/dump_str.c
+# Distribute the bits of arb that we vendor until they are released
+EXTRA_DIST += external/arb/arb.h external/arb/arf.h external/arb/mag.h external/arb/arb/load_str.c external/arb/arb/dump_str.c external/arb/arf/load.c external/arb/arf/dump_str.c external/arb/mag/load.c external/arb/mag/dump_str.c
 # We vendor the header-only library Cereal (serialization with C++) which we
 # use in some of our source files.
 # Cereal is basically not packaged in any distribution since it is a

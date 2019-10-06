@@ -61,8 +61,6 @@ requirements:
     - pip
     - ipywidgets
     - sympy
-    # to enable serialization in Python/SageMath tests
-    - cereal
 
 outputs:
   - name: libexactreal
@@ -108,7 +106,6 @@ outputs:
         - pyeantic
         - python
         - boost-cpp
-        - cereal
 {%- if not build_flavour %}
     test:
       imports:
