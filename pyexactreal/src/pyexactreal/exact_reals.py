@@ -49,6 +49,7 @@ The module is automatically enlarged as needed::
 #  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 
+import cppyy
 from sage.all import QQ, UniqueRepresentation, ZZ, RR, IntegralDomains, IntegralDomain, Morphism, Hom, SetsWithPartialMaps, NumberFieldElement, Parent, coerce
 from sage.structure.element import IntegralDomainElement
 from sage.categories.action import Action
@@ -488,30 +489,3 @@ class CoercionExactRealsNumberField(Morphism):
     """
     def _call_(self, x):
         return x * self.codomain().rational(1)
-
-
-# This should eventually go into its own library:
-# https://github.com/flatsurf/exact-real/issues/66
-import cppyy
-class ConversionZZMpz(Morphism):
-    def __init__(self):
-        Morphism.__init__(self, Hom(cppyy.gbl.mpz_class, ZZ, ZZ.category(), check=False))
-
-    def _call_(self, x):
-        # this could certainly be done faster in Cython with the underlying mpz_t
-        return ZZ(x.get_str())
-
-
-class ConversionQQMpq(Morphism):
-    def __init__(self):
-        Morphism.__init__(self, Hom(cppyy.gbl.mpq_class, QQ, QQ.category(), check=False))
-    
-    def _call_(self, x):
-        # this could certainly be done faster in Cython with the underlying mpq_t
-        return QQ(x.get_str())
-
-cppyy.gbl.mpz_class.is_exact = lambda: True
-ZZ.register_conversion(ConversionZZMpz())
-
-cppyy.gbl.mpq_class.is_exact = lambda: True
-QQ.register_conversion(ConversionQQMpq())
