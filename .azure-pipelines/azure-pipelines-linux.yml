@@ -3,25 +3,300 @@
 # -*- mode: yaml -*-
 
 jobs:
-- job: linux
+- job: linux_build_flavourbenchmarkpython3.6targetexact-real
   pool:
     vmImage: ubuntu-16.04
+  variables:
+    CONFIG: linux_build_flavourbenchmarkpython3.6targetexact-real
+    UPLOAD_PACKAGES: True
+    DOCKER_IMAGE: condaforge/linux-anvil-comp7
   timeoutInMinutes: 360
-  strategy:
-    maxParallel: 8
-    matrix:
-      linux_build_flavour:
-        CONFIG: linux_build_flavour
-        UPLOAD_PACKAGES: True
-        DOCKER_IMAGE: condaforge/linux-anvil-comp7
-      linux_build_flavourcoverage:
-        CONFIG: linux_build_flavourcoverage
-        UPLOAD_PACKAGES: True
-        DOCKER_IMAGE: condaforge/linux-anvil-comp7
-      linux_build_flavourstyle:
-        CONFIG: linux_build_flavourstyle
-        UPLOAD_PACKAGES: True
-        DOCKER_IMAGE: condaforge/linux-anvil-comp7
+  steps:
+  # configure qemu binfmt-misc running.  This allows us to run docker containers
+  # embedded qemu-static
+  - script: |
+      docker run --rm --privileged multiarch/qemu-user-static:register --reset --credential yes
+      ls /proc/sys/fs/binfmt_misc/
+    condition: not(startsWith(variables['CONFIG'], 'linux_64'))
+    displayName: Configure binfmt_misc
+
+  - script: |
+        export CI=azure
+        export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
+        .azure-pipelines/run_docker_build.sh
+    displayName: Run docker build
+    env:
+      BINSTAR_TOKEN: $(BINSTAR_TOKEN)
+      CODECOV_TOKEN: $(CODECOV_TOKEN)
+      ASV_SECRET_KEY: $(ASV_SECRET_KEY)
+- job: linux_build_flavourbenchmarkpython3.7targetexact-real
+  pool:
+    vmImage: ubuntu-16.04
+  variables:
+    CONFIG: linux_build_flavourbenchmarkpython3.7targetexact-real
+    UPLOAD_PACKAGES: True
+    DOCKER_IMAGE: condaforge/linux-anvil-comp7
+  timeoutInMinutes: 360
+  steps:
+  # configure qemu binfmt-misc running.  This allows us to run docker containers
+  # embedded qemu-static
+  - script: |
+      docker run --rm --privileged multiarch/qemu-user-static:register --reset --credential yes
+      ls /proc/sys/fs/binfmt_misc/
+    condition: not(startsWith(variables['CONFIG'], 'linux_64'))
+    displayName: Configure binfmt_misc
+
+  - script: |
+        export CI=azure
+        export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
+        .azure-pipelines/run_docker_build.sh
+    displayName: Run docker build
+    env:
+      BINSTAR_TOKEN: $(BINSTAR_TOKEN)
+      CODECOV_TOKEN: $(CODECOV_TOKEN)
+      ASV_SECRET_KEY: $(ASV_SECRET_KEY)
+- job: linux_build_flavourcoveragepython3.6targetexact-real
+  pool:
+    vmImage: ubuntu-16.04
+  variables:
+    CONFIG: linux_build_flavourcoveragepython3.6targetexact-real
+    UPLOAD_PACKAGES: True
+    DOCKER_IMAGE: condaforge/linux-anvil-comp7
+  timeoutInMinutes: 360
+  steps:
+  # configure qemu binfmt-misc running.  This allows us to run docker containers
+  # embedded qemu-static
+  - script: |
+      docker run --rm --privileged multiarch/qemu-user-static:register --reset --credential yes
+      ls /proc/sys/fs/binfmt_misc/
+    condition: not(startsWith(variables['CONFIG'], 'linux_64'))
+    displayName: Configure binfmt_misc
+
+  - script: |
+        export CI=azure
+        export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
+        .azure-pipelines/run_docker_build.sh
+    displayName: Run docker build
+    env:
+      BINSTAR_TOKEN: $(BINSTAR_TOKEN)
+      CODECOV_TOKEN: $(CODECOV_TOKEN)
+      ASV_SECRET_KEY: $(ASV_SECRET_KEY)
+- job: linux_build_flavourcoveragepython3.7targetexact-real
+  pool:
+    vmImage: ubuntu-16.04
+  variables:
+    CONFIG: linux_build_flavourcoveragepython3.7targetexact-real
+    UPLOAD_PACKAGES: True
+    DOCKER_IMAGE: condaforge/linux-anvil-comp7
+  timeoutInMinutes: 360
+  steps:
+  # configure qemu binfmt-misc running.  This allows us to run docker containers
+  # embedded qemu-static
+  - script: |
+      docker run --rm --privileged multiarch/qemu-user-static:register --reset --credential yes
+      ls /proc/sys/fs/binfmt_misc/
+    condition: not(startsWith(variables['CONFIG'], 'linux_64'))
+    displayName: Configure binfmt_misc
+
+  - script: |
+        export CI=azure
+        export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
+        .azure-pipelines/run_docker_build.sh
+    displayName: Run docker build
+    env:
+      BINSTAR_TOKEN: $(BINSTAR_TOKEN)
+      CODECOV_TOKEN: $(CODECOV_TOKEN)
+      ASV_SECRET_KEY: $(ASV_SECRET_KEY)
+- job: linux_build_flavourreleasepython3.6targetlibexactreal
+  pool:
+    vmImage: ubuntu-16.04
+  variables:
+    CONFIG: linux_build_flavourreleasepython3.6targetlibexactreal
+    UPLOAD_PACKAGES: True
+    DOCKER_IMAGE: condaforge/linux-anvil-comp7
+  timeoutInMinutes: 360
+  steps:
+  # configure qemu binfmt-misc running.  This allows us to run docker containers
+  # embedded qemu-static
+  - script: |
+      docker run --rm --privileged multiarch/qemu-user-static:register --reset --credential yes
+      ls /proc/sys/fs/binfmt_misc/
+    condition: not(startsWith(variables['CONFIG'], 'linux_64'))
+    displayName: Configure binfmt_misc
+
+  - script: |
+        export CI=azure
+        export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
+        .azure-pipelines/run_docker_build.sh
+    displayName: Run docker build
+    env:
+      BINSTAR_TOKEN: $(BINSTAR_TOKEN)
+      CODECOV_TOKEN: $(CODECOV_TOKEN)
+      ASV_SECRET_KEY: $(ASV_SECRET_KEY)
+- job: linux_build_flavourreleasepython3.6targetpyexactreal
+  pool:
+    vmImage: ubuntu-16.04
+  variables:
+    CONFIG: linux_build_flavourreleasepython3.6targetpyexactreal
+    UPLOAD_PACKAGES: True
+    DOCKER_IMAGE: condaforge/linux-anvil-comp7
+  timeoutInMinutes: 360
+  steps:
+  # configure qemu binfmt-misc running.  This allows us to run docker containers
+  # embedded qemu-static
+  - script: |
+      docker run --rm --privileged multiarch/qemu-user-static:register --reset --credential yes
+      ls /proc/sys/fs/binfmt_misc/
+    condition: not(startsWith(variables['CONFIG'], 'linux_64'))
+    displayName: Configure binfmt_misc
+
+  - script: |
+        export CI=azure
+        export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
+        .azure-pipelines/run_docker_build.sh
+    displayName: Run docker build
+    env:
+      BINSTAR_TOKEN: $(BINSTAR_TOKEN)
+      CODECOV_TOKEN: $(CODECOV_TOKEN)
+      ASV_SECRET_KEY: $(ASV_SECRET_KEY)
+- job: linux_build_flavourreleasepython3.7targetlibexactreal
+  pool:
+    vmImage: ubuntu-16.04
+  variables:
+    CONFIG: linux_build_flavourreleasepython3.7targetlibexactreal
+    UPLOAD_PACKAGES: True
+    DOCKER_IMAGE: condaforge/linux-anvil-comp7
+  timeoutInMinutes: 360
+  steps:
+  # configure qemu binfmt-misc running.  This allows us to run docker containers
+  # embedded qemu-static
+  - script: |
+      docker run --rm --privileged multiarch/qemu-user-static:register --reset --credential yes
+      ls /proc/sys/fs/binfmt_misc/
+    condition: not(startsWith(variables['CONFIG'], 'linux_64'))
+    displayName: Configure binfmt_misc
+
+  - script: |
+        export CI=azure
+        export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
+        .azure-pipelines/run_docker_build.sh
+    displayName: Run docker build
+    env:
+      BINSTAR_TOKEN: $(BINSTAR_TOKEN)
+      CODECOV_TOKEN: $(CODECOV_TOKEN)
+      ASV_SECRET_KEY: $(ASV_SECRET_KEY)
+- job: linux_build_flavourreleasepython3.7targetpyexactreal
+  pool:
+    vmImage: ubuntu-16.04
+  variables:
+    CONFIG: linux_build_flavourreleasepython3.7targetpyexactreal
+    UPLOAD_PACKAGES: True
+    DOCKER_IMAGE: condaforge/linux-anvil-comp7
+  timeoutInMinutes: 360
+  steps:
+  # configure qemu binfmt-misc running.  This allows us to run docker containers
+  # embedded qemu-static
+  - script: |
+      docker run --rm --privileged multiarch/qemu-user-static:register --reset --credential yes
+      ls /proc/sys/fs/binfmt_misc/
+    condition: not(startsWith(variables['CONFIG'], 'linux_64'))
+    displayName: Configure binfmt_misc
+
+  - script: |
+        export CI=azure
+        export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
+        .azure-pipelines/run_docker_build.sh
+    displayName: Run docker build
+    env:
+      BINSTAR_TOKEN: $(BINSTAR_TOKEN)
+      CODECOV_TOKEN: $(CODECOV_TOKEN)
+      ASV_SECRET_KEY: $(ASV_SECRET_KEY)
+- job: linux_build_flavourstylepython3.6targetexact-real
+  pool:
+    vmImage: ubuntu-16.04
+  variables:
+    CONFIG: linux_build_flavourstylepython3.6targetexact-real
+    UPLOAD_PACKAGES: True
+    DOCKER_IMAGE: condaforge/linux-anvil-comp7
+  timeoutInMinutes: 360
+  steps:
+  # configure qemu binfmt-misc running.  This allows us to run docker containers
+  # embedded qemu-static
+  - script: |
+      docker run --rm --privileged multiarch/qemu-user-static:register --reset --credential yes
+      ls /proc/sys/fs/binfmt_misc/
+    condition: not(startsWith(variables['CONFIG'], 'linux_64'))
+    displayName: Configure binfmt_misc
+
+  - script: |
+        export CI=azure
+        export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
+        .azure-pipelines/run_docker_build.sh
+    displayName: Run docker build
+    env:
+      BINSTAR_TOKEN: $(BINSTAR_TOKEN)
+      CODECOV_TOKEN: $(CODECOV_TOKEN)
+      ASV_SECRET_KEY: $(ASV_SECRET_KEY)
+- job: linux_build_flavourstylepython3.7targetexact-real
+  pool:
+    vmImage: ubuntu-16.04
+  variables:
+    CONFIG: linux_build_flavourstylepython3.7targetexact-real
+    UPLOAD_PACKAGES: True
+    DOCKER_IMAGE: condaforge/linux-anvil-comp7
+  timeoutInMinutes: 360
+  steps:
+  # configure qemu binfmt-misc running.  This allows us to run docker containers
+  # embedded qemu-static
+  - script: |
+      docker run --rm --privileged multiarch/qemu-user-static:register --reset --credential yes
+      ls /proc/sys/fs/binfmt_misc/
+    condition: not(startsWith(variables['CONFIG'], 'linux_64'))
+    displayName: Configure binfmt_misc
+
+  - script: |
+        export CI=azure
+        export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
+        .azure-pipelines/run_docker_build.sh
+    displayName: Run docker build
+    env:
+      BINSTAR_TOKEN: $(BINSTAR_TOKEN)
+      CODECOV_TOKEN: $(CODECOV_TOKEN)
+      ASV_SECRET_KEY: $(ASV_SECRET_KEY)
+- job: linux_build_flavourtestpython3.6targetexact-real
+  pool:
+    vmImage: ubuntu-16.04
+  variables:
+    CONFIG: linux_build_flavourtestpython3.6targetexact-real
+    UPLOAD_PACKAGES: True
+    DOCKER_IMAGE: condaforge/linux-anvil-comp7
+  timeoutInMinutes: 360
+  steps:
+  # configure qemu binfmt-misc running.  This allows us to run docker containers
+  # embedded qemu-static
+  - script: |
+      docker run --rm --privileged multiarch/qemu-user-static:register --reset --credential yes
+      ls /proc/sys/fs/binfmt_misc/
+    condition: not(startsWith(variables['CONFIG'], 'linux_64'))
+    displayName: Configure binfmt_misc
+
+  - script: |
+        export CI=azure
+        export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
+        .azure-pipelines/run_docker_build.sh
+    displayName: Run docker build
+    env:
+      BINSTAR_TOKEN: $(BINSTAR_TOKEN)
+      CODECOV_TOKEN: $(CODECOV_TOKEN)
+      ASV_SECRET_KEY: $(ASV_SECRET_KEY)
+- job: linux_build_flavourtestpython3.7targetexact-real
+  pool:
+    vmImage: ubuntu-16.04
+  variables:
+    CONFIG: linux_build_flavourtestpython3.7targetexact-real
+    UPLOAD_PACKAGES: True
+    DOCKER_IMAGE: condaforge/linux-anvil-comp7
+  timeoutInMinutes: 360
   steps:
   # configure qemu binfmt-misc running.  This allows us to run docker containers
   # embedded qemu-static
