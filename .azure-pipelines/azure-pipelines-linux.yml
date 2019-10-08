@@ -134,6 +134,7 @@ jobs:
       CODECOV_TOKEN: $(CODECOV_TOKEN)
       ASV_SECRET_KEY: $(ASV_SECRET_KEY)
 - job: linux_build_flavourreleasepython3.6targetpyexactreal
+  dependsOn: linux_build_flavourreleasepython3.7libexactreal
   pool:
     vmImage: ubuntu-16.04
   variables:
@@ -186,6 +187,7 @@ jobs:
       CODECOV_TOKEN: $(CODECOV_TOKEN)
       ASV_SECRET_KEY: $(ASV_SECRET_KEY)
 - job: linux_build_flavourreleasepython3.7targetpyexactreal
+  dependsOn: linux_build_flavourreleasepython3.7libexactreal
   pool:
     vmImage: ubuntu-16.04
   variables:

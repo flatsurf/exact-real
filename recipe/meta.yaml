@@ -4,9 +4,11 @@
 # this probably is not important but make_build_number otherwise complains during the build
 {% set build_number = (environ.get('GIT_DESCRIBE_NUMBER')|int + 1000)|string %}
 {% set build_string = "master_" + ((build_flavour + "_") if build_flavour else "") + build_number %}
+{% set target = target or 'exact-real' %}
+{% set build_flavour = build_flavour or 'release' %}
 
 package:
-  name: exact-real
+  name: {{ target }}
   version: {{ version }}
 
 source:
@@ -19,33 +21,47 @@ build:
   skip: True  # [win]
   # e-antic is not available on macOS yet
   skip: True  # [osx]
+  # we do not support old versions of Python
+  skip: True  # [py < 36]
+{%- if build_flavour != "release" or target not in ["pyexactreal", "test"] %}
+  # ignore Python version for all but the pyexactreal wrapper
+  skip: True  # [py != 37]
+{%- endif %}
+{%- if target == "libexactreal" %}
+  run_exports:
+    # We pin the version of libexactreal exactly since we do not want to
+    # bother with incompatibilities in our nightly builds.
+    - {{ pin_subpackage(target, exact=True) }}
+{%- endif %}
+{%- if build_flavour != "release" %}
+  features:
+    # Make it essentially impossible to install this package, https://github.com/conda-forge/conda-smithy/issues/1166
+    - {{ build_flavour }}
+{%- endif %}
 
-# Since we run all our CI (static checks, benchmarks, coverage, …) through our
-# main build.sh script, it needs to have all the requirements to build & run
-# all parts of this repository.
-# Packagers might prefer to build the subdirectories completely separately and
-# have them depend on each other.
 requirements:
   build:
     - libtool
     - automake
     - {{ compiler('cxx') }}
-    # requirements for ASV benchmarks
+{%- if build_flavour == "benchmark" %}
     - git
-    # requirements for clang-format
+{%- elif build_flavour == "style" %}
     - clangdev ==8.0.0
+{%- endif %}
   host:
+{%- if target != "pyexactreal" %}
     # compile-time dependencies of libexactreal
     - boost-cpp
     - e-antic 1.*
     - arb
     - gmp
     - gmpxxyy
-    # We pin to an explicit version of Python here; since the Python part is
-    # noarch:python, the version does not matter. However, we need the same
-    # version when doing "make install" so that files go into the site-packages
-    # directory that was determined by ./configure.
-    - python 3.7.*
+{%- endif %}
+{%- if target != "libexactreal" %}
+    - python
+{%- endif %}
+{%- if target in ["test", "coverage", "benchmark"] %}
     # enable test/pyexactreal tests in ./configure
     - pytest
     - cppyy
@@ -55,64 +71,29 @@ requirements:
     - benchmark
     # enable check-valgrind in ./configure
     - valgrind >=3.15.0
-    # requirements for ASV benchmarks
-    - asv
     # to run optional SageMath tests
     - sagelib
     - pip
     - ipywidgets
     - sympy
+{%- endif %}
+{%- if target == "benchmark" %}
+    - asv
+{%- endif %}
+  run:
+{%- if target == "pyexactreal" %}
+    - python
+    - cppyy
+{%- endif %}
 
 outputs:
-  - name: libexactreal
-    script: install-libexactreal.sh
-    build:
-      number: {{ build_number }}
-      string: {{ build_string }}
-{%- if build_flavour %}
-      features:
-        - {{ build_flavour }}
-{% endif %}
-    requirements:
-      build:
-        - {{ compiler('cxx') }}
-      host:
-        - boost-cpp
-        - e-antic 1.*
-        - arb
-        - gmp
-    run_exports:
-      # We pin the version of libexactreal exactly since we do not want to
-      # bother with incompatibilities in our nightly builds.
-      - {{ pin_subpackage('libexactreal', exact=True) }}
-  - name: pyexactreal
-    build:
-      number: {{ build_number }}
-      string: {{ build_string }}
-{%- if build_flavour %}
-      features:
-        - {{ build_flavour }}
-{% endif %}
-      noarch: python
-    script: install-pyexactreal.sh
-    requirements:
-      host:
-        - python 3.7.*
-        - setuptools
-      run:
-        # We pin the version of libexactreal exactly since we do not want to
-        # bother with incompatibilities in our nightly builds.
-        - {{ pin_subpackage('libexactreal', exact=True) }}
-        - cppyy
-        - pyeantic
-        - gmpxxyy
-        - python
-        - boost-cpp
-{%- if not build_flavour %}
+  - name: {{ target }}
+    script: install-{{ target }}.sh
+{%- if target == "pyexactreal" %}
     test:
       imports:
-        - pyexactreal
-{% endif %}
+        - {{ target }}
+{%- endif %}
 
 about:
   home: https://github.com/flatsurf/exact-real
