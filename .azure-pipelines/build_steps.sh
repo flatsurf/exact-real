@@ -28,7 +28,9 @@ CONDARC
 # Make sure build_artifacts is a valid channel
 conda index ${FEEDSTOCK_ROOT}/build_artifacts
 
-conda install --yes --quiet conda-forge-ci-setup=2 conda-build -c conda-forge
+conda install --yes --quiet conda-forge-ci-setup=2 conda-build patch -c conda-forge
+
+patch `python -c 'import conda_build.config;print(conda_build.config.__file__)'` ${CI_SUPPORT}/conda_build.config.patch
 
 # set up the condarc
 setup_conda_rc "${FEEDSTOCK_ROOT}" "${RECIPE_ROOT}" "${CONFIG_FILE}"
