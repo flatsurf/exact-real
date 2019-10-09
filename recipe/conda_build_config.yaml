@@ -12,10 +12,10 @@ build_flavour:
 target:
   - libexactreal
   - pyexactreal
-  - exactreal
-  - exactreal
-  - exactreal
-  - exactreal
+  - exact-real
+  - exact-real
+  - exact-real
+  - exact-real
 zip_keys:
   - build_flavour
   - target
