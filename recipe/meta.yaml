@@ -15,7 +15,11 @@ source:
 
 build:
   number: {{ build_number }}
+{%- if name == "libexactreal" %}
+  string: {{ target }}_{{ build_number }}
+{%- else %}
   string: {{ target }}_py{{ python }}_{{ build_number }}
+{%- endif %}
   # e-antic is not available on Windows yet
   skip: True  # [win]
   # e-antic is not available on macOS yet
@@ -55,9 +59,10 @@ requirements:
 {%- endif %}
 {%- if name != "libexactreal" %}
     - python
+    - setuptools
 {%- endif %}
 {%- if name == "pyexactreal" %}
-    - libexactreal
+    - libexactreal {{ version }} {{ target }}_{{ build_number }}
 {%- endif %}
 {%- if target in ["test", "coverage", "benchmark"] %}
     # enable test/pyexactreal tests in ./configure
