@@ -3,7 +3,6 @@
 # conda-smithy assumes that the build number is >= 1000 when building with the new anaconda compilers,
 # this probably is not important but make_build_number otherwise complains during the build
 {% set build_number = (environ.get('GIT_DESCRIBE_NUMBER')|int + 1000)|string %}
-{% set build_string = "master_" + ((target + "_") if target else "") + build_number %}
 {% set name = name or 'exact-real' %}
 {% set target = target or 'release' %}
 
@@ -16,7 +15,7 @@ source:
 
 build:
   number: {{ build_number }}
-  string: {{ build_string }}
+  string: {{ target }}_{{ build_number }}
   # e-antic is not available on Windows yet
   skip: True  # [win]
   # e-antic is not available on macOS yet
@@ -32,11 +31,6 @@ build:
     # We pin the version of libexactreal exactly since we do not want to
     # bother with incompatibilities in our nightly builds.
     - {{ pin_subpackage(name, exact=True) }}
-{%- endif %}
-{%- if target != "release" %}
-  features:
-    # Make it essentially impossible to install this package, https://github.com/conda-forge/conda-smithy/issues/1166
-    - {{ target }}
 {%- endif %}
 
 requirements:
@@ -81,7 +75,7 @@ requirements:
     - ipywidgets
     - sympy
 {%- endif %}
-{%- if name == "benchmark" %}
+{%- if target == "benchmark" %}
     - asv
 {%- endif %}
   run:
