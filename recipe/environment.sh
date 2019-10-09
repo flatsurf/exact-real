@@ -5,6 +5,8 @@
 # conda-build environment.
 # ##################################################################
 
+source $SRC_DIR/work/recipe/snippets/conda/3765.sh || true
+
 export SNIPPETS_DIR=`realpath "${SNIPPETS_DIR:-$SRC_DIR/recipe/snippets}"`
 export GITHUB_ORGANIZATION=flatsurf
 export GITHUB_REPOSITORY=exact-real
