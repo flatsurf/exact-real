@@ -1,4 +1,4 @@
-[![Linux](https://dev.azure.com/flatsurf/conda/_apis/build/status/flatsurf.exact-real?branchName=master&jobName=linux&configuration=linux%20linux_build_flavour)](https://dev.azure.com/flatsurf/conda/_build/latest?definitionId=&branchName=master)
+[![Build Status](https://dev.azure.com/flatsurf/conda/_apis/build/status/flatsurf.exact-real?branchName=master)](https://dev.azure.com/flatsurf/conda/_build/latest?definitionId=1&branchName=master)
 ![OSX disabled](https://img.shields.io/badge/OSX-disabled-lightgrey.svg)
 ![Windows disabled](https://img.shields.io/badge/Windows-disabled-lightgrey.svg)
 ![ppc64le disabled](https://img.shields.io/badge/ppc64le-disabled-lightgrey.svg)
