@@ -3,7 +3,7 @@ set -ex
 
 source $RECIPE_DIR/environment.sh
 
-if [[ "x$name" != "xexact-real" ]]; then
+if [[ "$name" != "exact-real" ]]; then
   cd $name
 fi
 
