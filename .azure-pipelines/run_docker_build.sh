@@ -56,7 +56,7 @@ if [ -z "${CI}" ]; then
     DOCKER_RUN_ARGS="-it "
 fi
 
-cp -Rv $PIPELINE_WORKSPACE/linux_*/* $ARTIFACTS/ || true
+cp -Rv ${PIPELINE_WORKSPACE}/linux_*/* ${ARTIFACTS}/ || true
 
 export UPLOAD_PACKAGES="${UPLOAD_PACKAGES:-True}"
 docker run ${DOCKER_RUN_ARGS} \
@@ -75,7 +75,7 @@ docker run ${DOCKER_RUN_ARGS} \
            bash \
            /home/conda/feedstock_root/${PROVIDER_DIR}/build_steps.sh
 
-cp ${PROVIDER_DIR}/artifactignore $ARTIFACTS/.artifactignore
+cp ${PROVIDER_DIR}/artifactignore ${ARTIFACTS}/.artifactignore
 
 # verify that the end of the script was reached
 test -f "$DONE_CANARY"

@@ -19,7 +19,8 @@ jobs:
       ls /proc/sys/fs/binfmt_misc/
     condition: not(startsWith(variables['CONFIG'], 'linux_64'))
     displayName: Configure binfmt_misc
-
+  - download: current
+    patterns: '**/*.tar.bz2'
   - script: |
         export CI=azure
         export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
@@ -45,7 +46,8 @@ jobs:
       ls /proc/sys/fs/binfmt_misc/
     condition: not(startsWith(variables['CONFIG'], 'linux_64'))
     displayName: Configure binfmt_misc
-
+  - download: current
+    patterns: '**/*.tar.bz2'
   - script: |
         export CI=azure
         export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
@@ -71,7 +73,8 @@ jobs:
       ls /proc/sys/fs/binfmt_misc/
     condition: not(startsWith(variables['CONFIG'], 'linux_64'))
     displayName: Configure binfmt_misc
-
+  - download: current
+    patterns: '**/*.tar.bz2'
   - script: |
         export CI=azure
         export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
@@ -97,7 +100,8 @@ jobs:
       ls /proc/sys/fs/binfmt_misc/
     condition: not(startsWith(variables['CONFIG'], 'linux_64'))
     displayName: Configure binfmt_misc
-
+  - download: current
+    patterns: '**/*.tar.bz2'
   - script: |
         export CI=azure
         export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
@@ -123,7 +127,8 @@ jobs:
       ls /proc/sys/fs/binfmt_misc/
     condition: not(startsWith(variables['CONFIG'], 'linux_64'))
     displayName: Configure binfmt_misc
-
+  - download: current
+    patterns: '**/*.tar.bz2'
   - script: |
         export CI=azure
         export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
@@ -149,7 +154,8 @@ jobs:
       ls /proc/sys/fs/binfmt_misc/
     condition: not(startsWith(variables['CONFIG'], 'linux_64'))
     displayName: Configure binfmt_misc
-
+  - download: current
+    patterns: '**/*.tar.bz2'
   - script: |
         export CI=azure
         export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
@@ -189,6 +195,8 @@ jobs:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
       CODECOV_TOKEN: $(CODECOV_TOKEN)
       ASV_SECRET_KEY: $(ASV_SECRET_KEY)
+  - publish: $(System.DefaultWorkingDirectory)/build_artifacts
+    artifact: linux_name_pyexactreal_python_36_target_release
 - job: linux_name_pyexactreal_python_37_target_release
   dependsOn: linux_name_libexactreal_python_37_target_release
   pool:
@@ -206,7 +214,8 @@ jobs:
       ls /proc/sys/fs/binfmt_misc/
     condition: not(startsWith(variables['CONFIG'], 'linux_64'))
     displayName: Configure binfmt_misc
-
+  - download: current
+    patterns: '**/*.tar.bz2'
   - script: |
         export CI=azure
         export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
@@ -216,3 +225,5 @@ jobs:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
       CODECOV_TOKEN: $(CODECOV_TOKEN)
       ASV_SECRET_KEY: $(ASV_SECRET_KEY)
+  - publish: $(System.DefaultWorkingDirectory)/build_artifacts
+    artifact: linux_name_pyexactreal_python_37_target_release
