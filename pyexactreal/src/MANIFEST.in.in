@@ -1,1 +1,2 @@
 graft @srcdir@/pyexactreal/include
+graft @srcdir@/../COPYING

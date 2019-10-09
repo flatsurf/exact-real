@@ -30,6 +30,7 @@ objects::
 # ********************************************************************
 
 import cppyy
+import gmpxxyy
 
 class NotRepresentableError(ArithmeticError):
     r"""
@@ -200,26 +201,6 @@ def pretty_print(proxy, name):
 
 cppyy.py.add_pythonization(pretty_print, "exactreal")
 cppyy.py.add_pythonization(pretty_print, "eantic")
-
-# This should eventually go into its own library:
-# https://github.com/flatsurf/exact-real/issues/66
-def pretty_print_gmp(proxy, name):
-    r"""
-    Pretty print GMP types.
-
-    EXAMPLES::
-
-        >>> import pyexactreal
-        >>> import cppyy
-        >>> cppyy.gbl.mpz_class(1)
-        1
-
-    """
-    if name.startswith("__gmp_expr"):
-        proxy.__str__ = proxy.get_str
-        proxy.__repr__ = proxy.get_str
-
-cppyy.py.add_pythonization(pretty_print_gmp)
 
 def unpickle_from_cereal(t, json):
     r"""

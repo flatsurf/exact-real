@@ -3,6 +3,10 @@ set -ex
 
 source $RECIPE_DIR/environment.sh
 
+if [[ "$name" != "exact-real" ]]; then
+  cd $name
+fi
+
 $SNIPPETS_DIR/autoconf/run.sh
 $SNIPPETS_DIR/make/run.sh
 

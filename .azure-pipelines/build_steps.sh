@@ -25,6 +25,9 @@ conda-build:
 
 CONDARC
 
+# Make sure build_artifacts is a valid channel
+conda index ${FEEDSTOCK_ROOT}/build_artifacts
+
 conda install --yes --quiet conda-forge-ci-setup=2 conda-build -c conda-forge
 
 # set up the condarc
@@ -36,7 +39,8 @@ source run_conda_forge_build_setup
 make_build_number "${FEEDSTOCK_ROOT}" "${RECIPE_ROOT}" "${CONFIG_FILE}"
 
 conda build "${RECIPE_ROOT}" -m "${CI_SUPPORT}/${CONFIG}.yaml" \
-    --clobber-file "${CI_SUPPORT}/clobber_${CONFIG}.yaml"
+    --clobber-file "${CI_SUPPORT}/clobber_${CONFIG}.yaml" \
+    --use-local
 
 if [[ "${UPLOAD_PACKAGES}" != "False" ]]; then
     upload_package "${FEEDSTOCK_ROOT}" "${RECIPE_ROOT}" "${CONFIG_FILE}"
