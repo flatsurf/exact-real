@@ -87,6 +87,7 @@ requirements:
 {%- if name == "pyexactreal" %}
     - python
     - cppyy
+    - pyeantic
 {%- endif %}
 
 outputs:
