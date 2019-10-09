@@ -14,7 +14,7 @@ setup(
     name = 'pyexactreal',
     version = '@PACKAGE_VERSION@',
     packages = ['pyexactreal',],
-    license = 'GPL 2.0+',
+    license = 'GPL 3.0+',
     install_requires=[
         'cppyy'
     ],
