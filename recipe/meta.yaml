@@ -3,12 +3,12 @@
 # conda-smithy assumes that the build number is >= 1000 when building with the new anaconda compilers,
 # this probably is not important but make_build_number otherwise complains during the build
 {% set build_number = (environ.get('GIT_DESCRIBE_NUMBER')|int + 1000)|string %}
-{% set build_string = "master_" + ((build_flavour + "_") if build_flavour else "") + build_number %}
-{% set target = target or 'exact-real' %}
-{% set build_flavour = build_flavour or 'release' %}
+{% set build_string = "master_" + ((target + "_") if target else "") + build_number %}
+{% set name = name or 'exact-real' %}
+{% set target = target or 'release' %}
 
 package:
-  name: {{ target }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
@@ -23,20 +23,20 @@ build:
   skip: True  # [osx]
   # we do not support old versions of Python
   skip: True  # [py < 36]
-{%- if build_flavour != "release" or target not in ["pyexactreal", "test"] %}
-  # ignore Python version for all but the pyexactreal wrapper
+{%- if name != "pyexactreal" and target != "test" %}
+  # ignore Python version where it does not matter (conda-smithy still renders these but conda-build stops immediately)
   skip: True  # [py != 37]
 {%- endif %}
-{%- if target == "libexactreal" %}
+{%- if name == "libexactreal" %}
   run_exports:
     # We pin the version of libexactreal exactly since we do not want to
     # bother with incompatibilities in our nightly builds.
-    - {{ pin_subpackage(target, exact=True) }}
+    - {{ pin_subpackage(name, exact=True) }}
 {%- endif %}
-{%- if build_flavour != "release" %}
+{%- if target != "release" %}
   features:
     # Make it essentially impossible to install this package, https://github.com/conda-forge/conda-smithy/issues/1166
-    - {{ build_flavour }}
+    - {{ target }}
 {%- endif %}
 
 requirements:
@@ -44,13 +44,13 @@ requirements:
     - libtool
     - automake
     - {{ compiler('cxx') }}
-{%- if build_flavour == "benchmark" %}
+{%- if target == "benchmark" %}
     - git
-{%- elif build_flavour == "style" %}
+{%- elif target == "style" %}
     - clangdev ==8.0.0
 {%- endif %}
   host:
-{%- if target != "pyexactreal" %}
+{%- if name != "pyexactreal" %}
     # compile-time dependencies of libexactreal
     - boost-cpp
     - e-antic 1.*
@@ -58,7 +58,7 @@ requirements:
     - gmp
     - gmpxxyy
 {%- endif %}
-{%- if target != "libexactreal" %}
+{%- if name != "libexactreal" %}
     - python
 {%- endif %}
 {%- if target in ["test", "coverage", "benchmark"] %}
@@ -77,22 +77,24 @@ requirements:
     - ipywidgets
     - sympy
 {%- endif %}
-{%- if target == "benchmark" %}
+{%- if name == "benchmark" %}
     - asv
 {%- endif %}
   run:
-{%- if target == "pyexactreal" %}
+{%- if name == "pyexactreal" %}
     - python
     - cppyy
 {%- endif %}
 
 outputs:
-  - name: {{ target }}
-    script: install-{{ target }}.sh
-{%- if target == "pyexactreal" %}
+  - name: {{ name }}
+{%- if target == "release" %}
+    script: install-{{ name }}.sh
+{%- endif %}
+{%- if name == "pyexactreal" %}
     test:
       imports:
-        - {{ target }}
+        - {{ name }}
 {%- endif %}
 
 about:

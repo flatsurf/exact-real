@@ -2,14 +2,14 @@ channel_targets:
   - flatsurf main
 channel_sources:
   - flatsurf,conda-forge,defaults
-build_flavour:
+target:
   - release
   - release
   - style
   - test
   - coverage
   - benchmark
-target:
+name:
   - libexactreal
   - pyexactreal
   - exact-real
@@ -17,5 +17,5 @@ target:
   - exact-real
   - exact-real
 zip_keys:
-  - build_flavour
   - target
+  - name
