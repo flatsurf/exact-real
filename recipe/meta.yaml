@@ -15,7 +15,7 @@ source:
 
 build:
   number: {{ build_number }}
-  string: {{ target }}_{{ build_number }}
+  string: {{ target }}_py{{ python }}_{{ build_number }}
   # e-antic is not available on Windows yet
   skip: True  # [win]
   # e-antic is not available on macOS yet
