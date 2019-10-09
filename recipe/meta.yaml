@@ -61,6 +61,9 @@ requirements:
 {%- if name != "libexactreal" %}
     - python
 {%- endif %}
+{%- if name == "pyexactreal" %}
+    - libexactreal
+{%- endif %}
 {%- if target in ["test", "coverage", "benchmark"] %}
     # enable test/pyexactreal tests in ./configure
     - pytest

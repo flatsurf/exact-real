@@ -3,11 +3,11 @@
 # -*- mode: yaml -*-
 
 jobs:
-- job: linux_build_flavour_benchmark_python_36_target_exactreal
+- job: linux_name_exactreal_python_36_target_benchmark
   pool:
     vmImage: ubuntu-16.04
   variables:
-    CONFIG: linux_build_flavour_benchmark_python_36_target_exactreal
+    CONFIG: linux_name_exactreal_python_36_target_benchmark
     UPLOAD_PACKAGES: True
     DOCKER_IMAGE: condaforge/linux-anvil-comp7
   timeoutInMinutes: 360
@@ -29,11 +29,11 @@ jobs:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
       CODECOV_TOKEN: $(CODECOV_TOKEN)
       ASV_SECRET_KEY: $(ASV_SECRET_KEY)
-- job: linux_build_flavour_benchmark_python_37_target_exactreal
+- job: linux_name_exactreal_python_36_target_coverage
   pool:
     vmImage: ubuntu-16.04
   variables:
-    CONFIG: linux_build_flavour_benchmark_python_37_target_exactreal
+    CONFIG: linux_name_exactreal_python_36_target_coverage
     UPLOAD_PACKAGES: True
     DOCKER_IMAGE: condaforge/linux-anvil-comp7
   timeoutInMinutes: 360
@@ -55,11 +55,11 @@ jobs:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
       CODECOV_TOKEN: $(CODECOV_TOKEN)
       ASV_SECRET_KEY: $(ASV_SECRET_KEY)
-- job: linux_build_flavour_coverage_python_36_target_exactreal
+- job: linux_name_exactreal_python_36_target_style
   pool:
     vmImage: ubuntu-16.04
   variables:
-    CONFIG: linux_build_flavour_coverage_python_36_target_exactreal
+    CONFIG: linux_name_exactreal_python_36_target_style
     UPLOAD_PACKAGES: True
     DOCKER_IMAGE: condaforge/linux-anvil-comp7
   timeoutInMinutes: 360
@@ -81,11 +81,11 @@ jobs:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
       CODECOV_TOKEN: $(CODECOV_TOKEN)
       ASV_SECRET_KEY: $(ASV_SECRET_KEY)
-- job: linux_build_flavour_coverage_python_37_target_exactreal
+- job: linux_name_exactreal_python_36_target_test
   pool:
     vmImage: ubuntu-16.04
   variables:
-    CONFIG: linux_build_flavour_coverage_python_37_target_exactreal
+    CONFIG: linux_name_exactreal_python_36_target_test
     UPLOAD_PACKAGES: True
     DOCKER_IMAGE: condaforge/linux-anvil-comp7
   timeoutInMinutes: 360
@@ -107,11 +107,11 @@ jobs:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
       CODECOV_TOKEN: $(CODECOV_TOKEN)
       ASV_SECRET_KEY: $(ASV_SECRET_KEY)
-- job: linux_build_flavour_release_python_36_target_libexactreal
+- job: linux_name_exactreal_python_37_target_benchmark
   pool:
     vmImage: ubuntu-16.04
   variables:
-    CONFIG: linux_build_flavour_release_python_36_target_libexactreal
+    CONFIG: linux_name_exactreal_python_37_target_benchmark
     UPLOAD_PACKAGES: True
     DOCKER_IMAGE: condaforge/linux-anvil-comp7
   timeoutInMinutes: 360
@@ -133,12 +133,11 @@ jobs:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
       CODECOV_TOKEN: $(CODECOV_TOKEN)
       ASV_SECRET_KEY: $(ASV_SECRET_KEY)
-- job: linux_build_flavour_release_python_36_target_pyexactreal
-  dependsOn: linux_build_flavour_release_python_37_target_libexactreal
+- job: linux_name_exactreal_python_37_target_coverage
   pool:
     vmImage: ubuntu-16.04
   variables:
-    CONFIG: linux_build_flavour_release_python_36_target_pyexactreal
+    CONFIG: linux_name_exactreal_python_37_target_coverage
     UPLOAD_PACKAGES: True
     DOCKER_IMAGE: condaforge/linux-anvil-comp7
   timeoutInMinutes: 360
@@ -160,11 +159,11 @@ jobs:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
       CODECOV_TOKEN: $(CODECOV_TOKEN)
       ASV_SECRET_KEY: $(ASV_SECRET_KEY)
-- job: linux_build_flavour_release_python_37_target_libexactreal
+- job: linux_name_exactreal_python_37_target_style
   pool:
     vmImage: ubuntu-16.04
   variables:
-    CONFIG: linux_build_flavour_release_python_37_target_libexactreal
+    CONFIG: linux_name_exactreal_python_37_target_style
     UPLOAD_PACKAGES: True
     DOCKER_IMAGE: condaforge/linux-anvil-comp7
   timeoutInMinutes: 360
@@ -186,12 +185,11 @@ jobs:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
       CODECOV_TOKEN: $(CODECOV_TOKEN)
       ASV_SECRET_KEY: $(ASV_SECRET_KEY)
-- job: linux_build_flavour_release_python_37_target_pyexactreal
-  dependsOn: linux_build_flavour_release_python_37_target_libexactreal
+- job: linux_name_exactreal_python_37_target_test
   pool:
     vmImage: ubuntu-16.04
   variables:
-    CONFIG: linux_build_flavour_release_python_37_target_pyexactreal
+    CONFIG: linux_name_exactreal_python_37_target_test
     UPLOAD_PACKAGES: True
     DOCKER_IMAGE: condaforge/linux-anvil-comp7
   timeoutInMinutes: 360
@@ -213,11 +211,11 @@ jobs:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
       CODECOV_TOKEN: $(CODECOV_TOKEN)
       ASV_SECRET_KEY: $(ASV_SECRET_KEY)
-- job: linux_build_flavour_style_python_36_target_exactreal
+- job: linux_name_libexactreal_python_36_target_release
   pool:
     vmImage: ubuntu-16.04
   variables:
-    CONFIG: linux_build_flavour_style_python_36_target_exactreal
+    CONFIG: linux_name_libexactreal_python_36_target_release
     UPLOAD_PACKAGES: True
     DOCKER_IMAGE: condaforge/linux-anvil-comp7
   timeoutInMinutes: 360
@@ -239,11 +237,11 @@ jobs:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
       CODECOV_TOKEN: $(CODECOV_TOKEN)
       ASV_SECRET_KEY: $(ASV_SECRET_KEY)
-- job: linux_build_flavour_style_python_37_target_exactreal
+- job: linux_name_libexactreal_python_37_target_release
   pool:
     vmImage: ubuntu-16.04
   variables:
-    CONFIG: linux_build_flavour_style_python_37_target_exactreal
+    CONFIG: linux_name_libexactreal_python_37_target_release
     UPLOAD_PACKAGES: True
     DOCKER_IMAGE: condaforge/linux-anvil-comp7
   timeoutInMinutes: 360
@@ -265,11 +263,12 @@ jobs:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
       CODECOV_TOKEN: $(CODECOV_TOKEN)
       ASV_SECRET_KEY: $(ASV_SECRET_KEY)
-- job: linux_build_flavour_test_python_36_target_exactreal
+- job: linux_name_pyexactreal_python_36_target_release
+  dependsOn: linux_name_libexactreal_python_37_target_release
   pool:
     vmImage: ubuntu-16.04
   variables:
-    CONFIG: linux_build_flavour_test_python_36_target_exactreal
+    CONFIG: linux_name_pyexactreal_python_36_target_release
     UPLOAD_PACKAGES: True
     DOCKER_IMAGE: condaforge/linux-anvil-comp7
   timeoutInMinutes: 360
@@ -291,11 +290,12 @@ jobs:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
       CODECOV_TOKEN: $(CODECOV_TOKEN)
       ASV_SECRET_KEY: $(ASV_SECRET_KEY)
-- job: linux_build_flavour_test_python_37_target_exactreal
+- job: linux_name_pyexactreal_python_37_target_release
+  dependsOn: linux_name_libexactreal_python_37_target_release
   pool:
     vmImage: ubuntu-16.04
   variables:
-    CONFIG: linux_build_flavour_test_python_37_target_exactreal
+    CONFIG: linux_name_pyexactreal_python_37_target_release
     UPLOAD_PACKAGES: True
     DOCKER_IMAGE: condaforge/linux-anvil-comp7
   timeoutInMinutes: 360

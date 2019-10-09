@@ -1,7 +1,5 @@
 boost_cpp:
 - 1.70.0
-build_flavour:
-- style
 channel_sources:
 - flatsurf,conda-forge,defaults
 channel_targets:
@@ -14,6 +12,8 @@ docker_image:
 - condaforge/linux-anvil-comp7
 gmp:
 - '6'
+name:
+- exact-real
 pin_run_as_build:
   boost-cpp:
     max_pin: x.x.x
@@ -25,7 +25,7 @@ pin_run_as_build:
 python:
 - '3.6'
 target:
-- exact-real
+- benchmark
 zip_keys:
-- - build_flavour
-  - target
+- - target
+  - name

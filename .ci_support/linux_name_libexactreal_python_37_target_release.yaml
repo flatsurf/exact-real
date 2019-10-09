@@ -1,7 +1,5 @@
 boost_cpp:
 - 1.70.0
-build_flavour:
-- release
 channel_sources:
 - flatsurf,conda-forge,defaults
 channel_targets:
@@ -14,6 +12,8 @@ docker_image:
 - condaforge/linux-anvil-comp7
 gmp:
 - '6'
+name:
+- libexactreal
 pin_run_as_build:
   boost-cpp:
     max_pin: x.x.x
@@ -23,9 +23,9 @@ pin_run_as_build:
     min_pin: x.x
     max_pin: x.x
 python:
-- '3.6'
+- '3.7'
 target:
-- pyexactreal
+- release
 zip_keys:
-- - build_flavour
-  - target
+- - target
+  - name
