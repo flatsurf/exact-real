@@ -43,6 +43,7 @@ requirements:
   build:
     - libtool
     - automake
+    - coreutils
     - {{ compiler('cxx') }}
 {%- if target == "benchmark" %}
     - git
