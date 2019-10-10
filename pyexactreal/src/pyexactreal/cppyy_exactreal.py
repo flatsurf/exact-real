@@ -95,35 +95,42 @@ def enable_arithmetic(proxy, name):
         1
 
     """
-    elements = ["Element", "ArbExpr", "ArfExpr", "Arb", "Arf"]
+    for op in ['add', 'sub', 'mul', 'truediv']:
+        python_op = "__%s__" % (op,)
+        python_rop = "__r%s__" % (op,)
 
-    if name in elements or any([name.startswith(e+"<") for e in elements]):
-        for op in ['add', 'sub', 'mul', 'truediv']:
-            python_op = "__%s__" % (op,)
-            python_rop = "__r%s__" % (op,)
+        def unwrap_binary_optional(x):
+            if not hasattr(x, 'has_value'):
+                return x
+            if not x.has_value():
+                # e.g., when a division failed because x/y does not live in the coefficient ring
+                raise NotRepresentableError("result is not representable in this parent")
+            return x.value()
 
-            def unwrap_binary_optional(x):
-                if not hasattr(x, 'has_value'):
-                    return x
-                if not x.has_value():
-                    # e.g., when a division failed because x/y does not live in the coefficient ring
-                    raise NotRepresentableError("result is not representable in this parent")
-                return x.value()
+        implementation = getattr(cppyy.gbl.exactreal.cppyy, op)
+        def binary(lhs, rhs, implementation=implementation):
+            return unwrap_binary_optional(implementation[type(lhs), type(rhs)](lhs, rhs))
+        def rbinary(rhs, lhs, implementation=implementation):
+            return unwrap_binary_optional(implementation[type(lhs), type(rhs)](lhs, rhs))
 
-            implementation = getattr(cppyy.gbl.exactreal.cppyy, op)
-            def binary(lhs, rhs, implementation=implementation):
-                return unwrap_binary_optional(implementation[type(lhs), type(rhs)](lhs, rhs))
-            def rbinary(rhs, lhs, implementation=implementation):
-                return unwrap_binary_optional(implementation[type(lhs), type(rhs)](lhs, rhs))
+        setattr(proxy, python_op, binary)
+        setattr(proxy, python_rop, rbinary)
 
-            setattr(proxy, python_op, binary)
-            setattr(proxy, python_rop, rbinary)
+    setattr(proxy, "__neg__", lambda self: cppyy.gbl.exactreal.cppyy.neg(self))
 
-        setattr(proxy, "__neg__", lambda self: cppyy.gbl.exactreal.cppyy.neg(self))
+arithmetic_predicate = lambda proxy, name: name in ["Arb", "Arf"] or \
+        name.startswith("Element<") or \
+        name.startswith("ArbExpr<") or \
+        name.startswith("ArfExpr<")
 
+def add_pythonization(pythonization, namespace, predicate=lambda *args: True):
+    r"""
+    Conditionally enable a pythonization on a namespace.
+    """
+    cppyy.py.add_pythonization(lambda proxy, name: predicate(proxy, name) and pythonization(proxy, name), namespace)
 
-cppyy.py.add_pythonization(enable_arithmetic, "exactreal")
-cppyy.py.add_pythonization(enable_arithmetic, "exactreal::yap")
+add_pythonization(enable_arithmetic, "exactreal", arithmetic_predicate)
+add_pythonization(enable_arithmetic, "exactreal::yap", arithmetic_predicate)
 
 def enable_yap(proxy, name):
     r"""
