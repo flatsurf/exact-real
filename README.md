@@ -40,7 +40,7 @@ You can try out the projects in this repository in a very limited environment on
 ## Build from the Source Code Repository
 
 We are following a standard autoconf setup, i.e., you can create the library
-`src/libexactreal` with the following:
+`libexactreal/src` with the following:
 
 ```
 git clone --recurse-submodules https://github.com/flatsurf/exact-real.git
