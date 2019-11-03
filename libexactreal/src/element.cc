@@ -122,11 +122,6 @@ Element<Ring>::Element(const typename Ring::ElementClass& value) : Element(Modul
 }
 
 template <typename Ring>
-Element<Ring>::Element(const RealNumber& value) {
-  throw std::logic_error("not implemented: from RealNumber");
-}
-
-template <typename Ring>
 typename Ring::ElementClass Element<Ring>::operator[](const size i) const {
   return impl->coefficients.at(i);
 }

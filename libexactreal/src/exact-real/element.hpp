@@ -50,7 +50,6 @@ class Element : boost::additive<Element<Ring>>,
   Element(const std::shared_ptr<const Module<Ring>>& parent, const std::vector<typename Ring::ElementClass>& coefficients);
 
   Element(const typename Ring::ElementClass& value);
-  Element(const RealNumber& gen);
   template <bool Enabled = !std::is_same_v<Ring, IntegerRing>, std::enable_if_t<Enabled, bool> = true>
   Element(const Element<IntegerRing>& value);
   template <bool Enabled = !std::is_same_v<Ring, RationalField> && std::is_convertible_v<mpq_class, typename Ring::ElementClass>, std::enable_if_t<Enabled, bool> = true>
