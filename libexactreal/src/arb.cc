@@ -220,6 +220,11 @@ Arb::operator std::pair<Arf, Arf>() const noexcept {
 
 Arb::operator double() const noexcept { return arf_get_d(arb_midref(arb_t()), ARF_RND_NEAR); }
 
-ostream& operator<<(ostream& os, const Arb& self) { return os << arb_get_str(self.arb_t(), os.precision(), 0); }
+ostream& operator<<(ostream& os, const Arb& self) {
+  // ARB_STR_MORE is essential. Otherwise, arb prints things such as [1.5 +/- .6]
+  // as [+/- something] since not a single digit of the midpoint is correct.
+  // (At least that's our theory of what's happening…)
+  return os << arb_get_str(self.arb_t(), os.precision(), ARB_STR_MORE);
+}
 
 }  // namespace exactreal
