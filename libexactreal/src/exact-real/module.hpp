@@ -47,6 +47,7 @@ class Module : public std::enable_shared_from_this<Module<Ring>>, boost::equalit
 
   const Basis& basis() const;
   Element<Ring> gen(size i) const;
+  Element<Ring> zero() const;
 
   // Return whether this module has the same generators in the same order over the same ring.
   bool operator==(const Module<Ring>& rhs) const;

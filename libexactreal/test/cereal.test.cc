@@ -126,8 +126,8 @@ TYPED_TEST(CerealTest, Module) {
 TYPED_TEST(CerealTest, Element) {
   auto m = Module<TypeParam>::make({RealNumber::rational(1), RealNumber::random()});
 
-  test_serialization(Element(m, 1));
-  test_serialization(Element(m));
+  test_serialization(m->gen(1));
+  test_serialization(m->zero());
   test_serialization(Element<TypeParam>());
 }
 }  // namespace exactreal

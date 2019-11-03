@@ -34,6 +34,7 @@ class NumberField : boost::equality_comparable<NumberField> {
  public:
   NumberField();
   NumberField(const std::shared_ptr<const eantic::renf_class>&);
+  NumberField(const eantic::renf_elem_class&);
 
   std::shared_ptr<const eantic::renf_class> parameters;
 

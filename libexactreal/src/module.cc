@@ -19,6 +19,7 @@
  *********************************************************************/
 
 #include <e-antic/renfxx.h>
+#include <boost/numeric/conversion/cast.hpp>
 #include <boost/algorithm/string/join.hpp>
 #include <boost/range/adaptor/transformed.hpp>
 #include <set>
@@ -32,6 +33,7 @@
 #include "external/unique-factory/unique_factory.hpp"
 
 using namespace exactreal;
+using boost::numeric_cast;
 using boost::adaptors::transformed;
 using std::is_same_v;
 using std::set;
@@ -101,11 +103,6 @@ vector<shared_ptr<const RealNumber>> const& Module<Ring>::basis() const {
 }
 
 template <typename Ring>
-Element<Ring> Module<Ring>::gen(size i) const {
-  return Element<Ring>(this->shared_from_this(), i);
-}
-
-template <typename Ring>
 const Ring& Module<Ring>::ring() const {
   return impl->parameters;
 }
@@ -157,6 +154,18 @@ bool Module<Ring>::submodule(const Module<Ring>& supermodule) const {
     }
   }
   return true;
+}
+
+template <typename Ring>
+Element<Ring> Module<Ring>::gen(size j) const {
+  std::vector<typename Ring::ElementClass> coefficients(this->rank());
+  coefficients[numeric_cast<size_t>(j)] = 1;
+  return Element(this->shared_from_this(), std::move(coefficients));
+}
+
+template <typename Ring>
+Element<Ring> Module<Ring>::zero() const {
+  return Element(this->shared_from_this(), std::vector<typename Ring::ElementClass>(this->rank()));
 }
 
 template <typename R>

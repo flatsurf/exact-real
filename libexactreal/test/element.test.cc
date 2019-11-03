@@ -39,17 +39,41 @@ using std::string;
 using std::vector;
 
 namespace exactreal {
+TEST(Element, FromPrimitives) {
+  auto m = Module<RationalField>::make({RealNumber::rational(1), RealNumber::random()});
+  auto x = m->gen(1);
+
+  auto one = Element(1);
+  auto zero = Element(0);
+  auto quot = Element(mpq_class(1, 2));
+
+  // Check that arithmetic works with elements from different trivial rings
+  EXPECT_EQ(one + zero, one);
+  EXPECT_EQ(quot + zero, quot);
+  EXPECT_EQ(quot + one, one + quot);
+  
+  EXPECT_EQ(x + zero, x);
+  EXPECT_EQ(x + one - one, x);
+  EXPECT_EQ(x + quot + quot, x + one);
+
+  // Comparison between different parents in trivial cases
+  EXPECT_EQ(quot - quot, zero);
+  EXPECT_EQ(quot + quot, one);
+  EXPECT_EQ(x - x, zero);
+  EXPECT_EQ(x + one - x, one);
+}
+
 TEST(ElementZZ, Generators) {
   auto m = Module<IntegerRing>::make({RealNumber::rational(1), RealNumber::random()});
 
-  auto one = Element(m, 0);
-  auto x = Element(m, 1);
+  auto one = m->gen(0);
+  auto x = m->gen(1);
 
   EXPECT_EQ(one, one);
   EXPECT_EQ(x, x);
   EXPECT_EQ(x, m->gen(1));
   EXPECT_NE(one, x);
-  EXPECT_GT(x, Element(m));
+  EXPECT_GT(x, m->zero());
   EXPECT_LT(x, one);
 
   EXPECT_EQ(x[0], 0);
@@ -59,21 +83,21 @@ TEST(ElementZZ, Generators) {
 TEST(ElementZZ, Additive) {
   auto m = Module<IntegerRing>::make({RealNumber::rational(1), RealNumber::random()});
 
-  Element<IntegerRing> elements[]{Element(m, 0), Element(m, 1)};
+  Element<IntegerRing> elements[]{m->gen(0), m->gen(1)};
 
   for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
     auto x = elements[i];
     EXPECT_GT(x + elements[0], x);
     EXPECT_GT(x + elements[0], elements[0]);
-    EXPECT_EQ(x - elements[i], Element(m));
+    EXPECT_EQ(x - elements[i], m->zero());
   }
 }
 
 TEST(ElementZZ, PromotionFromTrivial) {
   auto m = Module<IntegerRing>::make({RealNumber::rational(1), RealNumber::random()});
 
-  auto gen = Element(m, 1);
-  auto zero = Element(m);
+  auto gen = m->gen(1);
+  auto zero = m->zero();
   auto trivial = Element<IntegerRing>();
 
   EXPECT_EQ(zero, trivial);
@@ -89,15 +113,15 @@ TEST(ElementZZ, PromotionFromSubmodule) {
   auto m = Module<IntegerRing>::make({RealNumber::rational(1)});
   auto n = Module<IntegerRing>::make({RealNumber::rational(1), RealNumber::random()});
 
-  EXPECT_EQ(Element(m, 0), Element(n, 0));
-  EXPECT_NE(Element(m, 0), Element(n, 1));
-  EXPECT_EQ(&*(Element(m, 0) + Element(n, 0)).module(), &*n);
+  EXPECT_EQ(m->gen(0), n->gen(0));
+  EXPECT_NE(m->gen(0), n->gen(1));
+  EXPECT_EQ(&*(m->gen(0) + n->gen(0)).module(), &*n);
 }
 
 TEST(ElementZZ, Scalars) {
   auto m = Module<IntegerRing>::make({RealNumber::rational(1), RealNumber::random()});
 
-  Element<IntegerRing> elements[]{Element(m, 0), Element(m, 1)};
+  Element<IntegerRing> elements[]{m->gen(0), m->gen(1)};
 
   for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
     auto x = elements[i];
@@ -105,7 +129,7 @@ TEST(ElementZZ, Scalars) {
     EXPECT_EQ(x - x, 0 * x);
     EXPECT_EQ(-1 * x, -x);
     EXPECT_EQ(1 * x, x);
-    EXPECT_EQ(0 * x, Element(m));
+    EXPECT_EQ(0 * x, m->zero());
     EXPECT_EQ(Element<IntegerRing>() * x, Element<IntegerRing>());
   }
 
@@ -116,7 +140,7 @@ TEST(ElementZZ, Scalars) {
     EXPECT_EQ(x - x, mpz_class(0) * x);
     EXPECT_EQ(mpz_class(-1) * x, -x);
     EXPECT_LT(mpz_class(-1) * x, x);
-    EXPECT_LT(mpz_class(-1) * x, Element(m));
+    EXPECT_LT(mpz_class(-1) * x, m->zero());
     auto one = RealNumber::rational(1);
     EXPECT_LT(mpz_class(-1) * x, *one);
     if (i == 0)
@@ -124,23 +148,23 @@ TEST(ElementZZ, Scalars) {
     else
       EXPECT_NE(x, *one);
     EXPECT_EQ(mpz_class(1) * x, x);
-    EXPECT_EQ(mpz_class(0) * x, Element(m));
+    EXPECT_EQ(mpz_class(0) * x, m->zero());
   }
 }
 
 TEST(ElementZZ, Printing) {
   auto m = Module<IntegerRing>::make({RealNumber::rational(1), RealNumber::random()});
 
-  EXPECT_EQ(lexical_cast<string>(Element(m, 0)), "1");
-  EXPECT_EQ(lexical_cast<string>(Element(m, 1)), "ℝ(0.673083…)");
-  EXPECT_EQ(lexical_cast<string>(Element(m, 0) + Element(m, 1)), "ℝ(0.673083…) + 1");
+  EXPECT_EQ(lexical_cast<string>(m->gen(0)), "1");
+  EXPECT_EQ(lexical_cast<string>(m->gen(1)), "ℝ(0.982253…)");
+  EXPECT_EQ(lexical_cast<string>(m->gen(0) + m->gen(1)), "ℝ(0.982253…) + 1");
 }
 
 TEST(ElementZZ, Multiplication) {
   auto m = Module<IntegerRing>::make({RealNumber::rational(1), RealNumber::random()});
 
-  auto one = Element(m, 0);
-  auto rnd = Element(m, 1);
+  auto one = m->gen(0);
+  auto rnd = m->gen(1);
 
   EXPECT_EQ(one * one, one);
   EXPECT_EQ(one * rnd, rnd);
@@ -152,7 +176,7 @@ TEST(ElementZZ, Multiplication) {
 TEST(ElementQQ, Scalars) {
   auto m = Module<RationalField>::make({RealNumber::rational(1), RealNumber::random()});
 
-  Element<RationalField> elements[]{Element(m, 0), Element(m, 1)};
+  Element<RationalField> elements[]{m->gen(0), m->gen(1)};
 
   for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
     auto x = elements[i];
@@ -160,7 +184,7 @@ TEST(ElementQQ, Scalars) {
     EXPECT_EQ(x - x, 0 * x);
     EXPECT_EQ(-1 * x, -x);
     EXPECT_EQ(1 * x, x);
-    EXPECT_EQ(0 * x, Element(m));
+    EXPECT_EQ(0 * x, m->zero());
     EXPECT_EQ(Element<RationalField>() * x, Element<RationalField>());
   }
 
@@ -171,7 +195,7 @@ TEST(ElementQQ, Scalars) {
     EXPECT_EQ(x - x, mpz_class(0) * x);
     EXPECT_EQ(mpz_class(-1) * x, -x);
     EXPECT_LT(mpz_class(-1) * x, x);
-    EXPECT_LT(mpz_class(-1) * x, Element(m));
+    EXPECT_LT(mpz_class(-1) * x, m->zero());
     auto one = RealNumber::rational(1);
     EXPECT_LT(mpz_class(-1) * x, *one);
     if (i == 0)
@@ -179,7 +203,7 @@ TEST(ElementQQ, Scalars) {
     else
       EXPECT_NE(x, *one);
     EXPECT_EQ(mpz_class(1) * x, x);
-    EXPECT_EQ(mpz_class(0) * x, Element(m));
+    EXPECT_EQ(mpz_class(0) * x, m->zero());
   }
 
   for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
@@ -188,7 +212,7 @@ TEST(ElementQQ, Scalars) {
     EXPECT_EQ(x - x, mpq_class(0) * x);
     EXPECT_EQ(mpq_class(-1) * x, -x);
     EXPECT_EQ(mpq_class(1) * x, x);
-    EXPECT_EQ(mpq_class(0) * x, Element(m));
+    EXPECT_EQ(mpq_class(0) * x, m->zero());
   }
 }
 
@@ -196,7 +220,7 @@ TEST(ElementNF, Scalars) {
   auto K = renf_class::make("a^2 - 2", "a", "1.41 +/- 0.1", 64);
   auto m = Module<NumberField>::make({RealNumber::rational(1), RealNumber::random()}, K);
 
-  Element<NumberField> elements[]{Element(m, 0), Element(m, 1)};
+  Element<NumberField> elements[]{m->gen(0), m->gen(1)};
 
   for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
     auto x = elements[i];
@@ -204,7 +228,7 @@ TEST(ElementNF, Scalars) {
     EXPECT_EQ(x - x, 0 * x);
     EXPECT_EQ(-1 * x, -x);
     EXPECT_EQ(1 * x, x);
-    EXPECT_EQ(0 * x, Element(m));
+    EXPECT_EQ(0 * x, m->zero());
     EXPECT_EQ(Element<NumberField>() * x, Element<NumberField>());
   }
 
@@ -215,7 +239,7 @@ TEST(ElementNF, Scalars) {
     EXPECT_EQ(x - x, mpz_class(0) * x);
     EXPECT_EQ(mpz_class(-1) * x, -x);
     EXPECT_LT(mpz_class(-1) * x, x);
-    EXPECT_LT(mpz_class(-1) * x, Element(m));
+    EXPECT_LT(mpz_class(-1) * x, m->zero());
     auto one = RealNumber::rational(1);
     EXPECT_LT(mpz_class(-1) * x, *one);
     if (i == 0)
@@ -223,7 +247,7 @@ TEST(ElementNF, Scalars) {
     else
       EXPECT_NE(x, *one);
     EXPECT_EQ(mpz_class(1) * x, x);
-    EXPECT_EQ(mpz_class(0) * x, Element(m));
+    EXPECT_EQ(mpz_class(0) * x, m->zero());
   }
 
   for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
@@ -232,7 +256,7 @@ TEST(ElementNF, Scalars) {
     EXPECT_EQ(x - x, renf_elem_class(K, 0) * x);
     EXPECT_EQ(renf_elem_class(K, -1) * x, -x);
     EXPECT_EQ(renf_elem_class(K, 1) * x, x);
-    EXPECT_EQ(renf_elem_class(K, 0) * x, Element(m));
+    EXPECT_EQ(renf_elem_class(K, 0) * x, m->zero());
     EXPECT_EQ(-(renf_elem_class(K, "a") * x), renf_elem_class(K, "-a") * x);
     EXPECT_GT(renf_elem_class(K, "a") * x, x);
     EXPECT_GT(2 * x, renf_elem_class(K, "a") * x);
@@ -251,7 +275,7 @@ TEST(ElementNF, Coefficients) {
   auto K = renf_class::make("a^2 - 2", "a", "1.41 +/- 0.1", 64);
   auto m = Module<NumberField>::make({RealNumber::rational(1), RealNumber::random()}, K);
 
-  auto x = Element(m, 1);
+  auto x = m->gen(1);
   auto a = renf_elem_class(K, "a");
 
   EXPECT_EQ(x.coefficients(), std::vector<renf_elem_class>({0, 1}));
