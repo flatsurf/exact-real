@@ -109,21 +109,6 @@ bool Arb::is_exact() const noexcept { return arb_is_exact(arb_t()); }
 
 bool Arb::is_finite() const noexcept { return arb_is_finite(arb_t()); }
 
-mpz_class Arb::floor() const noexcept {
-  Arb floor;
-  arb_floor(floor.arb_t(), arb_t(), ARF_PREC_EXACT);
-  fmpz_t fret;
-
-  fmpz_init(fret);
-  __attribute__((unused)) int ok = arb_get_unique_fmpz(fret, floor.arb_t());
-  assert(ok && "floor() must contain exactly one integer value");
-  mpz_class ret;
-  fmpz_get_mpz(ret.get_mpz_t(), fret);
-  fmpz_clear(fret);
-
-  return ret;
-}
-
 Arb Arb::operator-() const noexcept {
   Arb ret;
   arb_neg(ret.arb_t(), arb_t());
