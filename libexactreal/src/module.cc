@@ -19,8 +19,8 @@
  *********************************************************************/
 
 #include <e-antic/renfxx.h>
-#include <boost/numeric/conversion/cast.hpp>
 #include <boost/algorithm/string/join.hpp>
+#include <boost/numeric/conversion/cast.hpp>
 #include <boost/range/adaptor/transformed.hpp>
 #include <set>
 

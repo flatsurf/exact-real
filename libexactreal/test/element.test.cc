@@ -51,7 +51,7 @@ TEST(Element, FromPrimitives) {
   EXPECT_EQ(one + zero, one);
   EXPECT_EQ(quot + zero, quot);
   EXPECT_EQ(quot + one, one + quot);
-  
+
   EXPECT_EQ(x + zero, x);
   EXPECT_EQ(x + one - one, x);
   EXPECT_EQ(x + quot + quot, x + one);

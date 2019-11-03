@@ -103,19 +103,19 @@ template <typename Ring>
 template <bool Enabled, std::enable_if_t<Enabled, bool>>
 Element<Ring>::Element(const Element<IntegerRing>& value)
     : impl(spimpl::make_impl<Element<Ring>::Implementation>(
-        Module<Ring>::make(value.module()->basis()),
-        [&](const auto& coefficients) {
-          return std::vector<typename Ring::ElementClass>(coefficients.begin(), coefficients.end());
-        }(value.coefficients()))) {}
+          Module<Ring>::make(value.module()->basis()),
+          [&](const auto& coefficients) {
+            return std::vector<typename Ring::ElementClass>(coefficients.begin(), coefficients.end());
+          }(value.coefficients()))) {}
 
 template <typename Ring>
 template <bool Enabled, std::enable_if_t<Enabled, bool>>
 Element<Ring>::Element(const Element<RationalField>& value)
     : impl(spimpl::make_impl<Element<Ring>::Implementation>(
-        Module<Ring>::make(value.module()->basis()),
-        [&](const auto& coefficients) {
-          return std::vector<typename Ring::ElementClass>(coefficients.begin(), coefficients.end());
-        }(value.coefficients()))) {}
+          Module<Ring>::make(value.module()->basis()),
+          [&](const auto& coefficients) {
+            return std::vector<typename Ring::ElementClass>(coefficients.begin(), coefficients.end());
+          }(value.coefficients()))) {}
 
 template <typename Ring>
 Element<Ring>::Element(const typename Ring::ElementClass& value) : Element(Module<Ring>::make({RealNumber::rational(1)}, Ring(value)), {value}) {
@@ -515,4 +515,4 @@ template Element<NumberField>& Element<NumberField>::operator/=(const mpq_class&
 template Element<NumberField>& Element<NumberField>::operator/=(const eantic::renf_elem_class&);
 template std::vector<mpq_class> Element<NumberField>::coefficients<mpq_class>() const;
 template std::vector<eantic::renf_elem_class> Element<NumberField>::coefficients<eantic::renf_elem_class>() const;
-}
+}  // namespace exactreal
