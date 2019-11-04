@@ -24,13 +24,15 @@
 #include "exact-real/number_field.hpp"
 
 namespace exactreal {
-Arb NumberField::arb(const ElementClass& x, mp_limb_signed_t prec) { return Arb(x, prec); }
-
-bool NumberField::operator==(const NumberField& rhs) const { return parameters == rhs.parameters; }
+NumberField::NumberField() : NumberField(eantic::renf_class::make()) {}
 
 NumberField::NumberField(const std::shared_ptr<const eantic::renf_class>& parameters) : parameters(parameters) {
   assert(parameters && "number field must not be null");
 }
 
-NumberField::NumberField() : NumberField(eantic::renf_class::make()) {}
+NumberField::NumberField(const eantic::renf_elem_class& value) : NumberField(value.parent()) {}
+
+Arb NumberField::arb(const ElementClass& x, mp_limb_signed_t prec) { return Arb(x, prec); }
+
+bool NumberField::operator==(const NumberField& rhs) const { return parameters == rhs.parameters; }
 }  // namespace exactreal

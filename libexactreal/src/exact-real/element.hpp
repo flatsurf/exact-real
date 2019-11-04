@@ -31,6 +31,8 @@
 
 #include "exact-real/exact-real.hpp"
 #include "exact-real/forward.hpp"
+#include "exact-real/integer_ring.hpp"
+#include "exact-real/rational_field.hpp"
 
 namespace exactreal {
 
@@ -42,18 +44,16 @@ class Element : boost::additive<Element<Ring>>,
                 boost::totally_ordered<Element<Ring>, mpq_class>,
                 boost::totally_ordered<Element<Ring>, mpz_class>,
                 boost::totally_ordered<Element<Ring>, long long>,
-                boost::multiplicative<Element<Ring>, typename Ring::ElementClass>,
-                std::conditional_t<std::is_same_v<typename Ring::ElementClass, mpz_class>, boost::blank,
-                                   std::conditional_t<Ring::isField, boost::multiplicative<Element<Ring>, mpz_class>, boost::multipliable<Element<Ring>, mpz_class>>>,
-                std::conditional_t<std::is_same_v<typename Ring::ElementClass, mpq_class>, boost::blank,
-                                   std::conditional_t<Ring::isField, boost::multiplicative<Element<Ring>, mpq_class>, boost::multipliable<Element<Ring>, mpq_class>>>,
-                std::conditional_t<std::is_same_v<typename Ring::ElementClass, int>, boost::blank,
-                                   std::conditional_t<Ring::isField, boost::multiplicative<Element<Ring>, int>, boost::multipliable<Element<Ring>, int>>> {
+                boost::multiplicative<Element<Ring>, typename Ring::ElementClass> {
  public:
   Element();
-  explicit Element(const std::shared_ptr<const Module<Ring>>& parent);
   Element(const std::shared_ptr<const Module<Ring>>& parent, const std::vector<typename Ring::ElementClass>& coefficients);
-  Element(const std::shared_ptr<const Module<Ring>>& parent, const size gen);
+
+  Element(const typename Ring::ElementClass& value);
+  template <bool Enabled = !std::is_same_v<Ring, IntegerRing>, std::enable_if_t<Enabled, bool> = true>
+  Element(const Element<IntegerRing>& value);
+  template <bool Enabled = !std::is_same_v<Ring, RationalField> && std::is_convertible_v<mpq_class, typename Ring::ElementClass>, std::enable_if_t<Enabled, bool> = true>
+  Element(const Element<RationalField>& value);
 
   typename Ring::ElementClass operator[](const size) const;
   std::conditional<Ring::isField, mpq_class, mpz_class> operator[](const std::pair<size, size>&) const;
@@ -112,6 +112,20 @@ class Element : boost::additive<Element<Ring>>,
 
 template <typename Ring, typename... Args>
 Element(const std::shared_ptr<const Module<Ring>>&, Args...)->Element<Ring>;
+
+Element(int)->Element<IntegerRing>;
+
+Element(unsigned int)->Element<IntegerRing>;
+
+Element(long)->Element<IntegerRing>;
+
+Element(unsigned long)->Element<IntegerRing>;
+
+Element(const mpz_class&)->Element<IntegerRing>;
+
+Element(const mpq_class&)->Element<RationalField>;
+
+Element(const RealNumber&)->Element<IntegerRing>;
 
 }  // namespace exactreal
 

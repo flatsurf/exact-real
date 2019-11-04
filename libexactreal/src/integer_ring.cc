@@ -22,5 +22,8 @@
 #include "exact-real/arb.hpp"
 
 namespace exactreal {
+IntegerRing::IntegerRing() {}
+IntegerRing::IntegerRing(const mpz_class&) {}
+
 Arb IntegerRing::arb(const ElementClass& x, long) { return Arb(x); }
 }  // namespace exactreal

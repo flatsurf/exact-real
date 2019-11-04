@@ -22,5 +22,8 @@
 #include "exact-real/arb.hpp"
 
 namespace exactreal {
+RationalField::RationalField() {}
+RationalField::RationalField(const mpq_class&) {}
+
 Arb RationalField::arb(const ElementClass& x, prec prec) { return Arb(x, prec); }
 }  // namespace exactreal
