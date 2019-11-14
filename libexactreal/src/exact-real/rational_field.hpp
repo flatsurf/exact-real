@@ -33,6 +33,8 @@ struct RationalField : boost::equality_comparable<RationalField> {
   RationalField();
   RationalField(const mpq_class&);
 
+  static RationalField compositum(const RationalField& lhs, const RationalField& rhs);
+
   typedef mpq_class ElementClass;
   static constexpr bool isField = true;
   static Arb arb(const ElementClass& x, long prec);

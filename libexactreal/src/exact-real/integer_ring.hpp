@@ -33,6 +33,8 @@ struct IntegerRing : boost::equality_comparable<IntegerRing> {
   IntegerRing();
   IntegerRing(const mpz_class&);
 
+  static IntegerRing compositum(const IntegerRing& lhs, const IntegerRing& rhs);
+
   typedef mpz_class ElementClass;
   static constexpr bool isField = false;
   static Arb arb(const ElementClass& x, long prec);

@@ -188,7 +188,9 @@ Element<Ring>& Element<Ring>::operator*=(const Element<Ring>& rhs) {
     return *this = rhs;
 
   if (this->module()->ring() != rhs.module()->ring()) {
-    throw std::logic_error("not implemented - multiplication in modules over different rings");
+    auto compositum = Ring::compositum(this->module()->ring(), rhs.module()->ring());
+    return this->promote(Module<Ring>::make(this->module()->basis(), compositum)) *=
+      Element<Ring>(rhs).promote(Module<Ring>::make(rhs.module()->basis(), compositum));
   }
 
   map<shared_ptr<const RealNumber>, typename Ring::ElementClass> products;
