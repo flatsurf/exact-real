@@ -165,7 +165,6 @@ mpz_class Arf::ceil() const noexcept {
   return ret;
 }
 
-
 mpz_class Arf::mantissa() const noexcept { return mantissa_exponent(t).first; }
 
 mpz_class Arf::exponent() const noexcept { return mantissa_exponent(t).second; }
