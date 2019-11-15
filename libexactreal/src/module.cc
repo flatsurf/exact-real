@@ -124,7 +124,8 @@ shared_ptr<const Module<Ring>> Module<Ring>::span(const shared_ptr<const Module<
   }
 
   if (m->impl->parameters != n->impl->parameters) {
-    throw std::logic_error("Module::span() not implemented when base rings are incompatible");
+    auto parameters = Ring::compositum(m->impl->parameters, n->impl->parameters);
+    return span(Module<Ring>::make(m->basis(), parameters), Module<Ring>::make(n->basis(), parameters));
   }
 
   if (n->submodule(*m)) {

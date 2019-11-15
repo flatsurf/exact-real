@@ -109,21 +109,6 @@ bool Arb::is_exact() const noexcept { return arb_is_exact(arb_t()); }
 
 bool Arb::is_finite() const noexcept { return arb_is_finite(arb_t()); }
 
-mpz_class Arb::floor() const noexcept {
-  Arb floor;
-  arb_floor(floor.arb_t(), arb_t(), ARF_PREC_EXACT);
-  fmpz_t fret;
-
-  fmpz_init(fret);
-  __attribute__((unused)) int ok = arb_get_unique_fmpz(fret, floor.arb_t());
-  assert(ok && "floor() must contain exactly one integer value");
-  mpz_class ret;
-  fmpz_get_mpz(ret.get_mpz_t(), fret);
-  fmpz_clear(fret);
-
-  return ret;
-}
-
 Arb Arb::operator-() const noexcept {
   Arb ret;
   arb_neg(ret.arb_t(), arb_t());
@@ -235,6 +220,11 @@ Arb::operator std::pair<Arf, Arf>() const noexcept {
 
 Arb::operator double() const noexcept { return arf_get_d(arb_midref(arb_t()), ARF_RND_NEAR); }
 
-ostream& operator<<(ostream& os, const Arb& self) { return os << arb_get_str(self.arb_t(), os.precision(), 0); }
+ostream& operator<<(ostream& os, const Arb& self) {
+  // ARB_STR_MORE is essential. Otherwise, arb prints things such as [1.5 +/- .6]
+  // as [+/- something] since not a single digit of the midpoint is correct.
+  // (At least that's our theory of what's happening…)
+  return os << arb_get_str(self.arb_t(), os.precision(), ARB_STR_MORE);
+}
 
 }  // namespace exactreal

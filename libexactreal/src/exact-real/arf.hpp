@@ -89,6 +89,8 @@ class Arf : yap::Terminal<Arf, yap::ArfExpr>, boost::totally_ordered<Arf>, boost
   explicit operator double() const noexcept;
 
   Arf abs() const noexcept;
+  mpz_class floor() const noexcept;
+  mpz_class ceil() const noexcept;
 
   mpz_class mantissa() const noexcept;
   mpz_class exponent() const noexcept;

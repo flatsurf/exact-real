@@ -141,6 +141,30 @@ Arf Arf::abs() const noexcept {
   return ret;
 }
 
+mpz_class Arf::floor() const noexcept {
+  Arf floor;
+  arf_floor(floor.t, t);
+  fmpz_t fmpz_floor;
+  fmpz_init(fmpz_floor);
+  arf_get_fmpz(fmpz_floor, floor.t, ARF_RND_NEAR);
+  mpz_class ret;
+  fmpz_get_mpz(ret.get_mpz_t(), fmpz_floor);
+  fmpz_clear(fmpz_floor);
+  return ret;
+}
+
+mpz_class Arf::ceil() const noexcept {
+  Arf ceil;
+  arf_ceil(ceil.t, t);
+  fmpz_t fmpz_ceil;
+  fmpz_init(fmpz_ceil);
+  arf_get_fmpz(fmpz_ceil, ceil.t, ARF_RND_NEAR);
+  mpz_class ret;
+  fmpz_get_mpz(ret.get_mpz_t(), fmpz_ceil);
+  fmpz_clear(fmpz_ceil);
+  return ret;
+}
+
 mpz_class Arf::mantissa() const noexcept { return mantissa_exponent(t).first; }
 
 mpz_class Arf::exponent() const noexcept { return mantissa_exponent(t).second; }

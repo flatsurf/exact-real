@@ -38,6 +38,8 @@ class NumberField : boost::equality_comparable<NumberField> {
 
   std::shared_ptr<const eantic::renf_class> parameters;
 
+  static NumberField compositum(const NumberField& lhs, const NumberField& rhs);
+
   bool operator==(const NumberField&) const;
 
   typedef eantic::renf_elem_class ElementClass;

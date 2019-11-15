@@ -27,10 +27,17 @@ namespace exactreal {
 NumberField::NumberField() : NumberField(eantic::renf_class::make()) {}
 
 NumberField::NumberField(const std::shared_ptr<const eantic::renf_class>& parameters) : parameters(parameters) {
-  assert(parameters && "number field must not be null");
+  // parameters might contain a null pointer if this is the rational field
 }
 
 NumberField::NumberField(const eantic::renf_elem_class& value) : NumberField(value.parent()) {}
+
+NumberField NumberField::compositum(const NumberField& lhs, const NumberField& rhs) {
+  if (lhs == rhs) return lhs;
+  if (!lhs.parameters) return rhs;
+  if (!rhs.parameters) return lhs;
+  throw std::logic_error("not implemented: compositum of number fields");
+}
 
 Arb NumberField::arb(const ElementClass& x, mp_limb_signed_t prec) { return Arb(x, prec); }
 
