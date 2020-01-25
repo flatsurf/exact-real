@@ -40,7 +40,7 @@ AX_CXX_COMPILE_STDCXX(17)
 ACX_PTHREAD([], [AC_MSG_ERROR([pthread not supported])])
 
 AC_CHECK_HEADERS([arb.h], , AC_MSG_ERROR([Arb headers not found]))
-AC_CHECK_LIB([arb], [arb_init], , AC_MSG_ERROR([Arb library not found]), [-lgmp -lmpfr -lflint])
+AC_CHECK_LIB([arb], [arb_load_str], , AC_MSG_ERROR([Arb library >=2.17.0 not found]), [-lgmp -lmpfr -lflint])
 
 AC_CHECK_HEADERS([gmpxx.h], , AC_MSG_ERROR([GMP headers for C++ not found]))
 dnl GMPXX does not contain anything that we can check for with AX_CXX_CHECK_LIB

@@ -7,12 +7,12 @@
 [submodule "libexactreal/test/external/cereal"]
 	path = libexactreal/test/external/cereal
 	url = https://github.com/USCiLab/cereal.git
-[submodule "libexactreal/src/external/cereal"]
-	path = libexactreal/src/external/cereal
-	url = https://github.com/USCiLab/cereal.git
 [submodule "recipe/snippets"]
 	path = recipe/snippets
 	url = https://github.com/flatsurf/conda-recipes.git
-[submodule "arb-upstream"]
-	path = libexactreal/src/external/arb
-	url = https://github.com/fredrik-johansson/arb.git
+[submodule "libexactreal/src/external/gmpxxll"]
+	path = libexactreal/src/external/gmpxxll
+	url = https://github.com/flatusrf/gmpxxll/gmpxxll.git
+[submodule "libexactreal/src/external/cereal"]
+	path = libexactreal/src/external/cereal
+	url = https://github.com/USCiLab/cereal.git

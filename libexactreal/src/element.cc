@@ -29,6 +29,8 @@
 #include "exact-real/real_number.hpp"
 #include "exact-real/yap/arb.hpp"
 
+#include "external/gmpxxll/gmpxxll/mpz_class.hpp"
+
 using namespace exactreal;
 using boost::numeric_cast;
 using std::find_if;
