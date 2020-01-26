@@ -12,7 +12,7 @@
 	url = https://github.com/flatsurf/conda-recipes.git
 [submodule "libexactreal/src/external/gmpxxll"]
 	path = libexactreal/src/external/gmpxxll
-	url = https://github.com/flatusrf/gmpxxll/gmpxxll.git
+	url = https://github.com/flatsurf/gmpxxll.git
 [submodule "libexactreal/src/external/cereal"]
 	path = libexactreal/src/external/cereal
 	url = https://github.com/USCiLab/cereal.git
