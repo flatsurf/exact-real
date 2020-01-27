@@ -48,6 +48,7 @@ nobase_include_HEADERS =                                  \
 
 noinst_HEADERS =                                          \
     external/unique-factory/unique_factory.hpp            \
+    external/gmpxxll/gmpxxll/mpz_class.hpp                \
     exact-real/detail/smart_ostream.hpp
 
 $(builddir)/exact-real/exact-real.hpp: $(srcdir)/exact-real/exact-real.hpp.in Makefile
