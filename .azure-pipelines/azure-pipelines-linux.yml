@@ -24,7 +24,7 @@ jobs:
   - script: |
         export CI=azure
         export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
-        .azure-pipelines/run_docker_build.sh
+        .scripts/run_docker_build.sh
     displayName: Run docker build
     env:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
@@ -51,7 +51,7 @@ jobs:
   - script: |
         export CI=azure
         export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
-        .azure-pipelines/run_docker_build.sh
+        .scripts/run_docker_build.sh
     displayName: Run docker build
     env:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
@@ -78,7 +78,7 @@ jobs:
   - script: |
         export CI=azure
         export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
-        .azure-pipelines/run_docker_build.sh
+        .scripts/run_docker_build.sh
     displayName: Run docker build
     env:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
@@ -105,7 +105,7 @@ jobs:
   - script: |
         export CI=azure
         export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
-        .azure-pipelines/run_docker_build.sh
+        .scripts/run_docker_build.sh
     displayName: Run docker build
     env:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
@@ -132,12 +132,14 @@ jobs:
   - script: |
         export CI=azure
         export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
-        .azure-pipelines/run_docker_build.sh
+        .scripts/run_docker_build.sh
     displayName: Run docker build
     env:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
       CODECOV_TOKEN: $(CODECOV_TOKEN)
       ASV_SECRET_KEY: $(ASV_SECRET_KEY)
+  - publish: $(System.DefaultWorkingDirectory)/build_artifacts
+    artifact: linux_name_libexactreal_python_36_target_release
 - job: linux_name_libexactreal_python_37_target_release
   pool:
     vmImage: ubuntu-16.04
@@ -159,7 +161,7 @@ jobs:
   - script: |
         export CI=azure
         export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
-        .azure-pipelines/run_docker_build.sh
+        .scripts/run_docker_build.sh
     displayName: Run docker build
     env:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
@@ -189,7 +191,7 @@ jobs:
   - script: |
         export CI=azure
         export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
-        .azure-pipelines/run_docker_build.sh
+        .scripts/run_docker_build.sh
     displayName: Run docker build
     env:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)
@@ -219,7 +221,7 @@ jobs:
   - script: |
         export CI=azure
         export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
-        .azure-pipelines/run_docker_build.sh
+        .scripts/run_docker_build.sh
     displayName: Run docker build
     env:
       BINSTAR_TOKEN: $(BINSTAR_TOKEN)

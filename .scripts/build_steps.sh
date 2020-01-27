@@ -26,7 +26,7 @@ conda-build:
 CONDARC
 
 # Make sure build_artifacts is a valid channel
-conda index ${FEEDSTOCK_ROOT}/build_artifacts
+conda index --no-progress ${FEEDSTOCK_ROOT}/build_artifacts
 
 conda install --yes --quiet conda-forge-ci-setup=2 conda-build patch -c conda-forge
 
