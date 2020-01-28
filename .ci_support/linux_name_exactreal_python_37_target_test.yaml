@@ -1,3 +1,5 @@
+arb:
+- '2.17'
 boost_cpp:
 - 1.70.0
 channel_sources:

@@ -15,16 +15,6 @@ libexactreal_la_SOURCES =               \
     arf.cc                              \
     cppyy.cc
 
-# We vendor https://github.com/fredrik-johansson/arb/pull/286 until it's
-# released
-libexactreal_la_SOURCES +=              \
-    external/arb/arf/load.c             \
-    external/arb/arf/dump_str.c         \
-    external/arb/arb/load_str.c         \
-    external/arb/arb/dump_str.c         \
-    external/arb/mag/load.c             \
-    external/arb/mag/dump_str.c
-
 libexactreal_la_LDFLAGS = -version-info $(libexactreal_version_info)
 
 nobase_include_HEADERS =                                  \
@@ -58,6 +48,7 @@ nobase_include_HEADERS =                                  \
 
 noinst_HEADERS =                                          \
     external/unique-factory/unique_factory.hpp            \
+    external/gmpxxll/gmpxxll/mpz_class.hpp                \
     exact-real/detail/smart_ostream.hpp
 
 $(builddir)/exact-real/exact-real.hpp: $(srcdir)/exact-real/exact-real.hpp.in Makefile
@@ -70,16 +61,12 @@ VPATH = $(srcdir) $(builddir)
 BUILT_SOURCES = exact-real/exact-real.hpp
 # Distribute exact-real.hpp.in as part of the tarball, but not exact-real.hpp
 EXTRA_DIST = exact-real/exact-real.hpp.in
-# Distribute the bits of arb that we vendor until they are released
-EXTRA_DIST += external/arb/arb.h external/arb/arf.h external/arb/mag.h external/arb/arb/load_str.c external/arb/arb/dump_str.c external/arb/arf/load.c external/arb/arf/dump_str.c external/arb/mag/load.c external/arb/mag/dump_str.c
 # We vendor the header-only library Cereal (serialization with C++) which we
 # use in some of our source files.
 # Cereal is basically not packaged in any distribution since it is a
 # header-only library that people always vendor into their source tree.
 EXTRA_DIST += external/cereal/include
 AM_CPPFLAGS = -isystem $(srcdir)/external/cereal/include
-# Built against the experimental arb headers so that the dump/load functions are known
-AM_CPPFLAGS += -isystem $(srcdir)/external/arb/
 generatedincludedir = $(includedir)/exact-real
 nodist_generatedinclude_HEADERS = exact-real/exact-real.hpp
 
