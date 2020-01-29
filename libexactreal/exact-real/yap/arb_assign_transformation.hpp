@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -21,10 +21,8 @@
 #ifndef LIBEXACTREAL_YAP_ARB_ASSIGN_TRANSFORMATION_HPP
 #define LIBEXACTREAL_YAP_ARB_ASSIGN_TRANSFORMATION_HPP
 
-#include "exact-real/arb.hpp"
-#include "exact-real/exact-real.hpp"
-#include "exact-real/yap/assign_transformation.hpp"
-#include "exact-real/yap/forward.hpp"
+#include "../arb.hpp"
+#include "assign_transformation.hpp"
 
 namespace exactreal {
 namespace yap {

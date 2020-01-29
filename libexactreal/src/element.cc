@@ -18,16 +18,17 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <e-antic/renfxx.h>
-#include <boost/numeric/conversion/cast.hpp>
 #include <cmath>
 #include <map>
 #include <set>
 
-#include "exact-real/element.hpp"
-#include "exact-real/module.hpp"
-#include "exact-real/real_number.hpp"
-#include "exact-real/yap/arb.hpp"
+#include <e-antic/renfxx.h>
+#include <boost/numeric/conversion/cast.hpp>
+
+#include "../exact-real/element.hpp"
+#include "../exact-real/module.hpp"
+#include "../exact-real/real_number.hpp"
+#include "../exact-real/yap/arb.hpp"
 
 #include "external/gmpxxll/gmpxxll/mpz_class.hpp"
 
@@ -480,9 +481,9 @@ ostream& operator<<(ostream& out, const Element<Ring>& self) {
 
 // Explicit instantiations of templates so that code is generated for the
 // linker.
-#include "exact-real/integer_ring.hpp"
-#include "exact-real/number_field.hpp"
-#include "exact-real/rational_field.hpp"
+#include "../exact-real/integer_ring.hpp"
+#include "../exact-real/number_field.hpp"
+#include "../exact-real/rational_field.hpp"
 
 namespace exactreal {
 template class Element<IntegerRing>;

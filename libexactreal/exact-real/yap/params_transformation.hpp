@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -21,11 +21,10 @@
 #ifndef LIBEXACTREAL_YAP_PARAMS_TRANSFORMATION_HPP
 #define LIBEXACTREAL_YAP_PARAMS_TRANSFORMATION_HPP
 
-#include "exact-real/exact-real.hpp"
-#include "exact-real/yap/forward.hpp"
+#include "forward.hpp"
 
-namespace exactreal {
-namespace yap {
+namespace exactreal::yap {
+
 // Base class for transformations that determine parameters that have been set
 // for an expression, such as the precision with which it should be evaluated.
 template <typename T>
@@ -55,7 +54,7 @@ struct ParamsTransformation {
     return IsNotBound();
   }
 };
-}  // namespace yap
+
 }  // namespace exactreal
 
 #endif

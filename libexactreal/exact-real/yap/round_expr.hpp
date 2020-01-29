@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -18,29 +18,22 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBEXACTREAL_INTEGER_RING_HPP
-#define LIBEXACTREAL_INTEGER_RING_HPP
+#ifndef LIBEXACTREAL_YAP_ROUND_EXPR_HPP
+#define LIBEXACTREAL_YAP_ROUND_EXPR_HPP
 
-#include <gmpxx.h>
-#include <boost/operators.hpp>
-
-#include "exact-real/exact-real.hpp"
-#include "exact-real/forward.hpp"
+#include "../arf.hpp"
+#include "forward.hpp"
 
 namespace exactreal {
+namespace yap {
 
-struct IntegerRing : boost::equality_comparable<IntegerRing> {
-  IntegerRing();
-  IntegerRing(const mpz_class&);
+struct RoundExpr {
+  static boost::yap::expr_kind const kind = boost::yap::expr_kind::terminal;
 
-  static IntegerRing compositum(const IntegerRing& lhs, const IntegerRing& rhs);
-
-  typedef mpz_class ElementClass;
-  static constexpr bool isField = false;
-  static Arb arb(const ElementClass& x, long prec);
-  bool operator==(const IntegerRing&) const { return true; }
+  boost::hana::tuple<Arf::Round> elements;
 };
 
+}  // namespace yap
 }  // namespace exactreal
 
 #endif

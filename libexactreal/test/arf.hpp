@@ -21,10 +21,12 @@
 #ifndef EXACTREAL_TEST_ARF_HPP
 #define EXACTREAL_TEST_ARF_HPP
 
-#include <flint/flintxx/frandxx.h>
 #include <cassert>
-#include <exact-real/arf.hpp>
-#include <memory>
+#include <cassert>
+
+#include <flint/flintxx/frandxx.h>
+
+#include "../exact-real/arf.hpp"
 
 using namespace exactreal;
 using std::make_unique;

@@ -20,10 +20,10 @@
 
 #include <cassert>
 
-#include "exact-real/arb.hpp"
-#include "exact-real/cereal.hpp"
-#include "exact-real/real_number.hpp"
-#include "exact-real/yap/arf.hpp"
+#include "../exact-real/arb.hpp"
+#include "../exact-real/cereal.hpp"
+#include "../exact-real/real_number.hpp"
+#include "../exact-real/yap/arf.hpp"
 
 using std::max;
 using std::ostream;
@@ -189,6 +189,6 @@ void RealNumberCereal::load(cereal::JSONInputArchive& archive, std::shared_ptr<c
 
 // Explicit instantiations of templates so that code is generated for the
 // linker.
-#include "exact-real/detail/smart_ostream.hpp"
+#include "../exact-real/detail/smart_ostream.hpp"
 
 template std::ostream& exactreal::operator<<(std::ostream&, const std::shared_ptr<const RealNumber>&);

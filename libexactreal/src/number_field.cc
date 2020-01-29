@@ -20,8 +20,8 @@
 
 #include <e-antic/renfxx.h>
 
-#include "exact-real/arb.hpp"
-#include "exact-real/number_field.hpp"
+#include "../exact-real/arb.hpp"
+#include "../exact-real/number_field.hpp"
 
 namespace exactreal {
 NumberField::NumberField() : NumberField(eantic::renf_class::make()) {}

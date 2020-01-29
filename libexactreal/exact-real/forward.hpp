@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -18,16 +18,37 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
-#define LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
+/*
+ * Forward declarations of all our classes. Loaded by every other header file
+ * for convenience and also to get consistent defaults for template parameters.
+ */
 
-#include "exact-real/exact-real.hpp"
+#ifndef LIBEXACTREAL_FORWARD_HPP
+#define LIBEXACTREAL_FORWARD_HPP
+
+#include <boost/yap/algorithm_fwd.hpp>
+
+#include "exact-real.hpp"
 
 namespace exactreal {
 
-struct NumberFieldIdeal {
-  // No support for this in E-ANTIC yet
-};
+namespace yap {
+template <boost::yap::expr_kind Kind, typename Tuple>
+struct ArfExpr;
+template <boost::yap::expr_kind Kind, typename Tuple>
+struct ArbExpr;
+}  // namespace yap
+
+class Arb;
+class Arf;
+
+class RealNumber;
+
+template <typename Ring>
+class Element;
+
+template <typename Ring>
+class Module;
 
 }  // namespace exactreal
 

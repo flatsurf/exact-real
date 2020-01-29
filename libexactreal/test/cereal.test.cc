@@ -18,19 +18,18 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <benchmark/benchmark.h>
 #include <e-antic/renfxx.h>
 #include <e-antic/renfxx_cereal.h>
-#include <gtest/gtest.h>
 #include <boost/lexical_cast.hpp>
 #include <cereal/archives/json.hpp>
 
-#include <exact-real/cereal.hpp>
-#include <exact-real/real_number.hpp>
+#include "external/catch2/single_include/catch2/catch.hpp"
+
+#include "../exact-real/cereal.hpp"
+#include "../exact-real/real_number.hpp"
 
 #include "arb.hpp"
 #include "arf.hpp"
-#include "rings.hpp"
 
 using cereal::JSONInputArchive;
 using cereal::JSONOutputArchive;

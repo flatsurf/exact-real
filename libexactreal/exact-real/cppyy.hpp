@@ -5,7 +5,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -24,14 +24,14 @@
 #include <memory>
 #include <sstream>
 
-#include "exact-real/element.hpp"
-#include "exact-real/integer_ring.hpp"
-#include "exact-real/module.hpp"
-#include "exact-real/number_field.hpp"
-#include "exact-real/rational_field.hpp"
-#include "exact-real/real_number.hpp"
-#include "exact-real/yap/arb.hpp"
-#include "exact-real/yap/arf.hpp"
+#include "element.hpp"
+#include "integer_ring.hpp"
+#include "module.hpp"
+#include "number_field.hpp"
+#include "rational_field.hpp"
+#include "real_number.hpp"
+#include "yap/arb.hpp"
+#include "yap/arf.hpp"
 
 // See https://bitbucket.org/wlav/cppyy/issues/95/lookup-of-friend-operator
 namespace exactreal {

@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -18,33 +18,26 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBEXACTREAL_NUMBER_FIELD_HPP
-#define LIBEXACTREAL_NUMBER_FIELD_HPP
+#ifndef LIBEXACTREAL_RATIONAL_FIELD_HPP
+#define LIBEXACTREAL_RATIONAL_FIELD_HPP
 
+#include <gmpxx.h>
 #include <boost/operators.hpp>
-#include <memory>
 
-#include "e-antic/renfxx_fwd.h"
-#include "exact-real/exact-real.hpp"
-#include "exact-real/forward.hpp"
+#include "forward.hpp"
 
 namespace exactreal {
 
-class NumberField : boost::equality_comparable<NumberField> {
- public:
-  NumberField();
-  NumberField(const std::shared_ptr<const eantic::renf_class>&);
-  NumberField(const eantic::renf_elem_class&);
+struct RationalField : boost::equality_comparable<RationalField> {
+  RationalField();
+  RationalField(const mpq_class&);
 
-  std::shared_ptr<const eantic::renf_class> parameters;
+  static RationalField compositum(const RationalField& lhs, const RationalField& rhs);
 
-  static NumberField compositum(const NumberField& lhs, const NumberField& rhs);
-
-  bool operator==(const NumberField&) const;
-
-  typedef eantic::renf_elem_class ElementClass;
+  typedef mpq_class ElementClass;
   static constexpr bool isField = true;
   static Arb arb(const ElementClass& x, long prec);
+  bool operator==(const RationalField&) const { return true; }
 };
 
 }  // namespace exactreal

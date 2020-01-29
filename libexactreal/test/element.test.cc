@@ -18,17 +18,17 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <benchmark/benchmark.h>
 #include <e-antic/renfxx.h>
-#include <gtest/gtest.h>
 #include <boost/lexical_cast.hpp>
 
-#include <exact-real/element.hpp>
-#include <exact-real/integer_ring.hpp>
-#include <exact-real/module.hpp>
-#include <exact-real/number_field.hpp>
-#include <exact-real/rational_field.hpp>
-#include <exact-real/real_number.hpp>
+#include "external/catch2/single_include/catch2/catch.hpp"
+
+#include "../exact-real/element.hpp"
+#include "../exact-real/integer_ring.hpp"
+#include "../exact-real/module.hpp"
+#include "../exact-real/number_field.hpp"
+#include "../exact-real/rational_field.hpp"
+#include "../exact-real/real_number.hpp"
 
 using boost::lexical_cast;
 using eantic::renf_class;

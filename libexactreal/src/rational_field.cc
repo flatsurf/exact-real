@@ -18,8 +18,8 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include "exact-real/rational_field.hpp"
-#include "exact-real/arb.hpp"
+#include "../exact-real/rational_field.hpp"
+#include "../exact-real/arb.hpp"
 
 namespace exactreal {
 RationalField::RationalField() {}

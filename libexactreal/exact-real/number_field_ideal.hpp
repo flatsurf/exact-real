@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -18,33 +18,17 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBEXACTREAL_YAP_FORWARD_HPP
-#define LIBEXACTREAL_YAP_FORWARD_HPP
+#ifndef LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
+#define LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
 
-#include <boost/hana/fwd/all.hpp>
-#include <boost/yap/expression.hpp>
+#include "exact-real/exact-real.hpp"
 
 namespace exactreal {
-namespace yap {
-template <boost::yap::expr_kind Kind, typename Tuple>
-struct ArbExpr;
 
-template <boost::yap::expr_kind Kind, typename Tuple>
-struct ArfExpr;
+struct NumberFieldIdeal {
+  // No support for this in E-ANTIC yet
+};
 
-struct PrecExpr;
-
-struct RoundExpr;
-
-struct PrecTransformation;
-struct RoundTransformation;
-
-template <bool precisionBound = false>
-struct ArbAssignTransformation;
-
-template <bool precisionBound = false, bool roundBound = false>
-struct ArfAssignTransformation;
-}  // namespace yap
 }  // namespace exactreal
 
 #endif

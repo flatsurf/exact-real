@@ -24,9 +24,9 @@
 #include <boost/lexical_cast.hpp>
 #include <ostream>
 
-#include "exact-real/arb.hpp"
-#include "exact-real/arf.hpp"
-#include "exact-real/yap/arb.hpp"
+#include "../exact-real/arb.hpp"
+#include "../exact-real/arf.hpp"
+#include "../exact-real/yap/arb.hpp"
 
 using eantic::renf_elem_class;
 using std::ostream;

@@ -18,10 +18,11 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <gtest/gtest.h>
 #include <boost/lexical_cast.hpp>
 
-#include <exact-real/arf.hpp>
+#include "external/catch2/single_include/catch2/catch.hpp"
+
+#include "../exact-real/arf.hpp"
 
 using boost::lexical_cast;
 using std::string;

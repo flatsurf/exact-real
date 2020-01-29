@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -21,13 +21,13 @@
 #ifndef LIBEXACTREAL_REAL_NUMBER_HPP
 #define LIBEXACTREAL_REAL_NUMBER_HPP
 
-#include <gmpxx.h>
-#include <boost/operators.hpp>
 #include <memory>
 #include <optional>
 
-#include "exact-real/exact-real.hpp"
-#include "exact-real/forward.hpp"
+#include <gmpxx.h>
+#include <boost/operators.hpp>
+
+#include "forward.hpp"
 
 namespace exactreal {
 

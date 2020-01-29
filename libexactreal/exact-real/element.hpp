@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -21,18 +21,20 @@
 #ifndef LIBEXACTREAL_ELEMENT_HPP
 #define LIBEXACTREAL_ELEMENT_HPP
 
+#include <vector>
+#include <optional>
+#include <type_traits>
+
 #include <gmpxx.h>
 #include <boost/blank.hpp>
 #include <boost/operators.hpp>
-#include <optional>
-#include <type_traits>
-#include <vector>
-#include "exact-real/external/spimpl/spimpl.h"
 
-#include "exact-real/exact-real.hpp"
-#include "exact-real/forward.hpp"
-#include "exact-real/integer_ring.hpp"
-#include "exact-real/rational_field.hpp"
+#include "external/spimpl/spimpl.h"
+
+#include "exact-real.hpp"
+#include "forward.hpp"
+#include "integer_ring.hpp"
+#include "rational_field.hpp"
 
 namespace exactreal {
 

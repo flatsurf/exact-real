@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -18,32 +18,19 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBEXACTREAL_SMART_OSTREAM_HPP
-#define LIBEXACTREAL_SMART_OSTREAM_HPP
+#ifndef LIBEXACTREAL_YAP_PREC_TRANSFORMATION_HPP
+#define LIBEXACTREAL_YAP_PREC_TRANSFORMATION_HPP
 
-#include <memory>
-#include <ostream>
+#include "params_transformation.hpp"
 
-namespace exactreal {
-// A convenience print wrapper for easier debugging in GDB with
-// https://stackoverflow.com/a/55550136/812379
-template <class T>
-std::ostream& operator<<(std::ostream& os, const std::shared_ptr<T>& self) {
-  if (self == nullptr) {
-    return os << "nullptr";
-  } else {
-    return os << *self;
-  }
-}
+namespace exactreal::yap {
 
-template <class T>
-std::ostream& operator<<(std::ostream& os, const std::unique_ptr<T>& self) {
-  if (self == nullptr) {
-    return os << "nullptr";
-  } else {
-    return os << *self;
-  }
-}
+// A transformation to determine to precision than an expression has been
+// bound to. This is usually done by an explicit call, such as (x + y)(64).
+struct PrecTransformation : ParamsTransformation<prec> {
+  using ParamsTransformation<prec>::operator();
+};
+
 }  // namespace exactreal
 
 #endif

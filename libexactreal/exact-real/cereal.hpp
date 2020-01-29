@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -35,13 +35,6 @@
 #include "number_field.hpp"
 #include "rational_field.hpp"
 #include "real_number.hpp"
-
-extern "C" {
-int arb_load_str(arb_t res, const char* data);
-char* arb_dump_str(const arb_t x);
-int arf_load_str(arf_t res, const char* data);
-char* arf_dump_str(const arf_t x);
-}
 
 namespace exactreal {
 

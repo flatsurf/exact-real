@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -18,29 +18,35 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBEXACTREAL_RATIONAL_FIELD_HPP
-#define LIBEXACTREAL_RATIONAL_FIELD_HPP
+#ifndef LIBEXACTREAL_YAP_FORWARD_HPP
+#define LIBEXACTREAL_YAP_FORWARD_HPP
 
-#include <gmpxx.h>
-#include <boost/operators.hpp>
+#include <boost/hana/fwd/all.hpp>
+#include <boost/yap/expression.hpp>
 
-#include "exact-real/exact-real.hpp"
-#include "exact-real/forward.hpp"
+#include "../forward.hpp"
 
 namespace exactreal {
+namespace yap {
+template <boost::yap::expr_kind Kind, typename Tuple>
+struct ArbExpr;
 
-struct RationalField : boost::equality_comparable<RationalField> {
-  RationalField();
-  RationalField(const mpq_class&);
+template <boost::yap::expr_kind Kind, typename Tuple>
+struct ArfExpr;
 
-  static RationalField compositum(const RationalField& lhs, const RationalField& rhs);
+struct PrecExpr;
 
-  typedef mpq_class ElementClass;
-  static constexpr bool isField = true;
-  static Arb arb(const ElementClass& x, long prec);
-  bool operator==(const RationalField&) const { return true; }
-};
+struct RoundExpr;
 
+struct PrecTransformation;
+struct RoundTransformation;
+
+template <bool precisionBound = false>
+struct ArbAssignTransformation;
+
+template <bool precisionBound = false, bool roundBound = false>
+struct ArfAssignTransformation;
+}  // namespace yap
 }  // namespace exactreal
 
 #endif

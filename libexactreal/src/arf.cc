@@ -18,7 +18,7 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include "exact-real/arf.hpp"
+#include "../exact-real/arf.hpp"
 
 #include <arf.h>
 

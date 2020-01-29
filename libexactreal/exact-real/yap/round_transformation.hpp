@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -18,23 +18,20 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBEXACTREAL_YAP_ROUND_EXPR_HPP
-#define LIBEXACTREAL_YAP_ROUND_EXPR_HPP
+#ifndef LIBEXACTREAL_YAP_ROUND_TRANSFORMATION_HPP
+#define LIBEXACTREAL_YAP_ROUND_TRANSFORMATION_HPP
 
-#include "exact-real/arf.hpp"
-#include "exact-real/exact-real.hpp"
-#include "exact-real/yap/forward.hpp"
+#include "../arf.hpp"
+#include "params_transformation.hpp"
 
-namespace exactreal {
-namespace yap {
+namespace exactreal::yap {
 
-struct RoundExpr {
-  static boost::yap::expr_kind const kind = boost::yap::expr_kind::terminal;
-
-  boost::hana::tuple<Arf::Round> elements;
+// A transformation to determine to precision than an expression has been
+// bound to. This is usually done by an explicit call, such as (x + y)(64).
+struct RoundTransformation : ParamsTransformation<Arf::Round> {
+  using ParamsTransformation<Arf::Round>::operator();
 };
 
-}  // namespace yap
 }  // namespace exactreal
 
 #endif

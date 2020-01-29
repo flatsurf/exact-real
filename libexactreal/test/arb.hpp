@@ -21,14 +21,17 @@
 #ifndef EXACTREAL_TEST_ARB_HPP
 #define EXACTREAL_TEST_ARB_HPP
 
-#include <flint/flintxx/frandxx.h>
 #include <cassert>
-#include <exact-real/arb.hpp>
 #include <memory>
 
-using namespace exactreal;
+#include <flint/flintxx/frandxx.h>
+
+#include "../exact-real/arb.hpp"
+
 using std::make_unique;
 using std::unique_ptr;
+
+namespace exactreal::test {
 
 struct ArbTester {
   ArbTester() { reset(); }

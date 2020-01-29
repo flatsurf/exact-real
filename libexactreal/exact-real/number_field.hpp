@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -18,21 +18,35 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBEXACTREAL_YAP_PREC_TRANSFORMATION_HPP
-#define LIBEXACTREAL_YAP_PREC_TRANSFORMATION_HPP
+#ifndef LIBEXACTREAL_NUMBER_FIELD_HPP
+#define LIBEXACTREAL_NUMBER_FIELD_HPP
 
-#include "exact-real/exact-real.hpp"
-#include "exact-real/yap/forward.hpp"
-#include "exact-real/yap/params_transformation.hpp"
+#include <memory>
+
+#include <boost/operators.hpp>
+#include <e-antic/renfxx_fwd.h>
+
+#include "forward.hpp"
 
 namespace exactreal {
-namespace yap {
-// A transformation to determine to precision than an expression has been
-// bound to. This is usually done by an explicit call, such as (x + y)(64).
-struct PrecTransformation : ParamsTransformation<prec> {
-  using ParamsTransformation<prec>::operator();
+
+class NumberField : boost::equality_comparable<NumberField> {
+ public:
+  NumberField();
+  NumberField(const std::shared_ptr<const eantic::renf_class>&);
+  NumberField(const eantic::renf_elem_class&);
+
+  std::shared_ptr<const eantic::renf_class> parameters;
+
+  static NumberField compositum(const NumberField& lhs, const NumberField& rhs);
+
+  bool operator==(const NumberField&) const;
+
+  typedef eantic::renf_elem_class ElementClass;
+  static constexpr bool isField = true;
+  static Arb arb(const ElementClass& x, long prec);
 };
-}  // namespace yap
+
 }  // namespace exactreal
 
 #endif

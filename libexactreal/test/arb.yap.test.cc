@@ -18,10 +18,10 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <benchmark/benchmark.h>
-#include <gtest/gtest.h>
+#include "external/catch2/single_include/catch2/catch.hpp"
 
-#include <exact-real/yap/arb.hpp>
+#include "../exact-real/yap/arb.hpp"
+
 #include "arb.hpp"
 
 namespace exactreal {
