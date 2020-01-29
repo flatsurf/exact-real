@@ -143,7 +143,6 @@ TEST_CASE("Element over ZZ", "[element][integer_ring]") {
       REQUIRE(mpz_class(1) * x == x);
       REQUIRE(mpz_class(0) * x == m->zero());
     }
-
   }
 
   SECTION("Printing") {

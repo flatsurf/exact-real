@@ -67,4 +67,4 @@ TEST_CASE("Module over ZZ", "[module][integer_ring]") {
   }
 }
 
-}  // namespace exactreal
+}  // namespace exactreal::test

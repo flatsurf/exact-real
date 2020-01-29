@@ -32,6 +32,6 @@ struct RoundTransformation : ParamsTransformation<Arf::Round> {
   using ParamsTransformation<Arf::Round>::operator();
 };
 
-}  // namespace exactreal
+}  // namespace exactreal::yap
 
 #endif

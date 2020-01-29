@@ -22,7 +22,6 @@
 #define EXACTREAL_TEST_ARF_HPP
 
 #include <cassert>
-#include <cassert>
 
 #include <flint/flintxx/frandxx.h>
 
@@ -46,6 +45,6 @@ struct ArfTester {
   }
 };
 
-}
+}  // namespace exactreal::test
 
 #endif

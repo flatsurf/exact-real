@@ -97,7 +97,7 @@ void testArf(std::shared_ptr<const RealNumber> x) {
 }
 
 // Force creation of code for easier debugging in gdb; so we can call operator*.
-}
+}  // namespace exactreal::test
 
 template class std::shared_ptr<const exactreal::RealNumber>;
 

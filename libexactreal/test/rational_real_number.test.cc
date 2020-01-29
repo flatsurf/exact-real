@@ -63,4 +63,4 @@ TEST_CASE("Rational Real Number", "[real_number][rational]") {
   }
 }
 
-}  // namespace exactreal
+}  // namespace exactreal::test

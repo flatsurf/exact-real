@@ -23,8 +23,8 @@
 
 #include <memory>
 
-#include <boost/operators.hpp>
 #include <e-antic/renfxx_fwd.h>
+#include <boost/operators.hpp>
 
 #include "forward.hpp"
 

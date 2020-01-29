@@ -100,6 +100,6 @@ struct ArfAssignTransformation : AssignTransformation<Arf, ArfAssignTransformati
   }
 };
 
-}  // namespace exactreal
+}  // namespace exactreal::yap
 
 #endif

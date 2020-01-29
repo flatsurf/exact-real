@@ -21,9 +21,9 @@
 #ifndef LIBEXACTREAL_ELEMENT_HPP
 #define LIBEXACTREAL_ELEMENT_HPP
 
-#include <vector>
 #include <optional>
 #include <type_traits>
+#include <vector>
 
 #include <gmpxx.h>
 #include <boost/blank.hpp>

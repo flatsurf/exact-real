@@ -120,4 +120,4 @@ TEST_CASE("Arb Arithmetic with Yap", "[arb][yap]") {
   }
 }
 
-}  // namespace exactreal
+}  // namespace exactreal::test

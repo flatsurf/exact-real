@@ -66,7 +66,7 @@ TEST_CASE("Random Number in Interval", "[real_number][interval]") {
 }
 
 TEST_CASE("Random Number from Double", "[real_number][double]") {
-  SECTION("Equality"){
+  SECTION("Equality") {
     auto rnd = RealNumber::random(13.37);
     REQUIRE(*rnd == *rnd);
     REQUIRE(*rnd != *RealNumber::random());

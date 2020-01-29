@@ -25,11 +25,11 @@
 #include <boost/yap/expression.hpp>
 #include <optional>
 
+#include "../arb.hpp"
 #include "arb_assign_transformation.hpp"
 #include "arb_expr.hpp"
 #include "prec_expr.hpp"
 #include "prec_transformation.hpp"
-#include "../arb.hpp"
 
 namespace exactreal {
 namespace yap {

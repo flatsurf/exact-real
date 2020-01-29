@@ -77,4 +77,4 @@ TEST_CASE("Random Real", "[real_number]") {
   }
 }
 
-}  // namespace exactreal
+}  // namespace exactreal::test

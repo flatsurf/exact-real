@@ -22,8 +22,8 @@
 
 #include <benchmark/benchmark.h>
 
-#include "../exact-real/real_number.hpp"
 #include "../exact-real/arf.hpp"
+#include "../exact-real/real_number.hpp"
 
 namespace exactreal::test {
 
@@ -47,4 +47,4 @@ BENCHMARK_DEFINE_F(RandomRealNumberFixture, arf)
 
 BENCHMARK_REGISTER_F(RandomRealNumberFixture, arf)->Range(16, 1 << 16);
 
-}
+}  // namespace exactreal::test

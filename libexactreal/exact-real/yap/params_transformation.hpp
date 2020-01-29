@@ -55,6 +55,6 @@ struct ParamsTransformation {
   }
 };
 
-}  // namespace exactreal
+}  // namespace exactreal::yap
 
 #endif

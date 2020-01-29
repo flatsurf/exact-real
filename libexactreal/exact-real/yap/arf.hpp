@@ -24,13 +24,13 @@
 #include <boost/hana/fwd/all.hpp>
 #include <boost/yap/expression.hpp>
 
+#include "../arf.hpp"
 #include "arf_assign_transformation.hpp"
 #include "arf_expr.hpp"
 #include "prec_expr.hpp"
 #include "prec_transformation.hpp"
 #include "round_expr.hpp"
 #include "round_transformation.hpp"
-#include "../arf.hpp"
 
 namespace exactreal {
 

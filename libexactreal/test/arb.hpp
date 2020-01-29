@@ -51,6 +51,6 @@ struct ArbTester {
   }
 };
 
-}
+}  // namespace exactreal::test
 
 #endif

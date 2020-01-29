@@ -31,6 +31,6 @@ struct PrecTransformation : ParamsTransformation<prec> {
   using ParamsTransformation<prec>::operator();
 };
 
-}  // namespace exactreal
+}  // namespace exactreal::yap
 
 #endif
