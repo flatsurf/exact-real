@@ -34,13 +34,7 @@
 using cereal::JSONInputArchive;
 using cereal::JSONOutputArchive;
 
-using testing::Test;
-
-namespace exactreal {
-template <typename Ring>
-class CerealTest : public Test {};
-
-TYPED_TEST_CASE(CerealTest, Rings);
+namespace exactreal::test {
 
 template <typename T>
 struct is_shared_ptr : std::false_type {};
@@ -86,21 +80,21 @@ T test_serialization(const T& x) {
   throw std::runtime_error("deserialization failed to reconstruct element, the original value " + toString(x) + " had serialized to " + s.str() + " which deserialized to " + toString(y));
 }
 
-TEST(CerealTest, Arb) {
+TEST_CASE("Serialization of Arb", "[cereal][arb]") {
   ArbTester arbs;
   for (int i = 0; i < 1024; i++) {
     test_serialization(arbs.random());
   }
 }
 
-TEST(CerealTest, Arf) {
+TEST_CASE("Serialization of Arf", "[cereal][arf]") {
   ArfTester arfs;
   for (int i = 0; i < 1024; i++) {
     test_serialization(arfs.random());
   }
 }
 
-TEST(CerealTest, RealNumber) {
+TEST_CASE("Serialization of RealNumber", "[cereal][real_number]") {
   auto rnd = RealNumber::random();
   test_serialization(rnd);
 
@@ -114,21 +108,20 @@ TEST(CerealTest, RealNumber) {
   test_serialization(rnd);
 }
 
-TYPED_TEST(CerealTest, Module) {
-  auto trivial = Module<TypeParam>::make({});
+TEMPLATE_TEST_CASE("Serialization of Module", "[cereal][module]", (IntegerRing), (RationalField), (NumberField)) {
+  auto trivial = Module<TestType>::make({});
   test_serialization(trivial);
 
-  auto m = Module<TypeParam>::make({RealNumber::random(), RealNumber::random()});
+  auto m = Module<TestType>::make({RealNumber::random(), RealNumber::random()});
   test_serialization(m);
 }
 
-TYPED_TEST(CerealTest, Element) {
-  auto m = Module<TypeParam>::make({RealNumber::rational(1), RealNumber::random()});
+TEMPLATE_TEST_CASE("Serialization of Element", "[cereal][element]", (IntegerRing), (RationalField), (NumberField)) {
+  auto m = Module<TestType>::make({RealNumber::rational(1), RealNumber::random()});
 
   test_serialization(m->gen(1));
   test_serialization(m->zero());
-  test_serialization(Element<TypeParam>());
+  test_serialization(Element<TestType>());
 }
-}  // namespace exactreal
 
-#include "main.hpp"
+}  // namespace exactreal::test

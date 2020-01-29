@@ -27,44 +27,46 @@
 using boost::lexical_cast;
 using std::string;
 
-namespace exactreal {
-TEST(ArbTest, CreateDestroy) { delete new Arb(); }
+namespace exactreal::test {
 
-TEST(ArbTest, Relations) {
+TEST_CASE("Create/Destroy Arb", "[arb]") {
+  delete new Arb();
+}
+
+TEST_CASE("Relational Operators of Arb", "[arb]") {
   Arb x(-1), y(1);
 
-  ASSERT_TRUE((x < y) && *(x < y));
-  ASSERT_TRUE((y > x) && *(y > x));
-  ASSERT_TRUE((x <= y) && *(x <= y));
-  ASSERT_TRUE((y >= x) && *(y >= x));
-  ASSERT_TRUE((x == x) && *(x == x));
-  ASSERT_TRUE((x != y) && *(x != y));
-  ASSERT_TRUE((y > x) && !*(y < x));
-  ASSERT_TRUE((x < y) && !*(x > y));
-  ASSERT_TRUE((y >= x) && !*(y <= x));
-  ASSERT_TRUE((x <= y) && !*(x >= y));
+  REQUIRE(((x < y) && *(x < y)));
+  REQUIRE(((y > x) && *(y > x)));
+  REQUIRE(((x <= y) && *(x <= y)));
+  REQUIRE(((y >= x) && *(y >= x)));
+  REQUIRE(((x == x) && *(x == x)));
+  REQUIRE(((x != y) && *(x != y)));
+  REQUIRE(((y > x) && !*(y < x)));
+  REQUIRE(((x < y) && !*(x > y)));
+  REQUIRE(((y >= x) && !*(y <= x)));
+  REQUIRE(((x <= y) && !*(x >= y)));
 }
 
-TEST(ArbTest, UnaryMinus) {
+TEST_CASE("Unary Minus of Arb", "[arb]") {
   Arb x(1);
 
-  ASSERT_TRUE(x == -(-x) && *(x == -(-x)));
-  ASSERT_TRUE(x == -x && !*(x == -x));
+  REQUIRE((x == -(-x) && *(x == -(-x))));
+  REQUIRE((x == -x && !*(x == -x)));
 }
 
-TEST(ArbTest, IsExact) {
-  ASSERT_TRUE(Arb(mpq_class(1, 2), 2).is_exact());
-  ASSERT_FALSE(Arb(mpq_class(1, 3), 2).is_exact());
+TEST_CASE("Exactness of Arb", "[arb]") {
+  REQUIRE(Arb(mpq_class(1, 2), 2).is_exact());
+  REQUIRE(!Arb(mpq_class(1, 3), 2).is_exact());
 }
 
-TEST(ArbTest, Printing) {
-  EXPECT_EQ(lexical_cast<string>(Arb()), "0");
-  EXPECT_EQ(lexical_cast<string>(Arb(1337)), "1337.00");
-  EXPECT_EQ(lexical_cast<string>(Arb(string(1337, '1'), 1024)), "[1.11111e+1336 +/- 1.12e+1330]");
-  EXPECT_EQ(lexical_cast<string>(Arb("." + string(1337, '0') + "1", 1024)), "[1.00000e-1338 +/- 3e-1348]");
-  ASSERT_EQ(lexical_cast<string>(Arb(mpq_class(1, 2), 1)), "0.500000");
-  ASSERT_EQ(lexical_cast<string>(Arb(mpq_class(1, 3), 64)), "[0.333333 +/- 3.34e-7]");
+TEST_CASE("Print Arb", "[arb]") {
+  REQUIRE(lexical_cast<string>(Arb()) == "0");
+  REQUIRE(lexical_cast<string>(Arb(1337)) == "1337.00");
+  REQUIRE(lexical_cast<string>(Arb(string(1337, '1'), 1024)) == "[1.11111e+1336 +/- 1.12e+1330]");
+  REQUIRE(lexical_cast<string>(Arb("." + string(1337, '0') + "1", 1024)) == "[1.00000e-1338 +/- 3e-1348]");
+  REQUIRE(lexical_cast<string>(Arb(mpq_class(1, 2), 1)) == "0.500000");
+  REQUIRE(lexical_cast<string>(Arb(mpq_class(1, 3), 64)) == "[0.333333 +/- 3.34e-7]");
 }
-}  // namespace exactreal
 
-#include "main.hpp"
+}  // namespace exactreal::test

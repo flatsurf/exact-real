@@ -38,8 +38,9 @@ using std::shared_ptr;
 using std::string;
 using std::vector;
 
-namespace exactreal {
-TEST(Element, FromPrimitives) {
+namespace exactreal::test {
+
+TEST_CASE("Elements from Primitives", "[element]") {
   auto m = Module<RationalField>::make({RealNumber::rational(1), RealNumber::random()});
   auto x = m->gen(1);
 
@@ -48,241 +49,228 @@ TEST(Element, FromPrimitives) {
   auto quot = Element(mpq_class(1, 2));
 
   // Check that arithmetic works with elements from different trivial rings
-  EXPECT_EQ(one + zero, one);
-  EXPECT_EQ(quot + zero, quot);
-  EXPECT_EQ(quot + one, one + quot);
+  REQUIRE(one + zero == one);
+  REQUIRE(quot + zero == quot);
+  REQUIRE(quot + one == one + quot);
 
-  EXPECT_EQ(x + zero, x);
-  EXPECT_EQ(x + one - one, x);
-  EXPECT_EQ(x + quot + quot, x + one);
+  REQUIRE(x + zero == x);
+  REQUIRE(x + one - one == x);
+  REQUIRE(x + quot + quot == x + one);
 
   // Comparison between different parents in trivial cases
-  EXPECT_EQ(quot - quot, zero);
-  EXPECT_EQ(quot + quot, one);
-  EXPECT_EQ(x - x, zero);
-  EXPECT_EQ(x + one - x, one);
+  REQUIRE(quot - quot == zero);
+  REQUIRE(quot + quot == one);
+  REQUIRE(x - x == zero);
+  REQUIRE(x + one - x == one);
 }
 
-TEST(ElementZZ, Generators) {
+TEST_CASE("Element over ZZ", "[element][integer_ring]") {
   auto m = Module<IntegerRing>::make({RealNumber::rational(1), RealNumber::random()});
 
   auto one = m->gen(0);
   auto x = m->gen(1);
-
-  EXPECT_EQ(one, one);
-  EXPECT_EQ(x, x);
-  EXPECT_EQ(x, m->gen(1));
-  EXPECT_NE(one, x);
-  EXPECT_GT(x, m->zero());
-  EXPECT_LT(x, one);
-
-  EXPECT_EQ(x[0], 0);
-  EXPECT_EQ(x[1], 1);
-}
-
-TEST(ElementZZ, Additive) {
-  auto m = Module<IntegerRing>::make({RealNumber::rational(1), RealNumber::random()});
-
-  Element<IntegerRing> elements[]{m->gen(0), m->gen(1)};
-
-  for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
-    auto x = elements[i];
-    EXPECT_GT(x + elements[0], x);
-    EXPECT_GT(x + elements[0], elements[0]);
-    EXPECT_EQ(x - elements[i], m->zero());
-  }
-}
-
-TEST(ElementZZ, PromotionFromTrivial) {
-  auto m = Module<IntegerRing>::make({RealNumber::rational(1), RealNumber::random()});
-
-  auto gen = m->gen(1);
   auto zero = m->zero();
   auto trivial = Element<IntegerRing>();
 
-  EXPECT_EQ(zero, trivial);
-  EXPECT_NE(gen, trivial);
+  SECTION("Relational Operators") {
+    REQUIRE(one == one);
+    REQUIRE(x == x);
+    REQUIRE(x == m->gen(1));
+    REQUIRE(one != x);
+    REQUIRE(x > m->zero());
+    REQUIRE(x < one);
 
-  EXPECT_EQ(gen + trivial, gen);
-  EXPECT_EQ(zero + trivial, zero);
-  EXPECT_EQ(0 * gen, trivial);
-  EXPECT_GE(gen, trivial);
-}
-
-TEST(ElementZZ, PromotionFromSubmodule) {
-  auto m = Module<IntegerRing>::make({RealNumber::rational(1)});
-  auto n = Module<IntegerRing>::make({RealNumber::rational(1), RealNumber::random()});
-
-  EXPECT_EQ(m->gen(0), n->gen(0));
-  EXPECT_NE(m->gen(0), n->gen(1));
-  EXPECT_EQ(&*(m->gen(0) + n->gen(0)).module(), &*n);
-}
-
-TEST(ElementZZ, Scalars) {
-  auto m = Module<IntegerRing>::make({RealNumber::rational(1), RealNumber::random()});
-
-  Element<IntegerRing> elements[]{m->gen(0), m->gen(1)};
-
-  for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
-    auto x = elements[i];
-    EXPECT_EQ(x + x, 2 * x);
-    EXPECT_EQ(x - x, 0 * x);
-    EXPECT_EQ(-1 * x, -x);
-    EXPECT_EQ(1 * x, x);
-    EXPECT_EQ(0 * x, m->zero());
-    EXPECT_EQ(Element<IntegerRing>() * x, Element<IntegerRing>());
+    REQUIRE(x[0] == 0);
+    REQUIRE(x[1] == 1);
   }
 
-  for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
-    auto x = elements[i];
-    EXPECT_EQ(x + x, mpz_class(2) * x);
-    EXPECT_GT(mpz_class(2) * x, x);
-    EXPECT_EQ(x - x, mpz_class(0) * x);
-    EXPECT_EQ(mpz_class(-1) * x, -x);
-    EXPECT_LT(mpz_class(-1) * x, x);
-    EXPECT_LT(mpz_class(-1) * x, m->zero());
-    auto one = RealNumber::rational(1);
-    EXPECT_LT(mpz_class(-1) * x, *one);
-    if (i == 0)
-      EXPECT_EQ(x, *one);
-    else
-      EXPECT_NE(x, *one);
-    EXPECT_EQ(mpz_class(1) * x, x);
-    EXPECT_EQ(mpz_class(0) * x, m->zero());
+  SECTION("Additive Structure") {
+    Element<IntegerRing> elements[]{one, x};
+
+    for (size_t i = 0; i < sizeof(elements) / sizeof(one); i++) {
+      auto x = elements[i];
+      REQUIRE(x + elements[0] > x);
+      REQUIRE(x + elements[0] > elements[0]);
+      REQUIRE(x - elements[i] == m->zero());
+    }
+  }
+
+  SECTION("Promotion from Trivial Elements") {
+    REQUIRE(zero == trivial);
+    REQUIRE(x != trivial);
+
+    REQUIRE(x + trivial == x);
+    REQUIRE(zero + trivial == zero);
+    REQUIRE(0 * x == trivial);
+    REQUIRE(x >= trivial);
+  }
+
+  SECTION("Promotion from Submodule") {
+    auto n = Module<IntegerRing>::make({RealNumber::rational(1)});
+
+    REQUIRE(n->gen(0) == one);
+    REQUIRE(n->gen(0) != x);
+    REQUIRE(&*(n->gen(0) + one).module() == &*m);
+  }
+
+  SECTION("Arithmetic with Scalars") {
+    Element<IntegerRing> elements[]{one, x};
+
+    for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
+      auto x = elements[i];
+      REQUIRE(x + x == 2 * x);
+      REQUIRE(x - x == 0 * x);
+      REQUIRE(-1 * x == -x);
+      REQUIRE(1 * x == x);
+      REQUIRE(0 * x == m->zero());
+      REQUIRE(Element<IntegerRing>() * x == Element<IntegerRing>());
+    }
+
+    for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
+      auto x = elements[i];
+      REQUIRE(x + x == mpz_class(2) * x);
+      REQUIRE(mpz_class(2) * x > x);
+      REQUIRE(x - x == mpz_class(0) * x);
+      REQUIRE(mpz_class(-1) * x == -x);
+      REQUIRE(mpz_class(-1) * x < x);
+      REQUIRE(mpz_class(-1) * x < m->zero());
+      auto one = RealNumber::rational(1);
+      REQUIRE(mpz_class(-1) * x < *one);
+      if (i == 0)
+        REQUIRE(x == *one);
+      else
+        REQUIRE(x != *one);
+      REQUIRE(mpz_class(1) * x == x);
+      REQUIRE(mpz_class(0) * x == m->zero());
+    }
+
+  }
+
+  SECTION("Printing") {
+    REQUIRE(lexical_cast<string>(m->gen(0)) == "1");
+    REQUIRE(lexical_cast<string>(m->gen(1)) == "ℝ(0.982253…)");
+    REQUIRE(lexical_cast<string>(m->gen(0) + m->gen(1)) == "ℝ(0.982253…) + 1");
+  }
+
+  SECTION("Multiplication") {
+    REQUIRE(one * one == one);
+    REQUIRE(one * x == x);
+    REQUIRE(x * x != x);
+    REQUIRE(x * x == x * x);
+    REQUIRE(x - x * one == one - one);
   }
 }
 
-TEST(ElementZZ, Printing) {
-  auto m = Module<IntegerRing>::make({RealNumber::rational(1), RealNumber::random()});
-
-  EXPECT_EQ(lexical_cast<string>(m->gen(0)), "1");
-  EXPECT_EQ(lexical_cast<string>(m->gen(1)), "ℝ(0.982253…)");
-  EXPECT_EQ(lexical_cast<string>(m->gen(0) + m->gen(1)), "ℝ(0.982253…) + 1");
-}
-
-TEST(ElementZZ, Multiplication) {
-  auto m = Module<IntegerRing>::make({RealNumber::rational(1), RealNumber::random()});
-
-  auto one = m->gen(0);
-  auto rnd = m->gen(1);
-
-  EXPECT_EQ(one * one, one);
-  EXPECT_EQ(one * rnd, rnd);
-  EXPECT_NE(rnd * rnd, rnd);
-  EXPECT_EQ(rnd * rnd, rnd * rnd);
-  EXPECT_EQ(rnd - rnd * one, one - one);
-}
-
-TEST(ElementQQ, Scalars) {
+TEST_CASE("Element over QQ", "[element][rational_field]") {
   auto m = Module<RationalField>::make({RealNumber::rational(1), RealNumber::random()});
 
   Element<RationalField> elements[]{m->gen(0), m->gen(1)};
 
-  for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
-    auto x = elements[i];
-    EXPECT_EQ(x + x, 2 * x);
-    EXPECT_EQ(x - x, 0 * x);
-    EXPECT_EQ(-1 * x, -x);
-    EXPECT_EQ(1 * x, x);
-    EXPECT_EQ(0 * x, m->zero());
-    EXPECT_EQ(Element<RationalField>() * x, Element<RationalField>());
-  }
+  SECTION("Scalars") {
+    for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
+      auto x = elements[i];
+      REQUIRE(x + x == 2 * x);
+      REQUIRE(x - x == 0 * x);
+      REQUIRE(-1 * x == -x);
+      REQUIRE(1 * x == x);
+      REQUIRE(0 * x == m->zero());
+      REQUIRE(Element<RationalField>() * x == Element<RationalField>());
+    }
 
-  for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
-    auto x = elements[i];
-    EXPECT_EQ(x + x, mpz_class(2) * x);
-    EXPECT_GT(mpz_class(2) * x, x);
-    EXPECT_EQ(x - x, mpz_class(0) * x);
-    EXPECT_EQ(mpz_class(-1) * x, -x);
-    EXPECT_LT(mpz_class(-1) * x, x);
-    EXPECT_LT(mpz_class(-1) * x, m->zero());
-    auto one = RealNumber::rational(1);
-    EXPECT_LT(mpz_class(-1) * x, *one);
-    if (i == 0)
-      EXPECT_EQ(x, *one);
-    else
-      EXPECT_NE(x, *one);
-    EXPECT_EQ(mpz_class(1) * x, x);
-    EXPECT_EQ(mpz_class(0) * x, m->zero());
-  }
-
-  for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
-    auto x = elements[i];
-    EXPECT_EQ(x + x, mpq_class(2) * x);
-    EXPECT_EQ(x - x, mpq_class(0) * x);
-    EXPECT_EQ(mpq_class(-1) * x, -x);
-    EXPECT_EQ(mpq_class(1) * x, x);
-    EXPECT_EQ(mpq_class(0) * x, m->zero());
-  }
-}
-
-TEST(ElementNF, Scalars) {
-  auto K = renf_class::make("a^2 - 2", "a", "1.41 +/- 0.1", 64);
-  auto m = Module<NumberField>::make({RealNumber::rational(1), RealNumber::random()}, K);
-
-  Element<NumberField> elements[]{m->gen(0), m->gen(1)};
-
-  for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
-    auto x = elements[i];
-    EXPECT_EQ(x + x, 2 * x);
-    EXPECT_EQ(x - x, 0 * x);
-    EXPECT_EQ(-1 * x, -x);
-    EXPECT_EQ(1 * x, x);
-    EXPECT_EQ(0 * x, m->zero());
-    EXPECT_EQ(Element<NumberField>() * x, Element<NumberField>());
-  }
-
-  for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
-    auto x = elements[i];
-    EXPECT_EQ(x + x, mpz_class(2) * x);
-    EXPECT_GT(mpz_class(2) * x, x);
-    EXPECT_EQ(x - x, mpz_class(0) * x);
-    EXPECT_EQ(mpz_class(-1) * x, -x);
-    EXPECT_LT(mpz_class(-1) * x, x);
-    EXPECT_LT(mpz_class(-1) * x, m->zero());
-    auto one = RealNumber::rational(1);
-    EXPECT_LT(mpz_class(-1) * x, *one);
-    if (i == 0)
-      EXPECT_EQ(x, *one);
-    else
-      EXPECT_NE(x, *one);
-    EXPECT_EQ(mpz_class(1) * x, x);
-    EXPECT_EQ(mpz_class(0) * x, m->zero());
-  }
-
-  for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
-    auto x = elements[i];
-    EXPECT_EQ(x + x, renf_elem_class(K, 2) * x);
-    EXPECT_EQ(x - x, renf_elem_class(K, 0) * x);
-    EXPECT_EQ(renf_elem_class(K, -1) * x, -x);
-    EXPECT_EQ(renf_elem_class(K, 1) * x, x);
-    EXPECT_EQ(renf_elem_class(K, 0) * x, m->zero());
-    EXPECT_EQ(-(renf_elem_class(K, "a") * x), renf_elem_class(K, "-a") * x);
-    EXPECT_GT(renf_elem_class(K, "a") * x, x);
-    EXPECT_GT(2 * x, renf_elem_class(K, "a") * x);
-    EXPECT_EQ(mpq_class(1, 2) * x, x / 2);
-
-    for (size_t j = 0; j < sizeof(elements) / sizeof(elements[0]); j++) {
-      if (i == j)
-        EXPECT_EQ((x + x) / elements[j], 2);
+    for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
+      auto x = elements[i];
+      REQUIRE(x + x == mpz_class(2) * x);
+      REQUIRE(mpz_class(2) * x > x);
+      REQUIRE(x - x == mpz_class(0) * x);
+      REQUIRE(mpz_class(-1) * x == -x);
+      REQUIRE(mpz_class(-1) * x < x);
+      REQUIRE(mpz_class(-1) * x < m->zero());
+      auto one = RealNumber::rational(1);
+      REQUIRE(mpz_class(-1) * x < *one);
+      if (i == 0)
+        REQUIRE(x == *one);
       else
-        EXPECT_EQ((x + x) / elements[j], std::optional<renf_elem_class>{});
+        REQUIRE(x != *one);
+      REQUIRE(mpz_class(1) * x == x);
+      REQUIRE(mpz_class(0) * x == m->zero());
+    }
+
+    for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
+      auto x = elements[i];
+      REQUIRE(x + x == mpq_class(2) * x);
+      REQUIRE(x - x == mpq_class(0) * x);
+      REQUIRE(mpq_class(-1) * x == -x);
+      REQUIRE(mpq_class(1) * x == x);
+      REQUIRE(mpq_class(0) * x == m->zero());
     }
   }
 }
 
-TEST(ElementNF, Coefficients) {
+TEST_CASE("Elements over Number Field", "[element][number_field]") {
   auto K = renf_class::make("a^2 - 2", "a", "1.41 +/- 0.1", 64);
   auto m = Module<NumberField>::make({RealNumber::rational(1), RealNumber::random()}, K);
 
   auto x = m->gen(1);
   auto a = renf_elem_class(K, "a");
 
-  EXPECT_EQ(x.coefficients(), std::vector<renf_elem_class>({0, 1}));
-  EXPECT_EQ((a * x).coefficients(), std::vector<renf_elem_class>({0, a}));
-  EXPECT_EQ(x.coefficients<mpq_class>(), std::vector<mpq_class>({0, 0, 1, 0}));
-  EXPECT_EQ((a * x).coefficients<mpq_class>(), std::vector<mpq_class>({0, 0, 0, 1}));
-}
-}  // namespace exactreal
+  Element<NumberField> elements[]{m->gen(0), x};
 
-#include "main.hpp"
+  SECTION("Scalars") {
+    for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
+      auto x = elements[i];
+      REQUIRE(x + x == 2 * x);
+      REQUIRE(x - x == 0 * x);
+      REQUIRE(-1 * x == -x);
+      REQUIRE(1 * x == x);
+      REQUIRE(0 * x == m->zero());
+      REQUIRE(Element<NumberField>() * x == Element<NumberField>());
+    }
+
+    for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
+      auto x = elements[i];
+      REQUIRE(x + x == mpz_class(2) * x);
+      REQUIRE(mpz_class(2) * x > x);
+      REQUIRE(x - x == mpz_class(0) * x);
+      REQUIRE(mpz_class(-1) * x == -x);
+      REQUIRE(mpz_class(-1) * x < x);
+      REQUIRE(mpz_class(-1) * x < m->zero());
+      auto one = RealNumber::rational(1);
+      REQUIRE(mpz_class(-1) * x < *one);
+      if (i == 0)
+        REQUIRE(x == *one);
+      else
+        REQUIRE(x != *one);
+      REQUIRE(mpz_class(1) * x == x);
+      REQUIRE(mpz_class(0) * x == m->zero());
+    }
+
+    for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
+      auto x = elements[i];
+      REQUIRE(x + x == renf_elem_class(K, 2) * x);
+      REQUIRE(x - x == renf_elem_class(K, 0) * x);
+      REQUIRE(renf_elem_class(K, -1) * x == -x);
+      REQUIRE(renf_elem_class(K, 1) * x == x);
+      REQUIRE(renf_elem_class(K, 0) * x == m->zero());
+      REQUIRE(-(renf_elem_class(K, "a") * x) == renf_elem_class(K, "-a") * x);
+      REQUIRE(renf_elem_class(K, "a") * x > x);
+      REQUIRE(2 * x > renf_elem_class(K, "a") * x);
+      REQUIRE(mpq_class(1, 2) * x == x / 2);
+
+      for (size_t j = 0; j < sizeof(elements) / sizeof(elements[0]); j++) {
+        if (i == j)
+          REQUIRE((x + x) / elements[j] == 2);
+        else
+          REQUIRE((x + x) / elements[j] == std::optional<renf_elem_class>{});
+      }
+    }
+  }
+
+  SECTION("Coefficients") {
+    REQUIRE(x.coefficients() == std::vector<renf_elem_class>({0, 1}));
+    REQUIRE((a * x).coefficients() == std::vector<renf_elem_class>({0, a}));
+    REQUIRE(x.coefficients<mpq_class>() == std::vector<mpq_class>({0, 0, 1, 0}));
+    REQUIRE((a * x).coefficients<mpq_class>() == std::vector<mpq_class>({0, 0, 0, 1}));
+  }
+}
+
+}  // namespace exactreal::test

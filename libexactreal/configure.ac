@@ -52,18 +52,17 @@ AC_CHECK_HEADERS([e-antic/renfxx.h], , AC_MSG_ERROR([E-ANTIC headers not found])
 AC_CHECK_LIB([eantic], [renf_elem_clear], , AC_MSG_ERROR([E-ANTIC library not found]), [-lgmp -lmpfr -lflint])
 AX_CXX_CHECK_LIB([eanticxx], [eantic::renf_elem_class], , AC_MSG_ERROR([E-ANTIC library not found]), [-lgmp -lmpfr -lflint])
 
-dnl Our test suite uses googletest and Google's C++ benchmark library.
-dnl We fail if they cannot be found but let the user disable all checks explicitly.
-AC_ARG_WITH([googletest], AS_HELP_STRING([--without-googletest], [Do not build C++ tests that require googletest/benchmark]))
-AS_IF([test "x$with_googletest" != "xno"],
+dnl Our benchmarks use Google's C++ benchmark library.
+dnl We fail if they cannot be found but let the user disable it explicitly.
+AC_ARG_WITH([benchmark], AS_HELP_STRING([--without-benchmark], [Do not build C++ benchmarks that require google/benchmark]))
+AS_IF([test "x$with_benchmark" != "xno"],
       [
-       with_googletest=yes
-       AC_CHECK_HEADERS([gtest/gtest.h], , AC_MSG_ERROR([googletest headers for make check not found; run --without-googletest to disable these tests in make check]))
-       AC_CHECK_HEADERS([benchmark/benchmark.h], , AC_MSG_ERROR([benchmark headers for make check not found; run --without-googletest to disable these tests in make check]))
+       with_benchmark=yes
+       AC_CHECK_HEADERS([benchmark/benchmark.h], , AC_MSG_ERROR([benchmark headers not found; run --without-benchmark to disable building of benchmark/]))
       ], [])
-AM_CONDITIONAL([HAVE_GOOGLETEST], [test "x$with_googletest" = "xyes"])
+AM_CONDITIONAL([HAVE_BENCHMARK], [test "x$with_benchmark" = "xyes"])
 
-AC_CONFIG_HEADERS([src/exact-real/config.h])
-AC_CONFIG_FILES([Makefile src/Makefile test/Makefile])
+AC_CONFIG_HEADERS([exact-real/config.h])
+AC_CONFIG_FILES([Makefile src/Makefile test/Makefile benchmark/Makefile])
 
 AC_OUTPUT

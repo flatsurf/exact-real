@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -19,12 +19,13 @@
  *********************************************************************/
 
 #include <benchmark/benchmark.h>
-#include <gtest/gtest.h>
 
-#include <exact-real/yap/arb.hpp>
-#include "arb.hpp"
+#include "../test/arb.hpp"
 
-namespace exactreal {
+#include "../exact-real/yap/arb.hpp"
+
+namespace exactreal::test {
+
 struct ArbBenchmark : public benchmark::Fixture {
   void SetUp(const benchmark::State& state) override { SetUp(const_cast<benchmark::State&>(state)); }
 
@@ -66,8 +67,6 @@ BENCHMARK_DEFINE_F(ArbBenchmark, CreateMove)
     // output.
     skip = !skip;
   }
-
-  ASSERT_TRUE(x.equal(z));
 }
 BENCHMARK_REGISTER_F(ArbBenchmark, CreateMove)->Apply(ArbBenchmark::BenchmarkedSizes);
 
@@ -106,8 +105,6 @@ BENCHMARK_DEFINE_F(ArbBenchmark, Assign)
   for (auto _ : state) {
     x = y;
   }
-
-  ASSERT_TRUE(x.equal(y));
 }
 BENCHMARK_REGISTER_F(ArbBenchmark, Assign)->Apply(ArbBenchmark::BenchmarkedSizes);
 
@@ -121,8 +118,6 @@ BENCHMARK_DEFINE_F(ArbBenchmark, AssignMove)
     x = std::move(y);
     y = std::move(x);
   }
-
-  ASSERT_TRUE(z.equal(y));
 }
 BENCHMARK_REGISTER_F(ArbBenchmark, AssignMove)->Apply(ArbBenchmark::BenchmarkedSizes);
 
@@ -199,5 +194,5 @@ BENCHMARK_DEFINE_F(ArbBenchmark, Arithmetic_C_optimized)
   }
 }
 BENCHMARK_REGISTER_F(ArbBenchmark, Arithmetic_C_optimized)->Apply(ArbBenchmark::BenchmarkedSizes);
-}  // namespace exactreal
-#include "main.hpp"
+
+}  // namespace exactreal::test

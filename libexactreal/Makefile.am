@@ -1,3 +1,7 @@
-SUBDIRS = src test
+if HAVE_BENCHMARK
+    MAYBE_BENCHMARK = benchmark
+endif
+
+SUBDIRS = src test $(MAYBE_BENCHMARK)
 
 ACLOCAL_AMFLAGS = -I m4

@@ -51,4 +51,6 @@ struct ArbTester {
   }
 };
 
+}
+
 #endif

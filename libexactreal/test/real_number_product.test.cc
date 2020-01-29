@@ -26,8 +26,9 @@
 
 #include "arf.test.hpp"
 
-namespace exactreal {
-TEST(ProductRealNumberTest, Equality) {
+namespace exactreal::test {
+
+TEST_CASE("Product of Real Numbers", "[real_number][product]") {
   for (auto da : {.424554, 13.37, .012345, 1.00112233}) {
     for (auto db : {.910621, 1.020304, 0.5}) {
       auto a = RealNumber::random(da);
@@ -37,24 +38,11 @@ TEST(ProductRealNumberTest, Equality) {
       auto ab = *a * (*b);
       auto a2b2 = *ab * (*ab);
 
-      ASSERT_EQ(*ab, *(*b * (*a)));
-      ASSERT_NE(*ab, *a2);
-      ASSERT_NE(*a, *a2);
-      ASSERT_EQ(*a2b2, *(*a2 * (*b2)));
-      ASSERT_NE(*a2b2, *ab);
-    }
-  }
-}
-
-TEST(ProductRealNumberTest, arf) {
-  for (auto da : {.424554, 13.37, .012345, 1.00112233}) {
-    for (auto db : {.910621, 1.020304, 0.5}) {
-      auto a = RealNumber::random(da);
-      auto b = RealNumber::random(db);
-      auto a2 = *a * (*a);
-      auto b2 = *b * (*b);
-      auto ab = *a * (*b);
-      auto a2b2 = *ab * (*ab);
+      REQUIRE(*ab == *(*b * (*a)));
+      REQUIRE(*ab != *a2);
+      REQUIRE(*a != *a2);
+      REQUIRE(*a2b2 == *(*a2 * (*b2)));
+      REQUIRE(*a2b2 != *ab);
 
       testArf(a);
       testArf(b);
@@ -65,6 +53,5 @@ TEST(ProductRealNumberTest, arf) {
     }
   }
 }
-}  // namespace exactreal
 
-#include "main.hpp"
+}  // namespace exactreal::test

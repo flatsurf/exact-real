@@ -26,72 +26,55 @@
 
 #include "arf.test.hpp"
 
-namespace exactreal {
-TEST(RandomRealNumberTest, Equality) {
+namespace exactreal::test {
+
+TEST_CASE("Random Real", "[real_number]") {
   auto rnd = RealNumber::random();
-  EXPECT_EQ(*rnd, *rnd);
-  EXPECT_NE(*rnd, *RealNumber::random());
-}
 
-TEST(RandomRealNumberTest, Double) {
-  auto rnd = RealNumber::random();
-  EXPECT_EQ(static_cast<double>(*rnd), static_cast<double>(*rnd));
-  EXPECT_GE(static_cast<double>(*rnd), 0.);
-  EXPECT_LT(static_cast<double>(*rnd), 1.);
-}
+  SECTION("Equality") {
+    REQUIRE(*rnd == *rnd);
+    REQUIRE(*rnd != *RealNumber::random());
+  }
 
-TEST(RandomRealNumberTest, arf) { testArf(RealNumber::random()); }
+  SECTION("Conversion to Double") {
+    REQUIRE(static_cast<double>(*rnd) == static_cast<double>(*rnd));
+    REQUIRE(static_cast<double>(*rnd) >= 0.);
+    REQUIRE(static_cast<double>(*rnd) <= 1.);
+  }
 
-TEST(RandomRealNumberTest, refine) {
-  auto rnd = RealNumber::random();
-  for (unsigned int prec = 1; prec <= 1024; prec *= 2) {
-    Arb a = Arb::zero_pm_inf();
+  SECTION("Conversion to Arf") {
+    testArf(RealNumber::random());
+  }
 
-    rnd->refine(a, prec);
-    EXPECT_EQ(arb_rel_accuracy_bits(a.arb_t()), prec);
+  SECTION("Refine") {
+    for (unsigned int prec = 1; prec <= 1024; prec *= 2) {
+      Arb a = Arb::zero_pm_inf();
 
-    rnd->refine(a, prec / 2);
-    EXPECT_EQ(arb_rel_accuracy_bits(a.arb_t()), prec);
+      rnd->refine(a, prec);
+      REQUIRE(arb_rel_accuracy_bits(a.arb_t()) == prec);
 
-    EXPECT_EQ(rnd->cmp(a), 0);
+      rnd->refine(a, prec / 2);
+      REQUIRE(arb_rel_accuracy_bits(a.arb_t()) == prec);
+
+      REQUIRE(rnd->cmp(a) == 0);
+    }
+  }
+
+  SECTION("Comparison") {
+    auto rnd0 = RealNumber::random();
+    auto rnd1 = RealNumber::random();
+    REQUIRE(*rnd0 != *rnd1);
+    REQUIRE(*rnd0 == *rnd0);
+    REQUIRE(*rnd1 == *rnd1);
+
+    REQUIRE((*rnd0 < *rnd1) != (*rnd0 > *rnd1));
+    if (*rnd0 > *rnd1) {
+      return;
+    }
+
+    REQUIRE(*rnd0 < *rnd1);
+    REQUIRE(*rnd1 > *rnd0);
   }
 }
 
-TEST(RandomRealNumberTest, comparison) {
-  auto rnd0 = RealNumber::random();
-  auto rnd1 = RealNumber::random();
-  EXPECT_NE(*rnd0, *rnd1);
-  EXPECT_EQ(*rnd0, *rnd0);
-  EXPECT_EQ(*rnd1, *rnd1);
-
-  EXPECT_TRUE((*rnd0 < *rnd1) != (*rnd0 > *rnd1));
-  if (*rnd0 > *rnd1) {
-    return;
-  }
-
-  EXPECT_LT(*rnd0, *rnd1);
-  EXPECT_GT(*rnd1, *rnd0);
-}
-
-struct RandomRealNumberFixture : benchmark::Fixture {
-  std::shared_ptr<const RealNumber> rnd = RealNumber::random();
-};
-
-BENCHMARK_F(RandomRealNumberFixture, Double)
-(benchmark::State& state) {
-  for (auto _ : state) {
-    benchmark::DoNotOptimize(static_cast<double>(*rnd));
-  }
-}
-
-BENCHMARK_DEFINE_F(RandomRealNumberFixture, arf)
-(benchmark::State& state) {
-  for (auto _ : state) {
-    benchmark::DoNotOptimize(rnd->arf(static_cast<unsigned int>(state.range(0))));
-  }
-}
-
-BENCHMARK_REGISTER_F(RandomRealNumberFixture, arf)->Range(16, 1 << 16);
 }  // namespace exactreal
-
-#include "main.hpp"

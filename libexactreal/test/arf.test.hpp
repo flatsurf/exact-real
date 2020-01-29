@@ -31,8 +31,9 @@
 #include "../exact-real/real_number.hpp"
 #include "../exact-real/yap/arf.hpp"
 
-using namespace exactreal;
 using boost::numeric_cast;
+
+namespace exactreal::test {
 
 Arf absoluteError(const Arf& expected, const Arf& actual) {
   return (expected - actual)(ARF_PREC_EXACT, Arf::Round::NEAR);
@@ -60,7 +61,7 @@ void testArf(std::shared_ptr<const RealNumber> x) {
   }
 
   // As it simplifies debugging quite a bit, we expect digits that we did not ask for to be 0.
-  ASSERT_EQ(abs(x->arf(0).mantissa()), 1);
+  REQUIRE(abs(x->arf(0).mantissa()) == 1);
 
   const long PREC = 4096;
 
@@ -76,23 +77,28 @@ void testArf(std::shared_ptr<const RealNumber> x) {
                     3658, 3750, 3763, 3763, 3793, 3814, 3830, 3861, 3869, 3895, 3927, 3971, 4057}) {
     Arf approx = x->arf(prec);
 
-    ASSERT_EQ(approx, x->arf(prec));
+    REQUIRE(approx == x->arf(prec));
 
     // As we are assuming that digits that we did not ask for are 0, approx can
     // have at most prec + 1 digits (as trailing zeros are not counted.)
-    ASSERT_LE(arf_bits(approx.arf_t()), prec + 1);
+    REQUIRE(arf_bits(approx.arf_t()) <= prec + 1);
 
-    ASSERT_FALSE(arf_is_zero(approx.arf_t()));
+    REQUIRE(!arf_is_zero(approx.arf_t()));
+
+    CAPTURE(*x);
+    CAPTURE(prec);
+    CAPTURE(approx);
+    CAPTURE(absoluteError(best, approx));
+    CAPTURE(relativeError(best, approx));
 
     // Check that approx actually has prec bits of precision.
-    ASSERT_GE(relativeAccuracy(best, approx), prec)
-        << "approximating " << *x << " asking for " << prec << " bits of precision which yielded " << approx
-        << " which has an absolute error of " << absoluteError(best, approx) << " and a relative error of "
-        << relativeError(best, approx);
+    REQUIRE(relativeAccuracy(best, approx) >= prec);
   }
 }
 
 // Force creation of code for easier debugging in gdb; so we can call operator*.
-template class std::shared_ptr<const RealNumber>;
+}
+
+template class std::shared_ptr<const exactreal::RealNumber>;
 
 #endif

@@ -4,7 +4,7 @@
  *        Copyright (C) 2019 Vincent Delecroix
  *        Copyright (C) 2019 Julian Rüth
  *
- *  exact-real is free software: you can redistribute it and/or modify
+ *  Flatsurf is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
@@ -18,18 +18,8 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
+// Shared entry point of all test binaries
+
+#define CATCH_CONFIG_MAIN
 #include "external/catch2/single_include/catch2/catch.hpp"
 
-#include "../exact-real/cppyy.hpp"
-#include "../exact-real/yap/arb.hpp"
-
-namespace exactreal::test {
-
-TEST_CASE("Test cppyy's C++ interface to Arb", "[arb][cppyy]") {
-  Arb x(1);
-  auto y = x + x;
-  Arb z = exactreal::cppyy::eval(std::move(y), 10);
-  REQUIRE(z.equal(Arb(2)));
-}
-
-}  // namespace exactreal::test

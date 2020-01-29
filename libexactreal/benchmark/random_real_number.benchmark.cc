@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -18,14 +18,33 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <gtest/gtest.h>
+#include <memory>
 
-#include <exact-real/integer_ring.hpp>
-#include <exact-real/number_field.hpp>
-#include <exact-real/rational_field.hpp>
+#include <benchmark/benchmark.h>
 
-namespace {
-using testing::Types;
+#include "../exact-real/real_number.hpp"
+#include "../exact-real/arf.hpp"
 
-using Rings = Types<exactreal::IntegerRing, exactreal::RationalField, exactreal::NumberField>;
-}  // namespace
+namespace exactreal::test {
+
+struct RandomRealNumberFixture : benchmark::Fixture {
+  std::shared_ptr<const RealNumber> rnd = RealNumber::random();
+};
+
+BENCHMARK_F(RandomRealNumberFixture, Double)
+(benchmark::State& state) {
+  for (auto _ : state) {
+    benchmark::DoNotOptimize(static_cast<double>(*rnd));
+  }
+}
+
+BENCHMARK_DEFINE_F(RandomRealNumberFixture, arf)
+(benchmark::State& state) {
+  for (auto _ : state) {
+    benchmark::DoNotOptimize(rnd->arf(static_cast<unsigned int>(state.range(0))));
+  }
+}
+
+BENCHMARK_REGISTER_F(RandomRealNumberFixture, arf)->Range(16, 1 << 16);
+
+}

@@ -28,9 +28,10 @@
 
 #include "../exact-real/arf.hpp"
 
-using namespace exactreal;
 using std::make_unique;
 using std::unique_ptr;
+
+namespace exactreal::test {
 
 struct ArfTester {
   ArfTester() { reset(); }
@@ -44,5 +45,7 @@ struct ArfTester {
     return Arf::randtest(*flint_rand, prec, mag);
   }
 };
+
+}
 
 #endif
