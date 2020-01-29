@@ -158,6 +158,11 @@ TEST_CASE("Element over ZZ", "[element][integer_ring]") {
     REQUIRE(x * x == x * x);
     REQUIRE(x - x * one == one - one);
   }
+
+  SECTION("Coefficients") {
+    REQUIRE(one.coefficients<mpq_class>() == std::vector<mpq_class>({1, 0}));
+    REQUIRE(x.coefficients<mpq_class>() == std::vector<mpq_class>({0, 1}));
+  }
 }
 
 TEST_CASE("Element over QQ", "[element][rational_field]") {
@@ -267,8 +272,13 @@ TEST_CASE("Elements over Number Field", "[element][number_field]") {
   SECTION("Coefficients") {
     REQUIRE(x.coefficients() == std::vector<renf_elem_class>({0, 1}));
     REQUIRE((a * x).coefficients() == std::vector<renf_elem_class>({0, a}));
+
     REQUIRE(x.coefficients<mpq_class>() == std::vector<mpq_class>({0, 0, 1, 0}));
     REQUIRE((a * x).coefficients<mpq_class>() == std::vector<mpq_class>({0, 0, 0, 1}));
+
+    auto rationals = Module<NumberField>::make({RealNumber::rational(1)});
+    REQUIRE(rationals->zero().coefficients<mpq_class>() == std::vector<mpq_class>(1, 0));
+    REQUIRE(rationals->gen(0).coefficients<mpq_class>() == std::vector<mpq_class>(1, 1));
   }
 }
 

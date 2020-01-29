@@ -134,6 +134,10 @@ template <typename C>
 std::vector<C> Element<Ring>::coefficients() const {
   if constexpr (std::is_same_v<C, typename Ring::ElementClass>) {
     return impl->coefficients;
+  } else if constexpr (std::is_same_v<C, mpq_class> && std::is_same_v<typename Ring::ElementClass, mpz_class>) {
+    std::vector<mpq_class> coefficients;
+    for (const auto& c : impl->coefficients) coefficients.push_back(c);
+    return coefficients;
   } else if constexpr (std::is_same_v<C, mpq_class> && std::is_same_v<typename Ring::ElementClass, eantic::renf_elem_class>) {
     std::vector<mpq_class> ret;
     for (auto& c : impl->coefficients) {
@@ -142,8 +146,14 @@ std::vector<C> Element<Ring>::coefficients() const {
       for (auto& num : nums) {
         ret.push_back(mpq_class(num, den));
       }
-      for (size_t i = nums.size(); i < impl->parent->ring().parameters->degree(); i++) {
-        ret.push_back(0);
+      if (impl->parent->ring().parameters == nullptr) {
+        assert(ret.size() <= 1 && "module over the rationals cannot have a basis of length more than one");
+        if (ret.size() < 1)
+          ret.push_back(0);
+      } else {
+        for (size_t i = nums.size(); i < impl->parent->ring().parameters->degree(); i++) {
+          ret.push_back(0);
+        }
       }
     }
     return ret;
@@ -490,10 +500,11 @@ template class Element<IntegerRing>;
 template ostream& operator<<<IntegerRing>(ostream&, const Element<IntegerRing>&);
 template Element<IntegerRing>& Element<IntegerRing>::operator*=(const int&);
 template Element<IntegerRing>& Element<IntegerRing>::operator*=(const mpz_class&);
+template std::vector<typename IntegerRing::ElementClass> Element<IntegerRing>::coefficients() const;
+template std::vector<mpq_class> Element<IntegerRing>::coefficients() const;
 
 template class Element<RationalField>;
 template Element<RationalField>::Element(const Element<IntegerRing>&);
-template std::vector<typename IntegerRing::ElementClass> Element<IntegerRing>::coefficients() const;
 template ostream& operator<<<RationalField>(ostream&, const Element<RationalField>&);
 template Element<RationalField>& Element<RationalField>::operator*=(const int&);
 template Element<RationalField>& Element<RationalField>::operator*=(const mpz_class&);
@@ -501,8 +512,8 @@ template Element<RationalField>& Element<RationalField>::operator*=(const mpq_cl
 template Element<RationalField>& Element<RationalField>::operator/=(const int&);
 template Element<RationalField>& Element<RationalField>::operator/=(const mpz_class&);
 template Element<RationalField>& Element<RationalField>::operator/=(const mpq_class&);
-
 template std::vector<typename RationalField::ElementClass> Element<RationalField>::coefficients() const;
+
 template class Element<NumberField>;
 template ostream& operator<<<NumberField>(ostream&, const Element<NumberField>&);
 template Element<NumberField>& Element<NumberField>::operator*=(const int&);
