@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -18,39 +18,40 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <gtest/gtest.h>
 #include <boost/lexical_cast.hpp>
 
-#include <exact-real/arf.hpp>
+#include "external/catch2/single_include/catch2/catch.hpp"
+
+#include "../exact-real/arf.hpp"
 
 using boost::lexical_cast;
 using std::string;
 
-namespace exactreal {
-TEST(ArbTest, CreateDestroy) { delete new Arf(); }
+namespace exactreal::test {
 
-TEST(ArbTest, Relations) {
+TEST_CASE("Create & Destroy Arf", "[arf]") { delete new Arf(); }
+
+TEST_CASE("Relations of Arf", "[arf]") {
   Arf x(-1), y(1);
 
-  ASSERT_TRUE((x < y));
-  ASSERT_TRUE((y > x));
-  ASSERT_TRUE((x <= y));
-  ASSERT_TRUE((y >= x));
-  ASSERT_TRUE((x == x));
-  ASSERT_TRUE((x != y));
-  ASSERT_TRUE(!(y < x));
-  ASSERT_TRUE(!(x > y));
-  ASSERT_TRUE(!(y <= x));
-  ASSERT_TRUE(!(x >= y));
-  ASSERT_TRUE(!(x == y));
-  ASSERT_TRUE(!(x != x));
+  REQUIRE(x < y);
+  REQUIRE(y > x);
+  REQUIRE(x <= y);
+  REQUIRE(y >= x);
+  REQUIRE(x == x);
+  REQUIRE(x != y);
+  REQUIRE(!(y < x));
+  REQUIRE(!(x > y));
+  REQUIRE(!(y <= x));
+  REQUIRE(!(x >= y));
+  REQUIRE(!(x == y));
+  REQUIRE(!(x != x));
 }
 
-TEST(ArbTest, Printing) {
-  EXPECT_EQ(lexical_cast<string>(Arf()), "0");
-  EXPECT_EQ(lexical_cast<string>(Arf(1337)), "1337");
-  EXPECT_EQ(lexical_cast<string>(Arf(13.37)), "13.37=7526640877242941p-49");
+TEST_CASE("Printing of Arf", "[arf]") {
+  REQUIRE(lexical_cast<string>(Arf()) == "0");
+  REQUIRE(lexical_cast<string>(Arf(1337)) == "1337");
+  REQUIRE(lexical_cast<string>(Arf(13.37)) == "13.37=7526640877242941p-49");
 }
-}  // namespace exactreal
 
-#include "main.hpp"
+}  // namespace exactreal::test

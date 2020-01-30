@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -18,30 +18,23 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <benchmark/benchmark.h>
 #include <e-antic/renfxx.h>
 #include <e-antic/renfxx_cereal.h>
-#include <gtest/gtest.h>
 #include <boost/lexical_cast.hpp>
 #include <cereal/archives/json.hpp>
 
-#include <exact-real/cereal.hpp>
-#include <exact-real/real_number.hpp>
+#include "external/catch2/single_include/catch2/catch.hpp"
+
+#include "../exact-real/cereal.hpp"
+#include "../exact-real/real_number.hpp"
 
 #include "arb.hpp"
 #include "arf.hpp"
-#include "rings.hpp"
 
 using cereal::JSONInputArchive;
 using cereal::JSONOutputArchive;
 
-using testing::Test;
-
-namespace exactreal {
-template <typename Ring>
-class CerealTest : public Test {};
-
-TYPED_TEST_CASE(CerealTest, Rings);
+namespace exactreal::test {
 
 template <typename T>
 struct is_shared_ptr : std::false_type {};
@@ -87,21 +80,21 @@ T test_serialization(const T& x) {
   throw std::runtime_error("deserialization failed to reconstruct element, the original value " + toString(x) + " had serialized to " + s.str() + " which deserialized to " + toString(y));
 }
 
-TEST(CerealTest, Arb) {
+TEST_CASE("Serialization of Arb", "[cereal][arb]") {
   ArbTester arbs;
   for (int i = 0; i < 1024; i++) {
     test_serialization(arbs.random());
   }
 }
 
-TEST(CerealTest, Arf) {
+TEST_CASE("Serialization of Arf", "[cereal][arf]") {
   ArfTester arfs;
   for (int i = 0; i < 1024; i++) {
     test_serialization(arfs.random());
   }
 }
 
-TEST(CerealTest, RealNumber) {
+TEST_CASE("Serialization of RealNumber", "[cereal][real_number]") {
   auto rnd = RealNumber::random();
   test_serialization(rnd);
 
@@ -115,21 +108,20 @@ TEST(CerealTest, RealNumber) {
   test_serialization(rnd);
 }
 
-TYPED_TEST(CerealTest, Module) {
-  auto trivial = Module<TypeParam>::make({});
+TEMPLATE_TEST_CASE("Serialization of Module", "[cereal][module]", (IntegerRing), (RationalField), (NumberField)) {
+  auto trivial = Module<TestType>::make({});
   test_serialization(trivial);
 
-  auto m = Module<TypeParam>::make({RealNumber::random(), RealNumber::random()});
+  auto m = Module<TestType>::make({RealNumber::random(), RealNumber::random()});
   test_serialization(m);
 }
 
-TYPED_TEST(CerealTest, Element) {
-  auto m = Module<TypeParam>::make({RealNumber::rational(1), RealNumber::random()});
+TEMPLATE_TEST_CASE("Serialization of Element", "[cereal][element]", (IntegerRing), (RationalField), (NumberField)) {
+  auto m = Module<TestType>::make({RealNumber::rational(1), RealNumber::random()});
 
   test_serialization(m->gen(1));
   test_serialization(m->zero());
-  test_serialization(Element<TypeParam>());
+  test_serialization(Element<TestType>());
 }
-}  // namespace exactreal
 
-#include "main.hpp"
+}  // namespace exactreal::test

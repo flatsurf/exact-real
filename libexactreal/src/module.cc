@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -18,18 +18,20 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
+#include <set>
+
 #include <e-antic/renfxx.h>
 #include <boost/algorithm/string/join.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/range/adaptor/transformed.hpp>
-#include <set>
 
-#include "exact-real/element.hpp"
-#include "exact-real/integer_ring.hpp"
-#include "exact-real/module.hpp"
-#include "exact-real/number_field.hpp"
-#include "exact-real/rational_field.hpp"
-#include "exact-real/real_number.hpp"
+#include "../exact-real/element.hpp"
+#include "../exact-real/integer_ring.hpp"
+#include "../exact-real/module.hpp"
+#include "../exact-real/number_field.hpp"
+#include "../exact-real/rational_field.hpp"
+#include "../exact-real/real_number.hpp"
+
 #include "external/unique-factory/unique_factory.hpp"
 
 using namespace exactreal;
@@ -188,10 +190,10 @@ std::ostream& operator<<(std::ostream& os, const Module<R>& self) {
 
 // Explicit instantiations of templates so that code is generated for the
 // linker.
-#include "exact-real/detail/smart_ostream.hpp"
-#include "exact-real/integer_ring.hpp"
-#include "exact-real/number_field.hpp"
-#include "exact-real/rational_field.hpp"
+#include "../exact-real/detail/smart_ostream.hpp"
+#include "../exact-real/integer_ring.hpp"
+#include "../exact-real/number_field.hpp"
+#include "../exact-real/rational_field.hpp"
 
 template class exactreal::Module<IntegerRing>;
 template std::ostream& exactreal::operator<<(std::ostream&, const Module<IntegerRing>&);

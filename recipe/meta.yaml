@@ -70,7 +70,6 @@ requirements:
     - cppyy
     - pyeantic
     # enable test/libexactreal tests in ./configure
-    - gtest
     - benchmark
     # enable check-valgrind in ./configure
     - valgrind >=3.15.0

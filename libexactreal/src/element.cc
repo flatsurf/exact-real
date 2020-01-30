@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -18,16 +18,17 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <e-antic/renfxx.h>
-#include <boost/numeric/conversion/cast.hpp>
 #include <cmath>
 #include <map>
 #include <set>
 
-#include "exact-real/element.hpp"
-#include "exact-real/module.hpp"
-#include "exact-real/real_number.hpp"
-#include "exact-real/yap/arb.hpp"
+#include <e-antic/renfxx.h>
+#include <boost/numeric/conversion/cast.hpp>
+
+#include "../exact-real/element.hpp"
+#include "../exact-real/module.hpp"
+#include "../exact-real/real_number.hpp"
+#include "../exact-real/yap/arb.hpp"
 
 #include "external/gmpxxll/gmpxxll/mpz_class.hpp"
 
@@ -133,16 +134,26 @@ template <typename C>
 std::vector<C> Element<Ring>::coefficients() const {
   if constexpr (std::is_same_v<C, typename Ring::ElementClass>) {
     return impl->coefficients;
+  } else if constexpr (std::is_same_v<C, mpq_class> && std::is_same_v<typename Ring::ElementClass, mpz_class>) {
+    std::vector<mpq_class> coefficients;
+    for (const auto& c : impl->coefficients) coefficients.push_back(c);
+    return coefficients;
   } else if constexpr (std::is_same_v<C, mpq_class> && std::is_same_v<typename Ring::ElementClass, eantic::renf_elem_class>) {
     std::vector<mpq_class> ret;
     for (auto& c : impl->coefficients) {
-      mpz_class den = c.get_den();
-      auto nums = c.get_num_vector();
+      mpz_class den = c.den();
+      auto nums = c.num_vector();
       for (auto& num : nums) {
         ret.push_back(mpq_class(num, den));
       }
-      for (size_t i = nums.size(); i < impl->parent->ring().parameters->degree(); i++) {
-        ret.push_back(0);
+      if (impl->parent->ring().parameters == nullptr) {
+        assert(ret.size() <= 1 && "module over the rationals cannot have a basis of length more than one");
+        if (ret.size() < 1)
+          ret.push_back(0);
+      } else {
+        for (size_t i = nums.size(); i < impl->parent->ring().parameters->degree(); i++) {
+          ret.push_back(0);
+        }
       }
     }
     return ret;
@@ -480,19 +491,20 @@ ostream& operator<<(ostream& out, const Element<Ring>& self) {
 
 // Explicit instantiations of templates so that code is generated for the
 // linker.
-#include "exact-real/integer_ring.hpp"
-#include "exact-real/number_field.hpp"
-#include "exact-real/rational_field.hpp"
+#include "../exact-real/integer_ring.hpp"
+#include "../exact-real/number_field.hpp"
+#include "../exact-real/rational_field.hpp"
 
 namespace exactreal {
 template class Element<IntegerRing>;
 template ostream& operator<<<IntegerRing>(ostream&, const Element<IntegerRing>&);
 template Element<IntegerRing>& Element<IntegerRing>::operator*=(const int&);
 template Element<IntegerRing>& Element<IntegerRing>::operator*=(const mpz_class&);
+template std::vector<typename IntegerRing::ElementClass> Element<IntegerRing>::coefficients() const;
+template std::vector<mpq_class> Element<IntegerRing>::coefficients() const;
 
 template class Element<RationalField>;
 template Element<RationalField>::Element(const Element<IntegerRing>&);
-template std::vector<typename IntegerRing::ElementClass> Element<IntegerRing>::coefficients() const;
 template ostream& operator<<<RationalField>(ostream&, const Element<RationalField>&);
 template Element<RationalField>& Element<RationalField>::operator*=(const int&);
 template Element<RationalField>& Element<RationalField>::operator*=(const mpz_class&);
@@ -500,8 +512,8 @@ template Element<RationalField>& Element<RationalField>::operator*=(const mpq_cl
 template Element<RationalField>& Element<RationalField>::operator/=(const int&);
 template Element<RationalField>& Element<RationalField>::operator/=(const mpz_class&);
 template Element<RationalField>& Element<RationalField>::operator/=(const mpq_class&);
-
 template std::vector<typename RationalField::ElementClass> Element<RationalField>::coefficients() const;
+
 template class Element<NumberField>;
 template ostream& operator<<<NumberField>(ostream&, const Element<NumberField>&);
 template Element<NumberField>& Element<NumberField>::operator*=(const int&);

@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -20,10 +20,10 @@
 
 #include <cassert>
 
-#include "exact-real/arb.hpp"
-#include "exact-real/cereal.hpp"
-#include "exact-real/real_number.hpp"
-#include "exact-real/yap/arf.hpp"
+#include "../exact-real/arb.hpp"
+#include "../exact-real/cereal.hpp"
+#include "../exact-real/real_number.hpp"
+#include "../exact-real/yap/arf.hpp"
 
 using std::max;
 using std::ostream;
@@ -189,6 +189,6 @@ void RealNumberCereal::load(cereal::JSONInputArchive& archive, std::shared_ptr<c
 
 // Explicit instantiations of templates so that code is generated for the
 // linker.
-#include "exact-real/detail/smart_ostream.hpp"
+#include "../exact-real/detail/smart_ostream.hpp"
 
 template std::ostream& exactreal::operator<<(std::ostream&, const std::shared_ptr<const RealNumber>&);

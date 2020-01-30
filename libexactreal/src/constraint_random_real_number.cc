@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -18,6 +18,9 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
+#include <memory>
+#include <sstream>
+
 #include <arb.h>
 #include <gmpxx.h>
 #include <boost/lexical_cast.hpp>
@@ -26,12 +29,11 @@
 #include <boost/random/uniform_int_distribution.hpp>
 #include <cereal/archives/json.hpp>
 #include <cereal/cereal.hpp>
-#include <memory>
-#include <sstream>
 
-#include "exact-real/cereal.hpp"
-#include "exact-real/real_number.hpp"
-#include "exact-real/yap/arf.hpp"
+#include "../exact-real/cereal.hpp"
+#include "../exact-real/real_number.hpp"
+#include "../exact-real/yap/arf.hpp"
+
 #include "external/unique-factory/unique_factory.hpp"
 
 using namespace exactreal;

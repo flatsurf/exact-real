@@ -1,5 +1,5 @@
 [submodule "libexactreal/src/exact-real/external/spimpl"]
-	path = libexactreal/src/exact-real/external/spimpl
+	path = libexactreal/exact-real/external/spimpl
 	url = https://github.com/oliora/samples.git
 [submodule "libexactreal/src/external/unique-factory"]
 	path = libexactreal/src/external/unique-factory
@@ -16,3 +16,6 @@
 [submodule "libexactreal/src/external/cereal"]
 	path = libexactreal/src/external/cereal
 	url = https://github.com/USCiLab/cereal.git
+[submodule "libexactreal/test/external/catch2"]
+	path = libexactreal/test/external/catch2
+	url = https://github.com/catchorg/Catch2.git

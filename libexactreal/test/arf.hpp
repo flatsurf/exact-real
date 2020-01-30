@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -21,14 +21,16 @@
 #ifndef EXACTREAL_TEST_ARF_HPP
 #define EXACTREAL_TEST_ARF_HPP
 
-#include <flint/flintxx/frandxx.h>
 #include <cassert>
-#include <exact-real/arf.hpp>
-#include <memory>
 
-using namespace exactreal;
+#include <flint/flintxx/frandxx.h>
+
+#include "../exact-real/arf.hpp"
+
 using std::make_unique;
 using std::unique_ptr;
+
+namespace exactreal::test {
 
 struct ArfTester {
   ArfTester() { reset(); }
@@ -42,5 +44,7 @@ struct ArfTester {
     return Arf::randtest(*flint_rand, prec, mag);
   }
 };
+
+}  // namespace exactreal::test
 
 #endif

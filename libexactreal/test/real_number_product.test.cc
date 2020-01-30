@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -18,17 +18,17 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <benchmark/benchmark.h>
-#include <gtest/gtest.h>
+#include "external/catch2/single_include/catch2/catch.hpp"
 
-#include <exact-real/arb.hpp>
-#include <exact-real/arf.hpp>
-#include <exact-real/real_number.hpp>
+#include "../exact-real/arb.hpp"
+#include "../exact-real/arf.hpp"
+#include "../exact-real/real_number.hpp"
 
 #include "arf.test.hpp"
 
-namespace exactreal {
-TEST(ProductRealNumberTest, Equality) {
+namespace exactreal::test {
+
+TEST_CASE("Product of Real Numbers", "[real_number][product]") {
   for (auto da : {.424554, 13.37, .012345, 1.00112233}) {
     for (auto db : {.910621, 1.020304, 0.5}) {
       auto a = RealNumber::random(da);
@@ -38,24 +38,11 @@ TEST(ProductRealNumberTest, Equality) {
       auto ab = *a * (*b);
       auto a2b2 = *ab * (*ab);
 
-      ASSERT_EQ(*ab, *(*b * (*a)));
-      ASSERT_NE(*ab, *a2);
-      ASSERT_NE(*a, *a2);
-      ASSERT_EQ(*a2b2, *(*a2 * (*b2)));
-      ASSERT_NE(*a2b2, *ab);
-    }
-  }
-}
-
-TEST(ProductRealNumberTest, arf) {
-  for (auto da : {.424554, 13.37, .012345, 1.00112233}) {
-    for (auto db : {.910621, 1.020304, 0.5}) {
-      auto a = RealNumber::random(da);
-      auto b = RealNumber::random(db);
-      auto a2 = *a * (*a);
-      auto b2 = *b * (*b);
-      auto ab = *a * (*b);
-      auto a2b2 = *ab * (*ab);
+      REQUIRE(*ab == *(*b * (*a)));
+      REQUIRE(*ab != *a2);
+      REQUIRE(*a != *a2);
+      REQUIRE(*a2b2 == *(*a2 * (*b2)));
+      REQUIRE(*a2b2 != *ab);
 
       testArf(a);
       testArf(b);
@@ -66,6 +53,5 @@ TEST(ProductRealNumberTest, arf) {
     }
   }
 }
-}  // namespace exactreal
 
-#include "main.hpp"
+}  // namespace exactreal::test

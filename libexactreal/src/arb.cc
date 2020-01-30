@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -24,9 +24,9 @@
 #include <boost/lexical_cast.hpp>
 #include <ostream>
 
-#include "exact-real/arb.hpp"
-#include "exact-real/arf.hpp"
-#include "exact-real/yap/arb.hpp"
+#include "../exact-real/arb.hpp"
+#include "../exact-real/arf.hpp"
+#include "../exact-real/yap/arb.hpp"
 
 using eantic::renf_elem_class;
 using std::ostream;

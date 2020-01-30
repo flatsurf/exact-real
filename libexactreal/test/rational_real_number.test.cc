@@ -6,7 +6,7 @@
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  exact-real is distributed in the hope that it will be useful,
@@ -18,48 +18,49 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <benchmark/benchmark.h>
-#include <gtest/gtest.h>
+#include "external/catch2/single_include/catch2/catch.hpp"
 
-#include <exact-real/arb.hpp>
-#include <exact-real/arf.hpp>
-#include <exact-real/real_number.hpp>
+#include "../exact-real/arb.hpp"
+#include "../exact-real/arf.hpp"
+#include "../exact-real/real_number.hpp"
 
-namespace exactreal {
-TEST(RationalRealNumberTest, Equality) {
-  std::shared_ptr<const RealNumber> numbers[]{RealNumber::rational(0), RealNumber::rational(1),
-                                              RealNumber::rational(mpq_class(1, 2)), RealNumber::rational(mpq_class(4, 3))};
+namespace exactreal::test {
 
-  const size_t length = sizeof(numbers) / sizeof(numbers[0]);
-  for (size_t i = 0; i < length; i++) {
-    for (size_t j = 0; j < length; j++) {
-      if (i == j) {
-        EXPECT_EQ(*numbers[i], *numbers[j]);
-      } else {
-        EXPECT_NE(*numbers[i], *numbers[j]);
+TEST_CASE("Rational Real Number", "[real_number][rational]") {
+  SECTION("Equality") {
+    std::shared_ptr<const RealNumber> numbers[]{RealNumber::rational(0), RealNumber::rational(1),
+                                                RealNumber::rational(mpq_class(1, 2)), RealNumber::rational(mpq_class(4, 3))};
+
+    const size_t length = sizeof(numbers) / sizeof(numbers[0]);
+    for (size_t i = 0; i < length; i++) {
+      for (size_t j = 0; j < length; j++) {
+        if (i == j) {
+          REQUIRE(*numbers[i] == *numbers[j]);
+        } else {
+          REQUIRE(*numbers[i] != *numbers[j]);
+        }
+      }
+    }
+  }
+
+  SECTION("Comparison") {
+    std::shared_ptr<const RealNumber> numbers[]{RealNumber::rational(0), RealNumber::rational(mpq_class(1, 2)),
+                                                RealNumber::rational(1), RealNumber::rational(mpq_class(4, 3))};
+
+    const size_t length = sizeof(numbers) / sizeof(numbers[0]);
+    for (size_t i = 0; i < length; i++) {
+      for (size_t j = 0; j < length; j++) {
+        if (i == j) {
+          REQUIRE(*numbers[i] <= *numbers[j]);
+          REQUIRE(*numbers[i] >= *numbers[j]);
+        } else if (i < j) {
+          REQUIRE(*numbers[i] < *numbers[j]);
+        } else {
+          REQUIRE(*numbers[i] > *numbers[j]);
+        }
       }
     }
   }
 }
 
-TEST(RationalRealNumberTest, Comparison) {
-  std::shared_ptr<const RealNumber> numbers[]{RealNumber::rational(0), RealNumber::rational(mpq_class(1, 2)),
-                                              RealNumber::rational(1), RealNumber::rational(mpq_class(4, 3))};
-
-  const size_t length = sizeof(numbers) / sizeof(numbers[0]);
-  for (size_t i = 0; i < length; i++) {
-    for (size_t j = 0; j < length; j++) {
-      if (i == j) {
-        EXPECT_LE(*numbers[i], *numbers[j]);
-        EXPECT_GE(*numbers[i], *numbers[j]);
-      } else if (i < j) {
-        EXPECT_LT(*numbers[i], *numbers[j]);
-      } else {
-        EXPECT_GT(*numbers[i], *numbers[j]);
-      }
-    }
-  }
-}
-}  // namespace exactreal
-
-#include "main.hpp"
+}  // namespace exactreal::test
