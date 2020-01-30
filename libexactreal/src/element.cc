@@ -141,8 +141,8 @@ std::vector<C> Element<Ring>::coefficients() const {
   } else if constexpr (std::is_same_v<C, mpq_class> && std::is_same_v<typename Ring::ElementClass, eantic::renf_elem_class>) {
     std::vector<mpq_class> ret;
     for (auto& c : impl->coefficients) {
-      mpz_class den = c.get_den();
-      auto nums = c.get_num_vector();
+      mpz_class den = c.den();
+      auto nums = c.num_vector();
       for (auto& num : nums) {
         ret.push_back(mpq_class(num, den));
       }
