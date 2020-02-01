@@ -28,4 +28,6 @@ RationalField::RationalField(const mpq_class&) {}
 RationalField RationalField::compositum(const RationalField&, const RationalField&) { return RationalField(); }
 
 Arb RationalField::arb(const ElementClass& x, prec prec) { return Arb(x, prec); }
+
+mpz_class RationalField::floor(const ElementClass& x) { return x.get_num() / x.get_den(); }
 }  // namespace exactreal

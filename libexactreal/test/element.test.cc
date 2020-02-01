@@ -261,10 +261,13 @@ TEST_CASE("Elements over Number Field", "[element][number_field]") {
       REQUIRE(mpq_class(1, 2) * x == x / 2);
 
       for (size_t j = 0; j < sizeof(elements) / sizeof(elements[0]); j++) {
-        if (i == j)
-          REQUIRE((x + x) / elements[j] == 2);
-        else
-          REQUIRE((x + x) / elements[j] == std::optional<renf_elem_class>{});
+        if (i == j) {
+          REQUIRE((x + x).truediv(elements[j]) == 2);
+          REQUIRE((x + x).floordiv(elements[j]) == 2);
+        } else {
+          REQUIRE((x + x).truediv(elements[j]) == std::optional<renf_elem_class>{});
+          REQUIRE((x + x).floordiv(elements[j]) != 2);
+        }
       }
     }
   }

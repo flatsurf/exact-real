@@ -64,7 +64,7 @@ template <typename Ring, typename RHS>
 bool lt(const Element<Ring>& lhs, const RHS& rhs) {
   if (lhs == rhs)
     return false;
-  for (long prec = 64;; prec *= 2) {
+  for (long prec = ARB_PRECISION_FAST;; prec *= 2) {
     Arb self = lhs.arb(prec);
     std::optional<bool> lt;
     if constexpr (std::is_same_v<RHS, Element<Ring>> || std::is_same_v<RHS, RealNumber>) {
@@ -167,6 +167,7 @@ Arb Element<Ring>::arb(long prec) const {
   if (!*this) {
     return Arb();
   }
+  using std::ceil;
   prec += numeric_cast<long>(ceil(log2(numeric_cast<double>(impl->parent->rank()))));
   Arb ret;
   for (int i = 0; i < impl->parent->rank(); i++) {
@@ -264,10 +265,10 @@ Element<Ring>& Element<Ring>::operator/=(const T& rhs) {
 }
 
 template <typename Ring>
-std::optional<typename Ring::ElementClass> Element<Ring>::operator/(const Element<Ring>& rhs) const {
+std::optional<typename Ring::ElementClass> Element<Ring>::truediv(const Element<Ring>& rhs) const {
   if (impl->parent != rhs.impl->parent) {
     auto parent = Module<Ring>::span(this->impl->parent, rhs.impl->parent);
-    return Element<Ring>(*this).promote(parent) / Element<Ring>(rhs).promote(parent);
+    return Element<Ring>(*this).promote(parent).truediv(Element<Ring>(rhs).promote(parent));
   }
 
   std::optional<typename Ring::ElementClass> ret;
@@ -292,6 +293,48 @@ std::optional<typename Ring::ElementClass> Element<Ring>::operator/(const Elemen
   }
 
   return ret;
+}
+
+template <typename Ring>
+mpz_class Element<Ring>::floordiv(const Element<Ring>& rhs) const {
+  {
+    const auto quotient = truediv(rhs);
+
+    if (quotient) {
+      return Ring::floor(*quotient);
+    }
+  }
+
+  for (long prec = ARB_PRECISION_FAST;; prec *= 2) {
+    const Arb quotient = (arb(prec) / rhs.arb(prec))(prec);
+
+    const auto [lower, upper] = static_cast<std::pair<Arf, Arf>>(quotient);
+
+    if (lower.floor() == upper.floor())
+      return lower.floor();
+  }
+}
+
+template <typename Ring>
+mpz_class Element<Ring>::floor() const {
+  for (long prec = ARB_PRECISION_FAST;; prec *= 2) {
+    const Arb approximation = arb(prec);
+    const auto [lower, upper] = static_cast<std::pair<Arf, Arf>>(approximation);
+
+    if (lower.floor() == upper.floor())
+      return lower.floor();
+  }
+}
+
+template <typename Ring>
+mpz_class Element<Ring>::ceil() const {
+  for (long prec = ARB_PRECISION_FAST;; prec *= 2) {
+    const Arb approximation = arb(prec);
+    const auto [lower, upper] = static_cast<std::pair<Arf, Arf>>(approximation);
+
+    if (lower.ceil() == upper.ceil())
+      return lower.ceil();
+  }
 }
 
 template <typename Ring>

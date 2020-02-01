@@ -21,6 +21,7 @@
 #ifndef LIBEXACTREAL_NUMBER_FIELD_HPP
 #define LIBEXACTREAL_NUMBER_FIELD_HPP
 
+#include <gmpxx.h>
 #include <memory>
 
 #include <e-antic/renfxx_fwd.h>
@@ -44,6 +45,7 @@ class NumberField : boost::equality_comparable<NumberField> {
 
   typedef eantic::renf_elem_class ElementClass;
   static constexpr bool isField = true;
+  static mpz_class floor(const ElementClass& x);
   static Arb arb(const ElementClass& x, long prec);
 };
 

@@ -42,4 +42,6 @@ NumberField NumberField::compositum(const NumberField& lhs, const NumberField& r
 Arb NumberField::arb(const ElementClass& x, mp_limb_signed_t prec) { return Arb(x, prec); }
 
 bool NumberField::operator==(const NumberField& rhs) const { return parameters == rhs.parameters; }
+
+mpz_class NumberField::floor(const ElementClass& x) { return x.floor(); }
 }  // namespace exactreal
