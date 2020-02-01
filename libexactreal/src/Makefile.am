@@ -17,7 +17,7 @@ libexactreal_la_SOURCES =               \
 
 libexactreal_la_LDFLAGS = -version-info $(libexactreal_version_info)
 
-nobase_include_HEADERS =                                  \
+nobase_pkginclude_HEADERS =                                  \
     ../exact-real/real_number.hpp                            \
     ../exact-real/element.hpp                                \
     ../exact-real/module.hpp                                 \
