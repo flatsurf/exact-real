@@ -24,6 +24,8 @@
 #include <memory>
 #include <sstream>
 
+#include <boost/type_traits/is_detected.hpp>
+
 #include "element.hpp"
 #include "integer_ring.hpp"
 #include "module.hpp"
@@ -59,6 +61,11 @@ Arf eval(T expression, prec prec, int round) {
   return ret;
 }
 
+template <typename S, typename T>
+using truediv_t = decltype(std::declval<S>().truediv(std::declval<T>()));
+template <typename S, typename T>
+static constexpr bool has_truediv = boost::is_detected_v<truediv_t, S, T>;
+
 // cppyy does not see the operators provided by boost::operators so we provide
 // something to make them explicit here:
 template <typename S, typename T>
@@ -68,7 +75,13 @@ auto sub(const S &lhs, const T &rhs) { return lhs - rhs; }
 template <typename S, typename T>
 auto mul(const S &lhs, const T &rhs) { return lhs * rhs; }
 template <typename S, typename T>
-auto truediv(const S &lhs, const T &rhs) { return lhs / rhs; }
+auto truediv(const S &lhs, const T &rhs) {
+  if constexpr (has_truediv<const S &, const T &>) {
+    return lhs.truediv(rhs);
+  } else {
+    return lhs / rhs;
+  }
+}
 template <typename T>
 auto neg(const T &value) { return -value; }
 

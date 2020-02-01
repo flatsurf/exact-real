@@ -28,4 +28,6 @@ IntegerRing::IntegerRing(const mpz_class&) {}
 IntegerRing IntegerRing::compositum(const IntegerRing&, const IntegerRing&) { return IntegerRing(); }
 
 Arb IntegerRing::arb(const ElementClass& x, long) { return Arb(x); }
+
+mpz_class IntegerRing::floor(const ElementClass& x) { return x; }
 }  // namespace exactreal

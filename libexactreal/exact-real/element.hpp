@@ -77,7 +77,12 @@ class Element : boost::additive<Element<Ring>>,
   // (until we figure out how to dynamically inherit from boost::multiplicative for such T, we do not get operator/ here.)
   template <typename T, typename = decltype(std::declval<const typename Ring::ElementClass&>() / std::declval<const T&>()), typename = std::enable_if_t<Ring::isField || false_t<T>, void>>
   Element& operator/=(const T&);
-  std::optional<typename Ring::ElementClass> operator/(const Element&) const;
+
+  std::optional<typename Ring::ElementClass> truediv(const Element&) const;
+  mpz_class floordiv(const Element& rhs) const;
+
+  mpz_class floor() const;
+  mpz_class ceil() const;
 
   bool operator==(const Element&) const;
   bool operator<(const Element&) const;
