@@ -76,7 +76,7 @@ template <typename S, typename T>
 auto mul(const S &lhs, const T &rhs) { return lhs * rhs; }
 template <typename S, typename T>
 auto truediv(const S &lhs, const T &rhs) {
-  if constexpr (has_truediv<const S&, const T&>) {
+  if constexpr (has_truediv<const S &, const T &>) {
     return lhs.truediv(rhs);
   } else {
     return lhs / rhs;
