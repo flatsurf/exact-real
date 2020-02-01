@@ -494,7 +494,7 @@ def ZZModule(*gens):
 
         >>> from pyexactreal import ZZModule, RealNumber
         >>> ZZModule(RealNumber.rational(1), RealNumber.random())
-        ℤ-Module(1, ℝ(0.621222…))
+        ℤ-Module(1, ℝ(...))
 
     """
     return makeModule(exactreal.IntegerRing, gens)
@@ -507,7 +507,7 @@ def QQModule(*gens):
 
         >>> from pyexactreal import ZZModule, RealNumber
         >>> QQModule(RealNumber.rational(1), RealNumber.random())
-        ℚ-Module(1, ℝ(0.782515…))
+        ℚ-Module(1, ℝ(...))
 
     """
     return makeModule(exactreal.RationalField, gens)
@@ -521,7 +521,7 @@ def NumberFieldModule(K, *gens):
         >>> from pyexactreal import ZZModule, RealNumber, NumberField
         >>> K = NumberField("x^2 - 2", "x", "1.4 +/- 1")
         >>> NumberFieldModule(K, RealNumber.rational(1), RealNumber.random())
-        K-Module(1, ℝ(0.478968…))
+        K-Module(1, ℝ(...))
 
     """
     return makeModule(exactreal.NumberField, gens, K)
