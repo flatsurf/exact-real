@@ -1,7 +1,4 @@
-[![Build Status](https://dev.azure.com/flatsurf/conda/_apis/build/status/flatsurf.exact-real?branchName=master)](https://dev.azure.com/flatsurf/conda/_build/latest?definitionId=1&branchName=master)
-![OSX disabled](https://img.shields.io/badge/OSX-disabled-lightgrey.svg)
-![Windows disabled](https://img.shields.io/badge/Windows-disabled-lightgrey.svg)
-![ppc64le disabled](https://img.shields.io/badge/ppc64le-disabled-lightgrey.svg)
+[![Build Status](https://dev.azure.com/flatsurf/conda/_apis/build/status/flatsurf.exact-real?branchName=master)](https://dev.azure.com/flatsurf/conda/_build/latest?definitionId=5&branchName=master)
 [![codecov](https://codecov.io/gh/flatsurf/exact-real/branch/master/graph/badge.svg)](https://codecov.io/gh/flatsurf/exact-real)
 [![asv](http://img.shields.io/badge/benchmarked%20by-asv-blue.svg?style=flat)](https://flatsurf.github.io/exact-real-asv/)
 
