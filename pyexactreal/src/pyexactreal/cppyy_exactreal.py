@@ -278,10 +278,8 @@ def enable_cereal(proxy, name):
 
 cppyy.py.add_pythonization(enable_cereal, "exactreal")
 
-
-for path in os.environ.get('PYEXACTREAL_INCLUDE','').split(':'):
-    if path: cppyy.add_include_path(path)
-
+# Set EXTRA_CLING_ARGS="-I /usr/include" or wherever exact-real/cppyy.hpp can
+# be resolved if the following line fails to find the header file.
 cppyy.add_include_path(os.path.join(os.path.dirname(__file__), 'include'))
 
 cppyy.include("exact-real/cppyy.hpp")
