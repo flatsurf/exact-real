@@ -2,6 +2,6 @@
 
 # Resolve #include <exact-real/*.hpp> relative to libexactreal/ in the source tree and
 # resolve #include "exact-real.hpp" relative to libexactreal/exact-real in the build tree.
-export PYEXACTREAL_INCLUDE="@srcdir@/../../libexactreal:@builddir@/../../libexactreal/exact-real"
-export LD_LIBRARY_PATH="@builddir@/../../libexactreal/src/.libs/"
-export PYTHONPATH="@srcdir@/../src/:@pythondir@"
+export EXTRA_CLING_ARGS="-I@abs_srcdir@/../../libexactreal -I@abs_builddir@/../../libexactreal/exact-real $EXTRA_CLING_ARGS"
+export LD_LIBRARY_PATH="@abs_builddir@/../../libexactreal/src/.libs/:$LD_LIBRARY_PATH"
+export PYTHONPATH="@abs_srcdir@/../src/:@pythondir@"
