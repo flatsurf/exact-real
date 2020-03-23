@@ -21,6 +21,8 @@
 #ifndef LIBEXACTREAL_NUMBER_FIELD_HPP
 #define LIBEXACTREAL_NUMBER_FIELD_HPP
 
+#include <optional>
+
 #include <gmpxx.h>
 #include <memory>
 
@@ -47,6 +49,7 @@ class NumberField : boost::equality_comparable<NumberField> {
   static constexpr bool isField = true;
   static mpz_class floor(const ElementClass& x);
   static Arb arb(const ElementClass& x, long prec);
+  static std::optional<mpq_class> rational(const ElementClass& x);
 };
 
 }  // namespace exactreal

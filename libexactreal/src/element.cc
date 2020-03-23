@@ -418,18 +418,17 @@ Element<Ring>::operator std::optional<mpq_class>() const {
   mpq_class ret;
 
   for (size_t i = 0; i < module()->rank(); i++) {
-    const auto rational = static_cast<std::optional<mpq_class>>(*module()->basis()[i]);
-    if (rational) {
-      const auto coefficient = impl->coefficients[i];
-      if (coefficient) {
-        const auto rationalCoefficient = static_cast<std::optional<mpq_class>>(coefficient);
+    const auto& coefficient = impl->coefficients[i];
+    if (coefficient) {
+      const auto rational = static_cast<std::optional<mpq_class>>(*module()->basis()[i]);
+      if (rational) {
+        const auto rationalCoefficient = Ring::rational(coefficient);
         if (!rationalCoefficient)
           return std::nullopt;
         ret += *rational * *rationalCoefficient;
-      }
-    } else {
-      if (impl->coefficients[i])
+      } else {
         return std::nullopt;
+      }
     }
   }
 

@@ -21,6 +21,8 @@
 #ifndef LIBEXACTREAL_INTEGER_RING_HPP
 #define LIBEXACTREAL_INTEGER_RING_HPP
 
+#include <optional>
+
 #include <gmpxx.h>
 #include <boost/operators.hpp>
 
@@ -38,6 +40,7 @@ struct IntegerRing : boost::equality_comparable<IntegerRing> {
   static constexpr bool isField = false;
   static Arb arb(const ElementClass& x, long prec);
   static mpz_class floor(const ElementClass& x);
+  static std::optional<mpq_class> rational(const ElementClass& x);
   bool operator==(const IntegerRing&) const { return true; }
 };
 

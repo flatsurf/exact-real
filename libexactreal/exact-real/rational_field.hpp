@@ -21,6 +21,8 @@
 #ifndef LIBEXACTREAL_RATIONAL_FIELD_HPP
 #define LIBEXACTREAL_RATIONAL_FIELD_HPP
 
+#include <optional>
+
 #include <gmpxx.h>
 #include <boost/operators.hpp>
 
@@ -38,6 +40,7 @@ struct RationalField : boost::equality_comparable<RationalField> {
   static constexpr bool isField = true;
   static Arb arb(const ElementClass& x, long prec);
   static mpz_class floor(const ElementClass& x);
+  static std::optional<mpq_class> rational(const ElementClass& x);
   bool operator==(const RationalField&) const { return true; }
 };
 
