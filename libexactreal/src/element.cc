@@ -406,7 +406,7 @@ bool Element<Ring>::operator==(const mpq_class& rhs) const {
 template <typename Ring>
 Element<Ring>::operator std::optional<mpz_class>() const {
   const auto rational = static_cast<std::optional<mpq_class>>(*this);
-  
+
   if (rational && rational->get_den() == 1)
     return rational->get_num();
 
