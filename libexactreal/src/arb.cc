@@ -214,7 +214,7 @@ Arb& Arb::operator=(Arb&& rhs) noexcept {
 
 Arb::operator std::pair<Arf, Arf>() const noexcept {
   std::pair<Arf, Arf> ret;
-  arb_get_interval_arf(ret.first.arf_t(), ret.second.arf_t(), arb_t(), arb_bits(arb_t()));
+  arb_get_interval_arf(ret.first.arf_t(), ret.second.arf_t(), arb_t(), arb_rel_accuracy_bits(arb_t()));
   return ret;
 }
 
@@ -224,6 +224,9 @@ ostream& operator<<(ostream& os, const Arb& self) {
   // ARB_STR_MORE is essential. Otherwise, arb prints things such as [1.5 +/- .6]
   // as [+/- something] since not a single digit of the midpoint is correct.
   // (At least that's our theory of what's happening…)
+  // Note that the radius is also printed with respect to os.precision() which
+  // means that the radius might be shortened, e.g., [0.5 +/- 1.08e-78] might
+  // print as [0.5 +/- 1e-10].
   return os << arb_get_str(self.arb_t(), os.precision(), ARB_STR_MORE);
 }
 
