@@ -300,9 +300,8 @@ mpz_class Element<Ring>::floordiv(const Element<Ring>& rhs) const {
   {
     const auto quotient = truediv(rhs);
 
-    if (quotient) {
+    if (quotient)
       return Ring::floor(*quotient);
-    }
   }
 
   for (long prec = ARB_PRECISION_FAST;; prec *= 2) {
@@ -317,6 +316,9 @@ mpz_class Element<Ring>::floordiv(const Element<Ring>& rhs) const {
 
 template <typename Ring>
 mpz_class Element<Ring>::floor() const {
+  const auto integer = static_cast<std::optional<mpz_class>>(*this);
+  if (integer) return *integer;
+
   for (long prec = ARB_PRECISION_FAST;; prec *= 2) {
     const Arb approximation = arb(prec);
     const auto [lower, upper] = static_cast<std::pair<Arf, Arf>>(approximation);
@@ -328,6 +330,9 @@ mpz_class Element<Ring>::floor() const {
 
 template <typename Ring>
 mpz_class Element<Ring>::ceil() const {
+  const auto integer = static_cast<std::optional<mpz_class>>(*this);
+  if (integer) return *integer;
+
   for (long prec = ARB_PRECISION_FAST;; prec *= 2) {
     const Arb approximation = arb(prec);
     const auto [lower, upper] = static_cast<std::pair<Arf, Arf>>(approximation);
@@ -394,18 +399,40 @@ bool Element<Ring>::operator==(long long rhs) const {
 
 template <typename Ring>
 bool Element<Ring>::operator==(const mpq_class& rhs) const {
+  const auto rational = static_cast<std::optional<mpq_class>>(*this);
+  return rational && *rational == rhs;
+}
+
+template <typename Ring>
+Element<Ring>::operator std::optional<mpz_class>() const {
+  const auto rational = static_cast<std::optional<mpq_class>>(*this);
+
+  if (rational && rational->get_den() == 1)
+    return rational->get_num();
+
+  return std::nullopt;
+}
+
+template <typename Ring>
+Element<Ring>::operator std::optional<mpq_class>() const {
+  mpq_class ret;
+
   for (size_t i = 0; i < module()->rank(); i++) {
-    auto rational = static_cast<std::optional<mpq_class>>(*module()->basis()[i]);
-    if (rational) {
-      if (*rational * impl->coefficients[i] != rhs)
-        return false;
-    } else {
-      if (impl->coefficients[i])
-        return false;
+    const auto& coefficient = impl->coefficients[i];
+    if (coefficient) {
+      const auto rational = static_cast<std::optional<mpq_class>>(*module()->basis()[i]);
+      if (rational) {
+        const auto rationalCoefficient = Ring::rational(coefficient);
+        if (!rationalCoefficient)
+          return std::nullopt;
+        ret += *rational * *rationalCoefficient;
+      } else {
+        return std::nullopt;
+      }
     }
   }
 
-  return true;
+  return ret;
 }
 
 template <typename Ring>

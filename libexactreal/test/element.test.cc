@@ -23,6 +23,7 @@
 
 #include "external/catch2/single_include/catch2/catch.hpp"
 
+#include "../exact-real/arb.hpp"
 #include "../exact-real/element.hpp"
 #include "../exact-real/integer_ring.hpp"
 #include "../exact-real/module.hpp"
@@ -163,12 +164,21 @@ TEST_CASE("Element over ZZ", "[element][integer_ring]") {
     REQUIRE(one.coefficients<mpq_class>() == std::vector<mpq_class>({1, 0}));
     REQUIRE(x.coefficients<mpq_class>() == std::vector<mpq_class>({0, 1}));
   }
+
+  SECTION("Floor & Ceil") {
+    REQUIRE(one.floor() == one.ceil());
+    REQUIRE(x.floor() == zero);
+    REQUIRE(x.ceil() == one);
+  }
 }
 
 TEST_CASE("Element over QQ", "[element][rational_field]") {
   auto m = Module<RationalField>::make({RealNumber::rational(1), RealNumber::random()});
 
   Element<RationalField> elements[]{m->gen(0), m->gen(1)};
+
+  const auto one = m->gen(0);
+  const auto half = one / 2;
 
   SECTION("Scalars") {
     for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
@@ -207,6 +217,23 @@ TEST_CASE("Element over QQ", "[element][rational_field]") {
       REQUIRE(mpq_class(1) * x == x);
       REQUIRE(mpq_class(0) * x == m->zero());
     }
+  }
+
+  SECTION("Cast to Rational") {
+    REQUIRE(static_cast<std::optional<mpq_class>>(one) == mpq_class(1, 1));
+    REQUIRE(static_cast<std::optional<mpq_class>>(one / 2) == mpq_class(1, 2));
+  }
+
+  SECTION("Cast to Integer") {
+    REQUIRE(static_cast<std::optional<mpz_class>>(one) == 1);
+    REQUIRE(static_cast<std::optional<mpz_class>>(one / 2) == std::nullopt);
+  }
+
+  SECTION("Floor & Ceil") {
+    REQUIRE(one.floor() == 1);
+    REQUIRE(one.ceil() == 1);
+    REQUIRE((one / 2).floor() == 0);
+    REQUIRE((one / 2).ceil() == 1);
   }
 }
 

@@ -52,7 +52,7 @@ int RealNumber::cmp(const Arb& arb) const {
   }
 }
 
-void RealNumber::refine(Arb& arb, long prec) const {
+void RealNumber::refine(Arb& arb, const long prec) const {
   // Since we refine, arb must contain this real number.
   assert(this->cmp(arb) == 0);
 

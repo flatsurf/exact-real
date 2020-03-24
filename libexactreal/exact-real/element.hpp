@@ -106,6 +106,9 @@ class Element : boost::additive<Element<Ring>>,
   explicit operator bool() const;
   explicit operator double() const;
 
+  explicit operator std::optional<mpz_class>() const;
+  explicit operator std::optional<mpq_class>() const;
+
   const std::shared_ptr<const Module<Ring>> module() const;
   Element& promote(const std::shared_ptr<const Module<Ring>>& module);
 

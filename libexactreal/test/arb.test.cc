@@ -69,4 +69,11 @@ TEST_CASE("Print Arb", "[arb]") {
   REQUIRE(lexical_cast<string>(Arb(mpq_class(1, 3), 64)) == "[0.333333 +/- 3.34e-7]");
 }
 
+TEST_CASE("Cast to Arf", "[arb][arf]") {
+  Arb x(mpq_class(1, 2), 4);
+
+  REQUIRE(static_cast<std::pair<Arf, Arf>>(x).first == Arf(.5));
+  REQUIRE(static_cast<std::pair<Arf, Arf>>(x).second == Arf(.5));
+}
+
 }  // namespace exactreal::test

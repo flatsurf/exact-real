@@ -29,5 +29,7 @@ IntegerRing IntegerRing::compositum(const IntegerRing&, const IntegerRing&) { re
 
 Arb IntegerRing::arb(const ElementClass& x, long) { return Arb(x); }
 
+std::optional<mpq_class> IntegerRing::rational(const ElementClass& x) { return mpq_class(x); }
+
 mpz_class IntegerRing::floor(const ElementClass& x) { return x; }
 }  // namespace exactreal

@@ -54,4 +54,11 @@ TEST_CASE("Printing of Arf", "[arf]") {
   REQUIRE(lexical_cast<string>(Arf(13.37)) == "13.37=7526640877242941p-49");
 }
 
+TEST_CASE("Floor & Ceil", "[arf]") {
+  REQUIRE(Arf(.4).floor() == 0);
+  REQUIRE(Arf(.4).ceil() == 1);
+  REQUIRE(Arf(.6).floor() == 0);
+  REQUIRE(Arf(.6).ceil() == 1);
+}
+
 }  // namespace exactreal::test
