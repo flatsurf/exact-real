@@ -433,18 +433,43 @@ class ExactReals(UniqueRepresentation, IntegralDomain):
         """
         return self(self._element_factory())
 
-    def random_element(self):
+    def random_element(self, approximation=None):
         r"""
         Return a random real element.
 
         EXAMPLES::
 
             sage: from pyexactreal import ExactReals
-            sage: ExactReals().random_element()
-            ℝ(...)
+            sage: ExactReals().random_element() # random output
+            ℝ(0.120809…)
+
+        Random elements can be created with a prescribe double approximation::
+
+            sage: ExactReals().random_element(3.141) # random output
+            ℝ(3.141=14485305783880426147p-62 + ℝ(0.778995…)p-62)
+
+        Note that elements which approximate a double zero are extremely small
+        and might not be what you want::
+
+            sage: ExactReals().random_element(0) # random output
+            ℝ(-0=-7703581330722908899p-1139 + ℝ(0.707557…)p-1139)
+
+        We can also specify a range of doubles which should contain a random
+        real::
+
+            sage: ExactReals().random_element([1.414, 3.141]) # random output
+            ℝ(2.34463=10559275352730893p-52 + ℝ(0.884672…)p-52)
 
         """
-        module = self._module_factory([exactreal.RealNumber.random()])
+        if approximation is None:
+            generator = exactreal.RealNumber.random()
+        elif isinstance(approximation, list):
+            generator = exactreal.RealNumber.random(*approximation)
+        else:
+            generator = exactreal.RealNumber.random(approximation)
+
+        module = self._module_factory([generator])
+
         return self(self._element_factory(module, [1]))
 
     def rational(self, q):
