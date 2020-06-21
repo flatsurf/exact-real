@@ -469,6 +469,24 @@ class ExactReals(UniqueRepresentation, IntegralDomain):
         module = self._module_factory([exactreal.RealNumber.rational(q)])
         return self(self._element_factory(module, [1]))
 
+    def is_field(self):
+        r"""
+        Return whether this module is a field, i.e., return ``False``.
+
+        In principle, when defined over a number field, one could argue this
+        structure is a field since the inverse of any transcendental could show
+        up as a :meth:`random_element`. However, since no field operations on
+        the elements are possible, we do not claim this to be a field.
+
+        EXAMPLES::
+
+            sage: from pyexactreal import ExactReals
+            sage: ExactReals().is_field()
+            False
+
+        """
+        return False
+
     Element = ExactRealElement
 
 
