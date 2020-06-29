@@ -3,8 +3,8 @@ set -ex
 
 source $RECIPE_DIR/environment.sh
 
-if [[ "$name" != "exact-real" ]]; then
-  cd $name
+if [[ "$component" != "exactreal" ]]; then
+  cd $component
 fi
 
 $SNIPPETS_DIR/autoconf/run.sh

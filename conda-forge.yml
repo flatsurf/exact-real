@@ -9,7 +9,15 @@ azure:
 channel_name: flatsurf
 skip_render:
   - README.md
+  - LICENSE
   - LICENSE.txt
   - .gitattributes
   - .gitignore
   - build-locally.py
+  - .github
+  - .circleci
+top_level_loop_vars:
+  - job
+secrets:
+  - ASV_SECRET_KEY
+  - CODECOV_TOKEN

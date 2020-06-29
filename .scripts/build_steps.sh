@@ -12,12 +12,6 @@ export RECIPE_ROOT="${RECIPE_ROOT:-/home/conda/recipe_root}"
 export CI_SUPPORT="${FEEDSTOCK_ROOT}/.ci_support"
 export CONFIG_FILE="${CI_SUPPORT}/${CONFIG}.yaml"
 
-# Inject secrets into conda-build which filters the environment. If we
-# whitelisted explicitly in meta.yaml, these would be publicly readable in the
-# CI logs.
-export -p | grep CODECOV_TOKEN >> /tmp/secrets || true
-export -p | grep ASV_SECRET_KEY >> /tmp/secrets || true
-
 cat >~/.condarc <<CONDARC
 
 conda-build:
@@ -25,10 +19,10 @@ conda-build:
 
 CONDARC
 
-# Make sure build_artifacts is a valid channel
-conda index --no-progress ${FEEDSTOCK_ROOT}/build_artifacts
+conda install --yes --quiet conda-forge-ci-setup=3 conda-build pip patch -c conda-forge
 
-conda install --yes --quiet conda-forge-ci-setup=2 conda-build -c conda-forge
+
+patch -p1 -d "`python -c 'import conda_build.variants, os.path;print(os.path.dirname(os.path.dirname(conda_build.variants.__file__)))'`" < ${CI_SUPPORT}/conda_build.3979.patch
 
 # set up the condarc
 setup_conda_rc "${FEEDSTOCK_ROOT}" "${RECIPE_ROOT}" "${CONFIG_FILE}"
@@ -39,11 +33,11 @@ source run_conda_forge_build_setup
 make_build_number "${FEEDSTOCK_ROOT}" "${RECIPE_ROOT}" "${CONFIG_FILE}"
 
 conda build "${RECIPE_ROOT}" -m "${CI_SUPPORT}/${CONFIG}.yaml" \
-    --clobber-file "${CI_SUPPORT}/clobber_${CONFIG}.yaml" \
-    --use-local
+    --suppress-variables \
+    --clobber-file "${CI_SUPPORT}/clobber_${CONFIG}.yaml"
 
 if [[ "${UPLOAD_PACKAGES}" != "False" ]]; then
-    upload_package "${FEEDSTOCK_ROOT}" "${RECIPE_ROOT}" "${CONFIG_FILE}"
+    upload_package  "${FEEDSTOCK_ROOT}" "${RECIPE_ROOT}" "${CONFIG_FILE}"
 fi
 
 touch "${FEEDSTOCK_ROOT}/build_artifacts/conda-forge-build-done-${CONFIG}"

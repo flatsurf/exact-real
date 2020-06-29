@@ -1,3 +1,7 @@
+_python:
+- 3.7.* *_cpython
+action:
+- coverage
 arb:
 - '2.17'
 boost_cpp:
@@ -6,6 +10,8 @@ channel_sources:
 - flatsurf,conda-forge,defaults
 channel_targets:
 - flatsurf main
+component:
+- exactreal
 cxx_compiler:
 - gxx
 cxx_compiler_version:
@@ -14,20 +20,15 @@ docker_image:
 - condaforge/linux-anvil-comp7
 gmp:
 - '6'
-name:
-- pyexactreal
+job:
+- coverage
 pin_run_as_build:
   boost-cpp:
     max_pin: x.x.x
   gmp:
     max_pin: x
-  python:
-    min_pin: x.x
-    max_pin: x.x
-python:
-- '3.7'
-target:
-- release
 zip_keys:
-- - target
-  - name
+- - job
+  - action
+  - _python
+  - component

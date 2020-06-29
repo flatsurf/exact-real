@@ -2,20 +2,44 @@ channel_targets:
   - flatsurf main
 channel_sources:
   - flatsurf,conda-forge,defaults
-target:
+job:
+  - release
+  - release
+  - release
+  - style
+  - test36
+  - test37
+  - coverage
+  - benchmark
+action:
+  - release
   - release
   - release
   - style
   - test
+  - test
   - coverage
   - benchmark
-name:
+_python:
+  - 3.7.* *_cpython
+  - 3.6.* *_cpython
+  - 3.7.* *_cpython
+  - 3.7.* *_cpython
+  - 3.6.* *_cpython
+  - 3.7.* *_cpython
+  - 3.7.* *_cpython
+  - 3.7.* *_cpython
+component:
   - libexactreal
   - pyexactreal
-  - exact-real
-  - exact-real
-  - exact-real
-  - exact-real
+  - pyexactreal
+  - exactreal
+  - exactreal
+  - exactreal
+  - exactreal
+  - exactreal
 zip_keys:
-  - target
-  - name
+  - job
+  - action
+  - _python
+  - component

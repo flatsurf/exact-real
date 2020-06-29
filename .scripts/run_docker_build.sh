@@ -13,6 +13,10 @@ PROVIDER_DIR="$(basename $THISDIR)"
 FEEDSTOCK_ROOT=$(cd "$(dirname "$0")/.."; pwd;)
 RECIPE_ROOT="${FEEDSTOCK_ROOT}/recipe"
 
+if [ -z ${FEEDSTOCK_NAME} ]; then
+    export FEEDSTOCK_NAME=$(basename ${FEEDSTOCK_ROOT})
+fi
+
 docker info
 
 # In order for the conda-build process in the container to write to the mounted
@@ -52,30 +56,29 @@ mkdir -p "$ARTIFACTS"
 DONE_CANARY="$ARTIFACTS/conda-forge-build-done-${CONFIG}"
 rm -f "$DONE_CANARY"
 
+# Allow people to specify extra default arguments to `docker run` (e.g. `--rm`)
+DOCKER_RUN_ARGS="${CONDA_FORGE_DOCKER_RUN_ARGS}"
 if [ -z "${CI}" ]; then
-    DOCKER_RUN_ARGS="-it "
+    DOCKER_RUN_ARGS="-it ${DOCKER_RUN_ARGS}"
 fi
-
-cp -Rv ${PIPELINE_WORKSPACE}/linux_*/* ${ARTIFACTS}/ || true
 
 export UPLOAD_PACKAGES="${UPLOAD_PACKAGES:-True}"
 docker run ${DOCKER_RUN_ARGS} \
-           -v "${RECIPE_ROOT}":/home/conda/recipe_root:ro,z \
+           -v "${RECIPE_ROOT}":/home/conda/recipe_root:rw,z \
            -v "${FEEDSTOCK_ROOT}":/home/conda/feedstock_root:rw,z \
            -e CONFIG \
-           -e BINSTAR_TOKEN \
            -e HOST_USER_ID \
-           -e CODECOV_TOKEN \
-           -e ASV_SECRET_KEY \
            -e UPLOAD_PACKAGES \
            -e GIT_BRANCH \
            -e UPLOAD_ON_BRANCH \
            -e CI \
+           -e FEEDSTOCK_NAME \
+           -e ASV_SECRET_KEY \
+           -e BINSTAR_TOKEN \
+           -e CODECOV_TOKEN \
            $DOCKER_IMAGE \
            bash \
            /home/conda/feedstock_root/${PROVIDER_DIR}/build_steps.sh
-
-cp ${PROVIDER_DIR}/artifactignore ${ARTIFACTS}/.artifactignore
 
 # verify that the end of the script was reached
 test -f "$DONE_CANARY"
