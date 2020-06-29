@@ -18,6 +18,8 @@ build:
   number: {{ build_number }}
 {%- if component in ["pyexactreal"] %}
   string: py{{ py }}_{{ build_number }}
+{%- else %}
+  string: {{ build_number }}
 {%- endif %}
   # e-antic is not available on Windows yet
   skip: True  # [win]
@@ -60,7 +62,7 @@ requirements:
     - setuptools
 {%- endif %}
 {%- if component == "pyexactreal" %}
-    - libexactreal {{ version }} {{ action }}_{{ build_number }}
+    - libexactreal {{ version }} {{ build_number }}
 {%- endif %}
 {%- if test_requirements %}
     # enable test/pyexactreal tests in ./configure
