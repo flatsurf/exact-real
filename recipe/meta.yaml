@@ -1,13 +1,14 @@
-# See https://github.com/conda/conda-build/issues/2666 for the missing tag
-{% set version = environ.get('GIT_DESCRIBE_TAG', 'untagged')|string|replace('-','_') %}
-# conda-smithy assumes that the build number is >= 1000 when building with the new anaconda compilers,
-# this probably is not important but make_build_number otherwise complains during the build
-{% set build_number = (environ.get('GIT_DESCRIBE_NUMBER')|int + 1000)|string %}
-{% set name = name or 'exact-real' %}
-{% set target = target or 'release' %}
+{% set version = environ.get('GIT_DESCRIBE_TAG', 'untagged')| string | replace('-','_') %}
+{% set build_number = environ.get('GIT_DESCRIBE_NUMBER') %}
+{% set component = component or 'exactreal' %}
+{% set action = action or 'release' %}
+{% set py = _python | replace('*', '') | replace(' ', '') | replace('.', '') %}
+{% set pyexactreal_requirements = component in ["exactreal", "pyexactreal"] %}
+{% set libexactreal_requirements = component in ["exactreal", "libexactreal"] %}
+{% set test_requirements = action in ["test", "coverage", "benchmark"] %}
 
 package:
-  name: {{ name }}
+  name: {{ component }}
   version: {{ version }}
 
 source:
@@ -15,26 +16,24 @@ source:
 
 build:
   number: {{ build_number }}
-{%- if name == "libexactreal" %}
-  string: {{ target }}_{{ build_number }}
-{%- else %}
-  string: {{ target }}_py{{ python }}_{{ build_number }}
+{%- if component in ["pyexactreal"] %}
+  string: py{{ py }}_{{ build_number }}
 {%- endif %}
   # e-antic is not available on Windows yet
   skip: True  # [win]
   # e-antic is not available on macOS yet
   skip: True  # [osx]
-  # we do not support old versions of Python
-  skip: True  # [py < 36]
-{%- if name != "pyexactreal" and target != "test" %}
-  # ignore Python version where it does not matter (conda-smithy still renders these but conda-build stops immediately)
-  skip: True  # [py != 37]
-{%- endif %}
-{%- if name == "libexactreal" %}
+{%- if component == "libexactreal" %}
   run_exports:
     # We pin the version of libexactreal exactly since we do not want to
     # bother with incompatibilities in our nightly builds.
-    - {{ pin_subpackage(name, exact=True) }}
+    - {{ pin_subpackage(component, exact=True) }}
+{%- endif %}
+  script_env:
+{%- if action == "coverage" %}
+    - CODECOV_TOKEN
+{%- elif action == "benchmark" %}
+    - ASV_SECRET_KEY
 {%- endif %}
 
 requirements:
@@ -43,28 +42,27 @@ requirements:
     - automake
     - coreutils
     - {{ compiler('cxx') }}
-{%- if target == "benchmark" %}
+{%- if action == "benchmark" %}
     - git
-{%- elif target == "style" %}
+{%- elif action == "style" %}
     - clangdev ==8.0.0
 {%- endif %}
   host:
-{%- if name != "pyexactreal" %}
-    # compile-time dependencies of libexactreal
+{%- if libexactreal_requirements %}
     - boost-cpp
     - e-antic 1.*
     - arb
     - gmp
     - gmpxxyy
 {%- endif %}
-{%- if name != "libexactreal" %}
-    - python
+{%- if pyexactreal_requirements %}
+    - python {{ _python }}
     - setuptools
 {%- endif %}
-{%- if name == "pyexactreal" %}
-    - libexactreal {{ version }} {{ target }}_{{ build_number }}
+{%- if component == "pyexactreal" %}
+    - libexactreal {{ version }} {{ action }}_{{ build_number }}
 {%- endif %}
-{%- if target in ["test", "coverage", "benchmark"] %}
+{%- if test_requirements %}
     # enable test/pyexactreal tests in ./configure
     - pytest
     - cppyy
@@ -78,31 +76,29 @@ requirements:
     - pip
     - ipywidgets
     - sympy
-{%- endif %}
-{%- if target == "benchmark" %}
+    # to run benchmarks
     - asv
 {%- endif %}
   run:
-{%- if name == "pyexactreal" %}
-    - python
+{%- if component == "pyexactreal" %}
+    - python {{ _python }}
     - cppyy
     - pyeantic
 {%- endif %}
 
-outputs:
-  - name: {{ name }}
-{%- if target == "release" %}
-    script: install-{{ name }}.sh
-{%- endif %}
-{%- if name == "pyexactreal" %}
-    test:
-      imports:
-        - {{ name }}
+{%- if component == "libexactreal" %}
+test:
+  commands:
+    - test -f ${PREFIX}/lib/libexactreal.so
+{%- elif component == "pyexactreal" %}
+test:
+  imports:
+    - pyexactreal
 {%- endif %}
 
 about:
   home: https://github.com/flatsurf/exact-real
-  license: GPL3
+  license: GPL-3.0-or-later
   license_file: COPYING
   summary: Finite Real Submodules powered by E-ANTIC
 
@@ -110,3 +106,7 @@ extra:
   recipe-maintainers:
     - saraedum
     - videlec
+  variables:
+    action: {{ action }}
+    job: {{ job }}
+    component: {{ component }}
