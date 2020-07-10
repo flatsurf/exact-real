@@ -212,6 +212,11 @@ Arb& Arb::operator=(Arb&& rhs) noexcept {
   return *this;
 }
 
+Arb& Arb::operator=(int rhs) noexcept {
+  arb_set_si(arb_t(), rhs);
+  return *this;
+}
+
 Arb::operator std::pair<Arf, Arf>() const noexcept {
   std::pair<Arf, Arf> ret;
   arb_get_interval_arf(ret.first.arf_t(), ret.second.arf_t(), arb_t(), arb_rel_accuracy_bits(arb_t()));

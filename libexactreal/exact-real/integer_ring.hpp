@@ -38,6 +38,7 @@ struct IntegerRing : boost::equality_comparable<IntegerRing> {
 
   typedef mpz_class ElementClass;
   static constexpr bool isField = false;
+  static bool unit(const ElementClass& x);
   static Arb arb(const ElementClass& x, long prec);
   static mpz_class floor(const ElementClass& x);
   static std::optional<mpq_class> rational(const ElementClass& x);

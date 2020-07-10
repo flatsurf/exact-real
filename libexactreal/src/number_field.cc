@@ -41,6 +41,8 @@ NumberField NumberField::compositum(const NumberField& lhs, const NumberField& r
 
 Arb NumberField::arb(const ElementClass& x, mp_limb_signed_t prec) { return Arb(x, prec); }
 
+bool NumberField::unit(const ElementClass& x) { return x != 0; }
+
 std::optional<mpq_class> NumberField::rational(const ElementClass& x) {
   return x.is_rational() ? std::optional{static_cast<mpq_class>(x)} : std::nullopt;
 }

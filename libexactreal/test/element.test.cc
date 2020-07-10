@@ -170,6 +170,12 @@ TEST_CASE("Element over ZZ", "[element][integer_ring]") {
     REQUIRE(x.floor() == zero);
     REQUIRE(x.ceil() == one);
   }
+
+  SECTION("Unit") {
+    REQUIRE(one.unit());
+    REQUIRE(!x.unit());
+    REQUIRE(!zero.unit());
+  }
 }
 
 TEST_CASE("Element over QQ", "[element][rational_field]") {
@@ -234,6 +240,12 @@ TEST_CASE("Element over QQ", "[element][rational_field]") {
     REQUIRE(one.ceil() == 1);
     REQUIRE((one / 2).floor() == 0);
     REQUIRE((one / 2).ceil() == 1);
+  }
+
+  SECTION("Unit") {
+    REQUIRE(one.unit());
+    REQUIRE(half.unit());
+    REQUIRE(!m->gen(1).unit());
   }
 }
 
@@ -309,6 +321,11 @@ TEST_CASE("Elements over Number Field", "[element][number_field]") {
     auto rationals = Module<NumberField>::make({RealNumber::rational(1)});
     REQUIRE(rationals->zero().coefficients<mpq_class>() == std::vector<mpq_class>(1, 0));
     REQUIRE(rationals->gen(0).coefficients<mpq_class>() == std::vector<mpq_class>(1, 1));
+  }
+
+  SECTION("Unit") {
+    REQUIRE((a * m->gen(0)).unit());
+    REQUIRE(!x.unit());
   }
 }
 

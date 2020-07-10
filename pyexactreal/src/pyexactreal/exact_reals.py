@@ -232,6 +232,38 @@ class ExactRealElement(IntegralDomainElement):
         """
         return self.parent()(-self._backend)
 
+    def __invert__(self):
+        r"""
+        Return the inverse of this element in its containing module.
+
+        EXAMPLES::
+
+            sage: from pyexactreal import ExactReals
+            sage: R = ExactReals()
+            sage: ~R(2)
+            1/2
+            sage: ~R.random_element()
+            Traceback (most recent call last):
+            ...
+            pyexactreal.cppyy_exactreal.NotRepresentableError: result is not representable in this parent
+
+        """
+        return self.parent().one() / self
+
+    def is_unit(self):
+        r"""
+        Return whether this element is a unit in its containing module.
+
+            sage: from pyexactreal import ExactReals
+            sage: R = ExactReals()
+            sage: R.random_element().is_unit()
+            False
+            sage: R(2).is_unit()
+            True
+
+        """
+        return self._backend.unit()
+
     def _repr_(self):
         r"""
         Return a printable representation of this element.

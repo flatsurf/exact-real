@@ -81,6 +81,9 @@ class Element : boost::additive<Element<Ring>>,
   std::optional<typename Ring::ElementClass> truediv(const Element&) const;
   mpz_class floordiv(const Element& rhs) const;
 
+  // Return whether this element is a unit, i.e., whether its inverse exists in the parent module.
+  bool unit() const;
+
   mpz_class floor() const;
   mpz_class ceil() const;
 
