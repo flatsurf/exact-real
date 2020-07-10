@@ -47,6 +47,7 @@ class NumberField : boost::equality_comparable<NumberField> {
 
   typedef eantic::renf_elem_class ElementClass;
   static constexpr bool isField = true;
+  static bool unit(const ElementClass& x);
   static mpz_class floor(const ElementClass& x);
   static Arb arb(const ElementClass& x, long prec);
   static std::optional<mpq_class> rational(const ElementClass& x);

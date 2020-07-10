@@ -38,6 +38,7 @@ struct RationalField : boost::equality_comparable<RationalField> {
 
   typedef mpq_class ElementClass;
   static constexpr bool isField = true;
+  static bool unit(const ElementClass&);
   static Arb arb(const ElementClass& x, long prec);
   static mpz_class floor(const ElementClass& x);
   static std::optional<mpq_class> rational(const ElementClass& x);

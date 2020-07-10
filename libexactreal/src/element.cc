@@ -315,6 +315,24 @@ mpz_class Element<Ring>::floordiv(const Element<Ring>& rhs) const {
 }
 
 template <typename Ring>
+bool Element<Ring>::unit() const {
+  if (!*this)
+    return false;
+
+  for (size i = 0; i < impl->parent->rank(); i++) {
+    const auto& c = impl->coefficients[i];
+    if (c == 0)
+      continue;
+    if (!static_cast<std::optional<mpq_class>>(impl->parent->gen(i)))
+      return false;
+    if (!Ring::unit(impl->coefficients[i]))
+      return false;
+  }
+
+  return true;
+}
+
+template <typename Ring>
 mpz_class Element<Ring>::floor() const {
   const auto integer = static_cast<std::optional<mpz_class>>(*this);
   if (integer) return *integer;
