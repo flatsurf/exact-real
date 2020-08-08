@@ -492,6 +492,14 @@ class ExactReals(UniqueRepresentation, IntegralDomain):
             sage: ExactReals().random_element([1.414, 3.141]) # random output
             ℝ(2.34463=10559275352730893p-52 + ℝ(0.884672…)p-52)
 
+        TESTS:
+
+        Verify that the automatic seed works::
+
+            sage: R = ExactReals()
+            sage: R.random_element() != R.random_element()
+            True
+
         """
         if approximation is None:
             generator = exactreal.RealNumber.random()

@@ -112,9 +112,31 @@ Arb Arb::randtest(flint::frandxx& state, prec precision, prec magbits) noexcept 
   return ret;
 }
 
+Arb Arb::zero() noexcept {
+  return Arb();
+}
+
+Arb Arb::one() noexcept {
+  return Arb(1);
+}
+
+Arb Arb::pos_inf() noexcept {
+  return Arb(Arf(1./0.));
+}
+
+Arb Arb::neg_inf() noexcept {
+  return Arb(Arf(-1./0.));
+}
+
 Arb Arb::zero_pm_inf() noexcept {
   Arb ret;
   arb_zero_pm_inf(ret.arb_t());
+  return ret;
+}
+
+Arb Arb::indeterminate() noexcept {
+  Arb ret;
+  arb_indeterminate(ret.arb_t());
   return ret;
 }
 

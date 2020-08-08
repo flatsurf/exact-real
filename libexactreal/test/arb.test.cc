@@ -76,4 +76,31 @@ TEST_CASE("Cast to Arf", "[arb][arf]") {
   REQUIRE(static_cast<std::pair<Arf, Arf>>(x).second == Arf(.5));
 }
 
+TEST_CASE("Zero", "[arb][zero]") {
+  Arb x = Arb::zero();
+
+  REQUIRE(x == 0);
+}
+
+TEST_CASE("One", "[arb][one]") {
+  Arb x = Arb::one();
+
+  REQUIRE(x == 1);
+}
+
+TEST_CASE("Infinite Values", "[arb][inf]") {
+  Arb x = Arb::pos_inf();
+  Arb y = Arb::neg_inf();
+
+  REQUIRE(*(x > 0));
+  REQUIRE(*(y < 0));
+}
+
+TEST_CASE("Indeterminate Value", "[arb][indeterminate]") {
+  Arb x = Arb::indeterminate();
+
+  REQUIRE(!(x >= 0));
+  REQUIRE(!(x <= 0));
+}
+
 }  // namespace exactreal::test
