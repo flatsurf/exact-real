@@ -2,7 +2,7 @@
  *  This file is part of exact-real.
  *
  *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C) 2019-2020 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -77,20 +77,16 @@ class Arb : yap::Terminal<Arb, yap::ArbExpr> {
   explicit Arb(const eantic::renf_elem_class&, const prec) noexcept;
   explicit Arb(const std::pair<Arf, Arf>&, const prec = ARF_PREC_EXACT);
   explicit Arb(const Arf& midpoint);
-  explicit Arb(slong) noexcept;
-  explicit Arb(ulong) noexcept;
-  explicit Arb(int) noexcept;
-  explicit Arb(long long) noexcept;
+  template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
+  explicit Arb(Integer) noexcept;
   explicit Arb(const std::string&, const prec);
 
   ~Arb() noexcept;
 
   Arb& operator=(const Arb&) noexcept;
   Arb& operator=(Arb&&) noexcept;
-  Arb& operator=(slong) noexcept;
-  Arb& operator=(ulong) noexcept;
-  Arb& operator=(int) noexcept;
-  Arb& operator=(long long) noexcept;
+  template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
+  Arb& operator=(Integer) noexcept;
 
   Arb operator-() const noexcept;
 
@@ -100,23 +96,29 @@ class Arb : yap::Terminal<Arb, yap::ArbExpr> {
   // the relation is false for every element in x and y, and nothing otherwise.
   // Note that this is different from the semantic in Arb where false is
   // returned in both of the latter cases.
+  std::optional<bool> operator==(const Arb&) const noexcept;
+  std::optional<bool> operator!=(const Arb&) const noexcept;
   std::optional<bool> operator<(const Arb&) const noexcept;
   std::optional<bool> operator>(const Arb&) const noexcept;
   std::optional<bool> operator<=(const Arb&) const noexcept;
   std::optional<bool> operator>=(const Arb&) const noexcept;
-  std::optional<bool> operator<(const long long) const noexcept;
-  std::optional<bool> operator>(const long long) const noexcept;
-  std::optional<bool> operator<=(const long long) const noexcept;
-  std::optional<bool> operator>=(const long long) const noexcept;
+  template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
+  std::optional<bool> operator<(Integer) const noexcept;
+  template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
+  std::optional<bool> operator>(Integer) const noexcept;
+  template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
+  std::optional<bool> operator<=(Integer) const noexcept;
+  template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
+  std::optional<bool> operator>=(Integer) const noexcept;
+  template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
+  std::optional<bool> operator==(Integer) const noexcept;
+  template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
+  std::optional<bool> operator!=(Integer) const noexcept;
   std::optional<bool> operator<(const mpq_class&) const noexcept;
   std::optional<bool> operator>(const mpq_class&) const noexcept;
   std::optional<bool> operator<=(const mpq_class&) const noexcept;
   std::optional<bool> operator>=(const mpq_class&) const noexcept;
-  std::optional<bool> operator==(const Arb&) const noexcept;
-  std::optional<bool> operator==(const long long) const noexcept;
   std::optional<bool> operator==(const mpq_class&) const noexcept;
-  std::optional<bool> operator!=(const Arb&) const noexcept;
-  std::optional<bool> operator!=(const long long) const noexcept;
   std::optional<bool> operator!=(const mpq_class&) const noexcept;
 
   bool is_exact() const noexcept;
