@@ -121,11 +121,11 @@ Arb Arb::one() noexcept {
 }
 
 Arb Arb::pos_inf() noexcept {
-  return Arb(Arf(1./0.));
+  return Arb(Arf(1. / 0.));
 }
 
 Arb Arb::neg_inf() noexcept {
-  return Arb(Arf(-1./0.));
+  return Arb(Arf(-1. / 0.));
 }
 
 Arb Arb::zero_pm_inf() noexcept {
