@@ -2,7 +2,7 @@
  *  This file is part of exact-real.
  *
  *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C) 2019-2020 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,8 +20,11 @@
 
 #include <arb.h>
 #include <e-antic/renfxx.h>
+#include <flint/fmpz.h>
+#include <gmpxxll/mpz_class.hpp>
 #include <algorithm>
 #include <boost/lexical_cast.hpp>
+#include <boost/numeric/conversion/cast.hpp>
 #include <ostream>
 
 #include "../exact-real/arb.hpp"
@@ -32,13 +35,27 @@ using eantic::renf_elem_class;
 using std::ostream;
 
 namespace exactreal {
+namespace {
+template <typename Integer>
+auto to_supported_integer(Integer value) noexcept {
+  using S = std::remove_cv_t<std::remove_reference_t<Integer>>;
+
+  using Long = std::conditional_t<std::numeric_limits<S>::is_signed, slong, ulong>;
+  if constexpr (std::numeric_limits<Long>::min() <= std::numeric_limits<S>::min() && std::numeric_limits<Long>::max() >= std::numeric_limits<S>::max()) {
+    // We can safely cast to a supported type without overflow
+    return static_cast<Long>(value);
+  } else {
+    return gmpxxll::mpz_class(value);
+  }
+}
+}  // namespace
+
 Arb::Arb() noexcept { arb_init(arb_t()); }
 
-Arb::Arb(const slong x) noexcept : Arb() { arb_set_si(arb_t(), x); }
-
-Arb::Arb(const int x) noexcept : Arb() { arb_set_si(arb_t(), x); }
-
-Arb::Arb(const long long x) noexcept : Arb(mpz_class(boost::lexical_cast<std::string>(x))) {}
+template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
+Arb::Arb(const Integer x) noexcept : Arb() {
+  *this = to_supported_integer(x);
+}
 
 Arb::Arb(const Arb& arb) noexcept : Arb() { arb_set(arb_t(), arb.arb_t()); }
 
@@ -95,9 +112,31 @@ Arb Arb::randtest(flint::frandxx& state, prec precision, prec magbits) noexcept 
   return ret;
 }
 
+Arb Arb::zero() noexcept {
+  return Arb();
+}
+
+Arb Arb::one() noexcept {
+  return Arb(1);
+}
+
+Arb Arb::pos_inf() noexcept {
+  return Arb(Arf(1. / 0.));
+}
+
+Arb Arb::neg_inf() noexcept {
+  return Arb(Arf(-1. / 0.));
+}
+
 Arb Arb::zero_pm_inf() noexcept {
   Arb ret;
   arb_zero_pm_inf(ret.arb_t());
+  return ret;
+}
+
+Arb Arb::indeterminate() noexcept {
+  Arb ret;
+  arb_indeterminate(ret.arb_t());
   return ret;
 }
 
@@ -174,13 +213,23 @@ std::optional<bool> Arb::operator!=(const Arb& rhs) const noexcept {
 
 bool Arb::equal(const Arb& rhs) const noexcept { return arb_equal(arb_t(), rhs.arb_t()); }
 
-std::optional<bool> Arb::operator<(const long long rhs) const noexcept { return *this < Arb(rhs); }
+template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
+std::optional<bool> Arb::operator<(const Integer rhs) const noexcept { return *this < Arb(rhs); }
 
-std::optional<bool> Arb::operator>(const long long rhs) const noexcept { return *this > Arb(rhs); }
+template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
+std::optional<bool> Arb::operator>(const Integer rhs) const noexcept { return *this > Arb(rhs); }
 
-std::optional<bool> Arb::operator<=(const long long rhs) const noexcept { return *this <= Arb(rhs); }
+template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
+std::optional<bool> Arb::operator<=(const Integer rhs) const noexcept { return *this <= Arb(rhs); }
 
-std::optional<bool> Arb::operator>=(const long long rhs) const noexcept { return *this >= Arb(rhs); }
+template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
+std::optional<bool> Arb::operator>=(const Integer rhs) const noexcept { return *this >= Arb(rhs); }
+
+template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
+std::optional<bool> Arb::operator==(const Integer rhs) const noexcept { return *this == Arb(rhs); }
+
+template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
+std::optional<bool> Arb::operator!=(const Integer rhs) const noexcept { return *this != Arb(rhs); }
 
 std::optional<bool> Arb::operator<(const mpq_class& rhs) const noexcept {
   Arb lhs = (*this * Arb(rhs.get_den()))(ARF_PREC_EXACT);
@@ -212,8 +261,19 @@ Arb& Arb::operator=(Arb&& rhs) noexcept {
   return *this;
 }
 
-Arb& Arb::operator=(int rhs) noexcept {
-  arb_set_si(arb_t(), rhs);
+template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
+Arb& Arb::operator=(Integer rhs) noexcept {
+  auto y = to_supported_integer(rhs);
+  if constexpr (std::is_same_v<decltype(y), slong>) {
+    arb_set_si(arb_t(), y);
+  } else if constexpr (std::is_same_v<decltype(y), ulong>) {
+    arb_set_ui(arb_t(), y);
+  } else {
+    fmpz_t z;
+    fmpz_init_set_readonly(z, y);
+    arb_set_fmpz(arb_t(), z);
+    fmpz_clear_readonly(z);
+  }
   return *this;
 }
 
@@ -234,5 +294,77 @@ ostream& operator<<(ostream& os, const Arb& self) {
   // print as [0.5 +/- 1e-10].
   return os << arb_get_str(self.arb_t(), os.precision(), ARB_STR_MORE);
 }
+
+template Arb::Arb(short);
+template Arb::Arb(unsigned short);
+template Arb::Arb(int);
+template Arb::Arb(unsigned int);
+template Arb::Arb(long);
+template Arb::Arb(unsigned long);
+template Arb::Arb(long long);
+template Arb::Arb(unsigned long long);
+
+template Arb& Arb::operator=(short);
+template Arb& Arb::operator=(unsigned short);
+template Arb& Arb::operator=(int);
+template Arb& Arb::operator=(unsigned int);
+template Arb& Arb::operator=(long);
+template Arb& Arb::operator=(unsigned long);
+template Arb& Arb::operator=(long long);
+template Arb& Arb::operator=(unsigned long long);
+
+template std::optional<bool> Arb::operator==(short) const noexcept;
+template std::optional<bool> Arb::operator==(unsigned short) const noexcept;
+template std::optional<bool> Arb::operator==(int) const noexcept;
+template std::optional<bool> Arb::operator==(unsigned int) const noexcept;
+template std::optional<bool> Arb::operator==(long) const noexcept;
+template std::optional<bool> Arb::operator==(unsigned long) const noexcept;
+template std::optional<bool> Arb::operator==(long long) const noexcept;
+template std::optional<bool> Arb::operator==(unsigned long long) const noexcept;
+
+template std::optional<bool> Arb::operator!=(short) const noexcept;
+template std::optional<bool> Arb::operator!=(unsigned short) const noexcept;
+template std::optional<bool> Arb::operator!=(int) const noexcept;
+template std::optional<bool> Arb::operator!=(unsigned int) const noexcept;
+template std::optional<bool> Arb::operator!=(long) const noexcept;
+template std::optional<bool> Arb::operator!=(unsigned long) const noexcept;
+template std::optional<bool> Arb::operator!=(long long) const noexcept;
+template std::optional<bool> Arb::operator!=(unsigned long long) const noexcept;
+
+template std::optional<bool> Arb::operator<(short) const noexcept;
+template std::optional<bool> Arb::operator<(unsigned short) const noexcept;
+template std::optional<bool> Arb::operator<(int) const noexcept;
+template std::optional<bool> Arb::operator<(unsigned int) const noexcept;
+template std::optional<bool> Arb::operator<(long) const noexcept;
+template std::optional<bool> Arb::operator<(unsigned long) const noexcept;
+template std::optional<bool> Arb::operator<(long long) const noexcept;
+template std::optional<bool> Arb::operator<(unsigned long long) const noexcept;
+
+template std::optional<bool> Arb::operator>(short) const noexcept;
+template std::optional<bool> Arb::operator>(unsigned short) const noexcept;
+template std::optional<bool> Arb::operator>(int) const noexcept;
+template std::optional<bool> Arb::operator>(unsigned int) const noexcept;
+template std::optional<bool> Arb::operator>(long) const noexcept;
+template std::optional<bool> Arb::operator>(unsigned long) const noexcept;
+template std::optional<bool> Arb::operator>(long long) const noexcept;
+template std::optional<bool> Arb::operator>(unsigned long long) const noexcept;
+
+template std::optional<bool> Arb::operator<=(short) const noexcept;
+template std::optional<bool> Arb::operator<=(unsigned short) const noexcept;
+template std::optional<bool> Arb::operator<=(int) const noexcept;
+template std::optional<bool> Arb::operator<=(unsigned int) const noexcept;
+template std::optional<bool> Arb::operator<=(long) const noexcept;
+template std::optional<bool> Arb::operator<=(unsigned long) const noexcept;
+template std::optional<bool> Arb::operator<=(long long) const noexcept;
+template std::optional<bool> Arb::operator<=(unsigned long long) const noexcept;
+
+template std::optional<bool> Arb::operator>=(short) const noexcept;
+template std::optional<bool> Arb::operator>=(unsigned short) const noexcept;
+template std::optional<bool> Arb::operator>=(int) const noexcept;
+template std::optional<bool> Arb::operator>=(unsigned int) const noexcept;
+template std::optional<bool> Arb::operator>=(long) const noexcept;
+template std::optional<bool> Arb::operator>=(unsigned long) const noexcept;
+template std::optional<bool> Arb::operator>=(long long) const noexcept;
+template std::optional<bool> Arb::operator>=(unsigned long long) const noexcept;
 
 }  // namespace exactreal

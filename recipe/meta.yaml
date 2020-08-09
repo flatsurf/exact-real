@@ -55,6 +55,7 @@ requirements:
     - e-antic 1.*
     - arb
     - gmp
+    - gmpxxll
     - gmpxxyy
 {%- endif %}
 {%- if pyexactreal_requirements %}
