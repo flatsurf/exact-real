@@ -32,6 +32,8 @@
 
 #include "external/gmpxxll/gmpxxll/mpz_class.hpp"
 
+#include "util/assert.ipp"
+
 using namespace exactreal;
 using boost::numeric_cast;
 using std::find_if;

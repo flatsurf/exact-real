@@ -43,7 +43,7 @@ TEST_CASE("Module over ZZ", "[module][integer_ring]") {
 
     auto m = Module<IntegerRing>::make({RealNumber::random(), RealNumber::random()});
     REQUIRE(m->rank() == 2);
-    REQUIRE(lexical_cast<string>(*m) == "ℤ-Module(ℝ(0.120809…), ℝ(0.178808…))");
+    REQUIRE(lexical_cast<string>(*m) == "ℤ-Module(ℝ(0.303644…), ℝ(0.120809…))");
 
     auto n = Module<IntegerRing>::make(m->basis());
     REQUIRE(m == n);

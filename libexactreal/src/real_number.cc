@@ -23,6 +23,7 @@
 #include "../exact-real/arb.hpp"
 #include "../exact-real/cereal.hpp"
 #include "../exact-real/real_number.hpp"
+#include "../exact-real/seed.hpp"
 #include "../exact-real/yap/arf.hpp"
 
 using std::max;
@@ -135,7 +136,7 @@ ostream& operator<<(ostream& os, const RealNumber& self) {
   return os;
 }
 
-const static std::optional<unsigned int> noSeed = 0;
+const static Seed noSeed = Seed(0);
 const static std::type_info& RATIONAL = typeid(*RealNumber::rational(0));
 const static std::type_info& RANDOM = typeid(*RealNumber::random(noSeed));
 const static std::type_info& CONSTRAINED = typeid(*RealNumber::random(Arf(1), Arf(2), noSeed));

@@ -13,6 +13,7 @@ libexactreal_la_SOURCES =               \
     number_field.cc                     \
     constraint_random_real_number.cc    \
     arf.cc                              \
+    seed.cc                             \
     cppyy.cc
 
 libexactreal_la_LDFLAGS = -version-info $(libexactreal_version_info)
@@ -44,6 +45,7 @@ nobase_pkginclude_HEADERS =                                  \
     ../exact-real/yap/terminal.hpp                           \
     ../exact-real/external/spimpl/spimpl.h                   \
     ../exact-real/cereal.hpp                                 \
+    ../exact-real/seed.hpp                                   \
     ../exact-real/cppyy.hpp
 
 noinst_HEADERS =                                          \

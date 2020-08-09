@@ -98,12 +98,16 @@ class RealNumber : public std::enable_shared_from_this<RealNumber>,
   friend std::ostream& operator<<(std::ostream&, const RealNumber&);
 
   // A random real in the range [0, 1]
-  static std::shared_ptr<const RealNumber> random(std::optional<unsigned int> seed = {});
+  static std::shared_ptr<const RealNumber> random();
+  static std::shared_ptr<const RealNumber> random(Seed seed);
   // A random real in the range [a, b]
-  static std::shared_ptr<const RealNumber> random(const Arf& a, const Arf& b, std::optional<unsigned int> seed = {});
+  static std::shared_ptr<const RealNumber> random(const Arf& a, const Arf& b);
+  static std::shared_ptr<const RealNumber> random(const Arf& a, const Arf& b, Seed seed);
   // A random real number, close to d; mostly useful to port code from doubles
   // that are meant to ressemble random reals
-  static std::shared_ptr<const RealNumber> random(const double d, std::optional<unsigned int> seed = {});
+  static std::shared_ptr<const RealNumber> random(const double d);
+  static std::shared_ptr<const RealNumber> random(const double d, Seed seed);
+
   static std::shared_ptr<const RealNumber> rational(const mpq_class&);
   static std::shared_ptr<const RealNumber> liouville(size_t base = 2);
   static std::shared_ptr<const RealNumber> pi();
