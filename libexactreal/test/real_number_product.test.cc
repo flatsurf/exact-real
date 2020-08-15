@@ -55,13 +55,13 @@ TEST_CASE("Product of Real Numbers", "[real_number][product]") {
 }
 
 TEST_CASE("DegLex Order of Real Numbers", "[real_number][product][deglex]") {
-  std::shared_ptr<const RealNumber> gens[] { RealNumber::rational(1), RealNumber::random(), RealNumber::random() };
+  std::shared_ptr<const RealNumber> gens[]{RealNumber::rational(1), RealNumber::random(), RealNumber::random()};
 
   auto& one = *gens[0];
   auto& x = *gens[1] < *gens[2] ? *gens[1] : *gens[2];
   auto& y = *gens[1] < *gens[2] ? *gens[2] : *gens[1];
 
-  std::shared_ptr<const RealNumber> products[] = { x*x, x*y, y*y };
+  std::shared_ptr<const RealNumber> products[] = {x * x, x * y, y * y};
 
   auto& xx = *products[0];
   auto& xy = *products[1];

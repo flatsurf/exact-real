@@ -17,19 +17,19 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <memory>
 #include <algorithm>
+#include <memory>
 
 #include <benchmark/benchmark.h>
 
 #include <e-antic/renfxx.h>
 
-#include "../exact-real/module.hpp"
 #include "../exact-real/element.hpp"
-#include "../exact-real/real_number.hpp"
 #include "../exact-real/integer_ring.hpp"
-#include "../exact-real/rational_field.hpp"
+#include "../exact-real/module.hpp"
 #include "../exact-real/number_field.hpp"
+#include "../exact-real/rational_field.hpp"
+#include "../exact-real/real_number.hpp"
 
 namespace exactreal::test {
 
@@ -40,10 +40,10 @@ class ElementBenchmark : public benchmark::Fixture {
   }
 
   Element<Ring> monomial(std::vector<long> degrees, const std::vector<std::shared_ptr<const RealNumber>>& gens) {
-    Element<Ring> x = Module<Ring>::make({RealNumber::rational(1)})->gen(0); 
+    Element<Ring> x = Module<Ring>::make({RealNumber::rational(1)})->gen(0);
 
     for (int i = 0; i < degrees.size(); i++)
-      while(degrees[i]--)
+      while (degrees[i]--)
         x *= *gens[i];
 
     return x;
@@ -80,11 +80,10 @@ class ElementBenchmark : public benchmark::Fixture {
       rhs_degrees.push_back(state.range(1 + vars + i));
     }
 
-    return std::tuple{ element(lhs_degrees, gens), element(rhs_degrees, gens) };
+    return std::tuple{element(lhs_degrees, gens), element(rhs_degrees, gens)};
   }
 
  public:
-
   void truediv(benchmark::State& state) {
     const auto [lhs, rhs] = elements(state);
 
@@ -99,25 +98,28 @@ class ElementBenchmark : public benchmark::Fixture {
 
   static void BenchmarkedDegrees(benchmark::internal::Benchmark* b) {
     // elements in zero variables, i.e., base ring elements
-    b->Args({0,});
+    b->Args({
+        0,
+    });
     // elements in one variable, x^1 + … (lower degree summands,) and x^1 + …
     b->Args({1, 1, 1});
     // elements in two variables, x^1 + …, and y^1 + …
     b->Args({2, 1, 0, 0, 1}),
-    // x^3*y^4 + …, and x^1*y^2 + …
-    b->Args({2, 3, 4, 1, 2});
+        // x^3*y^4 + …, and x^1*y^2 + …
+        b->Args({2, 3, 4, 1, 2});
   }
 };
 
-BENCHMARK_TEMPLATE_DEFINE_F(ElementBenchmark, truediv_Z, IntegerRing)(benchmark::State& state) { truediv(state); }
+BENCHMARK_TEMPLATE_DEFINE_F(ElementBenchmark, truediv_Z, IntegerRing)
+(benchmark::State& state) { truediv(state); }
 BENCHMARK_REGISTER_F(ElementBenchmark, truediv_Z)->Apply(ElementBenchmark<IntegerRing>::BenchmarkedDegrees);
 
-BENCHMARK_TEMPLATE_DEFINE_F(ElementBenchmark, truediv_Q, RationalField)(benchmark::State& state) { truediv(state); }
+BENCHMARK_TEMPLATE_DEFINE_F(ElementBenchmark, truediv_Q, RationalField)
+(benchmark::State& state) { truediv(state); }
 BENCHMARK_REGISTER_F(ElementBenchmark, truediv_Q)->Apply(ElementBenchmark<RationalField>::BenchmarkedDegrees);
 
-BENCHMARK_TEMPLATE_DEFINE_F(ElementBenchmark, truediv_K, NumberField)(benchmark::State& state) { truediv(state); }
+BENCHMARK_TEMPLATE_DEFINE_F(ElementBenchmark, truediv_K, NumberField)
+(benchmark::State& state) { truediv(state); }
 BENCHMARK_REGISTER_F(ElementBenchmark, truediv_K)->Apply(ElementBenchmark<NumberField>::BenchmarkedDegrees);
 
-
 }  // namespace exactreal::test
-

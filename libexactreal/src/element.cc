@@ -650,7 +650,7 @@ template <typename Ring>
 size_t hash<exactreal::Element<Ring>>::operator()(const exactreal::Element<Ring>& x) const noexcept {
   return hash<double>()(static_cast<double>(x));
 }
-}
+}  // namespace std
 
 // Explicit instantiations of templates so that code is generated for the
 // linker.
