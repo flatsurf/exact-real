@@ -22,6 +22,7 @@
 #include <map>
 #include <set>
 
+#include <arb.h>
 #include <e-antic/renfxx.h>
 #include <boost/numeric/conversion/cast.hpp>
 
@@ -165,17 +166,23 @@ std::vector<C> Element<Ring>::coefficients() const {
 }
 
 template <typename Ring>
-Arb Element<Ring>::arb(long prec) const {
-  if (!*this) {
+Arb Element<Ring>::arb(long accuracy) const {
+  if (!*this)
     return Arb();
-  }
+
   using std::ceil;
-  prec += numeric_cast<long>(ceil(log2(numeric_cast<double>(impl->parent->rank()))));
-  Arb ret;
-  for (int i = 0; i < impl->parent->rank(); i++) {
-    ret += (impl->parent->basis()[i]->arb(prec) * Ring::arb(impl->coefficients[i], prec))(prec);
+  long prec = accuracy + numeric_cast<long>(ceil(log2(numeric_cast<double>(impl->parent->rank()))));
+
+  while (true) {
+    Arb ret;
+    for (int i = 0; i < impl->parent->rank(); i++)
+      ret += (impl->parent->basis()[i]->arb(prec) * Ring::arb(impl->coefficients[i], prec))(prec);
+
+    if (arb_rel_accuracy_bits(ret.arb_t()) >= accuracy)
+      return ret;
+
+    prec *= 2;
   }
-  return ret;
 }
 
 template <typename Ring>
@@ -519,7 +526,43 @@ Element<Ring>::operator bool() const {
 
 template <typename Ring>
 Element<Ring>::operator double() const {
-  return static_cast<double>(arb(54));
+  {
+    auto rational = static_cast<std::optional<mpq_class>>(*this);
+    if (rational) {
+      Arf a;
+
+      fmpq_t q;
+      fmpq_init_set_readonly(q, rational->get_mpq_t());
+
+      arf_set_fmpq(a.arf_t(), q, DBL_MANT_DIG, ARF_RND_NEAR);
+
+      fmpq_clear_readonly(q);
+
+      return static_cast<double>(a);
+    }
+  }
+
+  // Since this is not a rational number, we can look at the approximate ball
+  // describing this value. Refining its radius, the entire ball will
+  // eventually be closer to a single double than to any other double.
+  // We will certainly need 53 bits to see the full mantissa.
+  // Since we ask for an additional bit, the ball around our
+  // approximation contains at most one double. Since we ask for
+  // yet another bit, we know that any double contained in that
+  // ball is closer to every point of the ball than any other
+  // double.
+  long prec = DBL_MANT_DIG + 2;
+
+  while (true) {
+    Arb a = arb(prec);
+    auto bounds = static_cast<std::pair<Arf, Arf>>(a);
+    auto lbound = static_cast<double>(bounds.first);
+    auto ubound = static_cast<double>(bounds.second);
+    if (lbound == ubound)
+      return lbound;
+
+    prec *= 2;
+  }
 }
 
 template <typename Ring>

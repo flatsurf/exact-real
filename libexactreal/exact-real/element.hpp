@@ -64,7 +64,11 @@ class Element : boost::additive<Element<Ring>>,
   template <typename C = typename Ring::ElementClass>
   std::vector<C> coefficients() const;
 
-  Arb arb(long prec) const;
+  // Return a ball containing this element such that it's accuracy is at least
+  // accuracy, defined as in http://arblib.org/arb.html#c.arb_rel_accuracy_bits, i.e.,
+  // the position of the top bit of the midpoint minus the position of the top
+  // bit of the radius minus one.
+  Arb arb(long accuracy) const;
 
   Element& operator+=(const Element&);
   Element& operator-=(const Element&);
@@ -109,6 +113,7 @@ class Element : boost::additive<Element<Ring>>,
   bool operator>(long long) const;
 
   explicit operator bool() const;
+  // Return the closest double; ties are rounded to even.
   explicit operator double() const;
 
   explicit operator std::optional<mpz_class>() const;
