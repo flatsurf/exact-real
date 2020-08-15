@@ -30,6 +30,6 @@ struct Seed {
   unsigned int value;
 };
 
-}
+}  // namespace exactreal
 
 #endif

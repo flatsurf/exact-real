@@ -26,4 +26,4 @@ static unsigned int nextSeed = 1337;
 Seed::Seed() : Seed(nextSeed++) {}
 
 Seed::Seed(unsigned int seed) : value(seed) {}
-}
+}  // namespace exactreal
