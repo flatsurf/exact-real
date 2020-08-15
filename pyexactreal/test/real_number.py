@@ -41,7 +41,7 @@ def test_random():
     r = RealNumber.random(13.37)
 
     assert float(r) == 13.37
-    assert str(r) == 'ℝ(13.37=3853...178808…)p-60)'
+    assert str(r) == 'ℝ(13.37=3853640129148385635p-58 + ℝ(0.178808…)p-60)'
     assert float(r.arb(64)) == 13.37
     assert float(r.arf(64)) == 13.37
 
