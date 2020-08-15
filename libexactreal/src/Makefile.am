@@ -51,7 +51,8 @@ nobase_pkginclude_HEADERS =                                  \
 noinst_HEADERS =                                          \
     external/unique-factory/unique_factory.hpp            \
     external/gmpxxll/gmpxxll/mpz_class.hpp                \
-    ../exact-real/detail/smart_ostream.hpp
+    ../exact-real/detail/smart_ostream.hpp                \
+    util/assert.ipp
 
 $(builddir)/../exact-real/exact-real.hpp: $(srcdir)/../exact-real/exact-real.hpp.in Makefile
 	mkdir -p $(builddir)/libexactreal
