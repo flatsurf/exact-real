@@ -92,7 +92,15 @@ class RealNumber : public std::enable_shared_from_this<RealNumber>,
   // Return whether the Arb interval contains this real (0) or the number is left (-1) or right (1) of that interval.
   int cmp(const Arb&) const;
 
+  // Return whether this real number, interpreted as a multivariate monomial
+  // is smaller than rhs; This interprets most real numbers as indeterminates
+  // and their products as products of these basic indeterminates. This is
+  // used internally for the operator/. The indeterminates, i.e., real numbers,
+  // are ordered by their real value.
+  bool deglex(const RealNumber& rhs) const;
+
   virtual std::shared_ptr<const RealNumber> operator*(const RealNumber&)const;
+  virtual std::optional<std::shared_ptr<const RealNumber>> operator/(const RealNumber&) const;
 
   virtual RealNumber const& operator>>(std::ostream&) const = 0;
   friend std::ostream& operator<<(std::ostream&, const RealNumber&);

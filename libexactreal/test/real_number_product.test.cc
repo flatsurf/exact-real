@@ -54,4 +54,44 @@ TEST_CASE("Product of Real Numbers", "[real_number][product]") {
   }
 }
 
+TEST_CASE("DegLex Order of Real Numbers", "[real_number][product][deglex]") {
+  std::shared_ptr<const RealNumber> gens[]{RealNumber::rational(1), RealNumber::random(), RealNumber::random()};
+
+  auto& one = *gens[0];
+  auto& x = *gens[1] < *gens[2] ? *gens[1] : *gens[2];
+  auto& y = *gens[1] < *gens[2] ? *gens[2] : *gens[1];
+
+  std::shared_ptr<const RealNumber> products[] = {x * x, x * y, y * y};
+
+  auto& xx = *products[0];
+  auto& xy = *products[1];
+  auto& yy = *products[2];
+
+  SECTION("Rationals correspond to Constant Polynomials") {
+    REQUIRE(!one.deglex(one));
+    REQUIRE(!one.deglex(*RealNumber::rational(2)));
+    REQUIRE(one.deglex(x));
+    REQUIRE(one.deglex(xy));
+  }
+
+  SECTION("Products are Ordered by Total Degree") {
+    REQUIRE(x.deglex(xx));
+    REQUIRE(y.deglex(xx));
+    REQUIRE(xx.deglex(*(x * xx)));
+    REQUIRE(xx.deglex(*(x * xy)));
+    REQUIRE(xx.deglex(*(x * yy)));
+  }
+
+  SECTION("Indeterminates are Ordered by Value") {
+    REQUIRE(x.deglex(y));
+  }
+
+  SECTION("Products of the same Total Degree are Ordered Lexicographically") {
+    REQUIRE(x.deglex(y));
+    REQUIRE(xx.deglex(xy));
+    REQUIRE(xx.deglex(yy));
+    REQUIRE(xy.deglex(yy));
+  }
+}
+
 }  // namespace exactreal::test

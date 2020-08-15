@@ -231,6 +231,16 @@ std::optional<bool> Arb::operator==(const Integer rhs) const noexcept { return *
 template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
 std::optional<bool> Arb::operator!=(const Integer rhs) const noexcept { return *this != Arb(rhs); }
 
+std::optional<bool> Arb::operator==(const mpq_class& rhs) const noexcept {
+  Arb lhs = (*this * Arb(rhs.get_den()))(ARF_PREC_EXACT);
+  return lhs == Arb(rhs.get_num());
+}
+
+std::optional<bool> Arb::operator!=(const mpq_class& rhs) const noexcept {
+  Arb lhs = (*this * Arb(rhs.get_den()))(ARF_PREC_EXACT);
+  return lhs == Arb(rhs.get_num());
+}
+
 std::optional<bool> Arb::operator<(const mpq_class& rhs) const noexcept {
   Arb lhs = (*this * Arb(rhs.get_den()))(ARF_PREC_EXACT);
   return lhs < Arb(rhs.get_num());

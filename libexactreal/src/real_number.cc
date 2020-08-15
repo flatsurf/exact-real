@@ -75,6 +75,20 @@ Arb RealNumber::arb(long prec) const {
   return ret;
 }
 
+std::optional<std::shared_ptr<const RealNumber>> RealNumber::operator/(const RealNumber& rhs) const {
+  if (*this == rhs)
+    return RealNumber::rational(1);
+
+  auto rational = static_cast<std::optional<mpq_class>>(rhs);
+  if (rational) {
+    if (rational.value() == 1)
+      return this->shared_from_this();
+    throw std::logic_error("not implemented: division of generic real number by rational");
+  }
+
+  return {};
+}
+
 bool RealNumber::operator<(const RealNumber& rhs) const {
   if (this->operator==(rhs)) {
     return false;

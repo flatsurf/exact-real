@@ -88,7 +88,9 @@ shared_ptr<const Module<Ring>> Module<Ring>::make(const Basis& basis) {
 }
 
 template <typename Ring>
-shared_ptr<const Module<Ring>> Module<Ring>::make(const Basis& basis, const Ring& ring) {
+shared_ptr<const Module<Ring>> Module<Ring>::make(const Basis& basis_, const Ring& ring) {
+  Basis basis = basis_;
+  std::sort(begin(basis), end(basis), [](const auto& lhs, const auto& rhs) { return lhs->deglex(*rhs); });
   return Module<Ring>::Implementation::factory().get(basis, ring, [&]() {
     return new Module<Ring>(spimpl::make_unique_impl<Module<Ring>::Implementation>(basis, ring));
   });

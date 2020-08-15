@@ -46,6 +46,7 @@ class Element : boost::additive<Element<Ring>>,
                 boost::totally_ordered<Element<Ring>, mpq_class>,
                 boost::totally_ordered<Element<Ring>, mpz_class>,
                 boost::totally_ordered<Element<Ring>, long long>,
+                boost::multipliable<Element<Ring>, RealNumber>,
                 boost::multiplicative<Element<Ring>, typename Ring::ElementClass> {
  public:
   Element();
@@ -63,11 +64,16 @@ class Element : boost::additive<Element<Ring>>,
   template <typename C = typename Ring::ElementClass>
   std::vector<C> coefficients() const;
 
-  Arb arb(long prec) const;
+  // Return a ball containing this element such that it's accuracy is at least
+  // accuracy, defined as in http://arblib.org/arb.html#c.arb_rel_accuracy_bits, i.e.,
+  // the position of the top bit of the midpoint minus the position of the top
+  // bit of the radius minus one.
+  Arb arb(long accuracy) const;
 
   Element& operator+=(const Element&);
   Element& operator-=(const Element&);
   Element& operator*=(const Element&);
+  Element& operator*=(const RealNumber&);
   Element operator-() const;
   // Define operator*= for every type that multiplies with Ring::ElementClass.
   // (until we figure out how to dynamically inherit from boost::multiplicative for such T, we do not get operator* here.)
@@ -78,7 +84,7 @@ class Element : boost::additive<Element<Ring>>,
   template <typename T, typename = decltype(std::declval<const typename Ring::ElementClass&>() / std::declval<const T&>()), typename = std::enable_if_t<Ring::isField || false_t<T>, void>>
   Element& operator/=(const T&);
 
-  std::optional<typename Ring::ElementClass> truediv(const Element&) const;
+  std::optional<Element> truediv(const Element&) const;
   mpz_class floordiv(const Element& rhs) const;
 
   // Return whether this element is a unit, i.e., whether its inverse exists in the parent module.
@@ -107,6 +113,7 @@ class Element : boost::additive<Element<Ring>>,
   bool operator>(long long) const;
 
   explicit operator bool() const;
+  // Return the closest double; ties are rounded to even.
   explicit operator double() const;
 
   explicit operator std::optional<mpz_class>() const;
@@ -141,5 +148,12 @@ Element(const mpq_class&)->Element<RationalField>;
 Element(const RealNumber&)->Element<IntegerRing>;
 
 }  // namespace exactreal
+
+namespace std {
+template <typename Ring>
+struct hash<exactreal::Element<Ring>> {
+  size_t operator()(const exactreal::Element<Ring>&) const noexcept;
+};
+}  // namespace std
 
 #endif

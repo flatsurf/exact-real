@@ -126,7 +126,7 @@ class Arb : yap::Terminal<Arb, yap::ArbExpr> {
 
   // The endpoints of this ball; wraps as arb_get_interval_arf
   explicit operator std::pair<Arf, Arf>() const noexcept;
-  // A double representation, actually a double representation of the midpoint of this ball.
+  // Return the midpoint of this ball rounded to the closest double; ties are rounded to even.
   explicit operator double() const noexcept;
   // The midpoint of this ball.
   explicit operator Arf() const noexcept;

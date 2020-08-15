@@ -2,7 +2,7 @@
  *  This file is part of exact-real.
  *
  *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C) 2019-2020 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -247,6 +247,14 @@ TEST_CASE("Element over QQ", "[element][rational_field]") {
     REQUIRE(half.unit());
     REQUIRE(!m->gen(1).unit());
   }
+
+  SECTION("Division") {
+    auto x = m->gen(1);
+    REQUIRE(x.truediv(m->gen(0)).value() == x);
+    REQUIRE(x.truediv(x).value() == 1);
+    REQUIRE((x * x).truediv(x).value() == x);
+    REQUIRE(((x + m->gen(0)) * (x - m->gen(0))).truediv(x - m->gen(0)).value() == x + m->gen(0));
+  }
 }
 
 TEST_CASE("Elements over Number Field", "[element][number_field]") {
@@ -304,7 +312,6 @@ TEST_CASE("Elements over Number Field", "[element][number_field]") {
           REQUIRE((x + x).truediv(elements[j]) == 2);
           REQUIRE((x + x).floordiv(elements[j]) == 2);
         } else {
-          REQUIRE((x + x).truediv(elements[j]) == std::optional<renf_elem_class>{});
           REQUIRE((x + x).floordiv(elements[j]) != 2);
         }
       }
@@ -326,6 +333,14 @@ TEST_CASE("Elements over Number Field", "[element][number_field]") {
   SECTION("Unit") {
     REQUIRE((a * m->gen(0)).unit());
     REQUIRE(!x.unit());
+  }
+
+  SECTION("Division") {
+    REQUIRE(x.truediv(m->gen(0)).value() == x);
+    REQUIRE(x.truediv(x).value() == 1);
+    REQUIRE((x * x).truediv(x).value() == x);
+    REQUIRE(((x + m->gen(0)) * (x - m->gen(0))).truediv(x - m->gen(0)).value() == x + m->gen(0));
+    REQUIRE(!m->gen(0).truediv(x).has_value());
   }
 }
 
