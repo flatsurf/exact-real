@@ -144,4 +144,11 @@ Element(const RealNumber&)->Element<IntegerRing>;
 
 }  // namespace exactreal
 
+namespace std {
+template <typename Ring>
+struct hash<exactreal::Element<Ring>> {
+  size_t operator()(const exactreal::Element<Ring>&) const noexcept;
+};
+}  // namespace std
+
 #endif

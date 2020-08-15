@@ -264,6 +264,21 @@ class ExactRealElement(IntegralDomainElement):
         """
         return self._backend.unit()
 
+    def __hash__(self):
+        r"""
+        Return a hash value for this real number.
+
+            sage: from pyexactreal import ExactReals
+            sage: R = ExactReals()
+            sage: x = R.random_element()
+            sage: hash(x) == hash(x)
+            True
+            sage: hash(x + 1 - 1) == hash(x)
+            True
+
+        """
+        return hash(self._backend)
+
     def _repr_(self):
         r"""
         Return a printable representation of this element.

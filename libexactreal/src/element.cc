@@ -602,6 +602,13 @@ ostream& operator<<(ostream& out, const Element<Ring>& self) {
 }
 }  // namespace exactreal
 
+namespace std {
+template <typename Ring>
+size_t hash<exactreal::Element<Ring>>::operator()(const exactreal::Element<Ring>& x) const noexcept {
+  return hash<double>()(static_cast<double>(x));
+}
+}
+
 // Explicit instantiations of templates so that code is generated for the
 // linker.
 #include "../exact-real/integer_ring.hpp"
@@ -640,3 +647,9 @@ template Element<NumberField>& Element<NumberField>::operator/=(const eantic::re
 template std::vector<mpq_class> Element<NumberField>::coefficients<mpq_class>() const;
 template std::vector<eantic::renf_elem_class> Element<NumberField>::coefficients<eantic::renf_elem_class>() const;
 }  // namespace exactreal
+
+namespace std {
+template struct hash<exactreal::Element<IntegerRing>>;
+template struct hash<exactreal::Element<RationalField>>;
+template struct hash<exactreal::Element<NumberField>>;
+}  // namespace std
