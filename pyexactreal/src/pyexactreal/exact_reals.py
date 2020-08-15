@@ -68,7 +68,7 @@ class ExactRealElement(IntegralDomainElement):
 
         sage: from pyexactreal import ExactReals
         sage: r = ExactReals().random_element(); r
-        ℝ(0.178808…)
+        ℝ(0.120809…)
 
     TESTS::
 
