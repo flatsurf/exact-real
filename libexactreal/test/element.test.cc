@@ -148,8 +148,8 @@ TEST_CASE("Element over ZZ", "[element][integer_ring]") {
 
   SECTION("Printing") {
     REQUIRE(lexical_cast<string>(m->gen(0)) == "1");
-    REQUIRE(lexical_cast<string>(m->gen(1)) == "ℝ(0.982253…)");
-    REQUIRE(lexical_cast<string>(m->gen(0) + m->gen(1)) == "ℝ(0.982253…) + 1");
+    REQUIRE(lexical_cast<string>(m->gen(1)) == "ℝ(0.673083…)");
+    REQUIRE(lexical_cast<string>(m->gen(0) + m->gen(1)) == "ℝ(0.673083…) + 1");
   }
 
   SECTION("Multiplication") {

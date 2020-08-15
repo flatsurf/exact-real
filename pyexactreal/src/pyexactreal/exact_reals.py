@@ -15,19 +15,19 @@ Typically, you want to fix some generators of your module. Here we take a
 random number, modeling a transcendental real::
 
     sage: g = R.random_element(); g
-    ℝ(0.120809…)
+    ℝ(0.303644…)
 
 Mostly, you do not need to worry about the module structure of exact reals.
 The module is automatically enlarged as needed::
 
     sage: g.module()
-    ℚ-Module(ℝ(0.120809…))
+    ℚ-Module(ℝ(0.303644…))
 
     sage: (g * g).module()
-    ℚ-Module(ℝ(0.120809…)^2)
+    ℚ-Module(ℝ(0.303644…)^2)
 
     sage: (g + 1137).module()
-    ℚ-Module(ℝ(0.120809…), 1)
+    ℚ-Module(ℝ(0.303644…), 1)
 
 """
 # ********************************************************************
@@ -68,7 +68,7 @@ class ExactRealElement(IntegralDomainElement):
 
         sage: from pyexactreal import ExactReals
         sage: r = ExactReals().random_element(); r
-        ℝ(0.178808…)
+        ℝ(0.120809…)
 
     TESTS::
 
@@ -473,7 +473,7 @@ class ExactReals(UniqueRepresentation, IntegralDomain):
 
             sage: from pyexactreal import ExactReals
             sage: ExactReals().random_element() # random output
-            ℝ(0.120809…)
+            ℝ(0.303644…)
 
         Random elements can be created with a prescribe double approximation::
 

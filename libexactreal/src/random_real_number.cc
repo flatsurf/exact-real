@@ -30,6 +30,7 @@
 #include "../exact-real/arb.hpp"
 #include "../exact-real/arf.hpp"
 #include "../exact-real/real_number.hpp"
+#include "../exact-real/seed.hpp"
 
 #include "external/unique-factory/unique_factory.hpp"
 
@@ -43,7 +44,6 @@ using std::string;
 using std::stringstream;
 
 namespace {
-unsigned int nextSeed = 1337;
 
 // A random real number in [0, 1]
 class RandomRealNumber final : public RealNumber {
@@ -113,10 +113,12 @@ auto& factory() {
 }  // namespace
 
 namespace exactreal {
-shared_ptr<const RealNumber> RealNumber::random(std::optional<unsigned int> seed) {
-  if (!seed)
-    seed = nextSeed++;
-  return factory().get(*seed, [&]() { return new RandomRealNumber(*seed); });
+shared_ptr<const RealNumber> RealNumber::random() {
+  return RealNumber::random(Seed());
+}
+
+shared_ptr<const RealNumber> RealNumber::random(Seed seed) {
+  return factory().get(seed.value, [&]() { return new RandomRealNumber(seed.value); });
 }
 
 void save_random(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& base) {

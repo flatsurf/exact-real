@@ -32,6 +32,7 @@
 
 #include "../exact-real/cereal.hpp"
 #include "../exact-real/real_number.hpp"
+#include "../exact-real/seed.hpp"
 #include "../exact-real/yap/arf.hpp"
 
 #include "external/unique-factory/unique_factory.hpp"
@@ -47,7 +48,6 @@ using std::shared_ptr;
 using std::string;
 
 namespace {
-unsigned int nextSeed = 1337;
 
 // A random real number in [a, b]
 class ConstraintRandomRealNumber final : public RealNumber {
@@ -112,13 +112,14 @@ auto& factory() {
 }  // namespace
 
 namespace exactreal {
-shared_ptr<const RealNumber> RealNumber::random(const Arf& lower, const Arf& upper, std::optional<unsigned int> seed) {
+shared_ptr<const RealNumber> RealNumber::random(const Arf& lower, const Arf& upper) {
+  return RealNumber::random(lower, upper, Seed());
+}
+
+shared_ptr<const RealNumber> RealNumber::random(const Arf& lower, const Arf& upper, Seed seed) {
   if (lower == 0 && upper == 1) {
     return RealNumber::random(seed);
   } else {
-    if (!seed)
-      seed = nextSeed++;
-
     if (lower >= upper) {
       throw std::logic_error("interval must have an interior");
     }
@@ -156,7 +157,7 @@ shared_ptr<const RealNumber> RealNumber::random(const Arf& lower, const Arf& upp
 
     gmp_randstate_t rnd;
     gmp_randinit_default(rnd);
-    gmp_randseed_ui(rnd, *seed);
+    gmp_randseed_ui(rnd, seed.value);
     mpz_urandomm(mantissa.get_mpz_t(), rnd, length.get_mpz_t());
     gmp_randclear(rnd);
 
@@ -164,7 +165,7 @@ shared_ptr<const RealNumber> RealNumber::random(const Arf& lower, const Arf& upp
 
     long e = lower_exponent.get_si();
     Arf initial = Arf(mantissa, e);
-    auto inner = RealNumber::random();
+    auto inner = RealNumber::random(seed);
 
     return factory().get(initial, e, inner, [&]() {
       return new ConstraintRandomRealNumber(initial, e, inner);
@@ -172,7 +173,11 @@ shared_ptr<const RealNumber> RealNumber::random(const Arf& lower, const Arf& upp
   }
 }
 
-shared_ptr<const RealNumber> RealNumber::random(const double x, std::optional<unsigned int> seed) {
+shared_ptr<const RealNumber> RealNumber::random(const double x) {
+  return RealNumber::random(x, Seed());
+}
+
+shared_ptr<const RealNumber> RealNumber::random(const double x, Seed seed) {
   if (!isfinite(x)) {
     throw std::logic_error("not implemented - random number close to non-finite");
   }

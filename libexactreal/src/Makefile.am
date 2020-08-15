@@ -13,6 +13,7 @@ libexactreal_la_SOURCES =               \
     number_field.cc                     \
     constraint_random_real_number.cc    \
     arf.cc                              \
+    seed.cc                             \
     cppyy.cc
 
 libexactreal_la_LDFLAGS = -version-info $(libexactreal_version_info)
@@ -44,12 +45,14 @@ nobase_pkginclude_HEADERS =                                  \
     ../exact-real/yap/terminal.hpp                           \
     ../exact-real/external/spimpl/spimpl.h                   \
     ../exact-real/cereal.hpp                                 \
+    ../exact-real/seed.hpp                                   \
     ../exact-real/cppyy.hpp
 
 noinst_HEADERS =                                          \
     external/unique-factory/unique_factory.hpp            \
     external/gmpxxll/gmpxxll/mpz_class.hpp                \
-    ../exact-real/detail/smart_ostream.hpp
+    ../exact-real/detail/smart_ostream.hpp                \
+    util/assert.ipp
 
 $(builddir)/../exact-real/exact-real.hpp: $(srcdir)/../exact-real/exact-real.hpp.in Makefile
 	mkdir -p $(builddir)/libexactreal
