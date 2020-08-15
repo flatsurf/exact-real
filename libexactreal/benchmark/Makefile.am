@@ -1,6 +1,6 @@
 noinst_PROGRAMS = benchmark
 
-benchmark_SOURCES = main.cc arb.benchmark.cc random_real_number.benchmark.cc
+benchmark_SOURCES = main.cc arb.benchmark.cc random_real_number.benchmark.cc element.benchmark.cc
 
 AM_CPPFLAGS = -I $(srcdir)/.. -I $(builddir)/..
 AM_LDFLAGS = $(builddir)/../src/libexactreal.la

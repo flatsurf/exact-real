@@ -55,8 +55,8 @@ auto& factory() {
 class RealNumberProduct final : public RealNumber {
  public:
   explicit RealNumberProduct(const Factors& factors) : factors(factors) {
-    assert(std::all_of(factors.begin(), factors.end(), [](auto& factor) { return factor.second >= 1; }) && "factors must appear at least once");
-    assert(std::all_of(factors.begin(), factors.end(), [](auto& factor) { return !static_cast<std::optional<mpq_class>>(*factor.first); }) && "factors must be transcendental");
+    ASSERT(std::all_of(factors.begin(), factors.end(), [](auto& factor) { return factor.second >= 1; }), "factors must appear at least once");
+    ASSERT(std::all_of(factors.begin(), factors.end(), [](auto& factor) { return !static_cast<std::optional<mpq_class>>(*factor.first); }), "factors must be transcendental");
   }
 
   RealNumber const& operator>>(std::ostream& os) const override {
@@ -87,7 +87,7 @@ class RealNumberProduct final : public RealNumber {
       }
     }
 
-    auto quotient = factors;
+    Factors quotient = factors;
 
     if (quotient.find(rhs.shared_from_this()) != quotient.end()) {
       auto rhs_ = rhs.shared_from_this();
@@ -97,12 +97,10 @@ class RealNumberProduct final : public RealNumber {
       assert(quotient.size() >= 1);
     } else if (dynamic_cast<const RealNumberProduct*>(&rhs)) {
       for (auto& d : dynamic_cast<const RealNumberProduct&>(rhs).factors) {
-        if (quotient.find(d.first) == quotient.end())
-          return {};
         quotient[d.first] -= d.second;
         if (quotient[d.first] == 0)
           quotient.erase(d.first);
-        if (quotient[d.first] < 0)
+        else if (quotient[d.first] < 0)
           return {};
       }
     }
