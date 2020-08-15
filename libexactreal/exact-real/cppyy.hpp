@@ -85,6 +85,14 @@ auto truediv(const S &lhs, const T &rhs) {
 template <typename T>
 auto neg(const T &value) { return -value; }
 
+// Expose explicit conversion operators
+template <typename Ring>
+auto optional_integer(const Element<Ring>& element) { return static_cast<std::optional<mpz_class>>(element); }
+
+template <typename Ring>
+auto optional_rational(const Element<Ring>& element) { return static_cast<std::optional<mpq_class>>(element); }
+
+
 // A helper to get RAII that cereal needs to make sure that its output has been flushed.
 template <typename T, typename Archive>
 std::string serialize(const T &value) {

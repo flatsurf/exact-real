@@ -406,6 +406,61 @@ class ExactRealElement(IntegralDomainElement):
             # assuming that this is a module element as well
             return self.parent()(c._backend * self._backend)
 
+    def __float__(self):
+        r"""
+        Return the C double closest to the value of this real; rounding to even
+        if there is a tie, i.e., when this is a rational number exactly halfway
+        between two float value.
+
+        EXAMPLES::
+
+            sage: from pyexactreal import ExactReals
+            sage: R = ExactReals()
+            sage: x = R.random_element()
+            sage: d = float(x)
+
+        """
+        return float(self._backend)
+
+    def _integer_(self, Z):
+        r"""
+        Return the integer value of this element if it is an integer.
+
+        EXAMPLES::
+
+            sage: from pyexactreal import ExactReals
+            sage: R = ExactReals()
+            sage: x = R.random_element()
+            sage: ZZ(x + 1 - x)
+            1
+
+        """
+        import cppyy
+        value = cppyy.gbl.exactreal.cppyy.optional_integer(self._backend)
+        if value.has_value():
+            return Z(value.value())
+        raise TypeError("not an integer")
+
+    def _rational_(self):
+        r"""
+        Return the integer value of this element if it is an integer.
+
+        EXAMPLES::
+
+            sage: from pyexactreal import ExactReals
+            sage: R = ExactReals()
+            sage: x = R.random_element()
+            sage: QQ(x / x / 2)
+            1/2
+
+        """
+        import cppyy
+        value = cppyy.gbl.exactreal.cppyy.optional_rational(self._backend)
+        if value.has_value():
+            return QQ(value.value())
+        raise TypeError("not a rational")
+
+
 class ExactReals(UniqueRepresentation, Parent):
     r"""
     The Real Numbers as a module over the number field ``base``.
