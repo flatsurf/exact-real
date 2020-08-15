@@ -50,8 +50,8 @@ The module is automatically enlarged as needed::
 # ********************************************************************
 
 import cppyy
-from sage.all import QQ, UniqueRepresentation, ZZ, RR, IntegralDomains, IntegralDomain, Morphism, Hom, SetsWithPartialMaps, NumberFieldElement, Parent, coerce
-from sage.structure.element import IntegralDomainElement
+from sage.all import QQ, UniqueRepresentation, ZZ, RR, IntegralDomains, Morphism, Hom, SetsWithPartialMaps, NumberFieldElement, Parent, coerce
+from sage.structure.element import IntegralDomainElement, coerce_binop
 from sage.categories.action import Action
 from sage.structure.coerce import RightModuleAction
 from pyexactreal import exactreal, QQModule, ZZModule, NumberFieldModule
@@ -254,6 +254,8 @@ class ExactRealElement(IntegralDomainElement):
         r"""
         Return whether this element is a unit in its containing module.
 
+        EXAMPLES::
+
             sage: from pyexactreal import ExactReals
             sage: R = ExactReals()
             sage: R.random_element().is_unit()
@@ -267,6 +269,8 @@ class ExactRealElement(IntegralDomainElement):
     def _floordiv_(self, other):
         r"""
         Return the integer floor of this element divided by ``other``.
+
+        EXAMPLES::
 
             sage: from pyexactreal import ExactReals
             sage: R = ExactReals()
@@ -283,6 +287,8 @@ class ExactRealElement(IntegralDomainElement):
         r"""
         Return the integer floor of this real number.
 
+        EXAMPLES::
+
             sage: from pyexactreal import ExactReals
             sage: R = ExactReals()
             sage: x = R.random_element()
@@ -296,6 +302,8 @@ class ExactRealElement(IntegralDomainElement):
         r"""
         Return the integer ceil of this real number.
 
+        EXAMPLES::
+
             sage: from pyexactreal import ExactReals
             sage: R = ExactReals()
             sage: x = R.random_element()
@@ -308,6 +316,8 @@ class ExactRealElement(IntegralDomainElement):
     def __hash__(self):
         r"""
         Return a hash value for this real number.
+
+        EXAMPLES::
 
             sage: from pyexactreal import ExactReals
             sage: R = ExactReals()
@@ -396,7 +406,7 @@ class ExactRealElement(IntegralDomainElement):
             # assuming that this is a module element as well
             return self.parent()(c._backend * self._backend)
 
-class ExactReals(UniqueRepresentation, IntegralDomain):
+class ExactReals(UniqueRepresentation, Parent):
     r"""
     The Real Numbers as a module over the number field ``base``.
 
@@ -446,7 +456,7 @@ class ExactReals(UniqueRepresentation, IntegralDomain):
             self._element_factory = exactreal.Element[type(ring)]
             self._module_factory = lambda gens: NumberFieldModule(ring, *gens)
 
-        IntegralDomain.__init__(self, base, category=category)
+        Parent.__init__(self, base, category=category)
         H = Hom(base, self)
         coercion = H.__make_element_class__(CoercionExactRealsNumberField)(H)
         self.register_coercion(coercion)
@@ -607,6 +617,21 @@ class ExactReals(UniqueRepresentation, IntegralDomain):
 
         """
         return False
+
+    def is_integral_domain(self, proof=None):
+        r"""
+        Return whether this module is an integral domain, i.e., return ``True``.
+
+        EXAMPLES::
+
+            sage: from pyexactreal import ExactReals
+            sage: ExactReals().is_integral_domain()
+            True
+            sage: ExactReals() in IntegralDomains()
+            True
+
+        """
+        return True
 
     Element = ExactRealElement
 
