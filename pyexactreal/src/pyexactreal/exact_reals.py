@@ -264,6 +264,47 @@ class ExactRealElement(IntegralDomainElement):
         """
         return self._backend.unit()
 
+    def _floordiv_(self, other):
+        r"""
+        Return the integer floor of this element divided by ``other``.
+
+            sage: from pyexactreal import ExactReals
+            sage: R = ExactReals()
+            sage: x = R.random_element()
+            sage: x // x
+            1
+            sage: (x * x) // x == x.floor()
+            True
+
+        """
+        return ZZ(self._backend.floordiv(other._backend))
+
+    def floor(self):
+        r"""
+        Return the integer floor of this real number.
+
+            sage: from pyexactreal import ExactReals
+            sage: R = ExactReals()
+            sage: x = R.random_element()
+            sage: x.floor()
+            0
+
+        """
+        return ZZ(self._backend.floor())
+
+    def ceil(self):
+        r"""
+        Return the integer ceil of this real number.
+
+            sage: from pyexactreal import ExactReals
+            sage: R = ExactReals()
+            sage: x = R.random_element()
+            sage: x.ceil()
+            1
+
+        """
+        return ZZ(self._backend.ceil())
+
     def __hash__(self):
         r"""
         Return a hash value for this real number.
