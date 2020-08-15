@@ -42,6 +42,6 @@ def test_binder():
     z = x*x + y;
     assert str(z) == "ℝ(0.303644…)^2 + 3*ℝ(0.303644…)"
 
-    assert str(z.module()) == "ℤ-Module(ℝ(0.303644…)^2, ℝ(0.303644…), 1)"
+    assert str(z.module()) == "ℤ-Module(1, ℝ(0.303644…), ℝ(0.303644…)^2)"
 
 if __name__ == '__main__': sys.exit(pytest.main(sys.argv))

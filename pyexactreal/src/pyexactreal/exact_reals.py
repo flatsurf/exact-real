@@ -27,7 +27,7 @@ The module is automatically enlarged as needed::
     ℚ-Module(ℝ(0.303644…)^2)
 
     sage: (g + 1137).module()
-    ℚ-Module(ℝ(0.303644…), 1)
+    ℚ-Module(1, ℝ(0.303644…))
 
 """
 # ********************************************************************
