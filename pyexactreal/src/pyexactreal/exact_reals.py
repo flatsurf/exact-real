@@ -216,7 +216,7 @@ class ExactRealElement(IntegralDomainElement):
             1/1337*ℝ(...)
 
         """
-        return self.base_ring()(self._backend / rhs._backend)
+        return self.parent()(self._backend / rhs._backend)
 
     def _neg_(self):
         r"""
