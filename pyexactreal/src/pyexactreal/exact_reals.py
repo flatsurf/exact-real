@@ -534,7 +534,7 @@ class ExactReals(UniqueRepresentation, IntegralDomain):
         module = self._module_factory([exactreal.RealNumber.rational(q)])
         return self(self._element_factory(module, [1]))
 
-    def is_field(self):
+    def is_field(self, proof=None):
         r"""
         Return whether this module is a field, i.e., return ``False``.
 
