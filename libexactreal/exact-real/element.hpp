@@ -46,6 +46,7 @@ class Element : boost::additive<Element<Ring>>,
                 boost::totally_ordered<Element<Ring>, mpq_class>,
                 boost::totally_ordered<Element<Ring>, mpz_class>,
                 boost::totally_ordered<Element<Ring>, long long>,
+                boost::multipliable<Element<Ring>, RealNumber>,
                 boost::multiplicative<Element<Ring>, typename Ring::ElementClass> {
  public:
   Element();
@@ -68,6 +69,7 @@ class Element : boost::additive<Element<Ring>>,
   Element& operator+=(const Element&);
   Element& operator-=(const Element&);
   Element& operator*=(const Element&);
+  Element& operator*=(const RealNumber&);
   Element operator-() const;
   // Define operator*= for every type that multiplies with Ring::ElementClass.
   // (until we figure out how to dynamically inherit from boost::multiplicative for such T, we do not get operator* here.)
@@ -78,7 +80,7 @@ class Element : boost::additive<Element<Ring>>,
   template <typename T, typename = decltype(std::declval<const typename Ring::ElementClass&>() / std::declval<const T&>()), typename = std::enable_if_t<Ring::isField || false_t<T>, void>>
   Element& operator/=(const T&);
 
-  std::optional<typename Ring::ElementClass> truediv(const Element&) const;
+  std::optional<Element> truediv(const Element&) const;
   mpz_class floordiv(const Element& rhs) const;
 
   // Return whether this element is a unit, i.e., whether its inverse exists in the parent module.

@@ -221,9 +221,7 @@ Element<Ring>& Element<Ring>::operator*=(const Element<Ring>& rhs) {
   }
 
   vector<std::pair<shared_ptr<const RealNumber>, typename Ring::ElementClass>> sorted(products.begin(), products.end());
-  std::sort(sorted.begin(), sorted.end(), [](const auto& lhs, const auto& rhs) {
-    return *lhs.first < *rhs.first;
-  });
+  std::sort(sorted.begin(), sorted.end(), [](const auto& lhs, const auto& rhs) { return lhs.first->deglex(*rhs.first); });
 
   vector<shared_ptr<const RealNumber>> basis;
   vector<typename Ring::ElementClass> coefficients;
@@ -235,7 +233,14 @@ Element<Ring>& Element<Ring>::operator*=(const Element<Ring>& rhs) {
   this->impl->parent = Module<Ring>::make(basis, this->impl->parent->ring());
   this->impl->coefficients = coefficients;
 
+  ASSERT(this->impl->parent->basis() == basis, "order of generators in module is not deglex which is the assumption by Element::operator*=");
+
   return *this;
+}
+
+template <typename Ring>
+Element<Ring>& Element<Ring>::operator*=(const RealNumber& rhs) {
+  return *this *= Module<Ring>::make({rhs.shared_from_this()}, this->module()->ring())->gen(0);
 }
 
 template <typename Ring>
@@ -267,34 +272,47 @@ Element<Ring>& Element<Ring>::operator/=(const T& rhs) {
 }
 
 template <typename Ring>
-std::optional<typename Ring::ElementClass> Element<Ring>::truediv(const Element<Ring>& rhs) const {
+std::optional<Element<Ring>> Element<Ring>::truediv(const Element<Ring>& rhs) const {
+  CHECK_ARGUMENT(rhs != 0, "division by zero");
+
+  if (rhs == 1)
+    return *this;
+
   if (impl->parent != rhs.impl->parent) {
     auto parent = Module<Ring>::span(this->impl->parent, rhs.impl->parent);
     return Element<Ring>(*this).promote(parent).truediv(Element<Ring>(rhs).promote(parent));
   }
 
-  std::optional<typename Ring::ElementClass> ret;
+  // Multivariate polynomial division.
+  Element<Ring> remainder = *this;
+  Element<Ring> quotient = this->module()->zero();
 
-  for (size i = 0; i < impl->parent->rank(); i++) {
-    const auto& other = rhs.impl->coefficients[i];
-    const auto& self = impl->coefficients[i];
-    if (other == 0) {
-      if (self != 0) {
-        return {};
-      }
-    } else {
-      auto quot = self / other;
-      if (ret.has_value()) {
-        if (quot != *ret) {
-          return {};
-        }
-      } else {
-        ret = quot;
-      }
+  const auto leading = [](const auto& x) {
+    const auto coefficients = x.coefficients();
+    for (size_t i = coefficients.size(); i > 0; i--) {
+      if (coefficients[i - 1])
+        return std::tuple(coefficients[i - 1], x.module()->basis()[i - 1]);
     }
+    throw std::logic_error("zero element has no leading coefficient");
+  };
+
+  while (remainder) {
+    auto [a, g] = leading(remainder);
+    auto [b, h] = leading(rhs);
+
+    auto generator_quotient = *g / *h;
+    if (!generator_quotient.has_value())
+      return {};
+
+    auto coefficient_quotient = a / b;
+
+    auto partial_quotient = coefficient_quotient * Module<Ring>::make({*generator_quotient}, this->module()->ring())->gen(0);
+
+    quotient += partial_quotient;
+    remainder -= partial_quotient * rhs;
   }
 
-  return ret;
+  return quotient;
 }
 
 template <typename Ring>
@@ -303,11 +321,16 @@ mpz_class Element<Ring>::floordiv(const Element<Ring>& rhs) const {
     const auto quotient = truediv(rhs);
 
     if (quotient)
-      return Ring::floor(*quotient);
+      return quotient->floor();
   }
 
   for (long prec = ARB_PRECISION_FAST;; prec *= 2) {
-    const Arb quotient = (arb(prec) / rhs.arb(prec))(prec);
+    const auto div = rhs.arb(prec);
+    if (!(div != 0))
+      // the divident ball contains zero
+      continue;
+
+    const Arb quotient = (arb(prec) / div)(prec);
 
     const auto [lower, upper] = static_cast<std::pair<Arf, Arf>>(quotient);
 
@@ -513,8 +536,8 @@ Element<Ring>& Element<Ring>::promote(const shared_ptr<const Module<Ring>>& pare
     return *this = parent->zero();
   }
   auto& our_gens = impl->parent->basis();
-  assert(std::all_of(our_gens.begin(), our_gens.end(), [&](const auto& gen) { return std::find_if(parent->basis().begin(), parent->basis().end(), [&](const auto& ogen) { return *gen == *ogen; }) != parent->basis().end(); }) &&
-         "can not promote to new parent since our parent is not a submodule");
+  ASSERT(std::all_of(our_gens.begin(), our_gens.end(), [&](const auto& gen) { return std::find_if(parent->basis().begin(), parent->basis().end(), [&](const auto& ogen) { return *gen == *ogen; }) != parent->basis().end(); }),
+         "can not promote to new parent since " << *impl->parent << " is not a submodule of " << *parent);
 
   vector<typename Ring::ElementClass> new_coefficients;
   std::transform(parent->basis().begin(), parent->basis().end(), std::back_inserter(new_coefficients),

@@ -30,6 +30,8 @@
 #include "../exact-real/real_number.hpp"
 #include "../exact-real/yap/arf.hpp"
 
+#include "util/assert.ipp"
+
 #include "external/unique-factory/unique_factory.hpp"
 
 using namespace exactreal;
@@ -42,6 +44,13 @@ using std::vector;
 using Factors = map<shared_ptr<const RealNumber>, int>;
 
 namespace {
+class RealNumberProduct;
+
+auto& factory() {
+  static unique_factory::UniqueFactory<std::weak_ptr<RealNumberProduct>, Factors> factory;
+  return factory;
+}
+
 // A product of transcendental reals
 class RealNumberProduct final : public RealNumber {
  public:
@@ -66,6 +75,48 @@ class RealNumberProduct final : public RealNumber {
 
   explicit operator std::optional<mpq_class>() const override {
     return {};
+  }
+
+  std::optional<std::shared_ptr<const RealNumber>> operator/(const RealNumber& rhs) const override {
+    {
+      auto rational = static_cast<std::optional<mpq_class>>(rhs);
+      if (rational) {
+        if (rational.value() == 1)
+          return this->shared_from_this();
+        throw std::logic_error("not implemented: division of product by rational");
+      }
+    }
+
+    auto quotient = factors;
+
+    if (quotient.find(rhs.shared_from_this()) != quotient.end()) {
+      auto rhs_ = rhs.shared_from_this();
+      quotient[rhs_]--;
+      if (quotient[rhs_] == 0)
+        quotient.erase(rhs_);
+      assert(quotient.size() >= 1);
+    } else if (dynamic_cast<const RealNumberProduct*>(&rhs)) {
+      for (auto& d : dynamic_cast<const RealNumberProduct&>(rhs).factors) {
+        if (quotient.find(d.first) == quotient.end())
+          return {};
+        quotient[d.first] -= d.second;
+        if (quotient[d.first] == 0)
+          quotient.erase(d.first);
+        if (quotient[d.first] < 0)
+          return {};
+      }
+    }
+
+    if (quotient.size() == 0)
+      return RealNumber::rational(1);
+    if (quotient.size() == 1) {
+      for (auto& q : quotient) {
+        if (q.second == 1)
+          return q.first;
+      }
+    }
+
+    return factory().get(quotient, [&]() { return new RealNumberProduct(quotient); });
   }
 
   Arf arf(long prec) const override {
@@ -106,6 +157,14 @@ class RealNumberProduct final : public RealNumber {
     return ret;
   }
 
+  int totalDegree() const {
+    int totalDegree = 0;
+    for (auto& factor : factors) {
+      totalDegree += factor.second;
+    }
+    return totalDegree;
+  }
+
   Factors factors;
 
   template <typename Archive>
@@ -113,11 +172,6 @@ class RealNumberProduct final : public RealNumber {
     archive(cereal::make_nvp("factors", factors));
   }
 };
-
-auto& factory() {
-  static unique_factory::UniqueFactory<std::weak_ptr<RealNumberProduct>, Factors> factory;
-  return factory;
-}
 }  // namespace
 
 namespace exactreal {
@@ -141,6 +195,75 @@ shared_ptr<const RealNumber> RealNumber::operator*(const RealNumber& rhs) const 
   }
 
   return factory().get(factors, [&]() { return new RealNumberProduct(factors); });
+}
+
+bool RealNumber::deglex(const RealNumber& rhs_) const {
+  if (*this == rhs_)
+    return false;
+
+  const RealNumberProduct* lhs = dynamic_cast<const RealNumberProduct*>(this);
+  const RealNumberProduct* rhs = dynamic_cast<const RealNumberProduct*>(&rhs_);
+
+  if (lhs == nullptr) {
+    if (rhs == nullptr) {
+      // Neither of the numbers is a product of real numbers, i.e., they
+      // correspond to polynomials of total degree <= 1.
+
+      const bool lhs_rational = static_cast<std::optional<mpq_class>>(*this).has_value();
+      const bool rhs_rational = static_cast<std::optional<mpq_class>>(rhs_).has_value();
+      if (lhs_rational)
+        return !rhs_rational;
+      if (rhs_rational)
+        return false;
+
+      // We order indeterminates, i.e., non-rational primitive real numbers, by
+      // their real value, i.e., a is lexicographically smaller than b if a < b.
+      return *this < rhs_;
+    } else {
+      // The right hand side has a total degree >= 2 but the left hand side has
+      // a total degree <= 1.
+      return true;
+    }
+  } else {
+    if (rhs == nullptr) {
+      // The left hand side has a total degree >= 2 but the right hand side has
+      // a total degree <= 1.
+      return false;
+    } else {
+      {
+        const int lhs_total_degree = lhs->totalDegree();
+        const int rhs_total_degree = rhs->totalDegree();
+        if (lhs_total_degree != rhs_total_degree)
+          return lhs_total_degree < rhs_total_degree;
+      }
+
+      struct ComparePointer {
+        bool operator()(const std::shared_ptr<const RealNumber>& lhs, const std::shared_ptr<const RealNumber>& rhs) const {
+          return *lhs < *rhs;
+        }
+      };
+
+      std::set<std::shared_ptr<const RealNumber>, ComparePointer> gens;
+      for (auto& gen : lhs->factors)
+        gens.insert(gen.first);
+      for (auto& gen : rhs->factors)
+        gens.insert(gen.first);
+
+      for (auto& gen : gens) {
+        ASSERT(!static_cast<std::optional<mpq_class>>(*gen).has_value(), "factors of real number product must not be rational");
+        if (lhs->factors.find(gen) == lhs->factors.end())
+          return false;
+        if (rhs->factors.find(gen) == rhs->factors.end())
+          return true;
+        if (lhs->factors.at(gen) < rhs->factors.at(gen))
+          return false;
+        if (lhs->factors.at(gen) > rhs->factors.at(gen))
+          return true;
+      }
+
+      UNREACHABLE("real number products are distinct but they coincide on every factor");
+    }
+  }
 }
 
 void save_product(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& base) {
