@@ -313,6 +313,11 @@ std::optional<Element<Ring>> Element<Ring>::truediv(const Element<Ring>& rhs) co
 
     auto coefficient_quotient = a / b;
 
+    if (coefficient_quotient * b != a) {
+      ASSERT(!Ring::isField, "division of coefficients must be exact in fields");
+      return {};
+    }
+
     auto partial_quotient = coefficient_quotient * Module<Ring>::make({*generator_quotient}, this->module()->ring())->gen(0);
 
     quotient += partial_quotient;
