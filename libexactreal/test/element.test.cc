@@ -160,6 +160,12 @@ TEST_CASE("Element over ZZ", "[element][integer_ring]") {
     REQUIRE(x - x * one == one - one);
   }
 
+  SECTION("Division") {
+    REQUIRE((3 * x).truediv(x) == 3);
+    REQUIRE(!((3 * x).truediv(2 * x)).has_value());
+    REQUIRE((3 * x).floordiv(2 * x) == 1);
+  }
+
   SECTION("Coefficients") {
     REQUIRE(one.coefficients<mpq_class>() == std::vector<mpq_class>({1, 0}));
     REQUIRE(x.coefficients<mpq_class>() == std::vector<mpq_class>({0, 1}));
