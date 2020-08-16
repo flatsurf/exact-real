@@ -229,6 +229,46 @@
         "unit": "ns",
         "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
     },
+    "Benchmarks.track_ElementBenchmark_IntegerRing__floordiv_Z_0": {
+        "code": "def asv_method(self, t=time): return t",
+        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__floordiv_Z_0",
+        "param_names": [],
+        "params": [],
+        "timeout": 60.0,
+        "type": "track",
+        "unit": "ns",
+        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
+    },
+    "Benchmarks.track_ElementBenchmark_IntegerRing__floordiv_Z_1_1_1": {
+        "code": "def asv_method(self, t=time): return t",
+        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__floordiv_Z_1_1_1",
+        "param_names": [],
+        "params": [],
+        "timeout": 60.0,
+        "type": "track",
+        "unit": "ns",
+        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
+    },
+    "Benchmarks.track_ElementBenchmark_IntegerRing__floordiv_Z_2_1_0_0_1": {
+        "code": "def asv_method(self, t=time): return t",
+        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__floordiv_Z_2_1_0_0_1",
+        "param_names": [],
+        "params": [],
+        "timeout": 60.0,
+        "type": "track",
+        "unit": "ns",
+        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
+    },
+    "Benchmarks.track_ElementBenchmark_IntegerRing__floordiv_Z_2_3_4_1_2": {
+        "code": "def asv_method(self, t=time): return t",
+        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__floordiv_Z_2_3_4_1_2",
+        "param_names": [],
+        "params": [],
+        "timeout": 60.0,
+        "type": "track",
+        "unit": "ns",
+        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
+    },
     "Benchmarks.track_ElementBenchmark_IntegerRing__truediv_Z_0": {
         "code": "def asv_method(self, t=time): return t",
         "name": "Benchmarks.track_ElementBenchmark_IntegerRing__truediv_Z_0",
@@ -269,6 +309,46 @@
         "unit": "ns",
         "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
     },
+    "Benchmarks.track_ElementBenchmark_NumberField__floordiv_K_0": {
+        "code": "def asv_method(self, t=time): return t",
+        "name": "Benchmarks.track_ElementBenchmark_NumberField__floordiv_K_0",
+        "param_names": [],
+        "params": [],
+        "timeout": 60.0,
+        "type": "track",
+        "unit": "ns",
+        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
+    },
+    "Benchmarks.track_ElementBenchmark_NumberField__floordiv_K_1_1_1": {
+        "code": "def asv_method(self, t=time): return t",
+        "name": "Benchmarks.track_ElementBenchmark_NumberField__floordiv_K_1_1_1",
+        "param_names": [],
+        "params": [],
+        "timeout": 60.0,
+        "type": "track",
+        "unit": "ns",
+        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
+    },
+    "Benchmarks.track_ElementBenchmark_NumberField__floordiv_K_2_1_0_0_1": {
+        "code": "def asv_method(self, t=time): return t",
+        "name": "Benchmarks.track_ElementBenchmark_NumberField__floordiv_K_2_1_0_0_1",
+        "param_names": [],
+        "params": [],
+        "timeout": 60.0,
+        "type": "track",
+        "unit": "ns",
+        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
+    },
+    "Benchmarks.track_ElementBenchmark_NumberField__floordiv_K_2_3_4_1_2": {
+        "code": "def asv_method(self, t=time): return t",
+        "name": "Benchmarks.track_ElementBenchmark_NumberField__floordiv_K_2_3_4_1_2",
+        "param_names": [],
+        "params": [],
+        "timeout": 60.0,
+        "type": "track",
+        "unit": "ns",
+        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
+    },
     "Benchmarks.track_ElementBenchmark_NumberField__truediv_K_0": {
         "code": "def asv_method(self, t=time): return t",
         "name": "Benchmarks.track_ElementBenchmark_NumberField__truediv_K_0",
@@ -302,6 +382,46 @@
     "Benchmarks.track_ElementBenchmark_NumberField__truediv_K_2_3_4_1_2": {
         "code": "def asv_method(self, t=time): return t",
         "name": "Benchmarks.track_ElementBenchmark_NumberField__truediv_K_2_3_4_1_2",
+        "param_names": [],
+        "params": [],
+        "timeout": 60.0,
+        "type": "track",
+        "unit": "ns",
+        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
+    },
+    "Benchmarks.track_ElementBenchmark_RationalField__floordiv_Q_0": {
+        "code": "def asv_method(self, t=time): return t",
+        "name": "Benchmarks.track_ElementBenchmark_RationalField__floordiv_Q_0",
+        "param_names": [],
+        "params": [],
+        "timeout": 60.0,
+        "type": "track",
+        "unit": "ns",
+        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
+    },
+    "Benchmarks.track_ElementBenchmark_RationalField__floordiv_Q_1_1_1": {
+        "code": "def asv_method(self, t=time): return t",
+        "name": "Benchmarks.track_ElementBenchmark_RationalField__floordiv_Q_1_1_1",
+        "param_names": [],
+        "params": [],
+        "timeout": 60.0,
+        "type": "track",
+        "unit": "ns",
+        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
+    },
+    "Benchmarks.track_ElementBenchmark_RationalField__floordiv_Q_2_1_0_0_1": {
+        "code": "def asv_method(self, t=time): return t",
+        "name": "Benchmarks.track_ElementBenchmark_RationalField__floordiv_Q_2_1_0_0_1",
+        "param_names": [],
+        "params": [],
+        "timeout": 60.0,
+        "type": "track",
+        "unit": "ns",
+        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
+    },
+    "Benchmarks.track_ElementBenchmark_RationalField__floordiv_Q_2_3_4_1_2": {
+        "code": "def asv_method(self, t=time): return t",
+        "name": "Benchmarks.track_ElementBenchmark_RationalField__floordiv_Q_2_3_4_1_2",
         "param_names": [],
         "params": [],
         "timeout": 60.0,
