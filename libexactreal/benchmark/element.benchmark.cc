@@ -96,17 +96,26 @@ class ElementBenchmark : public benchmark::Fixture {
     }
   }
 
+  void floordiv(benchmark::State& state) {
+    const auto [lhs, rhs] = elements(state);
+
+    const auto dividend = lhs * rhs;
+    const auto divisor = rhs;
+
+    for (auto _ : state) {
+      dividend.floordiv(divisor);
+    }
+  }
+
   static void BenchmarkedDegrees(benchmark::internal::Benchmark* b) {
     // elements in zero variables, i.e., base ring elements
-    b->Args({
-        0,
-    });
+    b->Args({0});
     // elements in one variable, x^1 + … (lower degree summands,) and x^1 + …
     b->Args({1, 1, 1});
     // elements in two variables, x^1 + …, and y^1 + …
     b->Args({2, 1, 0, 0, 1}),
-        // x^3*y^4 + …, and x^1*y^2 + …
-        b->Args({2, 3, 4, 1, 2});
+    // x^3*y^4 + …, and x^1*y^2 + …
+    b->Args({2, 3, 4, 1, 2});
   }
 };
 
@@ -121,5 +130,17 @@ BENCHMARK_REGISTER_F(ElementBenchmark, truediv_Q)->Apply(ElementBenchmark<Ration
 BENCHMARK_TEMPLATE_DEFINE_F(ElementBenchmark, truediv_K, NumberField)
 (benchmark::State& state) { truediv(state); }
 BENCHMARK_REGISTER_F(ElementBenchmark, truediv_K)->Apply(ElementBenchmark<NumberField>::BenchmarkedDegrees);
+
+BENCHMARK_TEMPLATE_DEFINE_F(ElementBenchmark, floordiv_Z, IntegerRing)
+(benchmark::State& state) { floordiv(state); }
+BENCHMARK_REGISTER_F(ElementBenchmark, floordiv_Z)->Apply(ElementBenchmark<IntegerRing>::BenchmarkedDegrees);
+
+BENCHMARK_TEMPLATE_DEFINE_F(ElementBenchmark, floordiv_Q, RationalField)
+(benchmark::State& state) { floordiv(state); }
+BENCHMARK_REGISTER_F(ElementBenchmark, floordiv_Q)->Apply(ElementBenchmark<RationalField>::BenchmarkedDegrees);
+
+BENCHMARK_TEMPLATE_DEFINE_F(ElementBenchmark, floordiv_K, NumberField)
+(benchmark::State& state) { floordiv(state); }
+BENCHMARK_REGISTER_F(ElementBenchmark, floordiv_K)->Apply(ElementBenchmark<NumberField>::BenchmarkedDegrees);
 
 }  // namespace exactreal::test
