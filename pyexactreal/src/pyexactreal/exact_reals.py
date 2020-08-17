@@ -50,6 +50,8 @@ The module is automatically enlarged as needed::
 # ********************************************************************
 
 import cppyy
+import gmpxxyy
+
 from sage.all import QQ, UniqueRepresentation, ZZ, RR, IntegralDomains, Morphism, Hom, SetsWithPartialMaps, NumberFieldElement, Parent, coerce
 from sage.structure.element import IntegralDomainElement, coerce_binop
 from sage.categories.action import Action
@@ -520,6 +522,40 @@ class ExactRealElement(IntegralDomainElement):
             return QQ(value.value())
         raise TypeError("not a rational")
 
+    def _algebraic_(self, A):
+        r"""
+        Return the algebraic value of this element if it is algrebraic.
+
+        EXAMPLES::
+
+            sage: from pyexactreal import ExactReals
+            sage: K.<a> = NumberField(x^2 - 2, embedding=AA(sqrt(2)))
+            sage: R = ExactReals(K)
+            sage: QQbar(R(a))
+            1.414213562373095?
+            sage: QQbar(R.random_element())
+            Traceback (most recent call last):
+            ...
+            TypeError: not algebraic
+
+        TESTS::
+
+            sage: R = ExactReals()
+            sage: QQbar(R.one())
+            1
+
+        """
+        ret = A.zero()
+        for i, c in enumerate(self._backend.coefficients()):
+            if c:
+                gen = self.parent()(self._backend.module().gen(i))
+                try:
+                    gen = QQ(gen)
+                except TypeError:
+                    raise TypeError("not algebraic")
+                ret += A(self.parent().base_ring()(c)) * gen
+        return ret
+
     def __abs__(self):
         r"""
         Return the absolute value of this real number.
@@ -580,14 +616,16 @@ class ExactReals(UniqueRepresentation, Parent):
         if base is QQ:
             self._element_factory = exactreal.Element[type(exactreal.RationalField())]
             self._module_factory = lambda gens: QQModule(*gens)
+            number_field = QQ
         else:
             base = RealEmbeddedNumberField(base)
             ring = exactreal.NumberField(base.renf)
             self._element_factory = exactreal.Element[type(ring)]
             self._module_factory = lambda gens: NumberFieldModule(ring, *gens)
+            number_field = base.number_field
 
         Parent.__init__(self, base, category=category)
-        H = Hom(base, self)
+        H = Hom(number_field, self)
         coercion = H.__make_element_class__(CoercionExactRealsNumberField)(H)
         self.register_coercion(coercion)
 
@@ -613,7 +651,7 @@ class ExactReals(UniqueRepresentation, Parent):
         EXAMPLES::
 
             sage: from pyexactreal import ExactReals
-            sage: ExactReals().fraction_field() is ExactReals()
+            sage: ExactReals()._pseudo_fraction_field() is ExactReals()
             True
 
 s       """
@@ -812,4 +850,4 @@ class CoercionExactRealsNumberField(Morphism):
 
     """
     def _call_(self, x):
-        return x * self.codomain().rational(1)
+        return self.codomain().base_ring()(x) * self.codomain().rational(1)
