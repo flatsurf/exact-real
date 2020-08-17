@@ -556,8 +556,8 @@ class ExactReals(UniqueRepresentation, Parent):
 
         sage: R.one()._test_pickling() # first run prints some warnings from third-party C++ header files
         ...
-        sage: TestSuite(R).run()
-        sage: TestSuite(RK).run()
+        sage: TestSuite(R).run(skip=["_test_fraction_field"])
+        sage: TestSuite(RK).run(skip=["_test_fraction_field"])
 
     """
     @staticmethod
@@ -590,6 +590,34 @@ class ExactReals(UniqueRepresentation, Parent):
         H = Hom(base, self)
         coercion = H.__make_element_class__(CoercionExactRealsNumberField)(H)
         self.register_coercion(coercion)
+
+    def fraction_field(self):
+        r"""
+        Return the field of fractions; not implemented.
+
+        EXAMPLES::
+
+            sage: from pyexactreal import ExactReals
+            sage: K = ExactReals().fraction_field()
+            Traceback (most recent call last):
+            ...
+            NotImplementedError: ExactReals.fraction_field() is not implemented yet because gcd() is incomplete and __floordiv__ rounds to integers instead of performing exact division as expected by SageMath's FractionField_generic.
+
+        """
+        raise NotImplementedError("ExactReals.fraction_field() is not implemented yet because gcd() is incomplete and __floordiv__ rounds to integers instead of performing exact division as expected by SageMath's FractionField_generic.")
+
+    def _pseudo_fraction_field(self):
+        r"""
+        Return this ring which is the largest ring we can invert elements in.
+
+        EXAMPLES::
+
+            sage: from pyexactreal import ExactReals
+            sage: ExactReals().fraction_field() is ExactReals()
+            True
+
+s       """
+        return self
 
     def some_elements(self):
         r"""
@@ -707,6 +735,8 @@ class ExactReals(UniqueRepresentation, Parent):
         module = self._module_factory([generator])
 
         return self(self._element_factory(module, [1]))
+
+    _random_nonzero_element = random_element
 
     def rational(self, q):
         r"""
