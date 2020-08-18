@@ -1,4 +1,4 @@
-{% set version = environ.get('GIT_DESCRIBE_TAG', 'untagged')| string | replace('-','_') %}
+{% set version = "1.0.0" %}
 {% set build_number = environ.get('GIT_DESCRIBE_NUMBER') %}
 {% set component = component or 'exactreal' %}
 {% set action = action or 'release' %}
@@ -27,9 +27,7 @@ build:
   skip: True  # [osx]
 {%- if component == "libexactreal" %}
   run_exports:
-    # We pin the version of libexactreal exactly since we do not want to
-    # bother with incompatibilities in our nightly builds.
-    - {{ pin_subpackage(component, exact=True) }}
+    - {{ pin_subpackage(component, max_pin="x") }}
 {%- endif %}
   script_env:
 {%- if action == "coverage" %}
@@ -52,7 +50,7 @@ requirements:
   host:
 {%- if libexactreal_requirements %}
     - boost-cpp
-    - e-antic 1.*
+    - e-antic >=1.0a master_1110
     - arb
     - gmp
     - gmpxxll
@@ -69,7 +67,7 @@ requirements:
     # enable test/pyexactreal tests in ./configure
     - pytest
     - cppyy
-    - pyeantic
+    - pyeantic >=1.0.1
     # enable test/libexactreal tests in ./configure
     - benchmark
     # enable check-valgrind in ./configure
@@ -85,8 +83,9 @@ requirements:
   run:
 {%- if component == "pyexactreal" %}
     - python {{ _python }}
+    - boost-cpp
+    - pyeantic >=1.0.1
     - cppyy
-    - pyeantic
 {%- endif %}
 
 {%- if component == "libexactreal" %}
