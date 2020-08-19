@@ -3,3 +3,16 @@ exact-real Change Log
 =====================
 
 .. current developments
+
+v1.0.1
+====================
+
+**Changed:**
+
+* release new versions with rever
+
+**Fixed:**
+
+* expected output in pyexactreal tests due to changed printing in pyeantic
+
+
