@@ -586,7 +586,7 @@ class ExactReals(UniqueRepresentation, Parent):
         Real Numbers as (Rational Field)-Module
         sage: K.<a> = NumberField(x^2 - 2, embedding=AA(sqrt(2)))
         sage: RK = ExactReals(K); RK
-        Real Numbers as (Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?)-Module
+        Real Numbers as (Real Embedded Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?)-Module
 
     TESTS::
 
