@@ -247,3 +247,6 @@ dmypy.json
 
 # nvim plugins
 .ccls-cache
+
+# Rever
+rever/
