@@ -52,7 +52,7 @@ The module is automatically enlarged as needed::
 import cppyy
 import gmpxxyy
 
-from sage.all import QQ, UniqueRepresentation, ZZ, RR, IntegralDomains, Morphism, Hom, SetsWithPartialMaps, NumberFieldElement, Parent, coerce
+from sage.all import QQ, UniqueRepresentation, ZZ, RR, IntegralDomains, Morphism, Hom, SetsWithPartialMaps, NumberFieldElement, CommutativeRing, coerce
 from sage.structure.element import IntegralDomainElement, coerce_binop
 from sage.categories.action import Action
 from sage.structure.coerce import RightModuleAction
@@ -572,7 +572,7 @@ class ExactRealElement(IntegralDomainElement):
         return self if self >= 0 else -self
 
 
-class ExactReals(UniqueRepresentation, Parent):
+class ExactReals(UniqueRepresentation, CommutativeRing):
     r"""
     The Real Numbers as a module over the number field ``base``.
 
@@ -594,6 +594,11 @@ class ExactReals(UniqueRepresentation, Parent):
         ...
         sage: TestSuite(R).run(skip=["_test_fraction_field"])
         sage: TestSuite(RK).run(skip=["_test_fraction_field"])
+
+    ::
+
+        sage: R ** 2
+        Ambient free module of rank 2 over the integral domain Real Numbers as (Rational Field)-Module
 
     """
     @staticmethod
@@ -624,7 +629,7 @@ class ExactReals(UniqueRepresentation, Parent):
             self._module_factory = lambda gens: NumberFieldModule(ring, *gens)
             number_field = base.number_field
 
-        Parent.__init__(self, base, category=category)
+        CommutativeRing.__init__(self, base, category=category)
         H = Hom(number_field, self)
         coercion = H.__make_element_class__(CoercionExactRealsNumberField)(H)
         self.register_coercion(coercion)
@@ -643,19 +648,6 @@ class ExactReals(UniqueRepresentation, Parent):
 
         """
         raise NotImplementedError("ExactReals.fraction_field() is not implemented yet because gcd() is incomplete and __floordiv__ rounds to integers instead of performing exact division as expected by SageMath's FractionField_generic.")
-
-    def _pseudo_fraction_field(self):
-        r"""
-        Return this ring which is the largest ring we can invert elements in.
-
-        EXAMPLES::
-
-            sage: from pyexactreal import ExactReals
-            sage: ExactReals()._pseudo_fraction_field() is ExactReals()
-            True
-
-s       """
-        return self
 
     def some_elements(self):
         r"""
