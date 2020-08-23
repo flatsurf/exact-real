@@ -4,6 +4,15 @@ exact-real Change Log
 
 .. current developments
 
+v1.0.2
+====================
+
+**Fixed:**
+
+* operator ** for SageMath wrapper
+
+
+
 v1.0.1
 ====================
 
