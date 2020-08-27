@@ -3,9 +3,9 @@ _python:
 action:
 - style
 arb:
-- '2.17'
+- '2.18'
 boost_cpp:
-- 1.70.0
+- '1.72'
 channel_sources:
 - flatsurf,conda-forge,defaults
 channel_targets:
