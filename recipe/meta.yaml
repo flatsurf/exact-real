@@ -50,7 +50,7 @@ requirements:
   host:
 {%- if libexactreal_requirements %}
     - boost-cpp
-    - e-antic >=1.0a master_1110
+    - e-antic >=1.0a master_1136
     - arb
     - gmp
     - gmpxxll
