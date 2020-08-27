@@ -30,7 +30,7 @@ NumberField::NumberField(const std::shared_ptr<const eantic::renf_class>& parame
   // parameters might contain a null pointer if this is the rational field
 }
 
-NumberField::NumberField(const eantic::renf_elem_class& value) : NumberField(value.parent()) {}
+NumberField::NumberField(const eantic::renf_elem_class& value) : NumberField(value.parent().shared_from_this()) {}
 
 NumberField NumberField::compositum(const NumberField& lhs, const NumberField& rhs) {
   if (lhs == rhs) return lhs;
