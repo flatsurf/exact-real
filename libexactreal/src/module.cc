@@ -124,7 +124,7 @@ shared_ptr<const Module<Ring>> Module<Ring>::span(const shared_ptr<const Module<
     return n;
   }
   if (n->basis().size() == 0) {
-    return span(n, m);
+    return m;
   }
 
   if (m->impl->parameters != n->impl->parameters) {
