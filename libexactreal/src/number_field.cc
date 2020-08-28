@@ -2,7 +2,7 @@
  *  This file is part of exact-real.
  *
  *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C) 2019-2020 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -26,16 +26,14 @@
 namespace exactreal {
 NumberField::NumberField() : NumberField(eantic::renf_class::make()) {}
 
-NumberField::NumberField(const std::shared_ptr<const eantic::renf_class>& parameters) : parameters(parameters) {
-  // parameters might contain a null pointer if this is the rational field
-}
+NumberField::NumberField(const std::shared_ptr<const eantic::renf_class>& parameters) : parameters(parameters) {}
 
 NumberField::NumberField(const eantic::renf_elem_class& value) : NumberField(value.parent().shared_from_this()) {}
 
 NumberField NumberField::compositum(const NumberField& lhs, const NumberField& rhs) {
   if (lhs == rhs) return lhs;
-  if (!lhs.parameters) return rhs;
-  if (!rhs.parameters) return lhs;
+  if (lhs.parameters->degree() == 1) return rhs;
+  if (rhs.parameters->degree() == 1) return rhs;
   throw std::logic_error("not implemented: compositum of number fields");
 }
 
@@ -50,4 +48,15 @@ std::optional<mpq_class> NumberField::rational(const ElementClass& x) {
 bool NumberField::operator==(const NumberField& rhs) const { return parameters == rhs.parameters; }
 
 mpz_class NumberField::floor(const ElementClass& x) { return x.floor(); }
+
+typename NumberField::ElementClass NumberField::coerce(const ElementClass& x) const {
+  if (x.parent() == *parameters)
+    return x;
+
+  // Use https://github.com/videlec/e-antic/pull/120 instead, once it has been merged.
+  if (x.is_rational())
+    return ElementClass(parameters, static_cast<mpq_class>(x));
+
+  throw std::logic_error("not implemented: coercion to this number field");
+}
 }  // namespace exactreal
