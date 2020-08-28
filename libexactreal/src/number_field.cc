@@ -33,7 +33,7 @@ NumberField::NumberField(const eantic::renf_elem_class& value) : NumberField(val
 NumberField NumberField::compositum(const NumberField& lhs, const NumberField& rhs) {
   if (lhs == rhs) return lhs;
   if (lhs.parameters->degree() == 1) return rhs;
-  if (rhs.parameters->degree() == 1) return rhs;
+  if (rhs.parameters->degree() == 1) return lhs;
   throw std::logic_error("not implemented: compositum of number fields");
 }
 

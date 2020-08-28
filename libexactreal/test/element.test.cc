@@ -354,6 +354,7 @@ TEST_CASE("Elements over Number Field", "[element][number_field]") {
     auto y = n->gen(1);
 
     REQUIRE(x + y - y == x);
+    REQUIRE(y + x - x == y);
   }
 }
 
