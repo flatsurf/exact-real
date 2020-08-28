@@ -348,6 +348,13 @@ TEST_CASE("Elements over Number Field", "[element][number_field]") {
     REQUIRE(((x + m->gen(0)) * (x - m->gen(0))).truediv(x - m->gen(0)).value() == x + m->gen(0));
     REQUIRE(!m->gen(0).truediv(x).has_value());
   }
+
+  SECTION("Promotion from Rationals") {
+    auto n = Module<NumberField>::make({RealNumber::rational(1), RealNumber::random()}, renf_class::make());
+    auto y = n->gen(1);
+
+    REQUIRE(x + y - y == x);
+  }
 }
 
 }  // namespace exactreal::test

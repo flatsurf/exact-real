@@ -2,7 +2,7 @@
  *  This file is part of exact-real.
  *
  *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C) 2019-2020 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -37,6 +37,9 @@ struct IntegerRing : boost::equality_comparable<IntegerRing> {
   static IntegerRing compositum(const IntegerRing& lhs, const IntegerRing& rhs);
 
   typedef mpz_class ElementClass;
+
+  ElementClass coerce(const ElementClass& x) const { return x; }
+
   static constexpr bool isField = false;
   static bool unit(const ElementClass& x);
   static Arb arb(const ElementClass& x, long prec);

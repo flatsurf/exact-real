@@ -2,7 +2,7 @@
  *  This file is part of exact-real.
  *
  *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C) 2019-2020 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -46,6 +46,9 @@ class NumberField : boost::equality_comparable<NumberField> {
   bool operator==(const NumberField&) const;
 
   typedef eantic::renf_elem_class ElementClass;
+
+  ElementClass coerce(const ElementClass&) const;
+
   static constexpr bool isField = true;
   static bool unit(const ElementClass& x);
   static mpz_class floor(const ElementClass& x);

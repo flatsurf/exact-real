@@ -2,7 +2,7 @@
  *  This file is part of exact-real.
  *
  *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C) 2019-2020 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -149,14 +149,9 @@ std::vector<C> Element<Ring>::coefficients() const {
       for (auto& num : nums) {
         ret.push_back(mpq_class(num, den));
       }
-      if (impl->parent->ring().parameters == nullptr) {
-        assert(ret.size() <= 1 && "module over the rationals cannot have a basis of length more than one");
-        if (ret.size() < 1)
-          ret.push_back(0);
-      } else {
-        for (size_t i = nums.size(); i < impl->parent->ring().parameters->degree(); i++) {
-          ret.push_back(0);
-        }
+      ASSERT(nums.size() <= impl->parent->ring().parameters->degree(), "rational coefficient list cannot be larger than absolute degree of number field");
+      for (size_t i = nums.size(); i < impl->parent->ring().parameters->degree(); i++) {
+        ret.push_back(0);
       }
     }
     return ret;
@@ -594,7 +589,7 @@ Element<Ring>& Element<Ring>::promote(const shared_ptr<const Module<Ring>>& pare
                    if (our_gen == our_gens.end()) {
                      return typename Ring::ElementClass();
                    } else {
-                     return impl->coefficients[our_gen - our_gens.begin()];
+                     return parent->ring().coerce(impl->coefficients[our_gen - our_gens.begin()]);
                    }
                  });
   return *this = Element<Ring>(parent, new_coefficients);
