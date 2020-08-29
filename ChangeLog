@@ -4,6 +4,20 @@ exact-real Change Log
 
 .. current developments
 
+v1.2.0
+====================
+
+**Added:**
+
+* Element::simplify() to drop unnecessary generators
+
+**Changed:**
+
+* improved Module::promote(); should be much faster now and also works when the argument is not a supermodule
+* speed up Python interface by simplifying for multiplications & divisions
+
+
+
 v1.1.1
 ====================
 
