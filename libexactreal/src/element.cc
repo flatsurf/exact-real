@@ -572,27 +572,47 @@ const shared_ptr<const Module<Ring>> Element<Ring>::module() const {
 
 template <typename Ring>
 Element<Ring>& Element<Ring>::promote(const shared_ptr<const Module<Ring>>& parent) {
-  if (this->impl->parent == parent) {
+  if (this->impl->parent == parent)
     return *this;
-  }
-  if (!*this) {
+  if (!*this)
     return *this = parent->zero();
-  }
-  auto& our_gens = impl->parent->basis();
-  ASSERT(std::all_of(our_gens.begin(), our_gens.end(), [&](const auto& gen) { return std::find_if(parent->basis().begin(), parent->basis().end(), [&](const auto& ogen) { return *gen == *ogen; }) != parent->basis().end(); }),
-         "can not promote to new parent since " << *impl->parent << " is not a submodule of " << *parent);
 
-  vector<typename Ring::ElementClass> new_coefficients;
-  std::transform(parent->basis().begin(), parent->basis().end(), std::back_inserter(new_coefficients),
-                 [&](const auto& gen) {
-                   auto our_gen = std::find_if(our_gens.begin(), our_gens.end(), [&](auto& g) { return *g == *gen; });
-                   if (our_gen == our_gens.end()) {
-                     return typename Ring::ElementClass();
-                   } else {
-                     return parent->ring().coerce(impl->coefficients[our_gen - our_gens.begin()]);
-                   }
-                 });
-  return *this = Element<Ring>(parent, new_coefficients);
+  const auto& their_gens = parent->basis();
+  const auto& our_gens = impl->parent->basis();
+
+  auto their_gen = begin(their_gens);
+  auto our_gen = begin(our_gens);
+
+  vector<typename Ring::ElementClass> coefficients;
+
+  while(their_gen != end(their_gens) || our_gen != end(our_gens)) {
+    if (our_gen == end(our_gens)) {
+      coefficients.push_back(typename Ring::ElementClass());
+      their_gen++;
+      continue;
+    }
+    if (their_gen == end(their_gens)) {
+      ASSERT(!impl->coefficients[our_gen - begin(our_gens)], "Cannot promote " << *this << " to " << *parent << " since " << *our_gen << " is not in " << *parent);
+      our_gen++;
+      continue;
+    }
+    if (**our_gen == **their_gen) {
+      coefficients.push_back(parent->ring().coerce(impl->coefficients[our_gen - begin(our_gens)]));
+      our_gen++;
+      their_gen++;
+      continue;
+    }
+    if ((**our_gen).deglex(**their_gen)) {
+      our_gen++;
+      continue;
+    } else {
+      coefficients.push_back(typename Ring::ElementClass());
+      their_gen++;
+      continue;
+    }
+  }
+
+  return *this = Element<Ring>(parent, coefficients);
 }
 
 template <typename Ring>
