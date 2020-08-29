@@ -2,7 +2,7 @@
  *  This file is part of exact-real.
  *
  *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C) 2019-2020 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -120,7 +120,17 @@ class Element : boost::additive<Element<Ring>>,
   explicit operator std::optional<mpq_class>() const;
 
   const std::shared_ptr<const Module<Ring>> module() const;
+  // Make this element an element of module. All the module generators used in
+  // this element must be present, e.g., module may be a supermodule of this
+  // element's module.
   Element& promote(const std::shared_ptr<const Module<Ring>>& module);
+
+  // Make this element an element of a module defined over the same ring which
+  // has only the generators necessary to represent this element. This method
+  // is especially useful after chains of arithmetic operations involving
+  // products as these introduce lots of generators that might not be necessary
+  // in the final result.
+  Element& simplify();
 
   template <typename R>
   friend std::ostream& operator<<(std::ostream&, const Element<R>&);

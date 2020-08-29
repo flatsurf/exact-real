@@ -127,6 +127,33 @@ class ExactRealElement(IntegralDomainElement):
         """
         return self._backend.module()
 
+    def simplify(self):
+        r"""
+        Remove unnecessary generators from the internal representation of this
+        element and return this element.
+
+        EXAMPLES::
+
+            sage: from pyexactreal import ExactReals
+            sage: R = ExactReals()
+            sage: x = R.random_element()
+            sage: y = (x + 1) * (x - 1) - x*x
+            sage: y._backend.module()
+            ℚ-Module(1, ℝ(...)^2)
+            sage: y.simplify()
+            -1
+            sage: y._backend.module()
+            ℚ-Module(1)
+
+        Note that this happens automatically for some arithmetic operations::
+
+            sage: (x * x / x)._backend.module()
+            ℚ-Module(ℝ(...))
+
+        """
+        self._backend.simplify()
+        return self
+
     def _add_(self, rhs):
         r"""
         Return the sum of this element and ``rhs``.
@@ -192,7 +219,7 @@ class ExactRealElement(IntegralDomainElement):
             ℝ(...)
 
         """
-        return self.parent()(self._backend * rhs._backend)
+        return self.parent()((self._backend * rhs._backend).simplify())
 
     def _div_(self, rhs):
         r"""
@@ -218,7 +245,7 @@ class ExactRealElement(IntegralDomainElement):
             1/1337*ℝ(...)
 
         """
-        return self.parent()(self._backend / rhs._backend)
+        return self.parent()((self._backend / rhs._backend).simplify())
 
     def _neg_(self):
         r"""
@@ -250,7 +277,7 @@ class ExactRealElement(IntegralDomainElement):
             pyexactreal.cppyy_exactreal.NotRepresentableError: result is not representable in this parent
 
         """
-        return self.parent().one() / self
+        return self.parent().one() / self.simplify()
 
     def is_unit(self):
         r"""

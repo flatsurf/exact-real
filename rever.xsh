@@ -44,6 +44,7 @@ $VERSION_BUMP_PATTERNS = [
     ('libexactreal/configure.ac', r'AC_INIT', r'AC_INIT([libexactreal], [$VERSION], [julian.rueth@fsfe.org])'),
     ('pyexactreal/configure.ac', r'AC_INIT', r'AC_INIT([pyexactreal], [$VERSION], [julian.rueth@fsfe.org])'),
     ('recipe/meta.yaml', r"\{% set version =", r"{% set version = '$VERSION' %}"),
+    ('recipe/meta.yaml', r"\{% set build_number =", r"{% set build_number = '0' %}"),
 ]
 
 print("Make sure you bump the version_info in libexactreal/configure.ac manually!")

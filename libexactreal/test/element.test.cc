@@ -160,6 +160,11 @@ TEST_CASE("Element over ZZ", "[element][integer_ring]") {
     REQUIRE(x - x * one == one - one);
   }
 
+  SECTION("Simplification") {
+    REQUIRE((x * x - x * x).module()->rank() == 3);
+    REQUIRE((x * x - x * x).simplify().module()->rank() == 0);
+  }
+
   SECTION("Division") {
     REQUIRE((3 * x).truediv(x) == 3);
     REQUIRE(!((3 * x).truediv(2 * x)).has_value());
