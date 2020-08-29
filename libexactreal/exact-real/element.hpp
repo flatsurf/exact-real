@@ -125,6 +125,13 @@ class Element : boost::additive<Element<Ring>>,
   // element's module.
   Element& promote(const std::shared_ptr<const Module<Ring>>& module);
 
+  // Make this element an element of a module defined over the same ring which
+  // has only the generators necessary to represent this element. This method
+  // is especially useful after chains of arithmetic operations involving
+  // products as these introduce lots of generators that might not be necessary
+  // in the final result.
+  Element& simplify();
+
   template <typename R>
   friend std::ostream& operator<<(std::ostream&, const Element<R>&);
 

@@ -616,6 +616,27 @@ Element<Ring>& Element<Ring>::promote(const shared_ptr<const Module<Ring>>& pare
 }
 
 template <typename Ring>
+Element<Ring>& Element<Ring>::simplify() {
+  if (std::all_of(begin(impl->coefficients), end(impl->coefficients), [](const auto& c) { return c; }))
+    return *this;
+
+  typename Module<Ring>::Basis gens;
+
+  auto& our_gens = impl->parent->basis();
+
+  for (auto gen = begin(our_gens); gen != end(our_gens); gen++) {
+    if (impl->coefficients[gen - begin(our_gens)])
+      gens.push_back(*gen);
+  }
+
+  if (gens.size() == impl->parent->rank())
+    return *this;
+
+  const auto parent = Module<Ring>::make(gens, impl->parent->ring());
+  return promote(parent);
+}
+
+template <typename Ring>
 ostream& operator<<(ostream& out, const Element<Ring>& self) {
   // Print summands sorted by absolute generator value to get stable outputs.
   // (additionally, print positive coefficients first so that we do not get
