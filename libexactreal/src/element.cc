@@ -585,7 +585,7 @@ Element<Ring>& Element<Ring>::promote(const shared_ptr<const Module<Ring>>& pare
 
   vector<typename Ring::ElementClass> coefficients;
 
-  while(their_gen != end(their_gens) || our_gen != end(our_gens)) {
+  while (their_gen != end(their_gens) || our_gen != end(our_gens)) {
     if (our_gen == end(our_gens)) {
       coefficients.push_back(typename Ring::ElementClass());
       their_gen++;
