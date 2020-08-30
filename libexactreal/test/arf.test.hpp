@@ -21,15 +21,13 @@
 #ifndef LIBEXACTREAL_TEST_ARF_HPP
 #define LIBEXACTREAL_TEST_ARF_HPP
 
-#include <memory>
-
 #include <boost/numeric/conversion/cast.hpp>
-
-#include "external/catch2/single_include/catch2/catch.hpp"
+#include <memory>
 
 #include "../exact-real/arb.hpp"
 #include "../exact-real/real_number.hpp"
 #include "../exact-real/yap/arf.hpp"
+#include "external/catch2/single_include/catch2/catch.hpp"
 
 using boost::numeric_cast;
 

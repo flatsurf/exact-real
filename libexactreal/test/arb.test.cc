@@ -20,9 +20,8 @@
 
 #include <boost/lexical_cast.hpp>
 
-#include "external/catch2/single_include/catch2/catch.hpp"
-
 #include "../exact-real/arb.hpp"
+#include "external/catch2/single_include/catch2/catch.hpp"
 
 using boost::lexical_cast;
 using std::string;

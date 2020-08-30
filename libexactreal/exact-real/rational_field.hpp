@@ -21,10 +21,10 @@
 #ifndef LIBEXACTREAL_RATIONAL_FIELD_HPP
 #define LIBEXACTREAL_RATIONAL_FIELD_HPP
 
-#include <optional>
-
 #include <gmpxx.h>
+
 #include <boost/operators.hpp>
+#include <optional>
 
 #include "forward.hpp"
 

@@ -45,7 +45,7 @@ requirements:
 {%- if action == "benchmark" %}
     - git
 {%- elif action == "style" %}
-    - clangdev ==8.0.0
+    - clangdev ==10.0.1
 {%- endif %}
   host:
 {%- if libexactreal_requirements %}

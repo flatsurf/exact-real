@@ -21,17 +21,16 @@
 #ifndef LIBEXACTREAL_ELEMENT_HPP
 #define LIBEXACTREAL_ELEMENT_HPP
 
+#include <gmpxx.h>
+
+#include <boost/blank.hpp>
+#include <boost/operators.hpp>
 #include <optional>
 #include <type_traits>
 #include <vector>
 
-#include <gmpxx.h>
-#include <boost/blank.hpp>
-#include <boost/operators.hpp>
-
-#include "external/spimpl/spimpl.h"
-
 #include "exact-real.hpp"
+#include "external/spimpl/spimpl.h"
 #include "forward.hpp"
 #include "integer_ring.hpp"
 #include "rational_field.hpp"
@@ -141,7 +140,7 @@ class Element : boost::additive<Element<Ring>>,
 };
 
 template <typename Ring, typename... Args>
-Element(const std::shared_ptr<const Module<Ring>>&, Args...)->Element<Ring>;
+Element(const std::shared_ptr<const Module<Ring>>&, Args...) -> Element<Ring>;
 
 Element(int)->Element<IntegerRing>;
 

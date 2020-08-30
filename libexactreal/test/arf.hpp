@@ -21,9 +21,9 @@
 #ifndef EXACTREAL_TEST_ARF_HPP
 #define EXACTREAL_TEST_ARF_HPP
 
-#include <cassert>
-
 #include <flint/flintxx/frandxx.h>
+
+#include <cassert>
 
 #include "../exact-real/arf.hpp"
 

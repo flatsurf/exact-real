@@ -19,6 +19,7 @@
  *********************************************************************/
 
 #include "../exact-real/integer_ring.hpp"
+
 #include "../exact-real/arb.hpp"
 
 namespace exactreal {

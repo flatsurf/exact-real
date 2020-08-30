@@ -18,16 +18,18 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
+#include "../exact-real/arb.hpp"
+
 #include <arb.h>
 #include <e-antic/renfxx.h>
 #include <flint/fmpz.h>
+
 #include <algorithm>
 #include <boost/lexical_cast.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 #include <gmpxxll/mpz_class.hpp>
 #include <ostream>
 
-#include "../exact-real/arb.hpp"
 #include "../exact-real/arf.hpp"
 #include "../exact-real/yap/arb.hpp"
 

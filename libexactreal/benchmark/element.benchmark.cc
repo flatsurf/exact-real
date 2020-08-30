@@ -17,12 +17,11 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
+#include <benchmark/benchmark.h>
+#include <e-antic/renfxx.h>
+
 #include <algorithm>
 #include <memory>
-
-#include <benchmark/benchmark.h>
-
-#include <e-antic/renfxx.h>
 
 #include "../exact-real/element.hpp"
 #include "../exact-real/integer_ring.hpp"

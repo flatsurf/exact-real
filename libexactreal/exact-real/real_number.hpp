@@ -21,11 +21,11 @@
 #ifndef LIBEXACTREAL_REAL_NUMBER_HPP
 #define LIBEXACTREAL_REAL_NUMBER_HPP
 
+#include <gmpxx.h>
+
+#include <boost/operators.hpp>
 #include <memory>
 #include <optional>
-
-#include <gmpxx.h>
-#include <boost/operators.hpp>
 
 #include "forward.hpp"
 
@@ -99,7 +99,7 @@ class RealNumber : public std::enable_shared_from_this<RealNumber>,
   // are ordered by their real value.
   bool deglex(const RealNumber& rhs) const;
 
-  virtual std::shared_ptr<const RealNumber> operator*(const RealNumber&)const;
+  virtual std::shared_ptr<const RealNumber> operator*(const RealNumber&) const;
   virtual std::optional<std::shared_ptr<const RealNumber>> operator/(const RealNumber&) const;
 
   virtual RealNumber const& operator>>(std::ostream&) const = 0;

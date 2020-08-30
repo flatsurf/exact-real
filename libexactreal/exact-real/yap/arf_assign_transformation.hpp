@@ -21,6 +21,8 @@
 #ifndef LIBEXACTREAL_YAP_ARF_ASSIGN_TRANSFORMATION_HPP
 #define LIBEXACTREAL_YAP_ARF_ASSIGN_TRANSFORMATION_HPP
 
+#include <optional>
+
 #include "../arf.hpp"
 #include "assign_transformation.hpp"
 

@@ -20,11 +20,10 @@
 #ifndef LIBEXACTREAL_CPPYY_HPP
 #define LIBEXACTREAL_CPPYY_HPP
 
+#include <boost/type_traits/is_detected.hpp>
 #include <iosfwd>
 #include <memory>
 #include <sstream>
-
-#include <boost/type_traits/is_detected.hpp>
 
 #include "element.hpp"
 #include "integer_ring.hpp"

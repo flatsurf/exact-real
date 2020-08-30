@@ -18,10 +18,9 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include "external/catch2/single_include/catch2/catch.hpp"
-
 #include "../exact-real/yap/arf.hpp"
 #include "arf.hpp"
+#include "external/catch2/single_include/catch2/catch.hpp"
 
 namespace exactreal::test {
 

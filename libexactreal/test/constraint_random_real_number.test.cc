@@ -18,13 +18,11 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include "external/catch2/single_include/catch2/catch.hpp"
-
 #include "../exact-real/arb.hpp"
 #include "../exact-real/arf.hpp"
 #include "../exact-real/real_number.hpp"
-
 #include "arf.test.hpp"
+#include "external/catch2/single_include/catch2/catch.hpp"
 
 using std::nextafter;
 using std::numeric_limits;

@@ -18,20 +18,20 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <set>
+#include "../exact-real/module.hpp"
 
 #include <e-antic/renfxx.h>
+
 #include <boost/algorithm/string/join.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/range/adaptor/transformed.hpp>
+#include <set>
 
 #include "../exact-real/element.hpp"
 #include "../exact-real/integer_ring.hpp"
-#include "../exact-real/module.hpp"
 #include "../exact-real/number_field.hpp"
 #include "../exact-real/rational_field.hpp"
 #include "../exact-real/real_number.hpp"
-
 #include "external/unique-factory/unique_factory.hpp"
 
 using namespace exactreal;

@@ -18,9 +18,9 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <memory>
-
 #include <benchmark/benchmark.h>
+
+#include <memory>
 
 #include "../exact-real/arf.hpp"
 #include "../exact-real/real_number.hpp"

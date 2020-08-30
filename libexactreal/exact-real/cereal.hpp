@@ -267,6 +267,7 @@ void load(Archive& archive, std::shared_ptr<const exactreal::Module<Ring>>& self
     Ring ring;
     archive(cereal::make_nvp("ring", ring));
     self = exactreal::Module<Ring>::make(basis, ring);
+    archive.registerSharedPointer(id, std::static_pointer_cast<void>(std::const_pointer_cast<exactreal::Module<Ring>>(self)));
   } else {
     self = std::static_pointer_cast<exactreal::Module<Ring>>(archive.getSharedPointer(id));
   }

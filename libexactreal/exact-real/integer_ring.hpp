@@ -21,10 +21,10 @@
 #ifndef LIBEXACTREAL_INTEGER_RING_HPP
 #define LIBEXACTREAL_INTEGER_RING_HPP
 
-#include <optional>
-
 #include <gmpxx.h>
+
 #include <boost/operators.hpp>
+#include <optional>
 
 #include "forward.hpp"
 
