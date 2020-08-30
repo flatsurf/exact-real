@@ -40,7 +40,10 @@ template <typename T>
 struct is_shared_ptr : std::false_type {};
 template <typename T>
 struct is_shared_ptr<std::shared_ptr<T>> : std::true_type {};
-
+template <typename T>
+struct is_vector : std::false_type {};
+template <typename T>
+struct is_vector<std::vector<T>> : std::true_type {};
 template <typename T>
 std::string toString(const T& x) {
   if constexpr (is_shared_ptr<T>::value) {
@@ -48,6 +51,8 @@ std::string toString(const T& x) {
       return boost::lexical_cast<std::string>(x) + "->" + boost::lexical_cast<std::string>(*x);
     else
       return "null";
+  } else if constexpr (is_vector<T>::value) {
+    return "[…]";
   } else {
     return boost::lexical_cast<std::string>(x);
   }
@@ -117,11 +122,19 @@ TEMPLATE_TEST_CASE("Serialization of Module", "[cereal][module]", (IntegerRing),
 }
 
 TEMPLATE_TEST_CASE("Serialization of Element", "[cereal][element]", (IntegerRing), (RationalField), (NumberField)) {
-  auto m = Module<TestType>::make({RealNumber::rational(1), RealNumber::random()});
+  SECTION("Elements in a trivial module") {
+    auto m = Module<TestType>::make({});
 
-  test_serialization(m->gen(1));
-  test_serialization(m->zero());
-  test_serialization(Element<TestType>());
+    test_serialization(m->zero());
+    test_serialization(std::vector{m->zero(), m->zero()});
+  }
+
+  SECTION("Elements in a non-trivial module") {
+    auto m = Module<TestType>::make({RealNumber::rational(1), RealNumber::random()});
+
+    test_serialization(m->gen(1));
+    test_serialization(m->zero());
+  }
 }
 
 }  // namespace exactreal::test
