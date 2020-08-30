@@ -19,6 +19,7 @@
  *********************************************************************/
 
 #include "../exact-real/rational_field.hpp"
+
 #include "../exact-real/arb.hpp"
 
 namespace exactreal {

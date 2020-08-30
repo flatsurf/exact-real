@@ -22,11 +22,10 @@
 
 #include <gmpxx.h>
 
-#include <iostream>
-#include <sstream>
-
 #include <boost/config.hpp>
 #include <boost/preprocessor/stringize.hpp>
+#include <iostream>
+#include <sstream>
 
 #define ASSERT_(CONDITION, EXCEPTION, MESSAGE)                                \
   while (BOOST_UNLIKELY(not(CONDITION))) {                                    \

@@ -20,12 +20,11 @@
 
 #include <boost/lexical_cast.hpp>
 
-#include "external/catch2/single_include/catch2/catch.hpp"
-
 #include "../exact-real/element.hpp"
 #include "../exact-real/integer_ring.hpp"
 #include "../exact-real/module.hpp"
 #include "../exact-real/real_number.hpp"
+#include "external/catch2/single_include/catch2/catch.hpp"
 
 using boost::lexical_cast;
 using std::make_shared;

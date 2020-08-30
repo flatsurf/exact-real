@@ -21,12 +21,12 @@
 #ifndef LIBEXACTREAL_ARF_HPP
 #define LIBEXACTREAL_ARF_HPP
 
-#include <memory>
-
 #include <arf.h>
 #include <flint/flintxx/frandxx.h>
 #include <gmpxx.h>
+
 #include <boost/operators.hpp>
+#include <memory>
 
 #include "yap/terminal.hpp"
 

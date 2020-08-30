@@ -21,10 +21,10 @@
 #ifndef EXACTREAL_TEST_ARB_HPP
 #define EXACTREAL_TEST_ARB_HPP
 
+#include <flint/flintxx/frandxx.h>
+
 #include <cassert>
 #include <memory>
-
-#include <flint/flintxx/frandxx.h>
 
 #include "../exact-real/arb.hpp"
 

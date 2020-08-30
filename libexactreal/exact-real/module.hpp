@@ -21,12 +21,10 @@
 #ifndef LIBEXACTREAL_MODULE_HPP
 #define LIBEXACTREAL_MODULE_HPP
 
+#include <boost/operators.hpp>
 #include <vector>
 
-#include <boost/operators.hpp>
-
 #include "external/spimpl/spimpl.h"
-
 #include "forward.hpp"
 
 namespace exactreal {

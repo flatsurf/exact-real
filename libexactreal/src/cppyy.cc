@@ -17,9 +17,9 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <ostream>
-
 #include "../exact-real/cppyy.hpp"
+
+#include <ostream>
 
 using namespace exactreal;
 

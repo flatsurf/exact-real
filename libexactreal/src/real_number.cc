@@ -18,11 +18,12 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
+#include "../exact-real/real_number.hpp"
+
 #include <cassert>
 
 #include "../exact-real/arb.hpp"
 #include "../exact-real/cereal.hpp"
-#include "../exact-real/real_number.hpp"
 #include "../exact-real/seed.hpp"
 #include "../exact-real/yap/arf.hpp"
 

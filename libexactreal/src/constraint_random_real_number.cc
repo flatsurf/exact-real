@@ -18,23 +18,22 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <memory>
-#include <sstream>
-
 #include <arb.h>
 #include <gmpxx.h>
+
 #include <boost/lexical_cast.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/random/linear_congruential.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
 #include <cereal/archives/json.hpp>
 #include <cereal/cereal.hpp>
+#include <memory>
+#include <sstream>
 
 #include "../exact-real/cereal.hpp"
 #include "../exact-real/real_number.hpp"
 #include "../exact-real/seed.hpp"
 #include "../exact-real/yap/arf.hpp"
-
 #include "external/unique-factory/unique_factory.hpp"
 
 using namespace exactreal;

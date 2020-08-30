@@ -20,9 +20,8 @@
 
 #include <benchmark/benchmark.h>
 
-#include "../test/arb.hpp"
-
 #include "../exact-real/yap/arb.hpp"
+#include "../test/arb.hpp"
 
 namespace exactreal::test {
 

@@ -21,14 +21,14 @@
 #ifndef LIBEXACTREAL_ARB_HPP
 #define LIBEXACTREAL_ARB_HPP
 
-#include <memory>
-#include <optional>
-
 #include <arb.h>
 #include <e-antic/renfxx_fwd.h>
 #include <flint/flintxx/frandxx.h>
 #include <gmpxx.h>
+
 #include <boost/yap/algorithm_fwd.hpp>
+#include <memory>
+#include <optional>
 
 #include "arf.hpp"
 

@@ -29,10 +29,8 @@
 #include "../exact-real/cereal.hpp"
 #include "../exact-real/real_number.hpp"
 #include "../exact-real/yap/arf.hpp"
-
-#include "util/assert.ipp"
-
 #include "external/unique-factory/unique_factory.hpp"
+#include "util/assert.ipp"
 
 using namespace exactreal;
 using std::make_shared;
