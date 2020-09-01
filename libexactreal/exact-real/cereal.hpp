@@ -48,12 +48,26 @@ struct CerealWrap {
 
   T inner;
 
+  static bool constexpr needs_wrap() {
+    if constexpr (std::is_same_v<T, mpz_class>)
+      return true;
+    else if constexpr (std::is_same_v<T, mpq_class>)
+      return true;
+    return false;
+  }
+
   T* operator->() { return &inner; }
   const T* operator->() const { return &inner; }
 
   T& operator*() { return inner; }
   const T& operator*() const { return inner; }
+
+  operator T() { return inner; }
+  operator T() const { return inner; }
 };
+
+template <typename T>
+using MaybeWrap = std::conditional_t<CerealWrap<T>::needs_wrap(), CerealWrap<T>, T>;
 
 template <typename Archive>
 void save(Archive& archive, const Arb& self) {
@@ -99,10 +113,9 @@ template <typename Archive, typename Ring>
 void save(Archive& archive, const Element<Ring>& self) {
   archive(cereal::make_nvp("parent", self.module()));
 
-  std::vector<CerealWrap<typename Ring::ElementClass>> coefficients;
-  for (int i = 0; i < self.module()->rank(); i++) {
+  std::vector<MaybeWrap<typename Ring::ElementClass>> coefficients;
+  for (int i = 0; i < self.module()->rank(); i++)
     coefficients.push_back(self[i]);
-  }
   archive(cereal::make_nvp("coefficients", coefficients));
 }
 
@@ -111,13 +124,12 @@ void load(Archive& archive, Element<Ring>& self) {
   std::shared_ptr<const Module<Ring>> module;
   archive(cereal::make_nvp("parent", module));
 
-  std::vector<CerealWrap<typename Ring::ElementClass>> coefficients;
+  std::vector<MaybeWrap<typename Ring::ElementClass>> coefficients;
   archive(cereal::make_nvp("coefficients", coefficients));
 
   std::vector<typename Ring::ElementClass> coeffs;
-  for (auto& c : coefficients) {
-    coeffs.push_back(*c);
-  }
+  for (auto& c : coefficients)
+    coeffs.push_back(c);
 
   self = Element<Ring>(module, coeffs);
 }
@@ -175,38 +187,23 @@ struct ForwardingCereal {
 };
 
 template <typename Archive>
-void save(Archive& archive, const CerealWrap<mpq_class>& self) {
-  archive(cereal::make_nvp("numerator", CerealWrap{self->get_num()}),
-          cereal::make_nvp("denominator", CerealWrap{self->get_den()}));
+std::string save_minimal(const Archive&, const CerealWrap<mpq_class>& self) {
+  return self->get_str();
 }
 
 template <typename Archive>
-void load(Archive& archive, CerealWrap<mpq_class>& self) {
-  CerealWrap<mpz_class> num, den;
-  archive(num, den);
-  self = CerealWrap{mpq_class(*num, *den)};
+void load_minimal(const Archive&, CerealWrap<mpq_class>& self, const std::string& value) {
+  self = CerealWrap{mpq_class(value)};
 }
 
 template <typename Archive>
-void save(Archive& archive, const CerealWrap<mpz_class>& self) {
-  archive(cereal::make_nvp("value", boost::lexical_cast<std::string>(*self)));
+std::string save_minimal(const Archive&, const CerealWrap<mpz_class>& self) {
+  return self->get_str();
 }
 
 template <typename Archive>
-void load(Archive& archive, CerealWrap<mpz_class>& self) {
-  std::string value;
-  archive(value);
+void load_minimal(const Archive&, CerealWrap<mpz_class>& self, const std::string& value) {
   self = CerealWrap{mpz_class(value)};
-}
-
-template <typename Archive, typename T>
-void save(Archive& archive, const CerealWrap<T>& self) {
-  archive(*self);
-}
-
-template <typename Archive, typename T>
-void load(Archive& archive, CerealWrap<T>& self) {
-  archive(*self);
 }
 }  // namespace exactreal
 
