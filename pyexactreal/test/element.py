@@ -53,5 +53,21 @@ def test_multiplication():
     assert 2*one + μ - ν - 2*one - μ + ν == 0
     assert 0*one + x*μ + x*ν - 0*one - x*ν - x*μ == 0
 
+def test_serialization():
+    from pyexactreal import RealNumber, ZZModule, QQModule, NumberFieldModule, NumberField
+    M = ZZModule(RealNumber.rational(1))
+
+    assert M.gen(0).to_json() == '{"parent": {"shared": 2147483649, "basis": [{"shared": 2147483650, "kind": "rational", "value": "1"}], "ring": {}}, "coefficients": ["1"]}'
+
+    M = QQModule(RealNumber.rational(1))
+
+    assert M.gen(0).to_json() == '{"parent": {"shared": 2147483649, "basis": [{"shared": 2147483650, "kind": "rational", "value": "1"}], "ring": {}}, "coefficients": ["1"]}'
+
+    K = NumberField("x^2 - 3", "x", "1.73 +/- 0.1")
+    M = NumberFieldModule(K, RealNumber.rational(1))
+
+    assert M.gen(0).to_json() == '{"parent": {"shared": 2147483649, "basis": [{"shared": 2147483650, "kind": "rational", "value": "1"}], "ring": {"field": {"shared": 2147483651, "rational": false, "name": "x", "embedding": "[1.7320508075688772935274463415058723669 +/- 5.08e-38]", "minpoly": "x^2 - 3", "precision": 64}}}, "coefficients": [{"cereal_class_version": 0, "parent": {"shared": 2147483652, "rational": false, "name": "a", "embedding": "1e+0", "minpoly": "a-1", "precision": 64}, "value": "1", "double": 1.0}]}'
+
+
 if __name__ == '__main__': sys.exit(pytest.main(sys.argv))
 
