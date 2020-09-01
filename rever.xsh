@@ -47,8 +47,6 @@ $VERSION_BUMP_PATTERNS = [
     ('recipe/meta.yaml', r"\{% set build_number =", r"{% set build_number = '0' %}"),
 ]
 
-print("Make sure you bump the version_info in libexactreal/configure.ac manually!")
-
 $CHANGELOG_FILENAME = 'ChangeLog'
 $CHANGELOG_TEMPLATE = 'TEMPLATE.rst'
 $PUSH_TAG_REMOTE = 'git@github.com:flatsurf/exact-real.git'
