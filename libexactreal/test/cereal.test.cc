@@ -47,7 +47,7 @@ template <typename T>
 std::string toString(const T& x) {
   if constexpr (is_shared_ptr<T>::value) {
     if (x)
-      return boost::lexical_cast<std::string>(x) + "->" + boost::lexical_cast<std::string>(*x);
+      return boost::lexical_cast<std::string>(&*x) + "=&" + boost::lexical_cast<std::string>(*x);
     else
       return "null";
   } else if constexpr (is_vector<T>::value) {

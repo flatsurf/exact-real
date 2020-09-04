@@ -46,7 +46,7 @@ std::optional<mpq_class> NumberField::rational(const ElementClass& x) {
   return x.is_rational() ? std::optional{static_cast<mpq_class>(x)} : std::nullopt;
 }
 
-bool NumberField::operator==(const NumberField& rhs) const { return parameters == rhs.parameters; }
+bool NumberField::operator==(const NumberField& rhs) const { return *parameters == *rhs.parameters; }
 
 mpz_class NumberField::floor(const ElementClass& x) { return x.floor(); }
 
