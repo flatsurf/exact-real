@@ -52,8 +52,8 @@ class Module<Ring>::Implementation {
   Implementation() : basis({}), parameters(trivial()) {}
 
   explicit Implementation(const Basis& basis, const Ring& parameters) : basis(basis), parameters(parameters) {
-    for (auto it = basis.begin(); it != basis.end(); it++) {
-      for (auto jt = it + 1; jt != basis.end(); jt++) {
+    for (auto it = begin(basis); it != end(basis); it++) {
+      for (auto jt = it + 1; jt != end(basis); jt++) {
         if (static_cast<std::optional<mpq_class>>(**it) && static_cast<std::optional<mpq_class>>(**jt)) {
           throw std::logic_error("at most one generator can be rational");
         }
@@ -142,7 +142,7 @@ shared_ptr<const Module<Ring>> Module<Ring>::span(const shared_ptr<const Module<
 
   auto basis = m->basis();
   for (auto& ngen : n->basis()) {
-    if (find_if(basis.begin(), basis.end(), [&](const auto& gen) { return *gen == *ngen; }) == basis.end()) {
+    if (find_if(begin(basis), end(basis), [&](const auto& gen) { return *gen == *ngen; }) == end(basis)) {
       basis.push_back(ngen);
     }
   }
@@ -154,7 +154,7 @@ template <typename Ring>
 bool Module<Ring>::submodule(const Module<Ring>& supermodule) const {
   auto super = supermodule.basis();
   for (auto& gen : basis()) {
-    if (find_if(super.begin(), super.end(), [&](const auto& sgen) { return *gen == *sgen; }) == super.end()) {
+    if (find_if(begin(super), end(super), [&](const auto& sgen) { return *gen == *sgen; }) == end(super)) {
       return false;
     }
   }

@@ -53,8 +53,8 @@ auto& factory() {
 class RealNumberProduct final : public RealNumber {
  public:
   explicit RealNumberProduct(const Factors& factors) : factors(factors) {
-    ASSERT(std::all_of(factors.begin(), factors.end(), [](auto& factor) { return factor.second >= 1; }), "factors must appear at least once");
-    ASSERT(std::all_of(factors.begin(), factors.end(), [](auto& factor) { return !static_cast<std::optional<mpq_class>>(*factor.first); }), "factors must be transcendental");
+    ASSERT(std::all_of(begin(factors), end(factors), [](auto& factor) { return factor.second >= 1; }), "factors must appear at least once");
+    ASSERT(std::all_of(begin(factors), end(factors), [](auto& factor) { return !static_cast<std::optional<mpq_class>>(*factor.first); }), "factors must be transcendental");
   }
 
   RealNumber const& operator>>(std::ostream& os) const override {
@@ -87,7 +87,7 @@ class RealNumberProduct final : public RealNumber {
 
     Factors quotient = factors;
 
-    if (quotient.find(rhs.shared_from_this()) != quotient.end()) {
+    if (quotient.find(rhs.shared_from_this()) != end(quotient)) {
       auto rhs_ = rhs.shared_from_this();
       quotient[rhs_]--;
       if (quotient[rhs_] == 0)
@@ -247,9 +247,9 @@ bool RealNumber::deglex(const RealNumber& rhs_) const {
 
       for (auto& gen : gens) {
         ASSERT(!static_cast<std::optional<mpq_class>>(*gen).has_value(), "factors of real number product must not be rational");
-        if (lhs->factors.find(gen) == lhs->factors.end())
+        if (lhs->factors.find(gen) == end(lhs->factors))
           return false;
-        if (rhs->factors.find(gen) == rhs->factors.end())
+        if (rhs->factors.find(gen) == end(rhs->factors))
           return true;
         if (lhs->factors.at(gen) < rhs->factors.at(gen))
           return false;
@@ -270,7 +270,7 @@ void load_product(cereal::JSONInputArchive& archive, std::shared_ptr<const RealN
   Factors factors;
   archive(cereal::make_nvp("factors", factors));
   base = factory().get(factors, [&]() {
-    return new RealNumberProduct(Factors(factors.begin(), factors.end()));
+    return new RealNumberProduct(Factors(begin(factors), end(factors)));
   });
 }
 }  // namespace exactreal
