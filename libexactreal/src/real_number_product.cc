@@ -72,7 +72,7 @@ class RealNumberProduct final : public RealNumber {
   }
 
   explicit operator std::optional<mpq_class>() const override {
-    return {};
+    return std::nullopt;
   }
 
   std::optional<std::shared_ptr<const RealNumber>> operator/(const RealNumber& rhs) const override {
@@ -99,7 +99,7 @@ class RealNumberProduct final : public RealNumber {
         if (quotient[d.first] == 0)
           quotient.erase(d.first);
         else if (quotient[d.first] < 0)
-          return {};
+          return std::nullopt;
       }
     }
 

@@ -81,7 +81,7 @@ class RandomRealNumber final : public RealNumber {
   }
 
   operator std::optional<mpq_class>() const override {
-    return {};
+    return std::nullopt;
   }
 
   RealNumber const& operator>>(ostream& out) const override {
