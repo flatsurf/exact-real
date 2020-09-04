@@ -87,7 +87,7 @@ std::optional<std::shared_ptr<const RealNumber>> RealNumber::operator/(const Rea
     throw std::logic_error("not implemented: division of generic real number by rational");
   }
 
-  return {};
+  return std::nullopt;
 }
 
 bool RealNumber::operator<(const RealNumber& rhs) const {

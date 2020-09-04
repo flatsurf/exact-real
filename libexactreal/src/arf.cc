@@ -22,6 +22,8 @@
 
 #include <arf.h>
 
+#include <ostream>
+
 using std::ostream;
 using std::string;
 

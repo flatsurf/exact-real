@@ -35,6 +35,11 @@ using std::vector;
 namespace exactreal::test {
 
 TEST_CASE("Module over ZZ", "[module][integer_ring]") {
+  SECTION("Uniqueness") {
+    REQUIRE(&*Module<IntegerRing>::make({}) == &*Module<IntegerRing>::make({}));
+    REQUIRE(&*Module<IntegerRing>::make({RealNumber::random()}) != &*Module<IntegerRing>::make({RealNumber::random()}));
+  }
+
   SECTION("Rank") {
     auto trivial = Module<IntegerRing>::make({});
     REQUIRE(trivial->rank() == 0);
@@ -42,7 +47,7 @@ TEST_CASE("Module over ZZ", "[module][integer_ring]") {
 
     auto m = Module<IntegerRing>::make({RealNumber::random(), RealNumber::random()});
     REQUIRE(m->rank() == 2);
-    REQUIRE(lexical_cast<string>(*m) == "ℤ-Module(ℝ(0.120809…), ℝ(0.303644…))");
+    REQUIRE(lexical_cast<string>(*m) == "ℤ-Module(ℝ(0.178808…), ℝ(0.478968…))");
 
     auto n = Module<IntegerRing>::make(m->basis());
     REQUIRE(m == n);

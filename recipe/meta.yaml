@@ -50,7 +50,7 @@ requirements:
   host:
 {%- if libexactreal_requirements %}
     - boost-cpp
-    - e-antic >=1.0a master_1148
+    - e-antic >=1.0a1
     - arb
     - gmp
     - gmpxxll
@@ -67,7 +67,7 @@ requirements:
     # enable test/pyexactreal tests in ./configure
     - pytest
     - cppyy
-    - pyeantic >=1.0.1
+    - pyeantic >=1.1.1
     # enable test/libexactreal tests in ./configure
     - benchmark
     # enable check-valgrind in ./configure
@@ -84,7 +84,7 @@ requirements:
 {%- if component == "pyexactreal" %}
     - python {{ _python }}
     - boost-cpp
-    - pyeantic >=1.0.1
+    - pyeantic >=1.1.1
     - cppyy
 {%- endif %}
 

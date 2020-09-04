@@ -158,7 +158,7 @@ std::optional<bool> Arb::operator<(const Arb& rhs) const noexcept {
   } else if (arb_ge(arb_t(), rhs.arb_t())) {
     return false;
   } else {
-    return {};
+    return std::nullopt;
   }
 }
 
@@ -168,7 +168,7 @@ std::optional<bool> Arb::operator>(const Arb& rhs) const noexcept {
   } else if (arb_le(arb_t(), rhs.arb_t())) {
     return false;
   } else {
-    return {};
+    return std::nullopt;
   }
 }
 
@@ -177,7 +177,7 @@ std::optional<bool> Arb::operator<=(const Arb& rhs) const noexcept {
   if (gt.has_value()) {
     return !*gt;
   } else {
-    return {};
+    return std::nullopt;
   }
 }
 
@@ -186,7 +186,7 @@ std::optional<bool> Arb::operator>=(const Arb& rhs) const noexcept {
   if (lt.has_value()) {
     return !*lt;
   } else {
-    return {};
+    return std::nullopt;
   }
 }
 
@@ -196,7 +196,7 @@ std::optional<bool> Arb::operator==(const Arb& rhs) const noexcept {
   } else if (arb_ne(arb_t(), rhs.arb_t())) {
     return false;
   } else {
-    return {};
+    return std::nullopt;
   }
 }
 
@@ -205,7 +205,7 @@ std::optional<bool> Arb::operator!=(const Arb& rhs) const noexcept {
   if (eq) {
     return !*eq;
   } else {
-    return {};
+    return std::nullopt;
   }
 }
 

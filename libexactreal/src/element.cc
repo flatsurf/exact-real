@@ -110,7 +110,7 @@ Element<Ring>::Element(const Element<IntegerRing>& value)
     : impl(spimpl::make_impl<Element<Ring>::Implementation>(
           Module<Ring>::make(value.module()->basis()),
           [&](const auto& coefficients) {
-            return std::vector<typename Ring::ElementClass>(coefficients.begin(), coefficients.end());
+            return std::vector<typename Ring::ElementClass>(begin(coefficients), end(coefficients));
           }(value.coefficients()))) {}
 
 template <typename Ring>
@@ -119,7 +119,7 @@ Element<Ring>::Element(const Element<RationalField>& value)
     : impl(spimpl::make_impl<Element<Ring>::Implementation>(
           Module<Ring>::make(value.module()->basis()),
           [&](const auto& coefficients) {
-            return std::vector<typename Ring::ElementClass>(coefficients.begin(), coefficients.end());
+            return std::vector<typename Ring::ElementClass>(begin(coefficients), end(coefficients));
           }(value.coefficients()))) {}
 
 template <typename Ring>
@@ -221,8 +221,8 @@ Element<Ring>& Element<Ring>::operator*=(const Element<Ring>& rhs) {
     }
   }
 
-  vector<std::pair<shared_ptr<const RealNumber>, typename Ring::ElementClass>> sorted(products.begin(), products.end());
-  std::sort(sorted.begin(), sorted.end(), [](const auto& lhs, const auto& rhs) { return lhs.first->deglex(*rhs.first); });
+  vector<std::pair<shared_ptr<const RealNumber>, typename Ring::ElementClass>> sorted(begin(products), end(products));
+  std::sort(begin(sorted), end(sorted), [](const auto& lhs, const auto& rhs) { return lhs.first->deglex(*rhs.first); });
 
   vector<shared_ptr<const RealNumber>> basis;
   vector<typename Ring::ElementClass> coefficients;
@@ -303,13 +303,13 @@ std::optional<Element<Ring>> Element<Ring>::truediv(const Element<Ring>& rhs) co
 
     auto generator_quotient = *g / *h;
     if (!generator_quotient.has_value())
-      return {};
+      return std::nullopt;
 
     auto coefficient_quotient = a / b;
 
     if (coefficient_quotient * b != a) {
       ASSERT(!Ring::isField, "division of coefficients must be exact in fields");
-      return {};
+      return std::nullopt;
     }
 
     auto partial_quotient = coefficient_quotient * Module<Ring>::make({*generator_quotient}, this->module()->ring())->gen(0);
@@ -497,11 +497,11 @@ bool Element<Ring>::operator==(const Element<Ring>& rhs) const {
 template <typename Ring>
 bool Element<Ring>::operator==(const RealNumber& rhs) const {
   auto& gens = impl->parent->basis();
-  auto it = find_if(gens.begin(), gens.end(), [&](const auto& other) { return *other == rhs; });
-  if (it == gens.end()) {
+  auto it = find_if(begin(gens), end(gens), [&](const auto& other) { return *other == rhs; });
+  if (it == end(gens)) {
     throw logic_error("not implemented - equality of Element with unrelated RealNumber");
   }
-  const size at = it - gens.begin();
+  const size at = it - begin(gens);
   for (size_t i = 0; i < impl->parent->rank(); i++) {
     if (impl->coefficients[i] == 0) {
       if (i == at) {
@@ -520,7 +520,7 @@ bool Element<Ring>::operator==(const RealNumber& rhs) const {
 
 template <typename Ring>
 Element<Ring>::operator bool() const {
-  return std::any_of(impl->coefficients.begin(), impl->coefficients.end(), [](auto c) { return c != 0; });
+  return std::any_of(begin(impl->coefficients), end(impl->coefficients), [](auto c) { return c != 0; });
 }
 
 template <typename Ring>
