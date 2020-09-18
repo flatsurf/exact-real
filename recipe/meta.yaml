@@ -53,7 +53,6 @@ requirements:
     - e-antic >=1.0a1
     - arb
     - gmp
-    - gmpxxll
     - gmpxxyy
 {%- endif %}
 {%- if pyexactreal_requirements %}
