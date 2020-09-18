@@ -33,6 +33,7 @@ import cppyy
 import gmpxxyy
 
 from cppyythonizations.pickling.cereal import enable_cereal
+from cppyythonizations.printing import enable_pretty_printing
 
 class NotRepresentableError(ArithmeticError):
     r"""
@@ -195,21 +196,9 @@ def enable_optional(proxy, name):
 cppyy.py.add_pythonization(enable_optional, "exactreal")
 cppyy.py.add_pythonization(enable_optional, "exactreal::yap")
 
-def pretty_print(proxy, name):
-    r"""
-    Disable cppyy's default printing for our types.
+cppyy.py.add_pythonization(enable_pretty_printing, "exactreal")
+cppyy.py.add_pythonization(enable_pretty_printing, "eantic")
 
-    EXAMPLES::
-
-        >>> from pyexactreal import exactreal
-        >>> exactreal.Arb(1)
-        1.00000
-
-    """
-    proxy.__repr__ = proxy.__str__
-
-cppyy.py.add_pythonization(pretty_print, "exactreal")
-cppyy.py.add_pythonization(pretty_print, "eantic")
 cppyy.py.add_pythonization(lambda proxy, name: enable_cereal(proxy, name, ["cereal/types/memory.hpp", "exact-real/cereal.hpp", "e-antic/renfxx_cereal.h"]), "exactreal")
 
 # Set EXTRA_CLING_ARGS="-I /usr/include" or wherever exact-real/cppyy.hpp can
