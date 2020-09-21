@@ -4,6 +4,17 @@ exact-real Change Log
 
 .. current developments
 
+v1.3.2
+====================
+
+**Fixed:**
+
+* Adapted to changes in cppyythonizations and in the stable release of e-antic. (This changes the serialization format slightly which we do not consider stable yet anyway.)
+* Do not check for gmpxxll in configure. We ship a version for compilation and do not need it at runtime.
+* in the SageMath interface, an element that is directly initialized with a zero element from libintervalxt does now remember its containing module.
+
+
+
 v1.3.1
 ====================
 
