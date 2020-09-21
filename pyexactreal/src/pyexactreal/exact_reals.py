@@ -89,8 +89,8 @@ class ExactRealElement(IntegralDomainElement):
         if not isinstance(value, parent._element_factory):
             if value == 0:
                 value = parent._element_factory()
-                return
-            raise TypeError("element must be an %s" % (parent._element_factory,))
+            else:
+                raise TypeError("element must be an %s" % (parent._element_factory,))
         self._backend = value
         IntegralDomainElement.__init__(self, parent)
 
