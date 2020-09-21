@@ -78,11 +78,18 @@ class ExactRealElement(IntegralDomainElement):
        sage: isinstance(r, ExactRealElement)
        True
 
+    Check that zero elements can be created that are not in the trivial module::
+
+        sage: zero = ExactReals().random_element()._backend.module().zero()
+        sage: ExactReals()(zero)._backend.module()
+        ℚ-Module(ℝ(0...))
+
     """
     def __init__(self, parent, value):
-        if value == 0:
-            value = parent._element_factory()
         if not isinstance(value, parent._element_factory):
+            if value == 0:
+                value = parent._element_factory()
+                return
             raise TypeError("element must be an %s" % (parent._element_factory,))
         self._backend = value
         IntegralDomainElement.__init__(self, parent)
