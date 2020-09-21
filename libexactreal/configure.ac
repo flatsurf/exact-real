@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 dnl We need at least autoconf 2.69 for this configure.ac to work.
 AC_PREREQ([2.69])
-AC_INIT([libexactreal], [1.3.1], [julian.rueth@fsfe.org])
+AC_INIT([libexactreal], [1.3.2], [julian.rueth@fsfe.org])
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([.])
@@ -12,7 +12,7 @@ dnl Version number of the library c:r:a.
 dnl Set to c+1:0:0 on a non-backwards-compatible change.
 dnl Set to c+1:0:a+1 on a backwards-compatible change.
 dnl Set to c:r+1:a if the interface is unchanged.
-AC_SUBST([libexactreal_version_info], [2:3:2])
+AC_SUBST([libexactreal_version_info], [2:4:2])
 
 AC_CANONICAL_HOST
 
