@@ -65,7 +65,7 @@ requirements:
 {%- if test_requirements %}
     # enable test/pyexactreal tests in ./configure
     - pytest
-    - cppyy
+    - cppyy >=1.8.3
     - pyeantic >=1.1.1
     # enable test/libexactreal tests in ./configure
     - benchmark
@@ -84,7 +84,7 @@ requirements:
     - python {{ _python }}
     - boost-cpp
     - pyeantic >=1.1.1
-    - cppyy
+    - cppyy >=1.8.3
 {%- endif %}
 
 {%- if component == "libexactreal" %}
