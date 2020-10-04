@@ -1,7 +1,7 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C) 2019-2020 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -54,9 +54,9 @@ Arb eval(T expression, prec prec) {
 }
 
 template <typename T>
-Arf eval(T expression, prec prec, int round) {
+Arf eval(T expression, prec prec, Arf::Round round) {
   Arf ret;
-  ret = std::move(expression)(prec, static_cast<Arf::Round>(round));
+  ret = std::move(expression)(prec, round);
   return ret;
 }
 
