@@ -300,7 +300,10 @@ ostream& operator<<(ostream& os, const Arb& self) {
   // Note that the radius is also printed with respect to os.precision() which
   // means that the radius might be shortened, e.g., [0.5 +/- 1.08e-78] might
   // print as [0.5 +/- 1e-10].
-  return os << arb_get_str(self.arb_t(), os.precision(), ARB_STR_MORE);
+  char* s = arb_get_str(self.arb_t(), os.precision(), ARB_STR_MORE);
+  os << s;
+  flint_free(s);
+  return os;
 }
 
 template Arb::Arb(short);
