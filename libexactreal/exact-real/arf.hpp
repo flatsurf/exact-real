@@ -142,4 +142,13 @@ void swap(Arf& lhs, Arf& rhs);
 
 }  // namespace exactreal
 
+namespace std {
+
+template <>
+struct hash<exactreal::Arf> {
+  size_t operator()(const exactreal::Arf&) const;
+};
+
+}  // namespace std
+
 #endif

@@ -50,4 +50,11 @@ struct IntegerRing : boost::equality_comparable<IntegerRing> {
 
 }  // namespace exactreal
 
+namespace std {
+template <>
+struct hash<exactreal::IntegerRing> {
+  size_t operator()(const exactreal::IntegerRing&) const { return 0; }
+};
+}  // namespace std
+
 #endif

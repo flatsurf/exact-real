@@ -61,3 +61,11 @@ typename NumberField::ElementClass NumberField::coerce(const ElementClass& x) co
   throw std::logic_error("not implemented: coercion to this number field");
 }
 }  // namespace exactreal
+
+namespace std {
+
+size_t hash<exactreal::NumberField>::operator()(const exactreal::NumberField& self) const {
+  return std::hash<eantic::renf_class>()(*self.parameters);
+}
+
+}  // namespace std

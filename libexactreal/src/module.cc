@@ -32,6 +32,7 @@
 #include "../exact-real/number_field.hpp"
 #include "../exact-real/rational_field.hpp"
 #include "../exact-real/real_number.hpp"
+#include "external/hash-combine/hash.hpp"
 #include "external/unique-factory/unique_factory.hpp"
 
 using namespace exactreal;
