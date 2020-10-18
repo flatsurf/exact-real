@@ -4,6 +4,30 @@ exact-real Change Log
 
 .. current developments
 
+v1.4.0
+====================
+
+**Added:**
+
+* make `Arf`, `IntegerRing`, `RationalField`, `NumberField` hashable
+
+**Changed:**
+
+* simplified internal factory pattern by ugrading unique-factory
+
+**Fixed:**
+
+* make codecov work without CI token
+* Fixed an incompatibility with cppyy 1.8.3. We now require at least 1.8.3 for Arb/Arf arithmetic to work.
+* Fixed a memory leak when printing; this leak is not spotted by valgrind since
+  the memory is allocated in a memory pool (we think.) We found that leak with
+  gperftools.
+
+* Free flint memory when running tests so gperftools does not get confused by
+  memory pools there.
+
+
+
 v1.3.2
 ====================
 
