@@ -73,10 +73,24 @@ class Module<Ring>::Implementation {
   Basis basis;
   Ring parameters;
 
-  using Factory = unique_factory::UniqueFactory<std::weak_ptr<Module<Ring>>, Basis, const Ring>;
-  static Factory& factory() {
-    static Factory* factory = new Factory();
-    return *factory;
+  static auto& factory() {
+    using Key = std::tuple<Basis, Ring>;
+    struct Hash {
+      size_t operator()(const Key& key) const {
+        using flatsurf::hash, flatsurf::hash_combine;
+
+        const auto& [basis, ring] = key;
+
+        size_t ret = hash(ring);
+        for (const auto& b : basis)
+          ret = hash_combine(ret, hash(static_cast<double>(*b)));
+
+        return ret;
+      }
+    };
+
+    static unique_factory::UniqueFactory<Key, Module<Ring>, Hash> factory;
+    return factory;
   }
 };
 
@@ -92,7 +106,7 @@ template <typename Ring>
 shared_ptr<const Module<Ring>> Module<Ring>::make(const Basis& basis_, const Ring& ring) {
   Basis basis = basis_;
   std::sort(begin(basis), end(basis), [](const auto& lhs, const auto& rhs) { return lhs->deglex(*rhs); });
-  return Module<Ring>::Implementation::factory().get(basis, ring, [&]() {
+  return Module<Ring>::Implementation::factory().get(std::tuple{basis, ring}, [&]() {
     return new Module<Ring>(spimpl::make_unique_impl<Module<Ring>::Implementation>(basis, ring));
   });
 }

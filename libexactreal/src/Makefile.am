@@ -11,7 +11,7 @@ libexactreal_la_SOURCES =               \
     integer_ring.cc                     \
     rational_field.cc                   \
     number_field.cc                     \
-    constraint_random_real_number.cc    \
+    constrained_random_real_number.cc   \
     arf.cc                              \
     seed.cc                             \
     cppyy.cc
