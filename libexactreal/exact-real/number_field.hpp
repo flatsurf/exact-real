@@ -57,4 +57,11 @@ class NumberField : boost::equality_comparable<NumberField> {
 
 }  // namespace exactreal
 
+namespace std {
+template <>
+struct hash<exactreal::NumberField> {
+  size_t operator()(const exactreal::NumberField&) const;
+};
+}  // namespace std
+
 #endif

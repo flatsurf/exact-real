@@ -49,6 +49,7 @@ $VERSION_BUMP_PATTERNS = [
 
 $CHANGELOG_FILENAME = 'ChangeLog'
 $CHANGELOG_TEMPLATE = 'TEMPLATE.rst'
+$CHANGELOG_CATEGORIES = ('Added', 'Changed', 'Deprecated', 'Removed', 'Fixed', 'Performance')
 $PUSH_TAG_REMOTE = 'git@github.com:flatsurf/exact-real.git'
 
 $GITHUB_ORG = 'flatsurf'

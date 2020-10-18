@@ -75,7 +75,15 @@ docker run ${DOCKER_RUN_ARGS} \
            -e FEEDSTOCK_NAME \
            -e ASV_SECRET_KEY \
            -e BINSTAR_TOKEN \
-           -e CODECOV_TOKEN \
+           `# These environment variables are set by Azure when building from GitHub; they are needed to make codecov work without using tokens.` \
+           -e BUILD_BUILDID \
+           -e BUILD_BUILDNUMBER \
+           -e BUILD_SOURCEBRANCHNAME \
+           -e BUILD_SOURCEVERSION \
+           -e SYSTEM_PULLREQUEST_PULLREQUESTID \
+           -e SYSTEM_PULLREQUEST_PULLREQUESTNUMBER \
+           -e SYSTEM_TEAMFOUNDATIONSERVERURI \
+           -e SYSTEM_TEAMPROJECT \
            $DOCKER_IMAGE \
            bash \
            /home/conda/feedstock_root/${PROVIDER_DIR}/build_steps.sh

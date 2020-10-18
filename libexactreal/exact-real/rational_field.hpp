@@ -50,4 +50,11 @@ struct RationalField : boost::equality_comparable<RationalField> {
 
 }  // namespace exactreal
 
+namespace std {
+template <>
+struct hash<exactreal::RationalField> {
+  size_t operator()(const exactreal::RationalField&) const { return 0; }
+};
+}  // namespace std
+
 #endif

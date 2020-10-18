@@ -106,7 +106,7 @@ class RandomRealNumber final : public RealNumber {
 };
 
 auto& factory() {
-  static unique_factory::UniqueFactory<std::weak_ptr<RandomRealNumber>, unsigned int> factory;
+  static unique_factory::UniqueFactory<unsigned int, RandomRealNumber> factory;
   return factory;
 }
 }  // namespace

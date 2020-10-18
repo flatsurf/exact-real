@@ -34,6 +34,7 @@
 #include "../exact-real/real_number.hpp"
 #include "../exact-real/seed.hpp"
 #include "../exact-real/yap/arf.hpp"
+#include "external/hash-combine/hash.hpp"
 #include "external/unique-factory/unique_factory.hpp"
 
 using namespace exactreal;
@@ -49,9 +50,9 @@ using std::string;
 namespace {
 
 // A random real number in [a, b]
-class ConstraintRandomRealNumber final : public RealNumber {
+class ConstrainedRandomRealNumber final : public RealNumber {
  public:
-  ConstraintRandomRealNumber(const Arf& initial, long e, const shared_ptr<const RealNumber>& inner) : initial(initial), e(e), inner(inner) {}
+  ConstrainedRandomRealNumber(const Arf& initial, long e, const shared_ptr<const RealNumber>& inner) : initial(initial), e(e), inner(inner) {}
 
   virtual Arf arf(long prec) const override {
     if (prec < 1) {
@@ -105,7 +106,14 @@ class ConstraintRandomRealNumber final : public RealNumber {
 };
 
 auto& factory() {
-  static unique_factory::UniqueFactory<std::weak_ptr<ConstraintRandomRealNumber>, Arf, long, std::weak_ptr<const RealNumber>> factory;
+  using Key = std::tuple<Arf, long, std::shared_ptr<const RealNumber>>;
+  struct Hash {
+    size_t operator()(const Key& key) const {
+      using flatsurf::hash_combine, flatsurf::hash;
+      return hash_combine(hash(std::get<0>(key)), hash(std::get<1>(key)), hash(static_cast<double>(*std::get<2>(key))));
+    }
+  };
+  static unique_factory::UniqueFactory<Key, ConstrainedRandomRealNumber, Hash> factory;
   return factory;
 }
 }  // namespace
@@ -166,8 +174,8 @@ shared_ptr<const RealNumber> RealNumber::random(const Arf& lower, const Arf& upp
     Arf initial = Arf(mantissa, e);
     auto inner = RealNumber::random(seed);
 
-    return factory().get(initial, e, inner, [&]() {
-      return new ConstraintRandomRealNumber(initial, e, inner);
+    return factory().get(std::tuple{initial, e, inner}, [&]() {
+      return new ConstrainedRandomRealNumber(initial, e, inner);
     });
   }
 }
@@ -204,7 +212,7 @@ shared_ptr<const RealNumber> RealNumber::random(const double x, Seed seed) {
 }
 
 void save_constrained(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& base) {
-  std::dynamic_pointer_cast<const ConstraintRandomRealNumber>(base)->save(archive);
+  std::dynamic_pointer_cast<const ConstrainedRandomRealNumber>(base)->save(archive);
 }
 
 void load_constrained(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& base) {
@@ -213,6 +221,6 @@ void load_constrained(cereal::JSONInputArchive& archive, std::shared_ptr<const R
   shared_ptr<const RealNumber> inner;
   archive(initial, e, inner);
 
-  base = factory().get(initial, e, inner, [&]() { return new ConstraintRandomRealNumber(initial, e, inner); });
+  base = factory().get(std::tuple{initial, e, inner}, [&]() { return new ConstrainedRandomRealNumber(initial, e, inner); });
 }
 }  // namespace exactreal

@@ -204,4 +204,13 @@ ostream& operator<<(ostream& os, const Arf& self) {
 
   return os;
 }
+
 }  // namespace exactreal
+
+namespace std {
+
+size_t hash<exactreal::Arf>::operator()(const exactreal::Arf& self) const {
+  return hash<double>()(static_cast<double>(self));
+}
+
+}  // namespace std

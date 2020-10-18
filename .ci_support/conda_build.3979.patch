@@ -12,33 +12,6 @@ original order in lists.
  conda_build/variants.py | 13 +++++--------
  2 files changed, 15 insertions(+), 14 deletions(-)
 
-diff --git a/conda_build/utils.py b/conda_build/utils.py
-index f04984e6..927f3d22 100644
---- a/conda_build/utils.py
-+++ b/conda_build/utils.py
-@@ -1161,12 +1161,16 @@ def package_has_file(package_path, file_path, refresh=False):
- 
- 
- def ensure_list(arg):
--    if (isinstance(arg, string_types) or not hasattr(arg, '__iter__')):
--        if arg is not None:
--            arg = [arg]
--        else:
--            arg = []
--    return arg
-+    if arg is None:
-+        return []
-+
-+    if isinstance(arg, string_types):
-+        return [arg]
-+
-+    if not hasattr(arg, '__iter__'):
-+        return [arg]
-+
-+    return list(arg)
- 
- 
- @contextlib.contextmanager
 diff --git a/conda_build/variants.py b/conda_build/variants.py
 index c3cdae43..e91911d3 100644
 --- a/conda_build/variants.py

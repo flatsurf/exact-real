@@ -29,6 +29,7 @@
 #include "../exact-real/cereal.hpp"
 #include "../exact-real/real_number.hpp"
 #include "../exact-real/yap/arf.hpp"
+#include "external/hash-combine/hash.hpp"
 #include "external/unique-factory/unique_factory.hpp"
 #include "util/assert.ipp"
 
@@ -45,7 +46,16 @@ namespace {
 class RealNumberProduct;
 
 auto& factory() {
-  static unique_factory::UniqueFactory<std::weak_ptr<RealNumberProduct>, Factors> factory;
+  struct Hash {
+    size_t operator()(const Factors& key) const {
+      using flatsurf::hash, flatsurf::hash_combine;
+      size_t ret = 0;
+      for (const auto& [r, n] : key)
+        ret = hash_combine(ret, hash(static_cast<double>(*r)), hash(n));
+      return ret;
+    }
+  };
+  static unique_factory::UniqueFactory<Factors, RealNumberProduct, Hash> factory;
   return factory;
 }
 
