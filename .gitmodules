@@ -1,6 +1,9 @@
 [submodule "libexactreal/src/exact-real/external/spimpl"]
 	path = libexactreal/exact-real/external/spimpl
 	url = https://github.com/oliora/samples.git
+[submodule "libexactreal/src/external/hash-combine"]
+	path = libexactreal/src/external/hash-combine
+	url = https://github.com/flatsurf/hash-combine.git
 [submodule "libexactreal/src/external/unique-factory"]
 	path = libexactreal/src/external/unique-factory
 	url = https://github.com/flatsurf/unique-factory.git
