@@ -12,6 +12,5 @@ export GITHUB_REPOSITORY=exact-real
 source $SNIPPETS_DIR/cxx/environment.sh
 source $SNIPPETS_DIR/make/environment.sh
 source $SNIPPETS_DIR/asv/environment.sh
-source $SNIPPETS_DIR/codecov/environment.sh
 
 export SUBDIRS=libexactreal:pyexactreal

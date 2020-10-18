@@ -31,8 +31,16 @@ build:
 {%- endif %}
   script_env:
 {%- if action == "coverage" %}
-    - CODECOV_TOKEN
-{%- elif action == "benchmark" %}
+    - BUILD_BUILDID
+    - BUILD_BUILDNUMBER
+    - BUILD_SOURCEBRANCHNAME
+    - BUILD_SOURCEVERSION
+    - SYSTEM_PULLREQUEST_PULLREQUESTID
+    - SYSTEM_PULLREQUEST_PULLREQUESTNUMBER
+    - SYSTEM_TEAMFOUNDATIONSERVERURI
+    - SYSTEM_TEAMPROJECT
+{%- endif %}
+{%- if action == "benchmark" %}
     - ASV_SECRET_KEY
 {%- endif %}
 

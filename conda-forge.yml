@@ -20,4 +20,3 @@ top_level_loop_vars:
   - job
 secrets:
   - ASV_SECRET_KEY
-  - CODECOV_TOKEN
