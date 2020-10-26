@@ -440,7 +440,7 @@ class ExactRealElement(IntegralDomainElement):
         """
         return repr(self._backend)
 
-    def _cmp_(self, rhs):
+    def _richcmp_(self, rhs, op):
         r"""
         EXAMPLES::
 
@@ -461,12 +461,13 @@ class ExactRealElement(IntegralDomainElement):
             False
 
         """
+        from sage.structure.richcmp import rich_to_bool
         if self._backend < rhs._backend:
-            return -1
+            return rich_to_bool(op, -1)
         elif self._backend == rhs._backend:
-            return 0
+            return rich_to_bool(op, 0)
         else:
-            return 1
+            return rich_to_bool(op, 1)
 
     def _rmul_(self, c):
         r"""
