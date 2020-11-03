@@ -207,20 +207,15 @@ std::ostream& operator<<(std::ostream& os, const Module<R>& self) {
 
 // Explicit instantiations of templates so that code is generated for the
 // linker.
-#include "../exact-real/detail/smart_ostream.hpp"
 #include "../exact-real/integer_ring.hpp"
 #include "../exact-real/number_field.hpp"
 #include "../exact-real/rational_field.hpp"
 
-template class exactreal::Module<IntegerRing>;
-template std::ostream& exactreal::operator<<(std::ostream&, const Module<IntegerRing>&);
-template std::ostream& exactreal::operator<<(std::ostream&, const shared_ptr<const Module<IntegerRing>>&);
-template std::ostream& exactreal::operator<<(std::ostream&, const shared_ptr<Module<IntegerRing>>&);
-template class exactreal::Module<RationalField>;
-template std::ostream& exactreal::operator<<(std::ostream&, const Module<RationalField>&);
-template std::ostream& exactreal::operator<<(std::ostream&, const shared_ptr<const Module<RationalField>>&);
-template std::ostream& exactreal::operator<<(std::ostream&, const shared_ptr<Module<RationalField>>&);
-template class exactreal::Module<NumberField>;
-template std::ostream& exactreal::operator<<(std::ostream&, const Module<NumberField>&);
-template std::ostream& exactreal::operator<<(std::ostream&, const shared_ptr<const Module<NumberField>>&);
-template std::ostream& exactreal::operator<<(std::ostream&, const shared_ptr<Module<NumberField>>&);
+namespace exactreal {
+template class Module<IntegerRing>;
+template std::ostream& operator<<(std::ostream&, const Module<IntegerRing>&);
+template class Module<RationalField>;
+template std::ostream& operator<<(std::ostream&, const Module<RationalField>&);
+template class Module<NumberField>;
+template std::ostream& operator<<(std::ostream&, const Module<NumberField>&);
+}
