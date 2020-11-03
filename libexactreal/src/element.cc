@@ -39,7 +39,6 @@ using boost::numeric_cast;
 using std::find_if;
 using std::logic_error;
 using std::map;
-using std::ostream;
 using std::set;
 using std::shared_ptr;
 using std::vector;
@@ -636,7 +635,7 @@ Element<Ring>& Element<Ring>::simplify() {
 }
 
 template <typename Ring>
-ostream& operator<<(ostream& out, const Element<Ring>& self) {
+std::ostream& operator<<(std::ostream& out, const Element<Ring>& self) {
   // Print summands sorted by absolute generator value to get stable outputs.
   // (additionally, print positive coefficients first so that we do not get
   // leading minus signs.)
@@ -699,8 +698,9 @@ size_t hash<exactreal::Element<Ring>>::operator()(const exactreal::Element<Ring>
 #include "../exact-real/rational_field.hpp"
 
 namespace exactreal {
+
 template class Element<IntegerRing>;
-template ostream& operator<<<IntegerRing>(ostream&, const Element<IntegerRing>&);
+template std::ostream& operator<<(std::ostream&, const Element<IntegerRing>&);
 template Element<IntegerRing>& Element<IntegerRing>::operator*=(const int&);
 template Element<IntegerRing>& Element<IntegerRing>::operator*=(const mpz_class&);
 template std::vector<typename IntegerRing::ElementClass> Element<IntegerRing>::coefficients() const;
@@ -708,7 +708,7 @@ template std::vector<mpq_class> Element<IntegerRing>::coefficients() const;
 
 template class Element<RationalField>;
 template Element<RationalField>::Element(const Element<IntegerRing>&);
-template ostream& operator<<<RationalField>(ostream&, const Element<RationalField>&);
+template std::ostream& operator<<(std::ostream&, const Element<RationalField>&);
 template Element<RationalField>& Element<RationalField>::operator*=(const int&);
 template Element<RationalField>& Element<RationalField>::operator*=(const mpz_class&);
 template Element<RationalField>& Element<RationalField>::operator*=(const mpq_class&);
@@ -718,7 +718,7 @@ template Element<RationalField>& Element<RationalField>::operator/=(const mpq_cl
 template std::vector<typename RationalField::ElementClass> Element<RationalField>::coefficients() const;
 
 template class Element<NumberField>;
-template ostream& operator<<<NumberField>(ostream&, const Element<NumberField>&);
+template std::ostream& operator<<(std::ostream&, const Element<NumberField>&);
 template Element<NumberField>& Element<NumberField>::operator*=(const int&);
 template Element<NumberField>& Element<NumberField>::operator*=(const mpz_class&);
 template Element<NumberField>& Element<NumberField>::operator*=(const mpq_class&);

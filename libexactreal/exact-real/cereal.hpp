@@ -149,7 +149,7 @@ void serialize(Archive& archive, NumberField& self) {
   archive(cereal::make_nvp("field", self.parameters));
 }
 
-struct RealNumberCereal {
+struct LIBEXACTREAL_API RealNumberCereal {
   using SupportedOutput = cereal::JSONOutputArchive;
   using SupportedInput = cereal::JSONInputArchive;
 

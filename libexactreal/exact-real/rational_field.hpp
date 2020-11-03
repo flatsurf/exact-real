@@ -30,7 +30,7 @@
 
 namespace exactreal {
 
-struct RationalField : boost::equality_comparable<RationalField> {
+struct LIBEXACTREAL_API RationalField : boost::equality_comparable<RationalField> {
   RationalField();
   RationalField(const mpq_class&);
 

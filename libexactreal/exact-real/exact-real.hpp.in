@@ -62,4 +62,24 @@ constexpr bool false_t = false;
 
 #endif  // __CLING__
 
+// Visibility Macros to separate API from non-API and inline template code.
+// See, https://gcc.gnu.org/wiki/Visibility.
+#if defined _WIN32 || defined __CYGWIN__
+  #define LIBEXACTREAL_LIBRARY_IMPORT __declspec(dllimport)
+  #define LIBEXACTREAL_LIBRARY_EXPORT __declspec(dllexport)
+  #define LIBEXACTREAL_LIBRARY_HIDDEN
+#else
+  #define LIBEXACTREAL_LIBRARY_IMPORT __attribute__ ((visibility ("default")))
+  #define LIBEXACTREAL_LIBRARY_EXPORT __attribute__ ((visibility ("default")))
+  #define LIBEXACTREAL_LIBRARY_HIDDEN __attribute__ ((visibility ("hidden")))
+#endif
+
+#ifdef BUILD_LIBEXACTREAL
+  #define LIBEXACTREAL_API LIBEXACTREAL_LIBRARY_EXPORT
+  #define LIBEXACTREAL_LOCAL LIBEXACTREAL_LIBRARY_HIDDEN
+#else
+  #define LIBEXACTREAL_API LIBEXACTREAL_LIBRARY_IMPORT
+  #define LIBEXACTREAL_LOCAL
+#endif
+
 #endif  // LIBEXACTREAL_EXACTREAL_HPP

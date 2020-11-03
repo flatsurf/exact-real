@@ -31,7 +31,7 @@
 
 namespace exactreal {
 
-class RealNumber : public std::enable_shared_from_this<RealNumber>,
+class LIBEXACTREAL_API RealNumber : public std::enable_shared_from_this<RealNumber>,
                    boost::totally_ordered<RealNumber>,
                    boost::totally_ordered<RealNumber, signed char>,
                    boost::totally_ordered<RealNumber, unsigned char>,
@@ -103,7 +103,7 @@ class RealNumber : public std::enable_shared_from_this<RealNumber>,
   virtual std::optional<std::shared_ptr<const RealNumber>> operator/(const RealNumber&) const;
 
   virtual RealNumber const& operator>>(std::ostream&) const = 0;
-  friend std::ostream& operator<<(std::ostream&, const RealNumber&);
+  friend std::ostream& operator<<(std::ostream&, const RealNumber&) LIBEXACTREAL_API;
 
   // A random real in the range [0, 1]
   static std::shared_ptr<const RealNumber> random();

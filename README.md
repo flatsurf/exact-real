@@ -59,6 +59,11 @@ which does not hurt performance but gives a better debugging experience. For
 the best debugging experience, you might want to replace `-O3` with `-Og` or
 even `-O0` but the latter results in very poor performance.
 
+If your compiler supports it, you should add `-fvisibility=hidden
+-fvisibility-inlines-hidden` to your `CXXFLAGS`. This hides internal bits in
+the resulting library which have lead to crashes in the past due to conflicting
+header-only libraries.
+
 Additionally, you might want to run configure with ` --disable-static` which
 improves the build time.
 

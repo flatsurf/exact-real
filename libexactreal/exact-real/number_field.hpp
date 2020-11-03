@@ -32,7 +32,7 @@
 
 namespace exactreal {
 
-class NumberField : boost::equality_comparable<NumberField> {
+class LIBEXACTREAL_API NumberField : boost::equality_comparable<NumberField> {
  public:
   NumberField();
   NumberField(const std::shared_ptr<const eantic::renf_class>&);
