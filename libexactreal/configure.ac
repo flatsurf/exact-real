@@ -37,8 +37,6 @@ AC_LANG([C++])
 dnl We use some C++17 features, such as if constexpr
 AX_CXX_COMPILE_STDCXX(17)
 
-ACX_PTHREAD([], [AC_MSG_ERROR([pthread not supported])])
-
 AC_CHECK_HEADERS([arb.h], , AC_MSG_ERROR([Arb headers not found]))
 AC_CHECK_LIB([arb], [arb_load_str], , AC_MSG_ERROR([Arb library >=2.17.0 not found]), [-lgmp -lmpfr -lflint])
 
