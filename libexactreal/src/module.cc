@@ -218,4 +218,4 @@ template class Module<RationalField>;
 template std::ostream& operator<<(std::ostream&, const Module<RationalField>&);
 template class Module<NumberField>;
 template std::ostream& operator<<(std::ostream&, const Module<NumberField>&);
-}
+}  // namespace exactreal

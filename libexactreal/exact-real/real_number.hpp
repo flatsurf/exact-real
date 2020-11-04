@@ -32,18 +32,18 @@
 namespace exactreal {
 
 class LIBEXACTREAL_API RealNumber : public std::enable_shared_from_this<RealNumber>,
-                   boost::totally_ordered<RealNumber>,
-                   boost::totally_ordered<RealNumber, signed char>,
-                   boost::totally_ordered<RealNumber, unsigned char>,
-                   boost::totally_ordered<RealNumber, signed int>,
-                   boost::totally_ordered<RealNumber, unsigned int>,
-                   boost::totally_ordered<RealNumber, signed short int>,
-                   boost::totally_ordered<RealNumber, unsigned short int>,
-                   boost::totally_ordered<RealNumber, signed long int>,
-                   boost::totally_ordered<RealNumber, unsigned long int>,
-                   boost::totally_ordered<RealNumber, Arf>,
-                   boost::totally_ordered<RealNumber, mpz_class>,
-                   boost::totally_ordered<RealNumber, mpq_class> {
+                                    boost::totally_ordered<RealNumber>,
+                                    boost::totally_ordered<RealNumber, signed char>,
+                                    boost::totally_ordered<RealNumber, unsigned char>,
+                                    boost::totally_ordered<RealNumber, signed int>,
+                                    boost::totally_ordered<RealNumber, unsigned int>,
+                                    boost::totally_ordered<RealNumber, signed short int>,
+                                    boost::totally_ordered<RealNumber, unsigned short int>,
+                                    boost::totally_ordered<RealNumber, signed long int>,
+                                    boost::totally_ordered<RealNumber, unsigned long int>,
+                                    boost::totally_ordered<RealNumber, Arf>,
+                                    boost::totally_ordered<RealNumber, mpz_class>,
+                                    boost::totally_ordered<RealNumber, mpq_class> {
  public:
   virtual ~RealNumber();
   explicit operator double() const;

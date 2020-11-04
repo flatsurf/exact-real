@@ -30,7 +30,7 @@
 namespace exactreal {
 template <typename Ring>
 class LIBEXACTREAL_API Module : boost::equality_comparable<Module<Ring>>,
-  public std::enable_shared_from_this<Module<Ring>> {
+                                public std::enable_shared_from_this<Module<Ring>> {
  public:
   using Basis = std::vector<std::shared_ptr<const RealNumber>>;
 
