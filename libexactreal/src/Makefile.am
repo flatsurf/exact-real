@@ -17,6 +17,12 @@ libexactreal_la_SOURCES =               \
 
 libexactreal_la_LDFLAGS = -version-info $(libexactreal_version_info)
 
+if HAVE_VERSION_SCRIPT
+libexactreal_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libexactreal.map
+
+EXTRA_libexactreal_la_DEPENDENCIES = $(srcdir)/libexactreal.map
+endif
+
 nobase_pkginclude_HEADERS =                                  \
     ../exact-real/real_number.hpp                            \
     ../exact-real/element.hpp                                \

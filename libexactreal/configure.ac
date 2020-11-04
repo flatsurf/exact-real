@@ -64,6 +64,9 @@ AS_IF([test "x$with_benchmark" != "xno"],
       ], [])
 AM_CONDITIONAL([HAVE_BENCHMARK], [test "x$with_benchmark" = "xyes"])
 
+AC_ARG_WITH([version-script], AS_HELP_STRING([--with-version-script], [Only export a curated list of symbols in the shared library.]))
+AM_CONDITIONAL([HAVE_VERSION_SCRIPT], [test "x$with_version_script" = "xyes"])
+
 AC_CONFIG_HEADERS([exact-real/config.h])
 AC_CONFIG_FILES([Makefile src/Makefile test/Makefile benchmark/Makefile])
 

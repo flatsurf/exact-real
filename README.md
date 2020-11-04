@@ -64,6 +64,9 @@ If your compiler supports it, you should add `-fvisibility=hidden
 the resulting library which have lead to crashes in the past due to conflicting
 header-only libraries.
 
+If your linker supports it, you can add `--with-version-script` to shrink the
+resulting shared library to an exact curated list of versioned symbols.
+
 Additionally, you might want to run configure with ` --disable-static` which
 improves the build time.
 
