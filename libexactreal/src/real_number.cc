@@ -202,9 +202,3 @@ void RealNumberCereal::load(cereal::JSONInputArchive& archive, std::shared_ptr<c
 }
 
 }  // namespace exactreal
-
-// Explicit instantiations of templates so that code is generated for the
-// linker.
-#include "../exact-real/detail/smart_ostream.hpp"
-
-template std::ostream& exactreal::operator<<(std::ostream&, const std::shared_ptr<const RealNumber>&);

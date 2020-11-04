@@ -13,10 +13,15 @@ libexactreal_la_SOURCES =               \
     number_field.cc                     \
     constrained_random_real_number.cc   \
     arf.cc                              \
-    seed.cc                             \
-    cppyy.cc
+    seed.cc
 
 libexactreal_la_LDFLAGS = -version-info $(libexactreal_version_info)
+
+if HAVE_VERSION_SCRIPT
+libexactreal_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libexactreal.map
+
+EXTRA_libexactreal_la_DEPENDENCIES = $(srcdir)/libexactreal.map
+endif
 
 nobase_pkginclude_HEADERS =                                  \
     ../exact-real/real_number.hpp                            \
@@ -52,7 +57,6 @@ noinst_HEADERS =                                          \
     external/unique-factory/unique_factory.hpp            \
     external/hash-combine/hash.hpp                        \
     external/gmpxxll/gmpxxll/mpz_class.hpp                \
-    ../exact-real/detail/smart_ostream.hpp                \
     util/assert.ipp
 
 $(builddir)/../exact-real/exact-real.hpp: $(srcdir)/../exact-real/exact-real.hpp.in Makefile
@@ -73,5 +77,9 @@ EXTRA_DIST += external/cereal/include
 AM_CPPFLAGS = -isystem $(srcdir)/external/cereal/include
 generatedincludedir = $(includedir)/exact-real
 nodist_generatedinclude_HEADERS = ../exact-real/exact-real.hpp
+
+# We are building the libexactreal library so visibility attributes should be
+# set, see https://gcc.gnu.org/wiki/Visibility
+AM_CPPFLAGS += -DBUILD_LIBEXACTREAL
 
 CLEANFILES = ../exact-real/exact-real.hpp

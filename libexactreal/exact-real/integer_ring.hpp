@@ -30,7 +30,7 @@
 
 namespace exactreal {
 
-struct IntegerRing : boost::equality_comparable<IntegerRing> {
+struct LIBEXACTREAL_API IntegerRing : private boost::equality_comparable<IntegerRing> {
   IntegerRing();
   IntegerRing(const mpz_class&);
 

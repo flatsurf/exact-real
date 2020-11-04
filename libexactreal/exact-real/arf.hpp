@@ -57,7 +57,7 @@ namespace exactreal {
 //
 // Note that methods here are usually named as their counterparts in arf.h with
 // the leading arf_ removed.
-class Arf : yap::Terminal<Arf, yap::ArfExpr>, boost::totally_ordered<Arf>, boost::totally_ordered<Arf, long>, boost::shiftable<Arf, long> {
+class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>, boost::totally_ordered<Arf>, boost::totally_ordered<Arf, long>, boost::shiftable<Arf, long> {
  public:
   enum class Round {
     NEAR = ARF_RND_NEAR,
@@ -109,7 +109,7 @@ class Arf : yap::Terminal<Arf, yap::ArfExpr>, boost::totally_ordered<Arf>, boost
 
   static Arf randtest(flint::frandxx&, prec precision, prec magbits) noexcept;
 
-  friend std::ostream& operator<<(std::ostream&, const Arf&);
+  friend std::ostream& operator<<(std::ostream&, const Arf&) LIBEXACTREAL_API;
 
   // A reference to the underlying arf_t element for direct manipulation with Arb
   ::arf_t& arf_t() noexcept;
@@ -118,19 +118,19 @@ class Arf : yap::Terminal<Arf, yap::ArfExpr>, boost::totally_ordered<Arf>, boost
 
   // Syntactic sugar for Yap, so that expresions such as x += y(64, Arf::Rount::NEAR) work.
   template <typename... Args>
-  decltype(auto) operator()(Args&&...) const noexcept;
+  decltype(auto) operator()(Args&&...) const noexcept LIBEXACTREAL_LOCAL;
 
   // Construction from evaluating a Yap expression
   template <boost::yap::expr_kind Kind, typename Tuple>
   // cppcheck-suppress  noExplicitConstructor
-  Arf(const yap::ArfExpr<Kind, Tuple>&) noexcept;
+  Arf(const yap::ArfExpr<Kind, Tuple>&) noexcept LIBEXACTREAL_LOCAL;
   template <boost::yap::expr_kind Kind, typename Tuple>
   // cppcheck-suppress  noExplicitConstructor
-  Arf(yap::ArfExpr<Kind, Tuple>&&) noexcept;
+  Arf(yap::ArfExpr<Kind, Tuple>&&) noexcept LIBEXACTREAL_LOCAL;
 
   // Assignment from evaluating a Yap expression
   template <boost::yap::expr_kind Kind, typename Tuple>
-  Arf& operator=(const yap::ArfExpr<Kind, Tuple>&) noexcept;
+  Arf& operator=(const yap::ArfExpr<Kind, Tuple>&) noexcept LIBEXACTREAL_LOCAL;
 
  private:
   // The underlying arf_t; use arf_t() to get a reference to it.

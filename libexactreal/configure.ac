@@ -37,8 +37,6 @@ AC_LANG([C++])
 dnl We use some C++17 features, such as if constexpr
 AX_CXX_COMPILE_STDCXX(17)
 
-ACX_PTHREAD([], [AC_MSG_ERROR([pthread not supported])])
-
 AC_CHECK_HEADERS([arb.h], , AC_MSG_ERROR([Arb headers not found]))
 AC_CHECK_LIB([arb], [arb_load_str], , AC_MSG_ERROR([Arb library >=2.17.0 not found]), [-lgmp -lmpfr -lflint])
 
@@ -65,6 +63,9 @@ AS_IF([test "x$with_benchmark" != "xno"],
        AC_CHECK_HEADERS([benchmark/benchmark.h], , AC_MSG_ERROR([benchmark headers not found; run --without-benchmark to disable building of benchmark/]))
       ], [])
 AM_CONDITIONAL([HAVE_BENCHMARK], [test "x$with_benchmark" = "xyes"])
+
+AC_ARG_WITH([version-script], AS_HELP_STRING([--with-version-script], [Only export a curated list of symbols in the shared library.]))
+AM_CONDITIONAL([HAVE_VERSION_SCRIPT], [test "x$with_version_script" = "xyes"])
 
 AC_CONFIG_HEADERS([exact-real/config.h])
 AC_CONFIG_FILES([Makefile src/Makefile test/Makefile benchmark/Makefile])

@@ -66,7 +66,7 @@ inline constexpr const prec ARB_PRECISION_FAST = 64;
 //
 // Note that methods here are usually named as their counterparts in arb.h with
 // the leading arb_ removed.
-class Arb : yap::Terminal<Arb, yap::ArbExpr> {
+class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
  public:
   // An exact zero element
   Arb() noexcept;
@@ -131,7 +131,7 @@ class Arb : yap::Terminal<Arb, yap::ArbExpr> {
   // The midpoint of this ball.
   explicit operator Arf() const noexcept;
 
-  friend std::ostream& operator<<(std::ostream&, const Arb&);
+  friend std::ostream& operator<<(std::ostream&, const Arb&) LIBEXACTREAL_API;
 
   // A reference to the underlying arb_t element for direct manipulation with Arb
   ::arb_t& arb_t() noexcept;
@@ -155,19 +155,19 @@ class Arb : yap::Terminal<Arb, yap::ArbExpr> {
 
   // Syntactic sugar for Yap, so that expresions such as x += y(64, Arf::Rount::NEAR) work.
   template <typename... Args>
-  decltype(auto) operator()(Args&&...) const noexcept;
+  decltype(auto) operator()(Args&&...) const noexcept LIBEXACTREAL_LOCAL;
 
   // Construction from evaluating a Yap expression
   template <boost::yap::expr_kind Kind, typename Tuple>
   // cppcheck-suppress  noExplicitConstructor
-  Arb(const yap::ArbExpr<Kind, Tuple>&) noexcept;
+  Arb(const yap::ArbExpr<Kind, Tuple>&) noexcept LIBEXACTREAL_LOCAL;
   template <boost::yap::expr_kind Kind, typename Tuple>
   // cppcheck-suppress  noExplicitConstructor
-  Arb(yap::ArbExpr<Kind, Tuple>&&) noexcept;
+  Arb(yap::ArbExpr<Kind, Tuple>&&) noexcept LIBEXACTREAL_LOCAL;
 
   // Assignment from evaluating a Yap expression
   template <boost::yap::expr_kind Kind, typename Tuple>
-  Arb& operator=(const yap::ArbExpr<Kind, Tuple>&) noexcept;
+  Arb& operator=(const yap::ArbExpr<Kind, Tuple>&) noexcept LIBEXACTREAL_LOCAL;
 
  private:
   // The underlying arb_t; use arb_t() to get a reference to it.

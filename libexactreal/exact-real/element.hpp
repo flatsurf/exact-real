@@ -38,15 +38,15 @@
 namespace exactreal {
 
 template <typename Ring>
-class Element : boost::additive<Element<Ring>>,
-                boost::multipliable<Element<Ring>>,
-                boost::totally_ordered<Element<Ring>>,
-                boost::totally_ordered<Element<Ring>, RealNumber>,
-                boost::totally_ordered<Element<Ring>, mpq_class>,
-                boost::totally_ordered<Element<Ring>, mpz_class>,
-                boost::totally_ordered<Element<Ring>, long long>,
-                boost::multipliable<Element<Ring>, RealNumber>,
-                boost::multiplicative<Element<Ring>, typename Ring::ElementClass> {
+class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
+                                 boost::multipliable<Element<Ring>>,
+                                 boost::totally_ordered<Element<Ring>>,
+                                 boost::totally_ordered<Element<Ring>, RealNumber>,
+                                 boost::totally_ordered<Element<Ring>, mpq_class>,
+                                 boost::totally_ordered<Element<Ring>, mpz_class>,
+                                 boost::totally_ordered<Element<Ring>, long long>,
+                                 boost::multipliable<Element<Ring>, RealNumber>,
+                                 boost::multiplicative<Element<Ring>, typename Ring::ElementClass> {
  public:
   Element();
   Element(const std::shared_ptr<const Module<Ring>>& parent, const std::vector<typename Ring::ElementClass>& coefficients);
@@ -135,7 +135,7 @@ class Element : boost::additive<Element<Ring>>,
   friend std::ostream& operator<<(std::ostream&, const Element<R>&);
 
  private:
-  struct Implementation;
+  struct LIBEXACTREAL_LOCAL Implementation;
   spimpl::impl_ptr<Implementation> impl;
 };
 
@@ -155,6 +155,9 @@ Element(const mpz_class&)->Element<IntegerRing>;
 Element(const mpq_class&)->Element<RationalField>;
 
 Element(const RealNumber&)->Element<IntegerRing>;
+
+template <typename R>
+std::ostream& operator<<(std::ostream&, const Element<R>&) LIBEXACTREAL_API;
 
 }  // namespace exactreal
 

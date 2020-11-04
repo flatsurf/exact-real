@@ -29,7 +29,8 @@
 
 namespace exactreal {
 template <typename Ring>
-class Module : public std::enable_shared_from_this<Module<Ring>>, boost::equality_comparable<Module<Ring>> {
+class LIBEXACTREAL_API Module : boost::equality_comparable<Module<Ring>>,
+                                public std::enable_shared_from_this<Module<Ring>> {
  public:
   using Basis = std::vector<std::shared_ptr<const RealNumber>>;
 
@@ -57,11 +58,14 @@ class Module : public std::enable_shared_from_this<Module<Ring>>, boost::equalit
   static std::shared_ptr<const Module<Ring>> span(const std::shared_ptr<const Module<Ring>>&, const std::shared_ptr<const Module<Ring>>&);
 
  private:
-  struct Implementation;
+  struct LIBEXACTREAL_LOCAL Implementation;
   spimpl::unique_impl_ptr<Implementation> impl;
 
-  Module(spimpl::unique_impl_ptr<Implementation>&&);
+  Module(spimpl::unique_impl_ptr<Implementation>&&) LIBEXACTREAL_LOCAL;
 };
+
+template <typename R>
+std::ostream& operator<<(std::ostream&, const Module<R>&) LIBEXACTREAL_API;
 
 }  // namespace exactreal
 
