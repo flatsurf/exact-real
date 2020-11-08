@@ -32,10 +32,10 @@
 #include "../exact-real/real_number.hpp"
 #include "../exact-real/seed.hpp"
 #include "external/unique-factory/unique_factory.hpp"
+#include "impl/real_number_base.hpp"
 
 using namespace exactreal;
 using boost::random::rand48;
-using std::make_shared;
 using std::optional;
 using std::ostream;
 using std::shared_ptr;
@@ -45,14 +45,14 @@ using std::stringstream;
 namespace {
 
 // A random real number in [0, 1]
-class RandomRealNumber final : public RealNumber {
+class RandomRealNumber final : public RealNumberBase {
  public:
   RandomRealNumber(unsigned int seed) : seed(seed) {}
 
   // Creates a random Arf from digits in base 2.
   // We could speed this up by caching numbers to some precision but let's wait
   // with this until this shows up in the profiler…
-  virtual Arf arf(long prec) const override {
+  virtual Arf arf_(long prec) const override {
     if (prec < 1) {
       prec = 0;
     }

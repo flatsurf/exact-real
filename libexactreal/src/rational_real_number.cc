@@ -27,21 +27,23 @@
 #include "../exact-real/real_number.hpp"
 #include "../exact-real/yap/arf.hpp"
 #include "external/unique-factory/unique_factory.hpp"
+#include "impl/real_number_base.hpp"
 
 using namespace exactreal;
-using std::make_shared;
 using std::ostream;
 using std::shared_ptr;
 
 namespace {
 
 // An exact rational number
-class RationalRealNumber final : public RealNumber {
+class RationalRealNumber final : public RealNumberBase {
  public:
   RationalRealNumber() : RationalRealNumber(0) {}
   explicit RationalRealNumber(const mpq_class& value) : value(value) {}
 
-  virtual Arf arf(long prec) const override {
+  virtual Arf arf_(long prec) const override {
+    if (prec == 0)
+      prec = 1;
     return (Arf(value.get_num(), 0) / Arf(value.get_den(), 0))(prec, Arf::Round::NEAR);
   }
 

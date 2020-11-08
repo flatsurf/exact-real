@@ -26,14 +26,20 @@
 #include "../exact-real/cereal.hpp"
 #include "../exact-real/seed.hpp"
 #include "../exact-real/yap/arf.hpp"
+#include "impl/real_number_base.hpp"
 
 using std::max;
 using std::ostream;
 
 namespace exactreal {
+
+const long ARF_DOUBLE_PRECISION = 54;
+
 RealNumber::~RealNumber() {}
 
-RealNumber::operator double() const { return static_cast<double>(arf(54)); }
+RealNumber::operator double() const {
+  return static_cast<double>(arf(ARF_DOUBLE_PRECISION));
+}
 
 RealNumber::operator bool() const {
   auto q = static_cast<std::optional<mpq_class>>(*this);
@@ -144,6 +150,32 @@ bool RealNumber::operator==(const Arf& arf) const {
 
 bool RealNumber::operator==(const mpq_class& rat) const {
   return rat == static_cast<std::optional<mpq_class>>(*this);
+}
+
+Arf RealNumberBase::arf(long prec) const {
+  if (prec < 1)
+    prec = 0;
+
+  if (prec == ARF_DOUBLE_PRECISION) {
+    if (!arf54)
+      arf54 = arf_(ARF_DOUBLE_PRECISION);
+    return *arf54;
+  }
+
+  if (prec == ARB_PRECISION_FAST) {
+    if (!arf64)
+      arf64 = arf_(ARB_PRECISION_FAST);
+    return *arf64;
+  }
+
+  const long LARGE_PREC_LIMIT = 128;
+  if (large.find(prec) == end(large)) {
+    if (large.size() >= LARGE_PREC_LIMIT)
+      large.clear();
+    large[prec] = arf_(prec);
+  }
+
+  return large[prec];
 }
 
 ostream& operator<<(ostream& os, const RealNumber& self) {

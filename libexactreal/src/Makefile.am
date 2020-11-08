@@ -24,22 +24,26 @@ EXTRA_libexactreal_la_DEPENDENCIES = $(srcdir)/libexactreal.map
 endif
 
 nobase_pkginclude_HEADERS =                                  \
-    ../exact-real/real_number.hpp                            \
+    ../exact-real/arb.hpp                                    \
+    ../exact-real/arf.hpp                                    \
+    ../exact-real/cereal.hpp                                 \
+    ../exact-real/cppyy.hpp                                  \
     ../exact-real/element.hpp                                \
-    ../exact-real/module.hpp                                 \
+    ../exact-real/external/spimpl/spimpl.h                   \
+    ../exact-real/forward.hpp                                \
     ../exact-real/integer_ring.hpp                           \
-    ../exact-real/rational_field.hpp                         \
+    ../exact-real/module.hpp                                 \
     ../exact-real/number_field.hpp                           \
     ../exact-real/number_field_ideal.hpp                     \
-    ../exact-real/arf.hpp                                    \
-    ../exact-real/arb.hpp                                    \
-    ../exact-real/forward.hpp                                \
+    ../exact-real/rational_field.hpp                         \
+    ../exact-real/real_number.hpp                            \
+    ../exact-real/seed.hpp                                   \
+    ../exact-real/yap/arb.hpp                                \
     ../exact-real/yap/arb_assign_transformation.hpp          \
     ../exact-real/yap/arb_expr.hpp                           \
-    ../exact-real/yap/arb.hpp                                \
+    ../exact-real/yap/arf.hpp                                \
     ../exact-real/yap/arf_assign_transformation.hpp          \
     ../exact-real/yap/arf_expr.hpp                           \
-    ../exact-real/yap/arf.hpp                                \
     ../exact-real/yap/assign_transformation.hpp              \
     ../exact-real/yap/forward.hpp                            \
     ../exact-real/yap/params_transformation.hpp              \
@@ -47,16 +51,13 @@ nobase_pkginclude_HEADERS =                                  \
     ../exact-real/yap/prec_transformation.hpp                \
     ../exact-real/yap/round_expr.hpp                         \
     ../exact-real/yap/round_transformation.hpp               \
-    ../exact-real/yap/terminal.hpp                           \
-    ../exact-real/external/spimpl/spimpl.h                   \
-    ../exact-real/cereal.hpp                                 \
-    ../exact-real/seed.hpp                                   \
-    ../exact-real/cppyy.hpp
+    ../exact-real/yap/terminal.hpp
 
 noinst_HEADERS =                                          \
-    external/unique-factory/unique_factory.hpp            \
-    external/hash-combine/hash.hpp                        \
     external/gmpxxll/gmpxxll/mpz_class.hpp                \
+    external/hash-combine/hash.hpp                        \
+    external/unique-factory/unique_factory.hpp            \
+    impl/real_number_base.hpp                             \
     util/assert.ipp
 
 $(builddir)/../exact-real/exact-real.hpp: $(srcdir)/../exact-real/exact-real.hpp.in Makefile
