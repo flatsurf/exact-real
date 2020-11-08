@@ -31,14 +31,13 @@
 #include "../exact-real/yap/arf.hpp"
 #include "external/hash-combine/hash.hpp"
 #include "external/unique-factory/unique_factory.hpp"
+#include "impl/real_number_base.hpp"
 #include "util/assert.ipp"
 
 using namespace exactreal;
-using std::make_shared;
 using std::map;
 using std::optional;
 using std::shared_ptr;
-using std::vector;
 
 using Factors = map<shared_ptr<const RealNumber>, int>;
 
@@ -60,7 +59,7 @@ auto& factory() {
 }
 
 // A product of transcendental reals
-class RealNumberProduct final : public RealNumber {
+class RealNumberProduct final : public RealNumberBase {
  public:
   explicit RealNumberProduct(const Factors& factors) : factors(factors) {
     ASSERT(std::all_of(begin(factors), end(factors), [](auto& factor) { return factor.second >= 1; }), "factors must appear at least once");
@@ -125,7 +124,7 @@ class RealNumberProduct final : public RealNumber {
     return factory().get(quotient, [&]() { return new RealNumberProduct(quotient); });
   }
 
-  Arf arf(long prec) const override {
+  Arf arf_(long prec) const override {
     // We naively compute the product of all the factors, i.e., we do
     // nothing smart about repeated factors.
     // The following analysis could certainly be done much more sharply but

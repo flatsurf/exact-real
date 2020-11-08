@@ -36,11 +36,11 @@
 #include "../exact-real/yap/arf.hpp"
 #include "external/hash-combine/hash.hpp"
 #include "external/unique-factory/unique_factory.hpp"
+#include "impl/real_number_base.hpp"
 
 using namespace exactreal;
 using boost::lexical_cast;
 using std::isfinite;
-using std::make_shared;
 using std::nextafter;
 using std::numeric_limits;
 using std::ostream;
@@ -50,11 +50,11 @@ using std::string;
 namespace {
 
 // A random real number in [a, b]
-class ConstrainedRandomRealNumber final : public RealNumber {
+class ConstrainedRandomRealNumber final : public RealNumberBase {
  public:
   ConstrainedRandomRealNumber(const Arf& initial, long e, const shared_ptr<const RealNumber>& inner) : initial(initial), e(e), inner(inner) {}
 
-  virtual Arf arf(long prec) const override {
+  virtual Arf arf_(long prec) const override {
     if (prec < 1) {
       prec = 0;
     }

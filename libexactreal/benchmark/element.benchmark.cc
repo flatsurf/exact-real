@@ -23,6 +23,7 @@
 #include <algorithm>
 #include <memory>
 
+#include "../exact-real/arb.hpp"
 #include "../exact-real/element.hpp"
 #include "../exact-real/integer_ring.hpp"
 #include "../exact-real/module.hpp"
@@ -35,7 +36,7 @@ namespace exactreal::test {
 template <typename Ring>
 class ElementBenchmark : public benchmark::Fixture {
   typename Ring::ElementClass coefficient() {
-    return rand() % 1024;
+    return rand() % 1024 + 1;
   }
 
   Element<Ring> monomial(std::vector<long> degrees, const std::vector<std::shared_ptr<const RealNumber>>& gens) {
@@ -83,6 +84,22 @@ class ElementBenchmark : public benchmark::Fixture {
   }
 
  public:
+  void addition(benchmark::State& state) {
+    const auto [lhs, rhs] = elements(state);
+
+    for (auto _ : state) {
+      benchmark::DoNotOptimize(lhs + rhs);
+    }
+  }
+
+  void multiplication(benchmark::State& state) {
+    const auto [lhs, rhs] = elements(state);
+
+    for (auto _ : state) {
+      benchmark::DoNotOptimize(lhs * rhs);
+    }
+  }
+
   void truediv(benchmark::State& state) {
     const auto [lhs, rhs] = elements(state);
 
@@ -102,7 +119,16 @@ class ElementBenchmark : public benchmark::Fixture {
     const auto divisor = rhs;
 
     for (auto _ : state) {
-      dividend.floordiv(divisor);
+      benchmark::DoNotOptimize(dividend.floordiv(divisor));
+    }
+  }
+
+  void arb(benchmark::State& state) {
+    const auto [element, __] = elements(state);
+    (void)__;
+
+    for (auto _ : state) {
+      benchmark::DoNotOptimize(element.arb(exactreal::ARB_PRECISION_FAST));
     }
   }
 
@@ -117,6 +143,30 @@ class ElementBenchmark : public benchmark::Fixture {
     b->Args({2, 3, 4, 1, 2});
   }
 };
+
+BENCHMARK_TEMPLATE_DEFINE_F(ElementBenchmark, addition_Z, IntegerRing)
+(benchmark::State& state) { addition(state); }
+BENCHMARK_REGISTER_F(ElementBenchmark, addition_Z)->Apply(ElementBenchmark<IntegerRing>::BenchmarkedDegrees);
+
+BENCHMARK_TEMPLATE_DEFINE_F(ElementBenchmark, addition_Q, RationalField)
+(benchmark::State& state) { addition(state); }
+BENCHMARK_REGISTER_F(ElementBenchmark, addition_Q)->Apply(ElementBenchmark<RationalField>::BenchmarkedDegrees);
+
+BENCHMARK_TEMPLATE_DEFINE_F(ElementBenchmark, addition_K, NumberField)
+(benchmark::State& state) { addition(state); }
+BENCHMARK_REGISTER_F(ElementBenchmark, addition_K)->Apply(ElementBenchmark<NumberField>::BenchmarkedDegrees);
+
+BENCHMARK_TEMPLATE_DEFINE_F(ElementBenchmark, multiplication_Z, IntegerRing)
+(benchmark::State& state) { multiplication(state); }
+BENCHMARK_REGISTER_F(ElementBenchmark, multiplication_Z)->Apply(ElementBenchmark<IntegerRing>::BenchmarkedDegrees);
+
+BENCHMARK_TEMPLATE_DEFINE_F(ElementBenchmark, multiplication_Q, RationalField)
+(benchmark::State& state) { multiplication(state); }
+BENCHMARK_REGISTER_F(ElementBenchmark, multiplication_Q)->Apply(ElementBenchmark<RationalField>::BenchmarkedDegrees);
+
+BENCHMARK_TEMPLATE_DEFINE_F(ElementBenchmark, multiplication_K, NumberField)
+(benchmark::State& state) { multiplication(state); }
+BENCHMARK_REGISTER_F(ElementBenchmark, multiplication_K)->Apply(ElementBenchmark<NumberField>::BenchmarkedDegrees);
 
 BENCHMARK_TEMPLATE_DEFINE_F(ElementBenchmark, truediv_Z, IntegerRing)
 (benchmark::State& state) { truediv(state); }
@@ -141,5 +191,17 @@ BENCHMARK_REGISTER_F(ElementBenchmark, floordiv_Q)->Apply(ElementBenchmark<Ratio
 BENCHMARK_TEMPLATE_DEFINE_F(ElementBenchmark, floordiv_K, NumberField)
 (benchmark::State& state) { floordiv(state); }
 BENCHMARK_REGISTER_F(ElementBenchmark, floordiv_K)->Apply(ElementBenchmark<NumberField>::BenchmarkedDegrees);
+
+BENCHMARK_TEMPLATE_DEFINE_F(ElementBenchmark, arb_Z, IntegerRing)
+(benchmark::State& state) { arb(state); }
+BENCHMARK_REGISTER_F(ElementBenchmark, arb_Z)->Apply(ElementBenchmark<IntegerRing>::BenchmarkedDegrees);
+
+BENCHMARK_TEMPLATE_DEFINE_F(ElementBenchmark, arb_Q, RationalField)
+(benchmark::State& state) { arb(state); }
+BENCHMARK_REGISTER_F(ElementBenchmark, arb_Q)->Apply(ElementBenchmark<RationalField>::BenchmarkedDegrees);
+
+BENCHMARK_TEMPLATE_DEFINE_F(ElementBenchmark, arb_K, NumberField)
+(benchmark::State& state) { arb(state); }
+BENCHMARK_REGISTER_F(ElementBenchmark, arb_K)->Apply(ElementBenchmark<NumberField>::BenchmarkedDegrees);
 
 }  // namespace exactreal::test
