@@ -4,6 +4,16 @@ exact-real Change Log
 
 .. current developments
 
+v1.4.2
+====================
+
+**Fixed:**
+
+* cache arf conversions to speed up arithmetic (in particular with multiple generators)
+* reduced number of symbols exported so that header-only libraries such as cereal can be used with conflicting versions (to some extent)
+
+
+
 v1.4.1
 ====================
 
