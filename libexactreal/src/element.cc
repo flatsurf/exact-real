@@ -322,12 +322,43 @@ std::optional<Element<Ring>> Element<Ring>::truediv(const Element<Ring>& rhs) co
 
 template <typename Ring>
 mpz_class Element<Ring>::floordiv(const Element<Ring>& rhs) const {
-  {
-    const auto quotient = truediv(rhs);
+  if (!*this)
+    return 0;
 
-    if (quotient)
-      return quotient->floor();
+  if (impl->parent != rhs.impl->parent) {
+    auto parent = Module<Ring>::span(this->impl->parent, rhs.impl->parent);
+    return Element<Ring>(*this).promote(parent).floordiv(Element<Ring>(rhs).promote(parent));
   }
+
+  // Try an exact division for the common case that the operands are integer
+  // multiples of each other.
+  const auto exact = [&]() -> std::optional<mpz_class> {
+    std::optional<mpz_class> floor;
+
+    for (size_t i = 0; i < impl->coefficients.size(); i++) {
+      if (impl->coefficients[i]) {
+        if (rhs.impl->coefficients[i]) {
+          const auto f = Ring::floor(impl->coefficients[i] / rhs.impl->coefficients[i]);
+          if (floor)
+            if (*floor != f)
+              return std::nullopt;
+          floor = f;
+          if (rhs.impl->coefficients[i] * f != impl->coefficients[i])
+            return std::nullopt;
+        } else {
+          return std::nullopt;
+        }
+      } else {
+        if (rhs.impl->coefficients[i])
+          return std::nullopt;
+      }
+    }
+
+    return floor;
+  }();
+
+  if (exact)
+    return *exact;
 
   for (long prec = ARB_PRECISION_FAST;; prec *= 2) {
     const auto div = rhs.arb(prec);
