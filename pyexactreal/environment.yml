@@ -1,0 +1,25 @@
+# This file lists the dependencies needed to build and test all of pyexactreal.
+# # Create a conda environment with these dependencies preinstalled with:
+# conda env create -f environment.yml
+name: pyexactreal-build
+channels:
+  - flatsurf
+  - conda-forge
+  - defaults
+dependencies:
+  - automake
+  - boost-cpp
+  - coreutils
+  - cppyy
+  - cxx-compiler
+  - gmpxxyy
+  - ipywidgets
+  - libtool
+  - make
+  - pyeantic
+  - pytest
+  - sagelib
+  - setuptools
+  - sympy
+  # valgrind is only needed for make check-valgrind
+  # - valgrind

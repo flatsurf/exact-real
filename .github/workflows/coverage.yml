@@ -1,0 +1,29 @@
+name: Code Coverage
+on:
+  push: { branches: [ "master" ] }
+  pull_request: { branches: [ "master" ] }
+
+jobs:
+  codecov:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with: { submodules: recursive }
+      - uses: conda-incubator/setup-miniconda@v2
+        with: { mamba-version: "*", channels: "flatsurf,conda-forge", channel-priority: true }
+      - name: install dependencies
+        shell: bash -l {0}
+        run: |
+          mamba install --yes --quiet python=${{ matrix.python }}
+          mamba env update --quiet -n test -f libexactreal/environment.yml
+          mamba env update --quiet -n test -f pyexactreal/environment.yml
+          conda list
+      - shell: bash -l {0}
+        run: |
+          ./bootstrap
+          ./configure --prefix="$PREFIX" CXXFLAGS="$CXXFLAGS --coverage -O0 -UNDEBUG" --without-benchmark
+          make check
+      - uses: codecov/codecov-action@v1
+
+env:
+  MAKEFLAGS: -j2

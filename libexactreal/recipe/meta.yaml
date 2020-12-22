@@ -1,0 +1,41 @@
+{% set version = '1.4.3' %}
+{% set build_number = '0' %}
+
+package:
+  name: libexactreal
+  version: {{ version }}
+
+source:
+  path: ../../
+
+build:
+  number: {{ build_number }}
+  # e-antic is not available on Windows yet
+  skip: True  # [win]
+  # e-antic is not available on macOS yet
+  skip: True  # [osx]
+  run_exports:
+    - {{ pin_subpackage("libexactreal", max_pin="x") }}
+
+requirements:
+  build:
+    - libtool
+    - automake
+    - coreutils
+    - {{ compiler('cxx') }}
+  host:
+    - arb {{ arb }}
+    - boost-cpp {{ boost_cpp }}
+    - e-antic >=1.0.0rc9
+    - gmp {{ gmp }}
+    - gmpxxyy
+
+test:
+  commands:
+    - test -f ${PREFIX}/lib/libexactreal.so
+
+about:
+  home: https://github.com/flatsurf/exactreal
+  license: GPL-3.0-or-later
+  license_file: COPYING
+  summary: Finite Real Submodules

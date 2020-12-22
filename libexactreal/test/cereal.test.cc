@@ -87,6 +87,10 @@ T test_serialization(const T& x) {
 TEST_CASE("Serialization of Arb", "[cereal][arb]") {
   ArbTester arbs;
   for (int i = 0; i < 1024; i++) {
+    // Valgrind might report: Source and destination overlap in memcpy_chk.
+    // This can be safely ignored: cereal's double conversion is calling
+    // std::memmove which seems to intercepted incorrectly by valgrind.
+    // (memmove can handle overlapping addresses.)
     test_serialization(arbs.random());
   }
 }
@@ -94,6 +98,10 @@ TEST_CASE("Serialization of Arb", "[cereal][arb]") {
 TEST_CASE("Serialization of Arf", "[cereal][arf]") {
   ArfTester arfs;
   for (int i = 0; i < 1024; i++) {
+    // Valgrind might report: Source and destination overlap in memcpy_chk.
+    // This can be safely ignored: cereal's double conversion is calling
+    // std::memmove which seems to intercepted incorrectly by valgrind.
+    // (memmove can handle overlapping addresses.)
     test_serialization(arfs.random());
   }
 }

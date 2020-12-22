@@ -1,0 +1,6 @@
+{
+   std::memmove is incorrectly intercepted even though it can handle overlapping memory
+   Memcheck:Overlap
+   fun:__memcpy_chk
+   fun:memmove
+}
