@@ -87,6 +87,7 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   Arb& operator=(Arb&&) noexcept;
   template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
   Arb& operator=(Integer) noexcept;
+  Arb& operator=(const mpz_class&) noexcept;
 
   Arb operator-() const noexcept;
 
