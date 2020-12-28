@@ -28,7 +28,6 @@ requirements:
     - boost-cpp {{ boost_cpp }}
     - e-antic >=1.0.0rc9
     - gmp {{ gmp }}
-    - gmpxxyy
 
 test:
   commands:

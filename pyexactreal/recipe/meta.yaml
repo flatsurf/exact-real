@@ -28,8 +28,9 @@ requirements:
   run:
     - python
     - boost-cpp
-    - pyeantic
     - cppyy
+    - gmpxxyy
+    - pyeantic
 
 test:
   imports:
