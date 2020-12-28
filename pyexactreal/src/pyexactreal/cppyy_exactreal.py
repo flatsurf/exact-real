@@ -145,8 +145,8 @@ def enable_yap(proxy, name):
         >>> a = exactreal.Arb(1)
         >>> b = a + a; b
         expr<+>
-            term<exactreal::Arb &>[=1.00000]
-            term<exactreal::Arb &>[=1.00000]
+            term<exactreal::Arb ... &>[=1.00000]
+            term<exactreal::Arb ... &>[=1.00000]
         >>> b(64)
         2.00000
         >>> b += b
@@ -375,8 +375,8 @@ class Yap(object):
             >>> a = exactreal.Arb(1)
             >>> a + a
             expr<+>
-                term<exactreal::Arb &>[=1.00000]
-                term<exactreal::Arb &>[=1.00000]
+                term<exactreal::Arb ... &>[=1.00000]
+                term<exactreal::Arb ... &>[=1.00000]
 
         """
         import cppyy

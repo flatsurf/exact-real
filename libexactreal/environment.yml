@@ -1,0 +1,21 @@
+# This file lists the dependencies needed to build and test all of libexactreal.
+# # Create a conda environment with these dependencies preinstalled with:
+# conda env create -f environment.yml
+name: libexactreal-build
+channels:
+  - flatsurf
+  - conda-forge
+  - defaults
+dependencies:
+  - automake
+  - benchmark
+  - boost-cpp
+  - coreutils
+  - cxx-compiler
+  - e-antic>=1.0.0rc9
+  - arb
+  - gmp
+  - libtool
+  - make
+  # valgrind is only needed for make check-valgrind
+  # - valgrind

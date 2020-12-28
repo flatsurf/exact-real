@@ -1,6 +1,6 @@
-[![Build Status](https://dev.azure.com/flatsurf/conda/_apis/build/status/flatsurf.exact-real?branchName=master)](https://dev.azure.com/flatsurf/conda/_build/latest?definitionId=1&branchName=master)
+![Test](https://github.com/flatsurf/exact-real/workflows/Test/badge.svg)
 [![codecov](https://codecov.io/gh/flatsurf/exact-real/branch/master/graph/badge.svg)](https://codecov.io/gh/flatsurf/exact-real)
-[![asv](http://img.shields.io/badge/benchmarked%20by-asv-blue.svg?style=flat)](https://flatsurf.github.io/exact-real-asv/)
+[![asv](http://img.shields.io/badge/benchmarked%20by-asv-blue.svg?style=flat)](https://flatsurf.github.io/exact-real/asv/)
 
 ## Current Release Info
 
@@ -30,8 +30,8 @@ conda activate exactreal
 
 You can try out the projects in this repository in a very limited environment online by clicking the following links:
 
-* **libexactreal** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/exact-real/master?filepath=binder%2FSample.ipynb)
-* **pyexactreal** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/exact-real/master?filepath=binder%2FSample.pyexactreal.ipynb)
+* **libexactreal** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/exact-real/master?filepath=doc%2Fbinder%2FSample.ipynb)
+* **pyexactreal** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/exact-real/master?filepath=doc%2Fbinder%2FSample.pyexactreal.ipynb)
 
 ## Build from the Source Code Repository
 
@@ -87,10 +87,10 @@ conda. Download and install [Miniconda](https://conda.io/miniconda.html), then
 run
 
 ```
-conda config --add channels conda-forge
-conda config --add channels flatsurf # if you want to pull in the latest version of dependencies
-conda create -n exact-real-build cxx-compiler libtool automake coreutils boost-cpp e-antic arb gmp gmpxxll gmpxxyy python setuptools cppyy pyeantic # and to run tests: pytest valgrind sagelib pip ipywidgets sympy asv
-conda activate exact-real-build
+conda create -n exactreal-build
+conda env update -n exactreal-build -f libexactreal/environment.yml
+conda env create -n exactreal-build -f pyeaxctreal/environment.yml
+conda activate exactreal-build
 export CPPFLAGS="-isystem $CONDA_PREFIX/include"
 export CFLAGS="$CPPFLAGS"
 export LDFLAGS="-L$CONDA_PREFIX/lib -Wl,-rpath-link=$CONDA_PREFIX/lib"

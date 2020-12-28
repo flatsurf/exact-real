@@ -10,9 +10,6 @@
 [submodule "libexactreal/test/external/cereal"]
 	path = libexactreal/test/external/cereal
 	url = https://github.com/USCiLab/cereal.git
-[submodule "recipe/snippets"]
-	path = recipe/snippets
-	url = https://github.com/flatsurf/conda-recipes.git
 [submodule "libexactreal/src/external/gmpxxll"]
 	path = libexactreal/src/external/gmpxxll
 	url = https://github.com/flatsurf/gmpxxll.git

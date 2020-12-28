@@ -6,7 +6,7 @@ AC_INIT([pyexactreal], [1.4.3], [julian.rueth@fsfe.org])
 AC_CONFIG_AUX_DIR([.])
 
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([1.14.1])
+AM_INIT_AUTOMAKE([1.14.1 tar-pax foreign])
 
 dnl We run the valgrind test-suite in make check-valgrind (if valgrind is installed)
 AX_VALGRIND_DFLT([sgcheck], [off])
