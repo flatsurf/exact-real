@@ -1,903 +1,168 @@
 {
-    "Benchmarks.track_ArbBenchmark_Addition_C_53_10": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_Addition_C_53_10",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ArbBenchmark_Addition_C_65536_1024": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_Addition_C_65536_1024",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ArbBenchmark_Addition_Inplace_Yap_53_10": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_Addition_Inplace_Yap_53_10",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ArbBenchmark_Addition_Inplace_Yap_65536_1024": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_Addition_Inplace_Yap_65536_1024",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ArbBenchmark_Addition_Yap_53_10": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_Addition_Yap_53_10",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ArbBenchmark_Addition_Yap_65536_1024": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_Addition_Yap_65536_1024",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ArbBenchmark_Arithmetic_C_53_10": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_Arithmetic_C_53_10",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ArbBenchmark_Arithmetic_C_65536_1024": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_Arithmetic_C_65536_1024",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ArbBenchmark_Arithmetic_C_optimized_53_10": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_Arithmetic_C_optimized_53_10",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ArbBenchmark_Arithmetic_C_optimized_65536_1024": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_Arithmetic_C_optimized_65536_1024",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ArbBenchmark_Arithmetic_Yap_53_10": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_Arithmetic_Yap_53_10",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ArbBenchmark_Arithmetic_Yap_65536_1024": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_Arithmetic_Yap_65536_1024",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ArbBenchmark_AssignMove_53_10": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_AssignMove_53_10",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ArbBenchmark_AssignMove_65536_1024": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_AssignMove_65536_1024",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ArbBenchmark_Assign_53_10": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_Assign_53_10",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ArbBenchmark_Assign_65536_1024": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_Assign_65536_1024",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ArbBenchmark_Assign_C_53_10": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_Assign_C_53_10",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ArbBenchmark_Assign_C_65536_1024": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_Assign_C_65536_1024",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ArbBenchmark_Create": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_Create",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ArbBenchmark_CreateCopy_53_10": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_CreateCopy_53_10",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ArbBenchmark_CreateCopy_65536_1024": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_CreateCopy_65536_1024",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ArbBenchmark_CreateMove_53_10": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_CreateMove_53_10",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ArbBenchmark_CreateMove_65536_1024": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ArbBenchmark_CreateMove_65536_1024",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_IntegerRing__addition_Z_0": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__addition_Z_0",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_IntegerRing__addition_Z_1_1_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__addition_Z_1_1_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_IntegerRing__addition_Z_2_1_0_0_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__addition_Z_2_1_0_0_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_IntegerRing__addition_Z_2_3_4_1_2": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__addition_Z_2_3_4_1_2",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_IntegerRing__arb_Z_0": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__arb_Z_0",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_IntegerRing__arb_Z_1_1_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__arb_Z_1_1_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_IntegerRing__arb_Z_2_1_0_0_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__arb_Z_2_1_0_0_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_IntegerRing__arb_Z_2_3_4_1_2": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__arb_Z_2_3_4_1_2",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_IntegerRing__floordiv_Z_0": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__floordiv_Z_0",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_IntegerRing__floordiv_Z_1_1_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__floordiv_Z_1_1_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_IntegerRing__floordiv_Z_2_1_0_0_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__floordiv_Z_2_1_0_0_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_IntegerRing__floordiv_Z_2_3_4_1_2": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__floordiv_Z_2_3_4_1_2",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_IntegerRing__multiplication_Z_0": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__multiplication_Z_0",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_IntegerRing__multiplication_Z_1_1_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__multiplication_Z_1_1_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_IntegerRing__multiplication_Z_2_1_0_0_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__multiplication_Z_2_1_0_0_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_IntegerRing__multiplication_Z_2_3_4_1_2": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__multiplication_Z_2_3_4_1_2",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_IntegerRing__truediv_Z_0": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__truediv_Z_0",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_IntegerRing__truediv_Z_1_1_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__truediv_Z_1_1_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_IntegerRing__truediv_Z_2_1_0_0_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__truediv_Z_2_1_0_0_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_IntegerRing__truediv_Z_2_3_4_1_2": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_IntegerRing__truediv_Z_2_3_4_1_2",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_NumberField__addition_K_0": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_NumberField__addition_K_0",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_NumberField__addition_K_1_1_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_NumberField__addition_K_1_1_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_NumberField__addition_K_2_1_0_0_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_NumberField__addition_K_2_1_0_0_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_NumberField__addition_K_2_3_4_1_2": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_NumberField__addition_K_2_3_4_1_2",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_NumberField__arb_K_0": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_NumberField__arb_K_0",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_NumberField__arb_K_1_1_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_NumberField__arb_K_1_1_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_NumberField__arb_K_2_1_0_0_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_NumberField__arb_K_2_1_0_0_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_NumberField__arb_K_2_3_4_1_2": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_NumberField__arb_K_2_3_4_1_2",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_NumberField__floordiv_K_0": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_NumberField__floordiv_K_0",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_NumberField__floordiv_K_1_1_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_NumberField__floordiv_K_1_1_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_NumberField__floordiv_K_2_1_0_0_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_NumberField__floordiv_K_2_1_0_0_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_NumberField__floordiv_K_2_3_4_1_2": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_NumberField__floordiv_K_2_3_4_1_2",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_NumberField__multiplication_K_0": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_NumberField__multiplication_K_0",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_NumberField__multiplication_K_1_1_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_NumberField__multiplication_K_1_1_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_NumberField__multiplication_K_2_1_0_0_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_NumberField__multiplication_K_2_1_0_0_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_NumberField__multiplication_K_2_3_4_1_2": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_NumberField__multiplication_K_2_3_4_1_2",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_NumberField__truediv_K_0": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_NumberField__truediv_K_0",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_NumberField__truediv_K_1_1_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_NumberField__truediv_K_1_1_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_NumberField__truediv_K_2_1_0_0_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_NumberField__truediv_K_2_1_0_0_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_NumberField__truediv_K_2_3_4_1_2": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_NumberField__truediv_K_2_3_4_1_2",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_RationalField__addition_Q_0": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_RationalField__addition_Q_0",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_RationalField__addition_Q_1_1_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_RationalField__addition_Q_1_1_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_RationalField__addition_Q_2_1_0_0_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_RationalField__addition_Q_2_1_0_0_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_RationalField__addition_Q_2_3_4_1_2": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_RationalField__addition_Q_2_3_4_1_2",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_RationalField__arb_Q_0": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_RationalField__arb_Q_0",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_RationalField__arb_Q_1_1_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_RationalField__arb_Q_1_1_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_RationalField__arb_Q_2_1_0_0_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_RationalField__arb_Q_2_1_0_0_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_RationalField__arb_Q_2_3_4_1_2": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_RationalField__arb_Q_2_3_4_1_2",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_RationalField__floordiv_Q_0": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_RationalField__floordiv_Q_0",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_RationalField__floordiv_Q_1_1_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_RationalField__floordiv_Q_1_1_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_RationalField__floordiv_Q_2_1_0_0_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_RationalField__floordiv_Q_2_1_0_0_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_RationalField__floordiv_Q_2_3_4_1_2": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_RationalField__floordiv_Q_2_3_4_1_2",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_RationalField__multiplication_Q_0": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_RationalField__multiplication_Q_0",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_RationalField__multiplication_Q_1_1_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_RationalField__multiplication_Q_1_1_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_RationalField__multiplication_Q_2_1_0_0_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_RationalField__multiplication_Q_2_1_0_0_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_RationalField__multiplication_Q_2_3_4_1_2": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_RationalField__multiplication_Q_2_3_4_1_2",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_RationalField__truediv_Q_0": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_RationalField__truediv_Q_0",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_RationalField__truediv_Q_1_1_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_RationalField__truediv_Q_1_1_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_RationalField__truediv_Q_2_1_0_0_1": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_RationalField__truediv_Q_2_1_0_0_1",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_ElementBenchmark_RationalField__truediv_Q_2_3_4_1_2": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_ElementBenchmark_RationalField__truediv_Q_2_3_4_1_2",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_RandomRealNumberFixture_Double": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_RandomRealNumberFixture_Double",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_RandomRealNumberFixture_arf_16": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_RandomRealNumberFixture_arf_16",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_RandomRealNumberFixture_arf_32768": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_RandomRealNumberFixture_arf_32768",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_RandomRealNumberFixture_arf_4096": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_RandomRealNumberFixture_arf_4096",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_RandomRealNumberFixture_arf_512": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_RandomRealNumberFixture_arf_512",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_RandomRealNumberFixture_arf_64": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_RandomRealNumberFixture_arf_64",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
-    },
-    "Benchmarks.track_RandomRealNumberFixture_arf_65536": {
-        "code": "def asv_method(self, t=time): return t",
-        "name": "Benchmarks.track_RandomRealNumberFixture_arf_65536",
-        "param_names": [],
-        "params": [],
-        "timeout": 60.0,
-        "type": "track",
-        "unit": "ns",
-        "version": "95504a3a7767fc6ea8c8805b5e5bf9157a3a0b5f0c0fda6bf99e361d0bb4b107"
+    "ArbBenchmark.track_time": {
+        "code": "class <locals>:\n    def run_benchmark(self, params=None):\n        filter = f\"{name}\"\n        if params:\n            filter = f\"{name}/{params.replace(', ', '/')}\"\n        out = subprocess.check_output([benchmark, f\"--benchmark_filter={filter}\", \"--benchmark_format=json\"])\n    \n        import json\n        out = json.loads(out)\n    \n        assert(len(out[\"benchmarks\"]) == 1)\n        time = out[\"benchmarks\"][0][\"cpu_time\"]\n        unit = out[\"benchmarks\"][0][\"time_unit\"]\n    \n        if unit == \"s\":\n            time *= 1000\n            unit = \"ms\"\n        if unit == \"ms\":\n            time *= 1000\n            unit = \"us\"\n        if unit == \"us\":\n            time *= 1000\n            unit = \"ns\"\n    \n        assert(unit == \"ns\")\n    \n        return time",
+        "name": "ArbBenchmark.track_time",
+        "param_names": [
+            "param1"
+        ],
+        "params": [
+            [
+                "'Create'",
+                "'CreateMove, 53, 10'",
+                "'CreateMove, 65536, 1024'",
+                "'CreateCopy, 53, 10'",
+                "'CreateCopy, 65536, 1024'",
+                "'Assign_C, 53, 10'",
+                "'Assign_C, 65536, 1024'",
+                "'Assign, 53, 10'",
+                "'Assign, 65536, 1024'",
+                "'AssignMove, 53, 10'",
+                "'AssignMove, 65536, 1024'",
+                "'Addition_Inplace_Yap, 53, 10'",
+                "'Addition_Inplace_Yap, 65536, 1024'",
+                "'Addition_Yap, 53, 10'",
+                "'Addition_Yap, 65536, 1024'",
+                "'Addition_C, 53, 10'",
+                "'Addition_C, 65536, 1024'",
+                "'Arithmetic_Yap, 53, 10'",
+                "'Arithmetic_Yap, 65536, 1024'",
+                "'Arithmetic_C, 53, 10'",
+                "'Arithmetic_C, 65536, 1024'",
+                "'Arithmetic_C_optimized, 53, 10'",
+                "'Arithmetic_C_optimized, 65536, 1024'"
+            ]
+        ],
+        "timeout": 60.0,
+        "type": "track",
+        "unit": "ns",
+        "version": "0"
+    },
+    "ElementBenchmark\u27e8IntegerRing\u27e9.track_time": {
+        "code": "class <locals>:\n    def run_benchmark(self, params=None):\n        filter = f\"{name}\"\n        if params:\n            filter = f\"{name}/{params.replace(', ', '/')}\"\n        out = subprocess.check_output([benchmark, f\"--benchmark_filter={filter}\", \"--benchmark_format=json\"])\n    \n        import json\n        out = json.loads(out)\n    \n        assert(len(out[\"benchmarks\"]) == 1)\n        time = out[\"benchmarks\"][0][\"cpu_time\"]\n        unit = out[\"benchmarks\"][0][\"time_unit\"]\n    \n        if unit == \"s\":\n            time *= 1000\n            unit = \"ms\"\n        if unit == \"ms\":\n            time *= 1000\n            unit = \"us\"\n        if unit == \"us\":\n            time *= 1000\n            unit = \"ns\"\n    \n        assert(unit == \"ns\")\n    \n        return time",
+        "name": "ElementBenchmark\u27e8IntegerRing\u27e9.track_time",
+        "param_names": [
+            "param1"
+        ],
+        "params": [
+            [
+                "'addition_Z, 0'",
+                "'addition_Z, 1, 1, 1'",
+                "'addition_Z, 2, 1, 0, 0, 1'",
+                "'addition_Z, 2, 3, 4, 1, 2'",
+                "'multiplication_Z, 0'",
+                "'multiplication_Z, 1, 1, 1'",
+                "'multiplication_Z, 2, 1, 0, 0, 1'",
+                "'multiplication_Z, 2, 3, 4, 1, 2'",
+                "'truediv_Z, 0'",
+                "'truediv_Z, 1, 1, 1'",
+                "'truediv_Z, 2, 1, 0, 0, 1'",
+                "'truediv_Z, 2, 3, 4, 1, 2'",
+                "'floordiv_Z, 0'",
+                "'floordiv_Z, 1, 1, 1'",
+                "'floordiv_Z, 2, 1, 0, 0, 1'",
+                "'floordiv_Z, 2, 3, 4, 1, 2'",
+                "'arb_Z, 0'",
+                "'arb_Z, 1, 1, 1'",
+                "'arb_Z, 2, 1, 0, 0, 1'",
+                "'arb_Z, 2, 3, 4, 1, 2'"
+            ]
+        ],
+        "timeout": 60.0,
+        "type": "track",
+        "unit": "ns",
+        "version": "0"
+    },
+    "ElementBenchmark\u27e8NumberField\u27e9.track_time": {
+        "code": "class <locals>:\n    def run_benchmark(self, params=None):\n        filter = f\"{name}\"\n        if params:\n            filter = f\"{name}/{params.replace(', ', '/')}\"\n        out = subprocess.check_output([benchmark, f\"--benchmark_filter={filter}\", \"--benchmark_format=json\"])\n    \n        import json\n        out = json.loads(out)\n    \n        assert(len(out[\"benchmarks\"]) == 1)\n        time = out[\"benchmarks\"][0][\"cpu_time\"]\n        unit = out[\"benchmarks\"][0][\"time_unit\"]\n    \n        if unit == \"s\":\n            time *= 1000\n            unit = \"ms\"\n        if unit == \"ms\":\n            time *= 1000\n            unit = \"us\"\n        if unit == \"us\":\n            time *= 1000\n            unit = \"ns\"\n    \n        assert(unit == \"ns\")\n    \n        return time",
+        "name": "ElementBenchmark\u27e8NumberField\u27e9.track_time",
+        "param_names": [
+            "param1"
+        ],
+        "params": [
+            [
+                "'addition_K, 0'",
+                "'addition_K, 1, 1, 1'",
+                "'addition_K, 2, 1, 0, 0, 1'",
+                "'addition_K, 2, 3, 4, 1, 2'",
+                "'multiplication_K, 0'",
+                "'multiplication_K, 1, 1, 1'",
+                "'multiplication_K, 2, 1, 0, 0, 1'",
+                "'multiplication_K, 2, 3, 4, 1, 2'",
+                "'truediv_K, 0'",
+                "'truediv_K, 1, 1, 1'",
+                "'truediv_K, 2, 1, 0, 0, 1'",
+                "'truediv_K, 2, 3, 4, 1, 2'",
+                "'floordiv_K, 0'",
+                "'floordiv_K, 1, 1, 1'",
+                "'floordiv_K, 2, 1, 0, 0, 1'",
+                "'floordiv_K, 2, 3, 4, 1, 2'",
+                "'arb_K, 0'",
+                "'arb_K, 1, 1, 1'",
+                "'arb_K, 2, 1, 0, 0, 1'",
+                "'arb_K, 2, 3, 4, 1, 2'"
+            ]
+        ],
+        "timeout": 60.0,
+        "type": "track",
+        "unit": "ns",
+        "version": "0"
+    },
+    "ElementBenchmark\u27e8RationalField\u27e9.track_time": {
+        "code": "class <locals>:\n    def run_benchmark(self, params=None):\n        filter = f\"{name}\"\n        if params:\n            filter = f\"{name}/{params.replace(', ', '/')}\"\n        out = subprocess.check_output([benchmark, f\"--benchmark_filter={filter}\", \"--benchmark_format=json\"])\n    \n        import json\n        out = json.loads(out)\n    \n        assert(len(out[\"benchmarks\"]) == 1)\n        time = out[\"benchmarks\"][0][\"cpu_time\"]\n        unit = out[\"benchmarks\"][0][\"time_unit\"]\n    \n        if unit == \"s\":\n            time *= 1000\n            unit = \"ms\"\n        if unit == \"ms\":\n            time *= 1000\n            unit = \"us\"\n        if unit == \"us\":\n            time *= 1000\n            unit = \"ns\"\n    \n        assert(unit == \"ns\")\n    \n        return time",
+        "name": "ElementBenchmark\u27e8RationalField\u27e9.track_time",
+        "param_names": [
+            "param1"
+        ],
+        "params": [
+            [
+                "'addition_Q, 0'",
+                "'addition_Q, 1, 1, 1'",
+                "'addition_Q, 2, 1, 0, 0, 1'",
+                "'addition_Q, 2, 3, 4, 1, 2'",
+                "'multiplication_Q, 0'",
+                "'multiplication_Q, 1, 1, 1'",
+                "'multiplication_Q, 2, 1, 0, 0, 1'",
+                "'multiplication_Q, 2, 3, 4, 1, 2'",
+                "'truediv_Q, 0'",
+                "'truediv_Q, 1, 1, 1'",
+                "'truediv_Q, 2, 1, 0, 0, 1'",
+                "'truediv_Q, 2, 3, 4, 1, 2'",
+                "'floordiv_Q, 0'",
+                "'floordiv_Q, 1, 1, 1'",
+                "'floordiv_Q, 2, 1, 0, 0, 1'",
+                "'floordiv_Q, 2, 3, 4, 1, 2'",
+                "'arb_Q, 0'",
+                "'arb_Q, 1, 1, 1'",
+                "'arb_Q, 2, 1, 0, 0, 1'",
+                "'arb_Q, 2, 3, 4, 1, 2'"
+            ]
+        ],
+        "timeout": 60.0,
+        "type": "track",
+        "unit": "ns",
+        "version": "0"
+    },
+    "RandomRealNumberFixture.track_time": {
+        "code": "class <locals>:\n    def run_benchmark(self, params=None):\n        filter = f\"{name}\"\n        if params:\n            filter = f\"{name}/{params.replace(', ', '/')}\"\n        out = subprocess.check_output([benchmark, f\"--benchmark_filter={filter}\", \"--benchmark_format=json\"])\n    \n        import json\n        out = json.loads(out)\n    \n        assert(len(out[\"benchmarks\"]) == 1)\n        time = out[\"benchmarks\"][0][\"cpu_time\"]\n        unit = out[\"benchmarks\"][0][\"time_unit\"]\n    \n        if unit == \"s\":\n            time *= 1000\n            unit = \"ms\"\n        if unit == \"ms\":\n            time *= 1000\n            unit = \"us\"\n        if unit == \"us\":\n            time *= 1000\n            unit = \"ns\"\n    \n        assert(unit == \"ns\")\n    \n        return time",
+        "name": "RandomRealNumberFixture.track_time",
+        "param_names": [
+            "param1"
+        ],
+        "params": [
+            [
+                "'Double'",
+                "'arf, 16'",
+                "'arf, 64'",
+                "'arf, 512'",
+                "'arf, 4096'",
+                "'arf, 32768'",
+                "'arf, 65536'"
+            ]
+        ],
+        "timeout": 60.0,
+        "type": "track",
+        "unit": "ns",
+        "version": "0"
     },
     "version": 2
 }
