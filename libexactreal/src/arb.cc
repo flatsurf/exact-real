@@ -277,11 +277,16 @@ Arb& Arb::operator=(Integer rhs) noexcept {
   } else if constexpr (std::is_same_v<decltype(y), ulong>) {
     arb_set_ui(arb_t(), y);
   } else {
-    fmpz_t z;
-    fmpz_init_set_readonly(z, y);
-    arb_set_fmpz(arb_t(), z);
-    fmpz_clear_readonly(z);
+    *this = y;
   }
+  return *this;
+}
+
+Arb& Arb::operator=(const mpz_class& rhs) noexcept {
+  fmpz_t z;
+  fmpz_init_set_readonly(z, rhs.get_mpz_t());
+  arb_set_fmpz(arb_t(), z);
+  fmpz_clear_readonly(z);
   return *this;
 }
 
