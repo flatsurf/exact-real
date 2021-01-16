@@ -87,7 +87,7 @@ conda. Download and install [Miniconda](https://conda.io/miniconda.html), then
 run
 
 ```
-conda create -n exactreal-build
+conda create -n exactreal-build ccache
 conda env update -n exactreal-build -f libexactreal/environment.yml
 conda env update -n exactreal-build -f pyeaxctreal/environment.yml
 conda activate exactreal-build
