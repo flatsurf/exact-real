@@ -89,7 +89,7 @@ run
 ```
 conda create -n exactreal-build
 conda env update -n exactreal-build -f libexactreal/environment.yml
-conda env create -n exactreal-build -f pyeaxctreal/environment.yml
+conda env update -n exactreal-build -f pyeaxctreal/environment.yml
 conda activate exactreal-build
 export CPPFLAGS="-isystem $CONDA_PREFIX/include"
 export CFLAGS="$CPPFLAGS"
