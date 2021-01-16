@@ -4,5 +4,5 @@ cd libexactreal
 
 autoreconf -ivf
 
-./configure --prefix="$PREFIX" --without-benchmark
+./configure --prefix="$PREFIX" --without-benchmark --with-version-script
 make install

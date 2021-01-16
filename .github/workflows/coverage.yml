@@ -18,12 +18,22 @@ jobs:
           mamba env update --quiet -n test -f libexactreal/environment.yml
           mamba env update --quiet -n test -f pyexactreal/environment.yml
           conda list
-      - shell: bash -l {0}
+      - name: build & test
+        shell: bash -l {0}
         run: |
           ./bootstrap
           ./configure --prefix="$PREFIX" CXXFLAGS="$CXXFLAGS --coverage -O0 -UNDEBUG" --without-benchmark
           make check
-      - uses: codecov/codecov-action@v1
+      - name: create & post coverage report
+        shell: bash -l {0}
+        run: |
+          pushd libexactreal/test
+          find -type f -name '*.gcda' -exec gcov -pbs ../../../exact-real '{}' ';'
+          popd
+          pushd libexactreal/src
+          find -type f -name '*.gcda' -exec gcov -pbs ../../../exact-real '{}' ';'
+          popd
+          curl -s https://codecov.io/bash | bash -s - -X gcov -R `pwd` .
 
 env:
   MAKEFLAGS: -j2

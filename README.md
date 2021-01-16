@@ -59,13 +59,14 @@ which does not hurt performance but gives a better debugging experience. For
 the best debugging experience, you might want to replace `-O3` with `-Og` or
 even `-O0` but the latter results in very poor performance.
 
-If your compiler supports it, you should add `-fvisibility=hidden
+If your compiler supports it, you can try to add `-fvisibility=hidden
 -fvisibility-inlines-hidden` to your `CXXFLAGS`. This hides internal bits in
 the resulting library which have lead to crashes in the past due to conflicting
 header-only libraries.
 
-If your linker supports it, you can add `--with-version-script` to shrink the
-resulting shared library to an exact curated list of versioned symbols.
+If your linker supports it, you should use `./configure --with-version-script`
+to shrink the resulting shared library to an exact curated list of versioned
+symbols.
 
 Additionally, you might want to run configure with ` --disable-static` which
 improves the build time.
@@ -87,17 +88,14 @@ conda. Download and install [Miniconda](https://conda.io/miniconda.html), then
 run
 
 ```
+git clone --recurse-submodules https://github.com/flatsurf/exact-real.git
+cd exact-real
+
 conda create -n exactreal-build ccache
 conda env update -n exactreal-build -f libexactreal/environment.yml
 conda env update -n exactreal-build -f pyeaxctreal/environment.yml
 conda activate exactreal-build
-export CPPFLAGS="-isystem $CONDA_PREFIX/include"
-export CFLAGS="$CPPFLAGS"
-export LDFLAGS="-L$CONDA_PREFIX/lib -Wl,-rpath-link=$CONDA_PREFIX/lib"
-export CC="ccache cc"
-export CXX="ccache c++"
-git clone --recurse-submodules https://github.com/flatsurf/exact-real.git
-cd exact-real
+
 ./bootstrap
 ./configure --prefix="$CONDA_PREFIX"
 make
