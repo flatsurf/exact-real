@@ -1,8 +1,8 @@
 # This file controls which symbols libexactreal exports on Linux.
-# Note that we do not use -fvisibility=hidden as it has trouble with the
+# Note that -fvisibility=hidden might not work as it has trouble with the
 # visibility of our explicitly instantiated templates. E.g., it cannot handle
-# Element<> which inherits from a boost class that has not explicitly
-# visibility attribute set.
+# Element<> which inherits from a boost class that has no explicit visibility
+# attribute set.
 LIBEXACTREAL_1.4.0 {
   global:
     extern "C++" {
