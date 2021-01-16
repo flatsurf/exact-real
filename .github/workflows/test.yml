@@ -32,7 +32,7 @@ jobs:
           cd libexactreal
           ./bootstrap
           export CXXFLAGS="$CXXFLAGS -UNDEBUG -g3"
-          ./configure --prefix="$PREFIX" --without-benchmark
+          ./configure --prefix="$PREFIX" --without-benchmark --with-version-script
           make
           make ${{ matrix.target }} VALGRIND_SUPPRESSIONS_FILES=`pwd`/../tools/valgrind/conda.supp
       - name: show logs
@@ -68,7 +68,7 @@ jobs:
         run: |
           ./bootstrap
           export CXXFLAGS="$CXXFLAGS -UNDEBUG -g3"
-          ./configure --prefix="$PREFIX" --without-benchmark
+          ./configure --prefix="$PREFIX" --without-benchmark --with-version-script
           make
           cd pyexactreal
           make ${{ matrix.target }} VALGRIND_SUPPRESSIONS_FILES=`pwd`/../tools/valgrind/conda.supp
