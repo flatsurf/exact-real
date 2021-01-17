@@ -1,0 +1,4 @@
+ignore:
+  - "usr"
+  - "libexactreal/test"
+  - "external"
