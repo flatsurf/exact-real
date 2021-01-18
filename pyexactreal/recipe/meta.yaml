@@ -29,7 +29,7 @@ requirements:
     - python
     - boost-cpp
     - cppyy
-    - gmpxxyy
+    - gmpxxyy>=1.0.1,<2
     - pyeantic
 
 test:
