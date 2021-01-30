@@ -20,11 +20,11 @@
 #ifndef LIBEXACTREAL_UTIL_ASSERT_IPP
 #define LIBEXACTREAL_UTIL_ASSERT_IPP
 
-#include <boost/preprocessor/stringize.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/preprocessor/stringize.hpp>
 #include <cstdlib>
-#include <sstream>
 #include <iostream>
+#include <sstream>
 
 namespace exactreal {
 namespace {
@@ -66,10 +66,10 @@ bool noassert() {
   return value;
 }
 
-}
+} // namespace
 } // namespace exactreal
 
-#define LIBEXACTREAL_ASSERT_(CONDITION, EXCEPTION, MESSAGE)                                  \
+#define LIBEXACTREAL_ASSERT_(CONDITION, EXCEPTION, MESSAGE)                     \
   while (BOOST_UNLIKELY(static_cast<bool>(not(CONDITION)))) {                   \
     std::stringstream user_message, assertion_message;                          \
     user_message << MESSAGE;                                                    \
