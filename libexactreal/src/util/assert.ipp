@@ -66,22 +66,22 @@ bool noassert() {
   return value;
 }
 
-} // namespace
-} // namespace exactreal
+}  // namespace
+}  // namespace exactreal
 
-#define LIBEXACTREAL_ASSERT_(CONDITION, EXCEPTION, MESSAGE)                     \
-  while (BOOST_UNLIKELY(static_cast<bool>(not(CONDITION)))) {                   \
-    std::stringstream user_message, assertion_message;                          \
-    user_message << MESSAGE;                                                    \
-    assertion_message << (#CONDITION " does not hold");                         \
-    if (user_message.str().size())                                              \
-      assertion_message << ": " << user_message.str();                          \
-    else                                                                        \
-      assertion_message << " ";                                                 \
-    assertion_message << " in " __FILE__ ":" BOOST_PP_STRINGIZE(__LINE__);      \
-    /* show messages in noexcept blocks */                                      \
-    std::cerr << assertion_message.str() << std::endl;                          \
-    ::exactreal::throw_for_assert(EXCEPTION(assertion_message.str().c_str()));  \
+#define LIBEXACTREAL_ASSERT_(CONDITION, EXCEPTION, MESSAGE)                    \
+  while (BOOST_UNLIKELY(static_cast<bool>(not(CONDITION)))) {                  \
+    std::stringstream user_message, assertion_message;                         \
+    user_message << MESSAGE;                                                   \
+    assertion_message << (#CONDITION " does not hold");                        \
+    if (user_message.str().size())                                             \
+      assertion_message << ": " << user_message.str();                         \
+    else                                                                       \
+      assertion_message << " ";                                                \
+    assertion_message << " in " __FILE__ ":" BOOST_PP_STRINGIZE(__LINE__);     \
+    /* show messages in noexcept blocks */                                     \
+    std::cerr << assertion_message.str() << std::endl;                         \
+    ::exactreal::throw_for_assert(EXCEPTION(assertion_message.str().c_str())); \
   }
 
 // Run a (cheap) check that a (user provided) argument is valid.
@@ -105,9 +105,9 @@ bool noassert() {
 #define LIBEXACTREAL_ASSERT(CONDITION, MESSAGE) LIBEXACTREAL_ASSERT_(LIBEXACTREAL_ASSERT_CONDITION(CONDITION), std::logic_error, MESSAGE)
 
 #define LIBEXACTREAL_UNREACHABLE(MESSAGE)                  \
-  {                                           \
+  {                                                        \
     LIBEXACTREAL_ASSERT_(false, std::logic_error, MESSAGE) \
-    __builtin_unreachable();                  \
+    __builtin_unreachable();                               \
   }
 
 #endif
