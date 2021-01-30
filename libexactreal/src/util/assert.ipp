@@ -20,11 +20,11 @@
 #ifndef LIBEXACTREAL_UTIL_ASSERT_IPP
 #define LIBEXACTREAL_UTIL_ASSERT_IPP
 
-#include <boost/preprocessor/stringize.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/preprocessor/stringize.hpp>
 #include <cstdlib>
-#include <sstream>
 #include <iostream>
+#include <sstream>
 
 namespace exactreal {
 namespace {
@@ -65,22 +65,22 @@ bool noassert() {
   return value;
 }
 
-}
-} // namespace exactreal
+}  // namespace
+}  // namespace exactreal
 
-#define ASSERT_(CONDITION, EXCEPTION, MESSAGE)                                  \
-  while (BOOST_UNLIKELY(static_cast<bool>(not(CONDITION)))) {                   \
-    std::stringstream user_message, assertion_message;                          \
-    user_message << MESSAGE;                                                    \
-    assertion_message << (#CONDITION " does not hold");                         \
-    if (user_message.str().size())                                              \
-      assertion_message << ": " << user_message.str();                          \
-    else                                                                        \
-      assertion_message << " ";                                                 \
-    assertion_message << " in " __FILE__ ":" BOOST_PP_STRINGIZE(__LINE__);      \
-    /* show messages in noexcept blocks */                                      \
-    std::cerr << assertion_message.str() << std::endl;                          \
-    ::exactreal::throw_for_assert(EXCEPTION(assertion_message.str().c_str()));  \
+#define ASSERT_(CONDITION, EXCEPTION, MESSAGE)                                 \
+  while (BOOST_UNLIKELY(static_cast<bool>(not(CONDITION)))) {                  \
+    std::stringstream user_message, assertion_message;                         \
+    user_message << MESSAGE;                                                   \
+    assertion_message << (#CONDITION " does not hold");                        \
+    if (user_message.str().size())                                             \
+      assertion_message << ": " << user_message.str();                         \
+    else                                                                       \
+      assertion_message << " ";                                                \
+    assertion_message << " in " __FILE__ ":" BOOST_PP_STRINGIZE(__LINE__);     \
+    /* show messages in noexcept blocks */                                     \
+    std::cerr << assertion_message.str() << std::endl;                         \
+    ::exactreal::throw_for_assert(EXCEPTION(assertion_message.str().c_str())); \
   }
 
 // Run a (cheap) check that a (user provided) argument is valid.
