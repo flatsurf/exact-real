@@ -17,11 +17,12 @@ jobs:
           mamba env update --quiet -n test -f libexactreal/environment.yml
           mamba env update --quiet -n test -f pyexactreal/environment.yml
           conda list
-      - name: build & test
+      - name: make check
         shell: bash -l {0}
         run: |
           ./bootstrap
-          ./configure --prefix="$PREFIX" CXXFLAGS="$CXXFLAGS --coverage -O0 -UNDEBUG" --without-benchmark
+          export CXXFLAGS="$CXXFLAGS --coverage -O0 -UNDEBUG"
+          ./configure --without-benchmark
           make check
       - name: create & post coverage report
         shell: bash -l {0}
