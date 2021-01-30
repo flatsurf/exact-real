@@ -147,7 +147,7 @@ std::vector<C> Element<Ring>::coefficients() const {
       for (auto& num : nums) {
         ret.push_back(mpq_class(num, den));
       }
-      ASSERT(nums.size() <= impl->parent->ring().parameters->degree(), "rational coefficient list cannot be larger than absolute degree of number field");
+      LIBEXACTREAL_ASSERT(nums.size() <= impl->parent->ring().parameters->degree(), "rational coefficient list cannot be larger than absolute degree of number field");
       for (size_t i = nums.size(); i < impl->parent->ring().parameters->degree(); i++) {
         ret.push_back(0);
       }
@@ -233,7 +233,7 @@ Element<Ring>& Element<Ring>::operator*=(const Element<Ring>& rhs) {
   this->impl->parent = Module<Ring>::make(basis, this->impl->parent->ring());
   this->impl->coefficients = coefficients;
 
-  ASSERT(this->impl->parent->basis() == basis, "order of generators in module is not deglex which is the assumption by Element::operator*=");
+  LIBEXACTREAL_ASSERT(this->impl->parent->basis() == basis, "order of generators in module is not deglex which is the assumption by Element::operator*=");
 
   return *this;
 }
@@ -273,7 +273,7 @@ Element<Ring>& Element<Ring>::operator/=(const T& rhs) {
 
 template <typename Ring>
 std::optional<Element<Ring>> Element<Ring>::truediv(const Element<Ring>& rhs) const {
-  CHECK_ARGUMENT(rhs != 0, "division by zero");
+  LIBEXACTREAL_CHECK_ARGUMENT(rhs != 0, "division by zero");
 
   if (rhs == 1)
     return *this;
@@ -307,7 +307,7 @@ std::optional<Element<Ring>> Element<Ring>::truediv(const Element<Ring>& rhs) co
     auto coefficient_quotient = a / b;
 
     if (coefficient_quotient * b != a) {
-      ASSERT(!Ring::isField, "division of coefficients must be exact in fields");
+      LIBEXACTREAL_ASSERT(!Ring::isField, "division of coefficients must be exact in fields");
       return std::nullopt;
     }
 
@@ -621,7 +621,7 @@ Element<Ring>& Element<Ring>::promote(const shared_ptr<const Module<Ring>>& pare
       continue;
     }
     if (their_gen == end(their_gens)) {
-      ASSERT(!impl->coefficients[our_gen - begin(our_gens)], "Cannot promote " << *this << " to " << *parent << " since " << *our_gen << " is not in " << *parent);
+      LIBEXACTREAL_ASSERT(!impl->coefficients[our_gen - begin(our_gens)], "Cannot promote " << *this << " to " << *parent << " since " << *our_gen << " is not in " << *parent);
       our_gen++;
       continue;
     }
