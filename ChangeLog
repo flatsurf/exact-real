@@ -4,6 +4,15 @@ exact-real Change Log
 
 .. current developments
 
+v1.6.0
+====================
+
+**Added:**
+
+* Allow disabling of assertions and checks at runtime with the environment variables `LIBEXACTREAL_NOASSERT` and `LIBEXACTREAL_NOCHECK`.
+
+
+
 v1.5.1
 ====================
 
