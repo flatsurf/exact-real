@@ -62,8 +62,8 @@ auto& factory() {
 class RealNumberProduct final : public RealNumberBase {
  public:
   explicit RealNumberProduct(const Factors& factors) : factors(factors) {
-    ASSERT(std::all_of(begin(factors), end(factors), [](auto& factor) { return factor.second >= 1; }), "factors must appear at least once");
-    ASSERT(std::all_of(begin(factors), end(factors), [](auto& factor) { return !static_cast<std::optional<mpq_class>>(*factor.first); }), "factors must be transcendental");
+    LIBEXACTREAL_ASSERT(std::all_of(begin(factors), end(factors), [](auto& factor) { return factor.second >= 1; }), "factors must appear at least once");
+    LIBEXACTREAL_ASSERT(std::all_of(begin(factors), end(factors), [](auto& factor) { return !static_cast<std::optional<mpq_class>>(*factor.first); }), "factors must be transcendental");
   }
 
   RealNumber const& operator>>(std::ostream& os) const override {
@@ -255,7 +255,7 @@ bool RealNumber::deglex(const RealNumber& rhs_) const {
         gens.insert(gen.first);
 
       for (auto& gen : gens) {
-        ASSERT(!static_cast<std::optional<mpq_class>>(*gen).has_value(), "factors of real number product must not be rational");
+        LIBEXACTREAL_ASSERT(!static_cast<std::optional<mpq_class>>(*gen).has_value(), "factors of real number product must not be rational");
         if (lhs->factors.find(gen) == end(lhs->factors))
           return false;
         if (rhs->factors.find(gen) == end(rhs->factors))
@@ -266,7 +266,7 @@ bool RealNumber::deglex(const RealNumber& rhs_) const {
           return true;
       }
 
-      UNREACHABLE("real number products are distinct but they coincide on every factor");
+      LIBEXACTREAL_UNREACHABLE("real number products are distinct but they coincide on every factor");
     }
   }
 }

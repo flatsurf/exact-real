@@ -49,15 +49,16 @@ bool isSet(const char* env) {
   return true;
 }
 
-// Return whether all CHECK_ and ASSERT_ macros have been disabled at runtime
-// through the LIBEXACTREAL_NOCHECK environment variable.
+// Return whether all LIBEXACTREAL_CHECK_ and LIBEXACTREAL_ASSERT_ macros have
+// been disabled at runtime through the LIBEXACTREAL_NOCHECK environment
+// variable.
 bool nocheck() {
   static bool value = isSet("LIBEXACTREAL_NOCHECK");
   return value;
 }
 
-// Return whether all ASSERT_ macros have been disabled at runtime through the
-// LIBEXACTREAL_NOASSERT environment variable.
+// Return whether all LIBEXACTREAL_ASSERT_ macros have been disabled at runtime
+// through the LIBEXACTREAL_NOASSERT environment variable.
 bool noassert() {
   if (nocheck()) return true;
 
@@ -65,47 +66,47 @@ bool noassert() {
   return value;
 }
 
-}  // namespace
-}  // namespace exactreal
+} // namespace
+} // namespace exactreal
 
-#define ASSERT_(CONDITION, EXCEPTION, MESSAGE)                                 \
-  while (BOOST_UNLIKELY(static_cast<bool>(not(CONDITION)))) {                  \
-    std::stringstream user_message, assertion_message;                         \
-    user_message << MESSAGE;                                                   \
-    assertion_message << (#CONDITION " does not hold");                        \
-    if (user_message.str().size())                                             \
-      assertion_message << ": " << user_message.str();                         \
-    else                                                                       \
-      assertion_message << " ";                                                \
-    assertion_message << " in " __FILE__ ":" BOOST_PP_STRINGIZE(__LINE__);     \
-    /* show messages in noexcept blocks */                                     \
-    std::cerr << assertion_message.str() << std::endl;                         \
-    ::exactreal::throw_for_assert(EXCEPTION(assertion_message.str().c_str())); \
+#define LIBEXACTREAL_ASSERT_(CONDITION, EXCEPTION, MESSAGE)                     \
+  while (BOOST_UNLIKELY(static_cast<bool>(not(CONDITION)))) {                   \
+    std::stringstream user_message, assertion_message;                          \
+    user_message << MESSAGE;                                                    \
+    assertion_message << (#CONDITION " does not hold");                         \
+    if (user_message.str().size())                                              \
+      assertion_message << ": " << user_message.str();                          \
+    else                                                                        \
+      assertion_message << " ";                                                 \
+    assertion_message << " in " __FILE__ ":" BOOST_PP_STRINGIZE(__LINE__);      \
+    /* show messages in noexcept blocks */                                      \
+    std::cerr << assertion_message.str() << std::endl;                          \
+    ::exactreal::throw_for_assert(EXCEPTION(assertion_message.str().c_str()));  \
   }
 
 // Run a (cheap) check that a (user provided) argument is valid.
 // If the check should be disabled when NDEBUG is defined, e.g., because it
-// occurs in a hotspot, use ASSERT_ARGUMENT instead.
-#define CHECK_ARGUMENT_(CONDITION) ASSERT_(nocheck() || (CONDITION), std::invalid_argument, "")
-#define CHECK_ARGUMENT(CONDITION, MESSAGE) ASSERT_(nocheck() || (CONDITION), std::invalid_argument, MESSAGE)
+// occurs in a hotspot, use LIBEXACTREAL_ASSERT_ARGUMENT instead.
+#define LIBEXACTREAL_CHECK_ARGUMENT_(CONDITION) LIBEXACTREAL_ASSERT_(::exactreal::nocheck() || (CONDITION), std::invalid_argument, "")
+#define LIBEXACTREAL_CHECK_ARGUMENT(CONDITION, MESSAGE) LIBEXACTREAL_ASSERT_(::exactreal::nocheck() || (CONDITION), std::invalid_argument, MESSAGE)
 
 #ifdef NDEBUG
 
-#define ASSERT_ARGUMENT_(CONDITION) CHECK_ARGUMENT_(true || (CONDITION))
-#define ASSERT_ARGUMENT(CONDITION, MESSAGE) CHECK_ARGUMENT(true || (CONDITION), MESSAGE)
-#define ASSERT(CONDITION, MESSAGE) ASSERT_(true || (CONDITION), std::logic_error, MESSAGE)
+#define LIBEXACTREAL_ASSERT_CONDITION(CONDITION) (true || ::exactreal::noassert() || (CONDITION))
 
 #else
 
-#define ASSERT_ARGUMENT_(CONDITION) CHECK_ARGUMENT_(noassert() || (CONDITION))
-#define ASSERT_ARGUMENT(CONDITION, MESSAGE) CHECK_ARGUMENT(noassert() || (CONDITION), MESSAGE)
-#define ASSERT(CONDITION, MESSAGE) ASSERT_(noassert() || (CONDITION), std::logic_error, MESSAGE)
+#define LIBEXACTREAL_ASSERT_CONDITION(CONDITION) (::exactreal::noassert() || (CONDITION))
 
 #endif
 
-#define UNREACHABLE(MESSAGE)                  \
+#define LIBEXACTREAL_ASSERT_ARGUMENT_(CONDITION) CHECK_ARGUMENT_(LIBEXACTREAL_ASSERT_CONDITION(CONDITION))
+#define LIBEXACTREAL_ASSERT_ARGUMENT(CONDITION, MESSAGE) CHECK_ARGUMENT(LIBEXACTREAL_ASSERT_CONDITION(CONDITION), MESSAGE)
+#define LIBEXACTREAL_ASSERT(CONDITION, MESSAGE) LIBEXACTREAL_ASSERT_(LIBEXACTREAL_ASSERT_CONDITION(CONDITION), std::logic_error, MESSAGE)
+
+#define LIBEXACTREAL_UNREACHABLE(MESSAGE)                  \
   {                                           \
-    ASSERT_(false, std::logic_error, MESSAGE) \
+    LIBEXACTREAL_ASSERT_(false, std::logic_error, MESSAGE) \
     __builtin_unreachable();                  \
   }
 

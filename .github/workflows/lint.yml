@@ -21,4 +21,30 @@ jobs:
         message: 'clang-format source code'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  compiler-warnings:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        cxxflags:
+          - -UNDEBUG
+          - -DNDEBUG
+    steps:
+      - uses: actions/checkout@v2
+        with: { submodules: recursive }
+      - uses: conda-incubator/setup-miniconda@v2
+        with: { mamba-version: "*", channels: "flatsurf,conda-forge", channel-priority: true }
+      - name: install dependencies
+        shell: bash -l {0}
+        run: |
+          mamba env update --quiet -n test -f libexactreal/environment.yml
+          conda list
+      - name: make
+        shell: bash -l {0}
+        run: |
+          cd libexactreal
+          ./bootstrap
+          ./configure --prefix="$PREFIX" --without-benchmark
+
+          # Build library and its tests (but do not run any tests.)
+          make check TESTS= CXXFLAGS="$CXXFLAGS ${{ matrix.cxxflags }} -Werror -Wall -Wextra -pedantic -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wno-sign-compare -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wold-style-cast -Woverloaded-virtual -Wno-redundant-decls -Wsign-promo -Wstrict-null-sentinel -Wundef -fdiagnostics-show-option -Wconversion -Wshadow-compatible-local -Wno-deprecated -Wno-deprecated-declarations"
     
