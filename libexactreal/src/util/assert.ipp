@@ -21,8 +21,10 @@
 #define LIBEXACTREAL_UTIL_ASSERT_IPP
 
 #include <boost/preprocessor/stringize.hpp>
-#include <iostream>
+#include <boost/algorithm/string.hpp>
+#include <cstdlib>
 #include <sstream>
+#include <iostream>
 
 namespace exactreal {
 namespace {
@@ -32,48 +34,79 @@ namespace {
 template <typename E>
 void throw_for_assert(const E& e) { throw e; }
 
-}
-}  // namespace exactreal
+// Return whether an environment variable should be considered as set.
+bool isSet(const char* env) {
+  const auto* ptr = std::getenv(env);
+  if (ptr == nullptr) return false;
 
-#define ASSERT_(CONDITION, EXCEPTION, MESSAGE)                                \
-  while (BOOST_UNLIKELY(not(CONDITION))) {                                    \
-    std::stringstream user_message, assertion_message;                        \
-    user_message << MESSAGE;                                                  \
-    assertion_message << (#CONDITION " does not hold");                       \
-    if (user_message.str().size())                                            \
-      assertion_message << ": " << user_message.str();                        \
-    else                                                                      \
-      assertion_message << " ";                                               \
-    assertion_message << " in " __FILE__ ":" BOOST_PP_STRINGIZE(__LINE__);    \
-    /* Print the assertion message so we see it even in a noexcept block. */  \
-    std::cerr << assertion_message.str() << std::endl;                        \
-    ::exactreal::throw_for_assert(EXCEPTION(assertion_message.str().c_str())); \
+  std::string value = ptr;
+  boost::trim(value);
+
+  if (value == "0") return false;
+  if (boost::iequals(value, "no")) return false;
+  if (boost::iequals(value, "false")) return false;
+
+  return true;
+}
+
+// Return whether all CHECK_ and ASSERT_ macros have been disabled at runtime
+// through the LIBEXACTREAL_NOCHECK environment variable.
+bool nocheck() {
+  static bool value = isSet("LIBEXACTREAL_NOCHECK");
+  return value;
+}
+
+// Return whether all ASSERT_ macros have been disabled at runtime through the
+// LIBEXACTREAL_NOASSERT environment variable.
+bool noassert() {
+  if (nocheck()) return true;
+
+  static bool value = isSet("LIBEXACTREAL_NOASSERT");
+  return value;
+}
+
+}
+} // namespace exactreal
+
+#define ASSERT_(CONDITION, EXCEPTION, MESSAGE)                                  \
+  while (BOOST_UNLIKELY(not(CONDITION))) {                                      \
+    std::stringstream user_message, assertion_message;                          \
+    user_message << MESSAGE;                                                    \
+    assertion_message << (#CONDITION " does not hold");                         \
+    if (user_message.str().size())                                              \
+      assertion_message << ": " << user_message.str();                          \
+    else                                                                        \
+      assertion_message << " ";                                                 \
+    assertion_message << " in " __FILE__ ":" BOOST_PP_STRINGIZE(__LINE__);      \
+    /* show messages in noexcept blocks */                                      \
+    std::cerr << assertion_message.str() << std::endl;                          \
+    ::exactreal::throw_for_assert(EXCEPTION(assertion_message.str().c_str()));  \
   }
 
 // Run a (cheap) check that a (user provided) argument is valid.
 // If the check should be disabled when NDEBUG is defined, e.g., because it
-// occurs in a hotspot, use ASSERT... instead.
-#define CHECK_ARGUMENT_(CONDITION) ASSERT_(CONDITION, std::invalid_argument, "")
-#define CHECK_ARGUMENT(CONDITION, MESSAGE) ASSERT_(CONDITION, std::invalid_argument, MESSAGE)
-#define CHECK(CONDITION, MESSAGE) ASSERT_(CONDITION, std::logic_error, MESSAGE);
+// occurs in a hotspot, use ASSERT_ARGUMENT instead.
+#define CHECK_ARGUMENT_(CONDITION) ASSERT_(nocheck() || (CONDITION), std::invalid_argument, "")
+#define CHECK_ARGUMENT(CONDITION, MESSAGE) ASSERT_(nocheck() || (CONDITION), std::invalid_argument, MESSAGE)
 
 #ifdef NDEBUG
 
 #define ASSERT_ARGUMENT_(CONDITION) CHECK_ARGUMENT_(true || (CONDITION))
 #define ASSERT_ARGUMENT(CONDITION, MESSAGE) CHECK_ARGUMENT(true || (CONDITION), MESSAGE)
 #define ASSERT(CONDITION, MESSAGE) ASSERT_(true || (CONDITION), std::logic_error, MESSAGE)
-#define ASSERTIONS(LAMBDA) \
-  while (false) LAMBDA()
-#define UNREACHABLE(MESSAGE) ASSERT_(false, std::logic_error, MESSAGE)
 
 #else
 
-#define ASSERT_ARGUMENT_(CONDITION) CHECK_ARGUMENT_(CONDITION)
-#define ASSERT_ARGUMENT(CONDITION, MESSAGE) CHECK_ARGUMENT(CONDITION, MESSAGE)
-#define ASSERT(CONDITION, MESSAGE) ASSERT_(CONDITION, std::logic_error, MESSAGE)
-#define ASSERTIONS(LAMBDA) LAMBDA()
-#define UNREACHABLE(MESSAGE) ASSERT_(false, std::logic_error, MESSAGE)
+#define ASSERT_ARGUMENT_(CONDITION) CHECK_ARGUMENT_(noassert() || (CONDITION))
+#define ASSERT_ARGUMENT(CONDITION, MESSAGE) CHECK_ARGUMENT(noassert() || (CONDITION), MESSAGE)
+#define ASSERT(CONDITION, MESSAGE) ASSERT_(noassert() || (CONDITION), std::logic_error, MESSAGE)
 
 #endif
+
+#define UNREACHABLE(MESSAGE)                  \
+  {                                           \
+    ASSERT_(false, std::logic_error, MESSAGE) \
+    __builtin_unreachable();                  \
+  }
 
 #endif
