@@ -32,6 +32,7 @@ namespace {
 // A throw statement that can be used in noexcept marked blocks without
 // triggering compiler warnings.
 template <typename E>
+[[maybe_unused]]
 void throw_for_assert(const E& e) { throw e; }
 
 // Return whether an environment variable should be considered as set.
@@ -51,6 +52,7 @@ bool isSet(const char* env) {
 
 // Return whether all CHECK_ and ASSERT_ macros have been disabled at runtime
 // through the LIBEXACTREAL_NOCHECK environment variable.
+[[maybe_unused]]
 bool nocheck() {
   static bool value = isSet("LIBEXACTREAL_NOCHECK");
   return value;
@@ -58,6 +60,7 @@ bool nocheck() {
 
 // Return whether all ASSERT_ macros have been disabled at runtime through the
 // LIBEXACTREAL_NOASSERT environment variable.
+[[maybe_unused]]
 bool noassert() {
   if (nocheck()) return true;
 
