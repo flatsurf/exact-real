@@ -1,99 +1,112 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2020 Julian Rüth
+ *        Copyright (C) 2020-2021 Julian Rüth
  *
- *  intervalxt is free software: you can redistribute it and/or modify
+ *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  intervalxt is distributed in the hope that it will be useful,
+ *  exact-real is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with intervalxt. If not, see <https://www.gnu.org/licenses/>.
+ *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
 #ifndef LIBEXACTREAL_UTIL_ASSERT_IPP
 #define LIBEXACTREAL_UTIL_ASSERT_IPP
 
-#include <gmpxx.h>
-
-#include <boost/config.hpp>
 #include <boost/preprocessor/stringize.hpp>
-#include <iostream>
+#include <boost/algorithm/string.hpp>
+#include <cstdlib>
 #include <sstream>
+#include <iostream>
 
-#define ASSERT_(CONDITION, EXCEPTION, MESSAGE)                                \
-  while (BOOST_UNLIKELY(not(CONDITION))) {                                    \
-    std::stringstream user_message, assertion_message;                        \
-    user_message << MESSAGE;                                                  \
-    assertion_message << (#CONDITION " does not hold");                       \
-    if (user_message.str().size())                                            \
-      assertion_message << ": " << user_message.str();                        \
-    else                                                                      \
-      assertion_message << " ";                                               \
-    assertion_message << " in " __FILE__ ":" BOOST_PP_STRINGIZE(__LINE__);    \
-    /* Print the assertion message so we see it even in a noexcept block. */  \
-    std::cerr << assertion_message.str() << std::endl;                        \
-    ::flatsurf::throw_for_assert(EXCEPTION(assertion_message.str().c_str())); \
-  }
-
-// Run a (cheap) check that a (user provided) argument is valid.
-// If the check should be disabled when NDEBUG is defined, e.g., because it
-// occurs in a hotspot, use ASSERT... instead.
-#define CHECK_ARGUMENT_(CONDITION) ASSERT_(CONDITION, std::invalid_argument, "")
-#define CHECK_ARGUMENT(CONDITION, MESSAGE) ASSERT_(CONDITION, std::invalid_argument, MESSAGE)
-#define CHECK(CONDITION, MESSAGE) ASSERT_(CONDITION, std::logic_error, MESSAGE);
-
-#ifdef NDEBUG
-
-#define ASSERT_ARGUMENT_(CONDITION) CHECK_ARGUMENT_(true || (CONDITION))
-#define ASSERT_ARGUMENT(CONDITION, MESSAGE) CHECK_ARGUMENT(true || (CONDITION), MESSAGE)
-#define ASSERT(CONDITION, MESSAGE) ASSERT_(true || (CONDITION), std::logic_error, MESSAGE)
-#define ASSERTIONS(LAMBDA) \
-  while (false) LAMBDA()
-#define UNREACHABLE(MESSAGE) ASSERT_(false, std::logic_error, MESSAGE)
-
-#else
-
-#define ASSERT_ARGUMENT_(CONDITION) CHECK_ARGUMENT_(CONDITION)
-#define ASSERT_ARGUMENT(CONDITION, MESSAGE) CHECK_ARGUMENT(CONDITION, MESSAGE)
-#define ASSERT(CONDITION, MESSAGE) ASSERT_(CONDITION, std::logic_error, MESSAGE)
-#define ASSERTIONS(LAMBDA) LAMBDA()
-#define UNREACHABLE(MESSAGE) ASSERT_(false, std::logic_error, MESSAGE)
-
-#endif
-
-namespace flatsurf {
+namespace exactreal {
+namespace {
 
 // A throw statement that can be used in noexcept marked blocks without
 // triggering compiler warnings.
 template <typename E>
 void throw_for_assert(const E& e) { throw e; }
 
-template <typename T = mpz_class>
-class Amortized {
-  T budget;
+// Return whether an environment variable should be considered as set.
+bool isSet(const char* env) {
+  const auto* ptr = std::getenv(env);
+  if (ptr == nullptr) return false;
 
- public:
-  Amortized(const T& budget = 1 << 10) : budget(budget) {}
+  std::string value = ptr;
+  boost::trim(value);
 
-  void reset(const T& budget) { this->budget = budget; }
-  bool pay(const T& cost) {
-    ASSERT(cost >= 0, "cost must be non-negative");
-    if (cost > budget) {
-      budget++;
-      return false;
-    }
-    budget -= cost;
-    return true;
+  if (value == "0") return false;
+  if (boost::iequals(value, "no")) return false;
+  if (boost::iequals(value, "false")) return false;
+
+  return true;
+}
+
+// Return whether all CHECK_ and ASSERT_ macros have been disabled at runtime
+// through the LIBEXACTREAL_NOCHECK environment variable.
+bool nocheck() {
+  static bool value = isSet("LIBEXACTREAL_NOCHECK");
+  return value;
+}
+
+// Return whether all ASSERT_ macros have been disabled at runtime through the
+// LIBEXACTREAL_NOASSERT environment variable.
+bool noassert() {
+  if (nocheck()) return true;
+
+  static bool value = isSet("LIBEXACTREAL_NOASSERT");
+  return value;
+}
+
+}
+} // namespace exactreal
+
+#define ASSERT_(CONDITION, EXCEPTION, MESSAGE)                                  \
+  while (BOOST_UNLIKELY(static_cast<bool>(not(CONDITION)))) {                   \
+    std::stringstream user_message, assertion_message;                          \
+    user_message << MESSAGE;                                                    \
+    assertion_message << (#CONDITION " does not hold");                         \
+    if (user_message.str().size())                                              \
+      assertion_message << ": " << user_message.str();                          \
+    else                                                                        \
+      assertion_message << " ";                                                 \
+    assertion_message << " in " __FILE__ ":" BOOST_PP_STRINGIZE(__LINE__);      \
+    /* show messages in noexcept blocks */                                      \
+    std::cerr << assertion_message.str() << std::endl;                          \
+    ::exactreal::throw_for_assert(EXCEPTION(assertion_message.str().c_str()));  \
   }
-};
 
-}  // namespace flatsurf
+// Run a (cheap) check that a (user provided) argument is valid.
+// If the check should be disabled when NDEBUG is defined, e.g., because it
+// occurs in a hotspot, use ASSERT_ARGUMENT instead.
+#define CHECK_ARGUMENT_(CONDITION) ASSERT_(nocheck() || (CONDITION), std::invalid_argument, "")
+#define CHECK_ARGUMENT(CONDITION, MESSAGE) ASSERT_(nocheck() || (CONDITION), std::invalid_argument, MESSAGE)
+
+#ifdef NDEBUG
+
+#define ASSERT_ARGUMENT_(CONDITION) CHECK_ARGUMENT_(true || (CONDITION))
+#define ASSERT_ARGUMENT(CONDITION, MESSAGE) CHECK_ARGUMENT(true || (CONDITION), MESSAGE)
+#define ASSERT(CONDITION, MESSAGE) ASSERT_(true || (CONDITION), std::logic_error, MESSAGE)
+
+#else
+
+#define ASSERT_ARGUMENT_(CONDITION) CHECK_ARGUMENT_(noassert() || (CONDITION))
+#define ASSERT_ARGUMENT(CONDITION, MESSAGE) CHECK_ARGUMENT(noassert() || (CONDITION), MESSAGE)
+#define ASSERT(CONDITION, MESSAGE) ASSERT_(noassert() || (CONDITION), std::logic_error, MESSAGE)
+
+#endif
+
+#define UNREACHABLE(MESSAGE)                  \
+  {                                           \
+    ASSERT_(false, std::logic_error, MESSAGE) \
+    __builtin_unreachable();                  \
+  }
 
 #endif
