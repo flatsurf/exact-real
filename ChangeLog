@@ -4,6 +4,15 @@ exact-real Change Log
 
 .. current developments
 
+v1.6.1
+====================
+
+**Fixed:**
+
+* fixed serialization of elements in number field modules, i.e., added missing `renfxx_cereal.h` header
+
+
+
 v1.6.0
 ====================
 
