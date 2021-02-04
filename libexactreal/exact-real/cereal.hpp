@@ -21,11 +21,11 @@
 #ifndef LIBEXACTREAL_CEREAL_HPP
 #define LIBEXACTREAL_CEREAL_HPP
 
-#include <boost/lexical_cast.hpp>
 #include <cereal/archives/json.hpp>
 #include <cereal/cereal.hpp>
 #include <cereal/types/memory.hpp>
 #include <cereal/types/vector.hpp>
+#include <e-antic/renfxx_cereal.h>
 
 #include "arb.hpp"
 #include "arf.hpp"
