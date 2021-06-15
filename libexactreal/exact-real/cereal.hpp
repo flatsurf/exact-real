@@ -21,7 +21,7 @@
 #ifndef LIBEXACTREAL_CEREAL_HPP
 #define LIBEXACTREAL_CEREAL_HPP
 
-#include <e-antic/renfxx_cereal.h>
+#include <e-antic/cereal.hpp>
 
 #include <cereal/archives/json.hpp>
 #include <cereal/cereal.hpp>

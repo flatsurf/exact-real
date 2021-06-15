@@ -21,7 +21,7 @@
 #ifndef LIBEXACTREAL_NUMBER_FIELD_HPP
 #define LIBEXACTREAL_NUMBER_FIELD_HPP
 
-#include <e-antic/renfxx_fwd.h>
+#include <e-antic/renfxx_fwd.hpp>
 #include <gmpxx.h>
 
 #include <boost/operators.hpp>

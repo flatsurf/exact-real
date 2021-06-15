@@ -19,7 +19,7 @@
  *********************************************************************/
 
 #include <e-antic/renfxx.h>
-#include <e-antic/renfxx_cereal.h>
+#include <e-antic/renfxx_cereal.hpp>
 
 #include <boost/lexical_cast.hpp>
 #include <cereal/archives/json.hpp>
