@@ -24,6 +24,7 @@
 #include <e-antic/renfxx.h>
 
 #include <boost/numeric/conversion/cast.hpp>
+#include <boost/lexical_cast.hpp>
 #include <cmath>
 #include <map>
 #include <set>
