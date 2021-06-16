@@ -2,7 +2,7 @@
  *  This file is part of exact-real.
  *
  *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019-2020 Julian Rüth
+ *        Copyright (C) 2019-2021 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -273,7 +273,7 @@ TEST_CASE("Elements over Number Field", "[element][number_field]") {
   auto m = Module<NumberField>::make({RealNumber::rational(1), RealNumber::random()}, K);
 
   auto x = m->gen(1);
-  auto a = renf_elem_class(K, "a");
+  auto a = renf_elem_class(*K, "a");
 
   Element<NumberField> elements[]{m->gen(0), x};
 
@@ -308,14 +308,14 @@ TEST_CASE("Elements over Number Field", "[element][number_field]") {
 
     for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
       auto x = elements[i];
-      REQUIRE(x + x == renf_elem_class(K, 2) * x);
-      REQUIRE(x - x == renf_elem_class(K, 0) * x);
-      REQUIRE(renf_elem_class(K, -1) * x == -x);
-      REQUIRE(renf_elem_class(K, 1) * x == x);
-      REQUIRE(renf_elem_class(K, 0) * x == m->zero());
-      REQUIRE(-(renf_elem_class(K, "a") * x) == renf_elem_class(K, "-a") * x);
-      REQUIRE(renf_elem_class(K, "a") * x > x);
-      REQUIRE(2 * x > renf_elem_class(K, "a") * x);
+      REQUIRE(x + x == renf_elem_class(*K, 2) * x);
+      REQUIRE(x - x == renf_elem_class(*K, 0) * x);
+      REQUIRE(renf_elem_class(*K, -1) * x == -x);
+      REQUIRE(renf_elem_class(*K, 1) * x == x);
+      REQUIRE(renf_elem_class(*K, 0) * x == m->zero());
+      REQUIRE(-(renf_elem_class(*K, "a") * x) == renf_elem_class(*K, "-a") * x);
+      REQUIRE(renf_elem_class(*K, "a") * x > x);
+      REQUIRE(2 * x > renf_elem_class(*K, "a") * x);
       REQUIRE(mpq_class(1, 2) * x == x / 2);
 
       for (size_t j = 0; j < sizeof(elements) / sizeof(elements[0]); j++) {

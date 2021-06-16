@@ -22,7 +22,7 @@
 #define LIBEXACTREAL_ARB_HPP
 
 #include <arb.h>
-#include <e-antic/renfxx_fwd.h>
+#include <e-antic/renfxx_fwd.hpp>
 #include <flint/flintxx/frandxx.h>
 #include <gmpxx.h>
 

@@ -27,9 +27,11 @@
 namespace exactreal {
 NumberField::NumberField() : NumberField(eantic::renf_class::make()) {}
 
-NumberField::NumberField(const std::shared_ptr<const eantic::renf_class>& parameters) : parameters(parameters) {}
+NumberField::NumberField(const eantic::renf_class& parameters) : parameters(&parameters) {}
 
-NumberField::NumberField(const eantic::renf_elem_class& value) : NumberField(value.parent().shared_from_this()) {}
+NumberField::NumberField(boost::intrusive_ptr<const eantic::renf_class> parameters) : parameters(std::move(parameters)) {}
+
+NumberField::NumberField(const eantic::renf_elem_class& value) : NumberField(value.parent()) {}
 
 NumberField NumberField::compositum(const NumberField& lhs, const NumberField& rhs) {
   if (lhs == rhs) return lhs;
@@ -56,7 +58,7 @@ typename NumberField::ElementClass NumberField::coerce(const ElementClass& x) co
 
   // Use https://github.com/videlec/e-antic/pull/120 instead, once it has been merged.
   if (x.is_rational())
-    return ElementClass(parameters, static_cast<mpq_class>(x));
+    return ElementClass(*parameters, static_cast<mpq_class>(x));
 
   throw std::logic_error("not implemented: coercion to this number field");
 }
