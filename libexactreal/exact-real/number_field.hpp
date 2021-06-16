@@ -21,11 +21,11 @@
 #ifndef LIBEXACTREAL_NUMBER_FIELD_HPP
 #define LIBEXACTREAL_NUMBER_FIELD_HPP
 
-#include <e-antic/renfxx_fwd.hpp>
 #include <gmpxx.h>
 
 #include <boost/intrusive_ptr.hpp>
 #include <boost/operators.hpp>
+#include <e-antic/renfxx_fwd.hpp>
 #include <memory>
 #include <optional>
 

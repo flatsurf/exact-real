@@ -21,12 +21,11 @@
 #ifndef LIBEXACTREAL_CEREAL_HPP
 #define LIBEXACTREAL_CEREAL_HPP
 
-#include <e-antic/cereal.hpp>
-
 #include <cereal/archives/json.hpp>
 #include <cereal/cereal.hpp>
 #include <cereal/types/memory.hpp>
 #include <cereal/types/vector.hpp>
+#include <e-antic/cereal.hpp>
 
 #include "arb.hpp"
 #include "arf.hpp"

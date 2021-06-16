@@ -22,11 +22,11 @@
 #define LIBEXACTREAL_ARB_HPP
 
 #include <arb.h>
-#include <e-antic/renfxx_fwd.hpp>
 #include <flint/flintxx/frandxx.h>
 #include <gmpxx.h>
 
 #include <boost/yap/algorithm_fwd.hpp>
+#include <e-antic/renfxx_fwd.hpp>
 #include <memory>
 #include <optional>
 

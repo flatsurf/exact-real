@@ -19,10 +19,10 @@
  *********************************************************************/
 
 #include <e-antic/renfxx.h>
-#include <e-antic/cereal.hpp>
 
 #include <boost/lexical_cast.hpp>
 #include <cereal/archives/json.hpp>
+#include <e-antic/cereal.hpp>
 
 #include "../exact-real/cereal.hpp"
 #include "../exact-real/real_number.hpp"
