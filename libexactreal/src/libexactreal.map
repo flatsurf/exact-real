@@ -420,3 +420,10 @@ LIBEXACTREAL_1.5.0 {
       "exactreal::Arb::operator=(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&)";
     };
 } LIBEXACTREAL_1.4.0;
+LIBEXACTREAL_2.0.0 {
+  global:
+    extern "C++" {
+      "exactreal::NumberField::NumberField(eantic::renf_class const&)";
+      "exactreal::NumberField::NumberField(boost::intrusive_ptr<eantic::renf_class const>)";
+    };
+} LIBEXACTREAL_1.5.0;

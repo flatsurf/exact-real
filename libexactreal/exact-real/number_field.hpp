@@ -24,6 +24,7 @@
 #include <e-antic/renfxx_fwd.hpp>
 #include <gmpxx.h>
 
+#include <boost/intrusive_ptr.hpp>
 #include <boost/operators.hpp>
 #include <memory>
 #include <optional>
@@ -35,10 +36,11 @@ namespace exactreal {
 class LIBEXACTREAL_API NumberField : boost::equality_comparable<NumberField> {
  public:
   NumberField();
-  NumberField(const std::shared_ptr<const eantic::renf_class>&);
+  NumberField(const eantic::renf_class&);
+  NumberField(boost::intrusive_ptr<const eantic::renf_class>);
   NumberField(const eantic::renf_elem_class&);
 
-  std::shared_ptr<const eantic::renf_class> parameters;
+  boost::intrusive_ptr<const eantic::renf_class> parameters;
 
   static NumberField compositum(const NumberField& lhs, const NumberField& rhs);
 
