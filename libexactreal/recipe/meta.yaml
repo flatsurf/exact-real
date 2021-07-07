@@ -26,7 +26,7 @@ requirements:
   host:
     - arb {{ arb }}
     - boost-cpp {{ boost_cpp }}
-    - e-antic >=1.0.0rc15
+    - e-antic >=1.0.0,<2
     - gmp {{ gmp }}
 
 test:
