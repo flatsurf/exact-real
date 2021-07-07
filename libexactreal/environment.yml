@@ -11,8 +11,8 @@ dependencies:
   - benchmark
   - boost-cpp
   - coreutils
-  - cxx-compiler>=1.1.3
-  - e-antic>=1.0.0rc15
+  - cxx-compiler
+  - e-antic>=1.0.0
   - arb
   - gmp
   - libtool
