@@ -1,6 +1,7 @@
 ![Test](https://github.com/flatsurf/exact-real/workflows/Test/badge.svg)
 [![codecov](https://codecov.io/gh/flatsurf/exact-real/branch/master/graph/badge.svg)](https://codecov.io/gh/flatsurf/exact-real)
 [![asv](http://img.shields.io/badge/benchmarked%20by-asv-blue.svg?style=flat)](https://flatsurf.github.io/exact-real/asv/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4964633.svg)](https://doi.org/10.5281/zenodo.4964633)
 
 ## Current Release Info
 
@@ -136,6 +137,12 @@ only runs the tests for `module`. For randomized tests, you might want to add
 variable `EXACTREAL_CHECK` is passed on to the tests and benchmarks, i.e., you
 could add `EXACTREAL_CHECK="--benchmark_min_time=.02"` to not let the
 benchmarks run as long as they would usually.
+
+
+## How to Cite This Project
+
+If you have used this project in the preparation of a publication, please cite
+it as described [on our zenodo site](http://doi.org/10.5281/zenodo.4964633).
 
 ## Maintainers
 
