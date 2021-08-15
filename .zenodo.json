@@ -8,7 +8,7 @@
 
     "license": "GPL-3.0-or-later",
     "title": "exact-real",
-    "description": "<p>exact-real is a C++/Python library which provides exact lazy computations in the Real Numbers. In particular it provides arithmetic and comparisons of (random) transcendental numbers.</p><p>Please visit our <a href='https://github.com/flatsurf/exact-real'>home page</a> for more information.</p>"
+    "description": "<p>exact-real is a C++/Python library which provides exact lazy computations in the Real Numbers. In particular it implements arithmetic and comparisons of (random) transcendental numbers.</p><p>Please visit our <a href='https://github.com/flatsurf/exact-real'>home page</a> for more information.</p>"
 }
 
 

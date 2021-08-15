@@ -15,7 +15,7 @@
 <p align="center">Exact Computations with Real Numbers</p>
 <hr>
 
-exact-real is a C++/Python library which provides exact lazy computations in the Real Numbers. In particular it provides arithmetic and comparisons of (random) transcendental numbers.
+exact-real is a C++/Python library which provides exact lazy computations in the Real Numbers. In particular it implements arithmetic and comparisons of (random) transcendental numbers.
 
 Source tarballs can be downloaded at https://github.com/flatsurf/exact-real/releases.
 
