@@ -149,6 +149,11 @@ benchmarks run as long as they would usually.
 If you have used this project in the preparation of a publication, please cite
 it as described [on our zenodo page](https://doi.org/10.5281/zenodo.4008716).
 
+## Acknowledgements
+
+* Julian Rüth's contributions to this project have been supported by the Simons
+  Foundation Investigator grant of Alex Eskin.
+
 ## Maintainers
 
 * [@saraedum](https://github.com/saraedum)
