@@ -1,69 +1,50 @@
 <p align="center">
-    <img alt="logo" src="https://github.com/saraedum/exact-real/raw/zenodo/logo.svg?sanitize=true" width="300px">
+    <img alt="logo" src="https://github.com/flatsurf/exact-real/raw/master/logo.svg?sanitize=true" width="300px">
 </p>
 
 <h1><p align="center">exact-real</p></h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/License-LGPL_3.0_or_later-blue.svg" alt="License: LGPL 3.0 or later">
-  <a href="https://github.com/flatsurf/e-antic/actions/workflows/test.yml"><img src="https://github.com/flatsurf/e-antic/actions/workflows/test.yml/badge.svg" alt="Test"></a>
-  <a href="https://codecov.io/gh/flatsurf/e-antic"><img src="https://codecov.io/gh/flatsurf/e-antic/branch/master/graph/badge.svg" alt="Coverage"></a>
-  <a href="https://doi.org/10.5281/zenodo.5166953"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.5166953.svg" alt="DOI 10.5281/zenodo.5166953"></a>
+  <img src="https://img.shields.io/badge/License-GPL_3.0_or_later-blue.svg" alt="License: GPL 3.0 or later">
+  <a href="https://github.com/flatsurf/exact-real/actions/workflows/test.yml"><img src="https://github.com/flatsurf/exact-real/actions/workflows/test.yml/badge.svg" alt="Test"></a>
+  <a href="https://codecov.io/gh/flatsurf/exact-real"><img src="https://codecov.io/gh/flatsurf/exact-real/branch/master/graph/badge.svg" alt="Coverage"></a>
+  <a href="https://flatsurf.github.io/exact-real/asv/"><img src="http://img.shields.io/badge/benchmarked%20by-asv-blue.svg?style=flat"></a>
+  <a href="https://doi.org/10.5281/zenodo.4008716"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.4008716.svg" alt="DOI 10.5281/zenodo.4008716"></a>
 </p>
 
-<p align="center">(Real Embedded) Algebraic Number Theory</p>
+<p align="center">Exact Computations with Real Numbers</p>
 <hr>
 
-![Test](https://github.com/flatsurf/exact-real/workflows/Test/badge.svg)
-[![codecov](https://codecov.io/gh/flatsurf/exact-real/branch/master/graph/badge.svg)](https://codecov.io/gh/flatsurf/exact-real)
-[![asv](http://img.shields.io/badge/benchmarked%20by-asv-blue.svg?style=flat)](https://flatsurf.github.io/exact-real/asv/)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4964633.svg)](https://doi.org/10.5281/zenodo.4964633)
+exact-real is a C++/Python library which provides exact lazy computations in the Real Numbers. In particular it provides arithmetic and comparisons of (random) transcendental numbers.
 
-## Current Release Info
-
-We release this package regularly with [rever](https://regro.github.io/rever-docs/index.html); typically with every push to the master branch.
+Source tarballs can be downloaded at https://github.com/flatsurf/exact-real/releases.
 
 This repository contains two related projects:
 
 * **libexactreal** a C++ library
 * **pyexactreal** a Python wrapper for **libexactreal**
 
-| Name | Downloads | Version | Platforms |
-| --- | --- | --- | --- |
-| [![Build](https://img.shields.io/badge/recipe-libexactreal-green.svg)](https://anaconda.org/flatsurf/libexactreal) | [![Conda Downloads](https://img.shields.io/conda/dn/flatsurf/libexactreal.svg)](https://anaconda.org/flatsurf/libexactreal) | [![Conda Version](https://img.shields.io/conda/vn/flatsurf/libexactreal.svg)](https://anaconda.org/flatsurf/libexactreal) | [![Conda Platforms](https://img.shields.io/conda/pn/flatsurf/libexactreal.svg)](https://anaconda.org/flatsurf/libexactreal) |
-| [![Build](https://img.shields.io/badge/recipe-pyexactreal-green.svg)](https://anaconda.org/flatsurf/pyexactreal) | [![Conda Downloads](https://img.shields.io/conda/dn/flatsurf/pyexactreal.svg)](https://anaconda.org/flatsurf/pyexactreal) | [![Conda Version](https://img.shields.io/conda/vn/flatsurf/pyexactreal.svg)](https://anaconda.org/flatsurf/pyexactreal) | [![Conda Platforms](https://img.shields.io/conda/pn/flatsurf/pyexactreal.svg)](https://anaconda.org/flatsurf/pyexactreal) |
+## Build from the Source Code Repository or a Tarball
 
-## Install with Conda
+If you have cloned the source directory you will need to setup the
+configure script and Makefile using autotools. That is
 
-You can install this package with conda. Download and install [Miniconda](https://conda.io/miniconda.html), then run
+    git submodule update --init
+    ./bootstrap
 
-```
-conda config --add channels conda-forge
-conda create -n exactreal -c flatsurf libexactreal pyexactreal
-conda activate exactreal
-```
+If you obtained a tarball of the sources or if the preceding step
+worked, you just have to do
 
-## Run with binder in the Cloud
+    ./configure
+    make
+    make check  # to run our test suite
+    make install  # to install into /usr/local
 
-You can try out the projects in this repository in a very limited environment online by clicking the following links:
+If you happen to have any of the dependencies installed in a non-standard
+directory you will have to specify the `CPPFLAGS` and `LDFLAGS` variables for
+the configure script
 
-* **libexactreal** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/exact-real/master?filepath=doc%2Fbinder%2FSample.ipynb)
-* **pyexactreal** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/exact-real/master?filepath=doc%2Fbinder%2FSample.pyexactreal.ipynb)
-
-## Build from the Source Code Repository
-
-We are following a standard autoconf setup, i.e., you can create the library
-`libexactreal/src` with the following:
-
-```
-git clone --recurse-submodules https://github.com/flatsurf/exact-real.git
-cd exact-real
-./bootstrap
-./configure
-make
-make check # to run our test suite
-make install # to install into /usr/local
-```
+    ./configure CPPFLAGS=-I/my/path/include LDFLAGS=-L/my/path/lib
 
 For best performance run `CXXFLAGS="-O3 -flto -march=native -mtune=native"
 CXX="g++ -fno-semantic-interposition" ./configure` instead of `./configure` as
@@ -95,55 +76,64 @@ check`. Apart from perf itself there are several ways to analyze the output,
 [hotspot](https://github.com/KDAB/hotspot) might be the most convenient one at
 the time of this writing.
 
+## Installation
+
+The preferred way to install exact-real is to use your package manager (e.g.
+`apt-get` on Debian or Ubuntu, `pacman` on Arch Linux, `brew` on MacOS, etc).
+You can use [repology for
+libexactreal](https://repology.org/project/libexactreal/packages) and for
+[pyexactreal](https://repology.org/project/pyexactreal/packages) to see if
+exact-real is already available for your system. Note that there is an
+unrelated [package for Haskell](https://hackage.haskell.org/package/exact-real)
+by the same name.
+
+Otherwise, you can build and install this package from source (as outlined
+above) or install it with conda.
+Download and install
+[Mambaforge](https://github.com/conda-forge/miniforge#mambaforge), then run
+
+```
+mamba create -n exactreal libexactreal pyexactreal
+conda activate exactreal
+```
+
+## Run with binder in the Cloud
+
+You can try out the projects in this repository in a very limited environment
+online by clicking the following links:
+
+* **libexactreal** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/exact-real/master?filepath=binder%2FSample.ipynb)
+* **pyexactreal** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/exact-real/master?filepath=binder%2FSample.pyexactreal.ipynb)
+
+## Build with conda-forge Dependencies
+
+To build all of exact-real, you need a fairly recent C++ compiler and probably
+some packages that might not be readily available on your system. If you don't
+want to use your distribution's packages, you can use these dependencies from
+[conda-forge](https://conda-forge.org). Download and install
+[Mambaforge](https://github.com/conda-forge/miniforge#mambaforge), then run
 
 ## Build from the Source Code Repository with Conda Dependencies
 
 To build this package, you need a fairly recent C++ compiler and probably some
 packages that might not be readily available on your system. If you don't want
 to use your distribution's packages, you can provide these dependencies with
-conda. Download and install [Miniconda](https://conda.io/miniconda.html), then
-run
+conda. Download and install
+[Mambaforge](https://github.com/conda-forge/miniforge#mambaforge), then run
 
-```
-git clone --recurse-submodules https://github.com/flatsurf/exact-real.git
-cd exact-real
-
-conda create -n exactreal-build ccache
-conda env update -n exactreal-build -f libexactreal/environment.yml
-conda env update -n exactreal-build -f pyeaxctreal/environment.yml
-conda activate exactreal-build
-
-./bootstrap
-./configure --prefix="$CONDA_PREFIX"
-make
-```
-
-## Build from the Source Code Repository with Conda
-
-The conda recipe in `recipe/` is built automatically as part of our Continuous
-Integration. If you want to build the recipe manually, something like the
-following should work:
-
-```
-git clone --recurse-submodules https://github.com/flatsurf/exact-real.git
-cd exact-real
-conda activate root
-conda config --add channels conda-forge
-conda config --add channels flatsurf # if you want to pull in the latest version of dependencies
-conda install conda-build conda-forge-ci-setup=2
-export FEEDSTOCK_ROOT=`pwd`
-export RECIPE_ROOT=${FEEDSTOCK_ROOT}/recipe
-export CI_SUPPORT=${FEEDSTOCK_ROOT}/.ci_support
-export CONFIG=linux_
-make_build_number "${FEEDSTOCK_ROOT}" "${RECIPE_ROOT}" "${CI_SUPPORT}/${CONFIG}.yaml"
-conda build "${RECIPE_ROOT}" -m "${CI_SUPPORT}/${CONFIG}.yaml" --clobber-file "${CI_SUPPORT}/clobber_${CONFIG}.yaml"
-```
-
-You can then try out the package that you just built with:
-```
-conda create -n exact-real-test --use-local libexactreal
-conda activate exact-real-test
-```
+    mamba create -n exact-real-build ccache
+    mamba env update -n exact-real-build -f libeantic/environment.yml
+    mamba env update -n exact-real-build -f pyeantic/environment.yml
+    conda activate exact-real-build
+    export CC="ccache cc"  # to speed up future compilation
+    export CXX="ccache c++"  # to speed up future compilation
+    git clone --recurse-submodules https://github.com/flatsurf/exact-real.git
+    cd exact-real
+    ./bootstrap
+    ./configure --prefix="$CONDA_PREFIX"
+    make
+    make check  # to run our test suite
+    make html  # to build the documentation
 
 ## Run Tests and Benchmark
 
@@ -154,11 +144,10 @@ variable `EXACTREAL_CHECK` is passed on to the tests and benchmarks, i.e., you
 could add `EXACTREAL_CHECK="--benchmark_min_time=.02"` to not let the
 benchmarks run as long as they would usually.
 
-
 ## How to Cite This Project
 
 If you have used this project in the preparation of a publication, please cite
-it as described [on our zenodo site](http://doi.org/10.5281/zenodo.4964633).
+it as described [on our zenodo page](https://doi.org/10.5281/zenodo.4008716).
 
 ## Maintainers
 
