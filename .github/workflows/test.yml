@@ -76,6 +76,7 @@ jobs:
           - target: check-valgrind
             python: "3.9"
           - target: check
+            python: "3.7"
             environment: binder
     steps:
       - uses: actions/checkout@v2
