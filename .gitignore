@@ -249,4 +249,4 @@ dmypy.json
 .ccls-cache
 
 # Rever
-rever/
+/rever
