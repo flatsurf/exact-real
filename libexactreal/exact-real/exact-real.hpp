@@ -26,6 +26,8 @@
 #ifndef LIBEXACTREAL_EXACT_REAL_HPP
 #define LIBEXACTREAL_EXACT_REAL_HPP
 
+#include "arb.hpp"
+#include "arf.hpp"
 #include "element.hpp"
 #include "integer_ring.hpp"
 #include "module.hpp"
@@ -34,10 +36,6 @@
 #include "rational_field.hpp"
 #include "real_number.hpp"
 #include "seed.hpp"
-
-#include "arb.hpp"
-#include "arf.hpp"
-
 #include "yap/arb.hpp"
 #include "yap/arf.hpp"
 
