@@ -88,7 +88,7 @@ class RealNumberProduct final : public RealNumberBase {
     {
       auto rational = static_cast<std::optional<mpq_class>>(rhs);
       if (rational) {
-        if (rational.value() == 1)
+        if (*rational == 1)
           return this->shared_from_this();
         throw std::logic_error("not implemented: division of product by rational");
       }

@@ -261,10 +261,10 @@ TEST_CASE("Element over QQ", "[element][rational_field]") {
 
   SECTION("Division") {
     auto x = m->gen(1);
-    REQUIRE(x.truediv(m->gen(0)).value() == x);
-    REQUIRE(x.truediv(x).value() == 1);
-    REQUIRE((x * x).truediv(x).value() == x);
-    REQUIRE(((x + m->gen(0)) * (x - m->gen(0))).truediv(x - m->gen(0)).value() == x + m->gen(0));
+    REQUIRE(*x.truediv(m->gen(0)) == x);
+    REQUIRE(*x.truediv(x) == 1);
+    REQUIRE(*(x * x).truediv(x) == x);
+    REQUIRE(*((x + m->gen(0)) * (x - m->gen(0))).truediv(x - m->gen(0)) == x + m->gen(0));
   }
 }
 
@@ -347,10 +347,10 @@ TEST_CASE("Elements over Number Field", "[element][number_field]") {
   }
 
   SECTION("Division") {
-    REQUIRE(x.truediv(m->gen(0)).value() == x);
-    REQUIRE(x.truediv(x).value() == 1);
-    REQUIRE((x * x).truediv(x).value() == x);
-    REQUIRE(((x + m->gen(0)) * (x - m->gen(0))).truediv(x - m->gen(0)).value() == x + m->gen(0));
+    REQUIRE(*x.truediv(m->gen(0)) == x);
+    REQUIRE(*x.truediv(x) == 1);
+    REQUIRE(*(x * x).truediv(x) == x);
+    REQUIRE(*((x + m->gen(0)) * (x - m->gen(0))).truediv(x - m->gen(0)) == x + m->gen(0));
     REQUIRE(!m->gen(0).truediv(x).has_value());
   }
 
