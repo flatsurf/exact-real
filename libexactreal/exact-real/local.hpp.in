@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C) 2019      Vincent Delecroix
+ *        Copyright (C) 2019-2021 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -24,8 +24,8 @@
  * be safely shipped to the client, i.e., not the ones in config.h
  */
 
-#ifndef LIBEXACTREAL_EXACTREAL_HPP
-#define LIBEXACTREAL_EXACTREAL_HPP
+#ifndef LIBEXACTREAL_LOCAL_HPP
+#define LIBEXACTREAL_LOCAL_HPP
 
 #include <arb.h>
 

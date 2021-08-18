@@ -22,5 +22,5 @@
 
 set -ex
 
-TARGETS=`grep -l '>>>' @srcdir@/../src/pyexactreal/*.py`
-pytest --doctest-modules $TARGETS $@
+IGNORE=`grep -L '>>>' @srcdir@/../src/pyexactreal/*.py | awk '{ print "--ignore=" $0 }'`
+pytest --verbose --doctest-modules $IGNORE '@srcdir@/../src/pyexactreal' $@

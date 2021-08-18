@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Resolve #include <exact-real/*.hpp> relative to libexactreal/ in the source tree and
-# resolve #include "exact-real.hpp" relative to libexactreal/exact-real in the build tree.
+# resolve #include "local.hpp" relative to libexactreal/exact-real in the build tree.
 export EXTRA_CLING_ARGS="-I@abs_srcdir@/../../libexactreal -I@abs_builddir@/../../libexactreal/exact-real $EXTRA_CLING_ARGS"
 export LD_LIBRARY_PATH="@abs_builddir@/../../libexactreal/src/.libs/:$LD_LIBRARY_PATH"
 export PYTHONPATH="@abs_srcdir@/../src/:@pythondir@"

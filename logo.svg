@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="777.04089"
+   height="663.62292"
+   viewBox="0 0 205.59207 175.58357"
+   version="1.1"
+   id="svg5"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2" />
+  <g
+     id="layer1"
+     transform="translate(52.080304,63.455667)">
+    <g
+       id="g22650"
+       transform="rotate(-24.660574,50.715735,9.3318582)">
+      <rect
+         style="fill:#ce6a85;fill-opacity:1;stroke-width:0.697751;stroke-opacity:0.92549"
+         id="rect901"
+         width="71.921158"
+         height="71.921158"
+         x="56.315804"
+         y="14.931923" />
+      <rect
+         style="fill:#faa275;fill-opacity:1;stroke-width:0.455411;stroke-opacity:0.92549"
+         id="rect903"
+         width="83.121292"
+         height="83.121292"
+         x="-26.80549"
+         y="-68.189369" />
+      <rect
+         style="fill:#ff8c61;fill-opacity:1;stroke-width:0.695928;stroke-opacity:0.92549"
+         id="rect1007"
+         width="83.121292"
+         height="71.921165"
+         x="-26.80549"
+         y="14.93192" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:6.35px;line-height:1.25;font-family:'Latin Modern Math';-inkscape-font-specification:'Latin Modern Math';text-align:center;text-anchor:middle;stroke-width:0.264583"
+       x="12.964027"
+       y="4.6516261"
+       id="text5463"><tspan
+         id="tspan5461"
+         style="stroke-width:0.264583"
+         x="12.964027"
+         y="4.6516261" /></text>
+  </g>
+</svg>
