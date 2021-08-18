@@ -29,7 +29,6 @@
 #include <type_traits>
 #include <vector>
 
-#include "exact-real.hpp"
 #include "external/spimpl/spimpl.h"
 #include "forward.hpp"
 #include "integer_ring.hpp"

@@ -29,6 +29,7 @@ nobase_pkginclude_HEADERS =                                  \
     ../exact-real/cereal.hpp                                 \
     ../exact-real/cppyy.hpp                                  \
     ../exact-real/element.hpp                                \
+    ../exact-real/exact-real.hpp                             \
     ../exact-real/external/spimpl/spimpl.h                   \
     ../exact-real/forward.hpp                                \
     ../exact-real/integer_ring.hpp                           \
@@ -60,16 +61,16 @@ noinst_HEADERS =                                          \
     impl/real_number_base.hpp                             \
     util/assert.ipp
 
-$(builddir)/../exact-real/exact-real.hpp: $(srcdir)/../exact-real/exact-real.hpp.in Makefile
+$(builddir)/../exact-real/local.hpp: $(srcdir)/../exact-real/local.hpp.in Makefile
 	mkdir -p $(builddir)/libexactreal
 	sed -e 's,[@]libdir[@],$(libdir),g' < $< > $@
 
-# Since we generate exact-real.hpp, we need to search $(builddir) during out-of-tree builds aka VPATH builds
+# Since we generate local.hpp, we need to search $(builddir) during out-of-tree builds aka VPATH builds
 VPATH = $(srcdir) $(builddir)
-# Generate exact-real.hpp before performing any compilation
-BUILT_SOURCES = ../exact-real/exact-real.hpp
-# Distribute exact-real.hpp.in as part of the tarball, but not exact-real.hpp
-EXTRA_DIST = ../exact-real/exact-real.hpp.in
+# Generate local.hpp before performing any compilation
+BUILT_SOURCES = ../exact-real/local.hpp
+# Distribute local.hpp.in as part of the tarball, but not local.hpp
+EXTRA_DIST = ../exact-real/local.hpp.in
 # We vendor the header-only library Cereal (serialization with C++) which we
 # use in some of our source files.
 # Cereal is basically not packaged in any distribution since it is a
@@ -77,10 +78,10 @@ EXTRA_DIST = ../exact-real/exact-real.hpp.in
 EXTRA_DIST += external/cereal/include
 AM_CPPFLAGS = -isystem $(srcdir)/external/cereal/include
 generatedincludedir = $(includedir)/exact-real
-nodist_generatedinclude_HEADERS = ../exact-real/exact-real.hpp
+nodist_generatedinclude_HEADERS = ../exact-real/local.hpp
 
 # We are building the libexactreal library so visibility attributes should be
 # set, see https://gcc.gnu.org/wiki/Visibility
 AM_CPPFLAGS += -DBUILD_LIBEXACTREAL
 
-CLEANFILES = ../exact-real/exact-real.hpp
+CLEANFILES = ../exact-real/local.hpp

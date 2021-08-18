@@ -21,7 +21,7 @@
 #ifndef LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
 #define LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
 
-#include "exact-real/exact-real.hpp"
+#include "exact-real/forward.hpp"
 
 namespace exactreal {
 
