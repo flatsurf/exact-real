@@ -131,7 +131,7 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   Element& simplify();
 
   template <typename R>
-  LIBEXACTREAL_API friend std::ostream& operator<<(std::ostream&, const Element<R>&);
+  friend std::ostream& operator<<(std::ostream&, const Element<R>&);
 
  private:
   struct LIBEXACTREAL_LOCAL Implementation;
@@ -154,6 +154,9 @@ Element(const mpz_class&)->Element<IntegerRing>;
 Element(const mpq_class&)->Element<RationalField>;
 
 Element(const RealNumber&)->Element<IntegerRing>;
+
+template <typename R>
+LIBEXACTREAL_API std::ostream& operator<<(std::ostream&, const Element<R>&);
 
 }  // namespace exactreal
 
