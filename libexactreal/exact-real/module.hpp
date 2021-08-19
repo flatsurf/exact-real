@@ -53,7 +53,7 @@ class LIBEXACTREAL_API Module : boost::equality_comparable<Module<Ring>>,
   bool operator==(const Module<Ring>& rhs) const;
 
   template <typename R>
-  friend std::ostream& operator<<(std::ostream&, const Module<R>&);
+  LIBEXACTREAL_API friend std::ostream& operator<<(std::ostream&, const Module<R>&);
 
   static std::shared_ptr<const Module<Ring>> span(const std::shared_ptr<const Module<Ring>>&, const std::shared_ptr<const Module<Ring>>&);
 
@@ -63,9 +63,6 @@ class LIBEXACTREAL_API Module : boost::equality_comparable<Module<Ring>>,
 
   Module(spimpl::unique_impl_ptr<Implementation>&&) LIBEXACTREAL_LOCAL;
 };
-
-template <typename R>
-std::ostream& operator<<(std::ostream&, const Module<R>&) LIBEXACTREAL_API;
 
 }  // namespace exactreal
 

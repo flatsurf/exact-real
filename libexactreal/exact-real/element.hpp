@@ -60,7 +60,7 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   std::conditional<Ring::isField, mpq_class, mpz_class> operator[](const std::pair<size, size>&) const;
 
   template <typename C = typename Ring::ElementClass>
-  std::vector<C> coefficients() const;
+  LIBEXACTREAL_API std::vector<C> coefficients() const;
 
   // Return a ball containing this element such that it's accuracy is at least
   // accuracy, defined as in http://arblib.org/arb.html#c.arb_rel_accuracy_bits, i.e.,
@@ -76,11 +76,11 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   // Define operator*= for every type that multiplies with Ring::ElementClass.
   // (until we figure out how to dynamically inherit from boost::multiplicative for such T, we do not get operator* here.)
   template <typename T, typename = decltype(std::declval<const typename Ring::ElementClass&>() * std::declval<const T&>())>
-  Element& operator*=(const T&);
+  LIBEXACTREAL_API Element& operator*=(const T&);
   // Define operator/= and operator/ if we're in a field in the same way.
   // (until we figure out how to dynamically inherit from boost::multiplicative for such T, we do not get operator/ here.)
   template <typename T, typename = decltype(std::declval<const typename Ring::ElementClass&>() / std::declval<const T&>()), typename = std::enable_if_t<Ring::isField || false_t<T>, void>>
-  Element& operator/=(const T&);
+  LIBEXACTREAL_API Element& operator/=(const T&);
 
   std::optional<Element> truediv(const Element&) const;
   mpz_class floordiv(const Element& rhs) const;
@@ -131,7 +131,7 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   Element& simplify();
 
   template <typename R>
-  friend std::ostream& operator<<(std::ostream&, const Element<R>&);
+  LIBEXACTREAL_API friend std::ostream& operator<<(std::ostream&, const Element<R>&);
 
  private:
   struct LIBEXACTREAL_LOCAL Implementation;
@@ -155,14 +155,11 @@ Element(const mpq_class&)->Element<RationalField>;
 
 Element(const RealNumber&)->Element<IntegerRing>;
 
-template <typename R>
-std::ostream& operator<<(std::ostream&, const Element<R>&) LIBEXACTREAL_API;
-
 }  // namespace exactreal
 
 namespace std {
 template <typename Ring>
-struct hash<exactreal::Element<Ring>> {
+struct LIBEXACTREAL_API hash<exactreal::Element<Ring>> {
   size_t operator()(const exactreal::Element<Ring>&) const noexcept;
 };
 }  // namespace std
