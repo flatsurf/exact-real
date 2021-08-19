@@ -52,6 +52,8 @@ jobs:
 
           echo "::group::configure"
           export CXXFLAGS="$CXXFLAGS -UNDEBUG -g3 -fvisibility=hidden -fvisibility-inlines-hidden"
+          # conda puts an explicit -std=c++14 on the command line on macOS, we override it here:
+          export CXXFLAGS="$CXXFLAGS -std=c++17"
           ./configure --prefix="$PREFIX" --without-benchmark ${{ steps.flags.outputs.configure }}
 
           echo "::group::make"
@@ -127,6 +129,8 @@ jobs:
 
           echo "::group::configure"
           export CXXFLAGS="$CXXFLAGS -UNDEBUG -g3 -fvisibility=hidden -fvisibility-inlines-hidden"
+          # conda puts an explicit -std=c++14 on the command line on macOS, we override it here:
+          export CXXFLAGS="$CXXFLAGS -std=c++17"
           ./configure --prefix="$PREFIX" --without-benchmark ${{ steps.flags.outputs.configure }}
 
           echo "::group::make"
