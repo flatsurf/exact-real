@@ -76,7 +76,7 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   // Define operator*= for every type that multiplies with Ring::ElementClass.
   // (until we figure out how to dynamically inherit from boost::multiplicative for such T, we do not get operator* here.)
   template <typename T, typename = decltype(std::declval<const typename Ring::ElementClass&>() * std::declval<const T&>())>
-  LIBEXACTREAL_API Element& operator*=(const T&);
+  Element& operator*=(const T&) LIBEXACTREAL_API;
   // Define operator/= and operator/ if we're in a field in the same way.
   // (until we figure out how to dynamically inherit from boost::multiplicative for such T, we do not get operator/ here.)
   template <typename T, typename = decltype(std::declval<const typename Ring::ElementClass&>() / std::declval<const T&>()), typename = std::enable_if_t<Ring::isField || false_t<T>, void>>
