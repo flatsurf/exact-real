@@ -26,14 +26,14 @@ except KeyboardInterrupt:
 
 sys.path.insert(0, 'tools/rever')
 
-import dist
+import autodist
 
 $PROJECT = 'exact-real'
 
 $ACTIVITIES = [
     'version_bump',
     'changelog',
-    'dist',
+    'autodist',
     'tag',
     'push_tag',
     'ghrelease',

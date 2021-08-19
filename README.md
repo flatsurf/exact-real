@@ -41,7 +41,7 @@ worked, you just have to do
     make install  # to install into /usr/local
 
 If you happen to have any of the dependencies installed in a non-standard
-directory you will have to specify the `CPPFLAGS` and `LDFLAGS` variables for
+directory, you will have to specify the `CPPFLAGS` and `LDFLAGS` variables for
 the configure script
 
     ./configure CPPFLAGS=-I/my/path/include LDFLAGS=-L/my/path/lib
@@ -70,7 +70,7 @@ Additionally, you might want to run configure with ` --disable-static` which
 improves the build time.
 
 [perf](https://perf.wiki.kernel.org/index.php/Main_Page) works well to profile
-when you make sure that `CXXFLAGS` contains `-fno-omit-framepointer`. You can
+when you make sure that `CXXFLAGS` contains `-fno-omit-frame-pointer`. You can
 then for example run our test suite with `perf record --call-graph dwarf make
 check`. Apart from perf itself there are several ways to analyze the output,
 [hotspot](https://github.com/KDAB/hotspot) might be the most convenient one at
@@ -113,17 +113,9 @@ want to use your distribution's packages, you can use these dependencies from
 [conda-forge](https://conda-forge.org). Download and install
 [Mambaforge](https://github.com/conda-forge/miniforge#mambaforge), then run
 
-## Build from the Source Code Repository with Conda Dependencies
-
-To build this package, you need a fairly recent C++ compiler and probably some
-packages that might not be readily available on your system. If you don't want
-to use your distribution's packages, you can provide these dependencies with
-conda. Download and install
-[Mambaforge](https://github.com/conda-forge/miniforge#mambaforge), then run
-
     mamba create -n exact-real-build ccache
-    mamba env update -n exact-real-build -f libeantic/environment.yml
-    mamba env update -n exact-real-build -f pyeantic/environment.yml
+    mamba env update -n exact-real-build -f libexactreal/environment.yml
+    mamba env update -n exact-real-build -f pyexactreal/environment.yml
     conda activate exact-real-build
     export CC="ccache cc"  # to speed up future compilation
     export CXX="ccache c++"  # to speed up future compilation
@@ -133,16 +125,14 @@ conda. Download and install
     ./configure --prefix="$CONDA_PREFIX"
     make
     make check  # to run our test suite
-    make html  # to build the documentation
 
 ## Run Tests and Benchmark
 
 `make check` runs all tests and benchmarks. During development `make check TESTS=module`
-only runs the tests for `module`. For randomized tests, you might want to add
-`GTEST_REPEAT=1024` to run such tests repeatedly. Note that the environment
-variable `EXACTREAL_CHECK` is passed on to the tests and benchmarks, i.e., you
-could add `EXACTREAL_CHECK="--benchmark_min_time=.02"` to not let the
-benchmarks run as long as they would usually.
+only runs the tests for `module`. Note that the environment variable
+`EXACTREAL_CHECK` is passed on to the tests and benchmarks, i.e., you could add
+`EXACTREAL_CHECK="--benchmark_min_time=.02"` to not let the benchmarks run as
+long as they would usually.
 
 ## How to Cite This Project
 
