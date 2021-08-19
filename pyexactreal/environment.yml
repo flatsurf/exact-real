@@ -10,8 +10,7 @@ dependencies:
   - automake
   - boost-cpp
   - coreutils
-  # The latest cppyy has trouble with serializations, see https://bitbucket.org/wlav/cppyy/issues/364/segfault-in-clang-cxxrecorddecl
-  - cppyy<2
+  - cppyy>=2.1.0
   - gmpxxyy
   - ipywidgets
   - libtool
