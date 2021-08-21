@@ -14,7 +14,8 @@ jobs:
             environment: binder
           - on: ubuntu-20.04
             sanitizer: valgrind
-          - on: macos-10.15
+          # TODO: Enable this, and prepare the other sanitizers.
+          # - on: macos-10.15
           - on: macos-10.15
             sanitizer: address
     steps:
