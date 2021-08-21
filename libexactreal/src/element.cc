@@ -19,6 +19,7 @@
  *********************************************************************/
 
 #include "../exact-real/element.hpp"
+#include "legacy/1_4_0/element.hpp"
 
 #include <arb.h>
 #include <e-antic/renfxx.h>
@@ -132,15 +133,19 @@ typename Ring::ElementClass Element<Ring>::operator[](const size i) const {
 }
 
 template <typename Ring>
-template <typename C>
-std::vector<C> Element<Ring>::coefficients() const {
-  if constexpr (std::is_same_v<C, typename Ring::ElementClass>) {
-    return impl->coefficients;
-  } else if constexpr (std::is_same_v<C, mpq_class> && std::is_same_v<typename Ring::ElementClass, mpz_class>) {
+std::vector<typename Ring::ElementClass> Element<Ring>::coefficients() const {
+  return impl->coefficients;
+}
+
+template <typename Ring>
+std::vector<mpq_class> Element<Ring>::rationalCoefficients() const {
+  if constexpr (std::is_same_v<typename Ring::ElementClass, mpz_class>) {
     std::vector<mpq_class> coefficients;
     for (const auto& c : impl->coefficients) coefficients.push_back(c);
     return coefficients;
-  } else if constexpr (std::is_same_v<C, mpq_class> && std::is_same_v<typename Ring::ElementClass, eantic::renf_elem_class>) {
+  } else if constexpr (std::is_same_v<typename Ring::ElementClass, mpq_class>) {
+    return this->coefficients();
+  } else if constexpr (std::is_same_v<typename Ring::ElementClass, eantic::renf_elem_class>) {
     std::vector<mpq_class> ret;
     for (auto& c : impl->coefficients) {
       mpz_class den = c.den();
@@ -155,7 +160,7 @@ std::vector<C> Element<Ring>::coefficients() const {
     }
     return ret;
   } else {
-    static_assert(false_v<C>, "unsupported coefficient type");
+    static_assert(false_v<typename Ring::ElementClass>, "unsupported coefficient type");
   }
 }
 
@@ -264,12 +269,27 @@ Element<Ring>& Element<Ring>::operator*=(const T& rhs) {
 }
 
 template <typename Ring>
+Element<Ring>& Element<Ring>::operator*=(const mpz_class& rhs) {
+  return this->operator*=<mpz_class>(rhs);
+}
+
+template <typename Ring>
+Element<Ring>& Element<Ring>::operator*=(const mpq_class& rhs) {
+  return this->operator*=<mpq_class>(rhs);
+}
+
+template <typename Ring>
 template <typename T, typename, typename>
 Element<Ring>& Element<Ring>::operator/=(const T& rhs) {
   for (auto& c : impl->coefficients) {
     c /= rhs;
   }
   return *this;
+}
+
+template <typename Ring>
+Element<Ring>& Element<Ring>::operator/=(const mpq_class& rhs) {
+  return this->operator/=<mpq_class>(rhs);
 }
 
 template <typename Ring>
@@ -714,6 +734,18 @@ std::ostream& operator<<(std::ostream& out, const Element<Ring>& self) {
   }
   return out;
 }
+
+template <typename Ring, typename C>
+std::vector<C> Element_coefficients_1_4_0(const Element<Ring>& element) {
+  if constexpr (std::is_same_v<C, typename Ring::ElementClass>) {
+    return element.coefficients();
+  } else if constexpr (std::is_same_v<C, mpq_class>) {
+    return element.rationalCoefficients();
+  } else {
+    static_assert(false_t<C>, "no coefficients<C> for this C implemented");
+  }
+}
+
 }  // namespace exactreal
 
 namespace std {
@@ -734,33 +766,23 @@ namespace exactreal {
 template class Element<IntegerRing>;
 template std::ostream& operator<<(std::ostream&, const Element<IntegerRing>&);
 template Element<IntegerRing>& Element<IntegerRing>::operator*=(const int&);
-template Element<IntegerRing>& Element<IntegerRing>::operator*=(const mpz_class&);
-template std::vector<typename IntegerRing::ElementClass> Element<IntegerRing>::coefficients() const;
-template std::vector<mpq_class> Element<IntegerRing>::coefficients() const;
+template std::vector<mpz_class> Element_coefficients_1_4_0<IntegerRing, mpz_class>(const Element<IntegerRing> &);
 
 template class Element<RationalField>;
 template Element<RationalField>::Element(const Element<IntegerRing>&);
 template std::ostream& operator<<(std::ostream&, const Element<RationalField>&);
 template Element<RationalField>& Element<RationalField>::operator*=(const int&);
-template Element<RationalField>& Element<RationalField>::operator*=(const mpz_class&);
-template Element<RationalField>& Element<RationalField>::operator*=(const mpq_class&);
 template Element<RationalField>& Element<RationalField>::operator/=(const int&);
-template Element<RationalField>& Element<RationalField>::operator/=(const mpz_class&);
-template Element<RationalField>& Element<RationalField>::operator/=(const mpq_class&);
-template std::vector<typename RationalField::ElementClass> Element<RationalField>::coefficients() const;
+template std::vector<mpq_class> Element_coefficients_1_4_0<RationalField, mpq_class>(const Element<RationalField> &);
 
 template class Element<NumberField>;
 template std::ostream& operator<<(std::ostream&, const Element<NumberField>&);
 template Element<NumberField>& Element<NumberField>::operator*=(const int&);
-template Element<NumberField>& Element<NumberField>::operator*=(const mpz_class&);
-template Element<NumberField>& Element<NumberField>::operator*=(const mpq_class&);
 template Element<NumberField>& Element<NumberField>::operator*=(const eantic::renf_elem_class&);
 template Element<NumberField>& Element<NumberField>::operator/=(const int&);
-template Element<NumberField>& Element<NumberField>::operator/=(const mpz_class&);
-template Element<NumberField>& Element<NumberField>::operator/=(const mpq_class&);
 template Element<NumberField>& Element<NumberField>::operator/=(const eantic::renf_elem_class&);
-template std::vector<mpq_class> Element<NumberField>::coefficients<mpq_class>() const;
-template std::vector<eantic::renf_elem_class> Element<NumberField>::coefficients<eantic::renf_elem_class>() const;
+template std::vector<mpq_class> Element_coefficients_1_4_0<NumberField, mpq_class>(const Element<NumberField> &);
+template std::vector<eantic::renf_elem_class> Element_coefficients_1_4_0<NumberField, eantic::renf_elem_class>(const Element<NumberField> &);
 }  // namespace exactreal
 
 namespace std {

@@ -1,7 +1,7 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
+ *        Copyright (C)      2019 Vincent Delecroix
  *        Copyright (C) 2019-2021 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
@@ -172,8 +172,8 @@ TEST_CASE("Element over ZZ", "[element][integer_ring]") {
   }
 
   SECTION("Coefficients") {
-    REQUIRE(one.coefficients<mpq_class>() == std::vector<mpq_class>({1, 0}));
-    REQUIRE(x.coefficients<mpq_class>() == std::vector<mpq_class>({0, 1}));
+    REQUIRE(one.rationalCoefficients() == std::vector<mpq_class>({1, 0}));
+    REQUIRE(x.rationalCoefficients() == std::vector<mpq_class>({0, 1}));
   }
 
   SECTION("Floor & Ceil") {
@@ -333,12 +333,12 @@ TEST_CASE("Elements over Number Field", "[element][number_field]") {
     REQUIRE(x.coefficients() == std::vector<renf_elem_class>({0, 1}));
     REQUIRE((a * x).coefficients() == std::vector<renf_elem_class>({0, a}));
 
-    REQUIRE(x.coefficients<mpq_class>() == std::vector<mpq_class>({0, 0, 1, 0}));
-    REQUIRE((a * x).coefficients<mpq_class>() == std::vector<mpq_class>({0, 0, 0, 1}));
+    REQUIRE(x.rationalCoefficients() == std::vector<mpq_class>({0, 0, 1, 0}));
+    REQUIRE((a * x).rationalCoefficients() == std::vector<mpq_class>({0, 0, 0, 1}));
 
     auto rationals = Module<NumberField>::make({RealNumber::rational(1)});
-    REQUIRE(rationals->zero().coefficients<mpq_class>() == std::vector<mpq_class>(1, 0));
-    REQUIRE(rationals->gen(0).coefficients<mpq_class>() == std::vector<mpq_class>(1, 1));
+    REQUIRE(rationals->zero().rationalCoefficients() == std::vector<mpq_class>(1, 0));
+    REQUIRE(rationals->gen(0).rationalCoefficients() == std::vector<mpq_class>(1, 1));
   }
 
   SECTION("Unit") {

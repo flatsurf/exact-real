@@ -1,8 +1,7 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C) 2021 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,44 +17,21 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-/*
- * Forward declarations of all our classes. Loaded by every other header file
- * for convenience and also to get consistent defaults for template parameters.
- */
+// TODO: Explain
 
-#ifndef LIBEXACTREAL_FORWARD_HPP
-#define LIBEXACTREAL_FORWARD_HPP
+#ifndef LIBEXACTREAL_LEGACY_1_4_0_ELEMENT_HPP
+#define LIBEXACTREAL_LEGACY_1_4_0_ELEMENT_HPP
 
-#include <boost/yap/algorithm_fwd.hpp>
+#include <vector>
+#include <gmpxx.h>
 
-#include "local.hpp"
+#include "../../../exact-real/forward.hpp"
 
 namespace exactreal {
 
-namespace yap {
-template <boost::yap::expr_kind Kind, typename Tuple>
-struct ArfExpr;
-template <boost::yap::expr_kind Kind, typename Tuple>
-struct ArbExpr;
-}  // namespace yap
+template <typename Ring, typename C>
+std::vector<C> Element_coefficients_1_4_0(const Element<Ring>&);
 
-class Arb;
-class Arf;
-
-class RealNumber;
-
-class Seed;
-
-template <typename Ring>
-class Element;
-
-template <typename Ring>
-class Module;
-
-struct IntegerRing;
-struct RationalField;
-struct NumberField;
-
-}  // namespace exactreal
+}
 
 #endif

@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019-2020 Julian Rüth
+ *        Copyright (C)      2019 Vincent Delecroix
+ *        Copyright (C) 2019-2021 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -51,16 +51,23 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   Element(const std::shared_ptr<const Module<Ring>>& parent, const std::vector<typename Ring::ElementClass>& coefficients);
 
   Element(const typename Ring::ElementClass& value);
+
   template <bool Enabled = !std::is_same_v<Ring, IntegerRing>, std::enable_if_t<Enabled, bool> = true>
   Element(const Element<IntegerRing>& value);
-  template <bool Enabled = !std::is_same_v<Ring, RationalField> && std::is_convertible_v<mpq_class, typename Ring::ElementClass>, std::enable_if_t<Enabled, bool> = true>
+
+  template <bool Enabled = !std::is_same_v<Ring, RationalField> && Ring::contains_rationals,  std::enable_if_t<Enabled, bool> = true>
   Element(const Element<RationalField>& value);
 
   typename Ring::ElementClass operator[](const size) const;
   std::conditional<Ring::isField, mpq_class, mpz_class> operator[](const std::pair<size, size>&) const;
 
-  template <typename C = typename Ring::ElementClass>
-  LIBEXACTREAL_API std::vector<C> coefficients() const;
+  template <typename C>
+  [[deprecated("Use the non-template coefficients() or rationalCoefficients() instead.")]]
+  std::vector<C> coefficients() const;
+
+  std::vector<typename Ring::ElementClass> coefficients() const;
+
+  std::vector<mpq_class> rationalCoefficients() const;
 
   // Return a ball containing this element such that it's accuracy is at least
   // accuracy, defined as in http://arblib.org/arb.html#c.arb_rel_accuracy_bits, i.e.,
@@ -71,18 +78,36 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   Element& operator+=(const Element&);
   Element& operator-=(const Element&);
   Element& operator*=(const Element&);
+
   Element& operator*=(const RealNumber&);
+
   Element operator-() const;
-  // Define operator*= for every type that multiplies with Ring::ElementClass.
-  // (until we figure out how to dynamically inherit from boost::multiplicative for such T, we do not get operator* here.)
-  template <typename T, typename = decltype(std::declval<const typename Ring::ElementClass&>() * std::declval<const T&>())>
-  Element& operator*=(const T&) LIBEXACTREAL_API;
-  // Define operator/= and operator/ if we're in a field in the same way.
-  // (until we figure out how to dynamically inherit from boost::multiplicative for such T, we do not get operator/ here.)
-  template <typename T, typename = decltype(std::declval<const typename Ring::ElementClass&>() / std::declval<const T&>()), typename = std::enable_if_t<Ring::isField || false_t<T>, void>>
-  LIBEXACTREAL_API Element& operator/=(const T&);
+
+  // Multiply this element with `c`.
+  // This overload is available for every type that multiplies with the
+  // coefficient type. However, we need to define multiplication separately for
+  // mpz_class and mpq_class since we cannot export symbols with these as
+  // template arguments when building on clang with -fvisibility=hidden.
+  // TODO: Unfortunately, we must break ABI compatibility here since we cannot
+  // instantiate the *= template explicitly for mpz_class anymore:
+  // http://open-std.org/jtc1/sc22/wg21/docs/cwg_active.html#1665.
+  template <typename T, typename = typename Ring::template multiplication_t<T>>
+  Element& operator*=(const T& c);
+  Element& operator*=(const mpz_class&);
+  Element& operator*=(const mpq_class&);
+
+  // Divide this element by `c`.
+  // As with multiplication, we provide specialized overloads for GMP types.
+  // TODO: Unfortunately, we must break ABI compatibility here since we cannot
+  // instantiate the *= template explicitly for mpz_class anymore:
+  // http://open-std.org/jtc1/sc22/wg21/docs/cwg_active.html#1665.
+  template <typename T, typename = typename Ring::template division_t<T>, typename=void>
+  Element& operator/=(const T& c);
+  Element& operator/=(const mpz_class&);
+  Element& operator/=(const mpq_class&);
 
   std::optional<Element> truediv(const Element&) const;
+
   mpz_class floordiv(const Element& rhs) const;
 
   // Return whether this element is a unit, i.e., whether its inverse exists in the parent module.

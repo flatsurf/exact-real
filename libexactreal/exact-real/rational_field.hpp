@@ -38,6 +38,14 @@ struct LIBEXACTREAL_API RationalField : boost::equality_comparable<RationalField
 
   typedef mpq_class ElementClass;
 
+  template <typename T, typename M = decltype(std::declval<const ElementClass&>() * std::declval<const T&>())>
+  using multiplication_t = M;
+
+  template <typename T, typename Q = decltype(std::declval<const ElementClass&>() / std::declval<const T&>())>
+  using division_t = Q;
+
+  static constexpr bool contains_rationals = true;
+
   ElementClass coerce(const ElementClass& x) const { return x; }
 
   static constexpr bool isField = true;

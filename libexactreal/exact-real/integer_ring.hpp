@@ -25,6 +25,7 @@
 
 #include <boost/operators.hpp>
 #include <optional>
+#include <type_traits>
 
 #include "forward.hpp"
 
@@ -37,6 +38,14 @@ struct LIBEXACTREAL_API IntegerRing : private boost::equality_comparable<Integer
   static IntegerRing compositum(const IntegerRing& lhs, const IntegerRing& rhs);
 
   typedef mpz_class ElementClass;
+
+  template <typename T, typename M = decltype(std::declval<const ElementClass&>() * std::declval<const T&>())>
+  using multiplication_t = M;
+
+  template <typename T, typename Q = decltype(std::declval<const ElementClass&>() / std::declval<const T&>())>
+  using division_t = std::conditional_t<std::is_same_v<Q, mpz_class>, mpq_class, Q>;
+
+  static constexpr bool contains_rationals = false;
 
   ElementClass coerce(const ElementClass& x) const { return x; }
 
