@@ -32,6 +32,12 @@ namespace exactreal {
 template <typename Ring, typename C>
 std::vector<C> Element_coefficients_1_4_0(const Element<Ring>&);
 
+template <typename Ring, typename T>
+Element<Ring>& Element_operator_mul_1_4_0(Element<Ring>&, const T&);
+
+template <typename Ring, typename T>
+Element<Ring>& Element_operator_div_1_4_0(Element<Ring>&, const T&);
+
 }
 
 #endif

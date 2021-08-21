@@ -88,9 +88,6 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   // coefficient type. However, we need to define multiplication separately for
   // mpz_class and mpq_class since we cannot export symbols with these as
   // template arguments when building on clang with -fvisibility=hidden.
-  // TODO: Unfortunately, we must break ABI compatibility here since we cannot
-  // instantiate the *= template explicitly for mpz_class anymore:
-  // http://open-std.org/jtc1/sc22/wg21/docs/cwg_active.html#1665.
   template <typename T, typename = typename Ring::template multiplication_t<T>>
   Element& operator*=(const T& c);
   Element& operator*=(const mpz_class&);
@@ -98,9 +95,6 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
 
   // Divide this element by `c`.
   // As with multiplication, we provide specialized overloads for GMP types.
-  // TODO: Unfortunately, we must break ABI compatibility here since we cannot
-  // instantiate the *= template explicitly for mpz_class anymore:
-  // http://open-std.org/jtc1/sc22/wg21/docs/cwg_active.html#1665.
   template <typename T, typename = typename Ring::template division_t<T>, typename=void>
   Element& operator/=(const T& c);
   Element& operator/=(const mpz_class&);

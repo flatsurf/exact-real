@@ -21,6 +21,10 @@
 
 #include "element.hpp"
 
+#include "../../../exact-real/integer_ring.hpp"
+#include "../../../exact-real/rational_field.hpp"
+#include "../../../exact-real/number_field.hpp"
+
 namespace exactreal {
 
 template <typename Ring>
@@ -28,6 +32,12 @@ class LIBEXACTREAL_API Element {
  public:
   template <typename C>
   std::vector<C> coefficients() const LIBEXACTREAL_API;
+
+  template <typename T, typename = typename Ring::template multiplication_t<T>>
+  Element& operator*=(const T& c);
+
+  template <typename T, typename = typename Ring::template division_t<T>, typename=void>
+  Element& operator/=(const T& c);
 };
 
 template <typename Ring>
@@ -36,9 +46,32 @@ std::vector<C> Element<Ring>::coefficients() const {
   return Element_coefficients_1_4_0<Ring, C>(*this);
 }
 
+template <typename Ring>
+template <typename T, typename>
+Element<Ring>& Element<Ring>::operator*=(const T& c) {
+  return Element_operator_mul_1_4_0<Ring, T>(*this, c);
+}
+
+template <typename Ring>
+template <typename T, typename, typename>
+Element<Ring>& Element<Ring>::operator/=(const T& c) {
+  return Element_operator_div_1_4_0<Ring, T>(*this, c);
+}
+
 template std::vector<mpz_class> Element<IntegerRing>::coefficients<mpz_class>() const;
 template std::vector<mpq_class> Element<RationalField>::coefficients<mpq_class>() const;
 template std::vector<eantic::renf_elem_class> Element<NumberField>::coefficients<eantic::renf_elem_class>() const;
 template std::vector<mpq_class> Element<NumberField>::coefficients<mpq_class>() const;
+
+template Element<IntegerRing>& Element<IntegerRing>::operator*=(const mpz_class&);
+template Element<RationalField>& Element<RationalField>::operator*=(const mpz_class&);
+template Element<RationalField>& Element<RationalField>::operator*=(const mpq_class&);
+template Element<NumberField>& Element<NumberField>::operator*=(const mpz_class&);
+template Element<NumberField>& Element<NumberField>::operator*=(const mpq_class&);
+
+template Element<RationalField>& Element<RationalField>::operator/=(const mpz_class&);
+template Element<RationalField>& Element<RationalField>::operator/=(const mpq_class&);
+template Element<NumberField>& Element<NumberField>::operator/=(const mpz_class&);
+template Element<NumberField>& Element<NumberField>::operator/=(const mpq_class&);
 
 }
