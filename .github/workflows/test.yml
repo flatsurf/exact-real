@@ -9,12 +9,12 @@ jobs:
     strategy:
       matrix:
         include:
-          - on: ubuntu-20.04
-          - on: ubuntu-20.04
-            environment: binder
-          - on: ubuntu-20.04
-            sanitizer: valgrind
           # TODO: Enable this, and prepare the other sanitizers.
+          # - on: ubuntu-20.04
+          # - on: ubuntu-20.04
+          #   environment: binder
+          # - on: ubuntu-20.04
+          #   sanitizer: valgrind
           # - on: macos-10.15
           - on: macos-10.15
             sanitizer: address
