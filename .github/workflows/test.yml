@@ -222,13 +222,18 @@ jobs:
         run: |
           echo "::group::creating ABI dump"
           abi-dumper libexactreal/src/.libs/libexactreal.so -o libexactreal/test/ABI-new.dump
-          cat libexactreal/test/ABI-new.dump
 
           echo "::group::checking for removed symbols"
           abi-compliance-checker -l libexactreal -old libexactreal/test/ABI.dump -new libexactreal/test/ABI-new.dump -stdout | lynx --dump -stdin
 
           echo "::group::checking for new symbols"
           abi-compliance-checker -l libexactreal -old libexactreal/test/ABI-new.dump -new libexactreal/test/ABI-old.dump -stdout | lynx --dump -stdin
+      - name: uploads new ABI
+        uses: actions/upload-artifact@v2
+        with:
+          name: ABI
+          path: libexactreal/test/ABI-new.dump
+        if: ${{ always() }}
       - name: show logs
         shell: bash -l {0}
         run: for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
