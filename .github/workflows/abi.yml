@@ -47,7 +47,7 @@ jobs:
           abi-compliance-checker -l libexactreal -old libexactreal/test/ABI.dump -new libexactreal/test/ABI-new.dump -stdout | lynx --dump -stdin
 
           echo "::group::checking for new symbols"
-          abi-compliance-checker -l libexactreal -old libexactreal/test/ABI-new.dump -new libexactreal/test/ABI-old.dump -stdout | lynx --dump -stdin
+          abi-compliance-checker -l libexactreal -old libexactreal/test/ABI-new.dump -new libexactreal/test/ABI.dump -stdout | lynx --dump -stdin
       - name: uploads new ABI
         uses: actions/upload-artifact@v2
         with:
