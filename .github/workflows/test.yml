@@ -50,7 +50,7 @@ jobs:
           mamba install -n test --quiet -y pytest pytest-xdist byexample
           mamba env update -n test --quiet -f repo2docker.yml
           mamba env update -n test --quiet -f binder/environment.yml
-          mamba uninstall -y libexactreal pyexactreal
+          mamba uninstall -y --force libexactreal pyexactreal
           conda list
         if: ${{ matrix.environment == 'binder' }}
       - name: configure & build & test
