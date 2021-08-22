@@ -17,7 +17,21 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-// TODO: Explain
+// Provide backwards compatible implements of Element::coefficients,
+// Element::operator*= and Element::operator/= as defined in the 1.4.0 release.
+// In the 2.2.0 release we had to remove mpz_class and mpq_class from the
+// template arguments of all methods in the public API of libexactreal since
+// otherwise clang deos not export these symbols when building with
+// -fvisibility=hidden.
+// Therefore, we split coefficients() into coefficinets() and
+// rationalCoefficients(), and added specializations of operator*= and
+// operator/=. However, we can not instantiate the old versions of the
+// templated versions due to
+// http://open-std.org/jtc1/sc22/wg21/docs/cwg_active.html#1665, i.e., we would
+// break ABI compatibility with this change.
+// We now implement the old ABI in a separate translation unit. The underlying
+// implementation is still in the original element.cc, implementing the
+// functions below.
 
 #ifndef LIBEXACTREAL_LEGACY_1_4_0_ELEMENT_HPP
 #define LIBEXACTREAL_LEGACY_1_4_0_ELEMENT_HPP
