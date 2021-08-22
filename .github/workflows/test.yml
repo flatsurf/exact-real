@@ -15,13 +15,12 @@ jobs:
     strategy:
       matrix:
         include:
-          # TODO: Enable this, and prepare the other sanitizers.
-          # - on: ubuntu-20.04
-          # - on: ubuntu-20.04
-          #   environment: binder
-          # - on: ubuntu-20.04
-          #   sanitizer: valgrind
-          # - on: macos-10.15
+          - on: ubuntu-20.04
+          - on: ubuntu-20.04
+            environment: binder
+          - on: ubuntu-20.04
+            sanitizer: valgrind
+          - on: macos-10.15
           - on: macos-10.15
             sanitizer: address
     steps:
@@ -80,9 +79,7 @@ jobs:
         uses: mxschmitt/action-tmate@v3
         with:
           limit-access-to-actor: true
-        # TODO: Enable before merge.
-        # if: ${{ failure() && github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
-        if: ${{ failure() }}
+        if: ${{ failure() && github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
   test-pyexactreal:
     runs-on: ${{ matrix.on }}
     strategy:
