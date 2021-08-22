@@ -428,7 +428,6 @@ LIBEXACTREAL_2.0.0 {
     };
 } LIBEXACTREAL_1.5.0;
 LIBEXACTREAL_2.2.0 {
-  # TODO
   global:
     extern "C++" {
       "exactreal::Element<exactreal::IntegerRing>::rationalCoefficients() const";
