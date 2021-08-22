@@ -712,7 +712,7 @@ std::ostream& operator<<(std::ostream& out, const Element<Ring>& self) {
   for (size i = 0; i < self.impl->parent->rank(); i++) {
     coefficients.insert(std::tuple(
         self.impl->coefficients[i] < 0,
-        Element<Ring>(Module<Ring>::make({self.impl->parent->basis()[i]}, self.impl->parent->ring()), std::vector<typename Ring::ElementClass>({1})),
+        Element<Ring>(Module<Ring>::make({self.impl->parent->basis()[i]}, self.impl->parent->ring())->gen(0)),
         self.impl->coefficients[i]));
   }
 
