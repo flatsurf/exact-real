@@ -215,7 +215,7 @@ jobs:
         run: |
           cd libexactreal
           ./bootstrap
-          export CXXFLAGS="$CXXFLAGS -g Og"
+          export CXXFLAGS="$CXXFLAGS -g -Og"
           ./configure --prefix="$PREFIX" --with-version-script
           make
       - name: check ABI compliance
@@ -229,6 +229,15 @@ jobs:
 
           echo "::group::checking for new symbols"
           abi-compliance-checker -l libexactreal -old libexactreal/test/ABI-new.dump -new libexactreal/test/ABI-old.dump -stdout | lynx --dump -stdin
+      - name: show logs
+        shell: bash -l {0}
+        run: for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
+        if: ${{ always() }}
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true
+        if: ${{ failure() && github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
 
 env:
   MAKEFLAGS: -j2
