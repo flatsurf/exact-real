@@ -17,8 +17,6 @@ jobs:
         include:
           - on: ubuntu-20.04
           - on: ubuntu-20.04
-            environment: binder
-          - on: ubuntu-20.04
             sanitizer: valgrind
           - on: macos-10.15
           - on: macos-10.15
@@ -42,17 +40,6 @@ jobs:
         run: |
           mamba env update --quiet -n test -f libexactreal/environment.yml
           conda list
-        if: ${{ matrix.environment != 'binder' }}
-      - name: Create binder environment
-        shell: bash -l {0}
-        run: |
-          wget -O repo2docker.yml https://github.com/jupyterhub/repo2docker/raw/main/repo2docker/buildpacks/conda/environment.yml
-          mamba install -n test --quiet -y pytest pytest-xdist byexample
-          mamba env update -n test --quiet -f repo2docker.yml
-          mamba env update -n test --quiet -f binder/environment.yml
-          mamba uninstall -y --force libexactreal pyexactreal
-          conda list
-        if: ${{ matrix.environment == 'binder' }}
       - name: configure & build & test
         shell: bash -l {0}
         run: |
@@ -97,9 +84,6 @@ jobs:
           - on: ubuntu-20.04
             python: "3.9"
             sanitizer: valgrind
-          - on: ubuntu-20.04
-            python: "3.7"
-            environment: binder
           - on: macos-10.15
             python: "3.6"
           - on: macos-10.15
@@ -114,7 +98,7 @@ jobs:
       - name: build flags
         id: flags
         run: |
-          echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"` `[[ '${{ matrix.environment }}' == "binder" ]] && echo "--without-sage"`
+          echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"`
       - uses: conda-incubator/setup-miniconda@v2
         with: { mamba-version: "*", channels: "flatsurf,conda-forge", python-version: "${{ matrix.python }}", channel-priority: true }
       - name: install valgrind
@@ -127,16 +111,6 @@ jobs:
           mamba env update --quiet -n test -f libexactreal/environment.yml
           mamba env update --quiet -n test -f pyexactreal/environment.yml
           conda list
-        if: ${{ matrix.environment != 'binder' }}
-      - name: Create binder environment
-        shell: bash -l {0}
-        run: |
-          wget -O repo2docker.yml https://github.com/jupyterhub/repo2docker/raw/main/repo2docker/buildpacks/conda/environment.yml
-          mamba install -n test --quiet -y pytest pytest-xdist byexample
-          mamba env update -n test --quiet -f repo2docker.yml
-          mamba env update -n test --quiet -f binder/environment.yml
-          conda list
-        if: ${{ matrix.environment == 'binder' }}
       - name: configure & build & test
         shell: bash -l {0}
         run: |
