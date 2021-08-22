@@ -14,10 +14,10 @@
 export EXTRA_CLING_ARGS="-I@abs_srcdir@/../../libexactreal -I@abs_builddir@/../../libexactreal/exact-real $EXTRA_CLING_ARGS"
 
 # Load libexactreal.so from our build tree.
-export LD_LIBRARY_PATH="@abs_builddir@/../../libexactreal/src/.libs/:@abs_builddir@/../../libexactreal/srcxx/.libs/:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="@abs_builddir@/../../libexactreal/src/.libs/:$LD_LIBRARY_PATH"
 
 # Load libeantic.dylib from our build tree.
-export DYLD_LIBRARY_PATH="@abs_builddir@/../../libexactreal/src/.libs/:@abs_builddir@/../../libexactreal/srcxx/.libs/:$DYLD_LIBRARY_PATH"
+export DYLD_LIBRARY_PATH="@abs_builddir@/../../libexactreal/src/.libs/:$DYLD_LIBRARY_PATH"
 
 # Load pyexactreal from our source tree.
 export PYTHONPATH="@abs_srcdir@/../src/:@pythondir@"
