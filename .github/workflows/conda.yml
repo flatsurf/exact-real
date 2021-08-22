@@ -59,7 +59,3 @@ jobs:
         for notebook in `find -name '*.ipynb'`; do
           jupyter nbconvert --execute --to notebook --inplace "$notebook"
         done
-    - name: Check that all notebooks produced expected output
-      shell: bash -l {0}
-      run: |
-        git diff --exit-code
