@@ -431,15 +431,23 @@ LIBEXACTREAL_2.2.0 {
   # TODO
   global:
     extern "C++" {
-      "exactreal::Element<exactreal::NumberField>& exactreal::Element<exactreal::NumberField>::operator*=<eantic::renf_elem_class, eantic::renf_elem_class, void>(eantic::renf_elem_class const&)";
-      "exactreal::Element<exactreal::RationalField>::operator*=(__gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&)";
-      "exactreal::Element<exactreal::IntegerRing>::operator*=(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&)";
       "exactreal::Element<exactreal::IntegerRing>::rationalCoefficients() const";
       "exactreal::Element<exactreal::RationalField>::rationalCoefficients() const";
       "exactreal::Element<exactreal::NumberField>::rationalCoefficients() const";
       "exactreal::Element<exactreal::IntegerRing>::coefficients() const";
       "exactreal::Element<exactreal::RationalField>::coefficients() const";
       "exactreal::Element<exactreal::NumberField>::coefficients() const";
+      "exactreal::Element<exactreal::IntegerRing>::operator*=(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&)";
+      "exactreal::Element<exactreal::IntegerRing>::operator*=(__gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&)";
+      "exactreal::Element<exactreal::RationalField>::operator*=(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&)";
+      "exactreal::Element<exactreal::RationalField>::operator*=(__gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&)";
+      "exactreal::Element<exactreal::NumberField>::operator*=(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&)";
+      "exactreal::Element<exactreal::NumberField>::operator*=(__gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&)";
+      "exactreal::Element<exactreal::IntegerRing>::operator/=(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&)";
+      "exactreal::Element<exactreal::IntegerRing>::operator/=(__gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&)";
+      "exactreal::Element<exactreal::RationalField>::operator/=(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&)";
       "exactreal::Element<exactreal::RationalField>::operator/=(__gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&)";
+      "exactreal::Element<exactreal::NumberField>::operator/=(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&)";
+      "exactreal::Element<exactreal::NumberField>::operator/=(__gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&)";
     };
 } LIBEXACTREAL_2.0.0;
