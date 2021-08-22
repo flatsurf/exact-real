@@ -3,6 +3,10 @@ on:
   push: { branches: [ "master" ] }
   pull_request: { branches: [ "master" ] }
 
+concurrency:
+  group: conda-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   conda-build:
     runs-on: ubuntu-20.04

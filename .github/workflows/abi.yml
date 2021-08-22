@@ -9,6 +9,10 @@ on:
         required: false
         default: false
 
+concurrency:
+  group: abi-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   abi-compliance:
     runs-on: ubuntu-20.04

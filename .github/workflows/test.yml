@@ -9,6 +9,10 @@ on:
         required: false
         default: false
 
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test-libexactreal:
     runs-on: ${{ matrix.on }}
