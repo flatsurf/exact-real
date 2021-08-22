@@ -27,3 +27,35 @@ jobs:
       with:
         user: flatsurf
         token: ${{ secrets.BINSTAR_TOKEN }}
+  binder:
+    runs-on: ubuntu-20.04
+    needs: conda-build
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - uses: conda-incubator/setup-miniconda@v2
+      with: { mamba-version: "*", channels: "flatsurf,conda-forge", python-version: "3.7", channel-priority: true }
+    - uses: actions/download-artifact@v2
+      with:
+        name: conda-packages
+    - name: Create binder environment
+      shell: bash -l {0}
+      run: |
+        wget -O repo2docker.yml https://github.com/jupyterhub/repo2docker/raw/main/repo2docker/buildpacks/conda/environment.yml
+        mamba install -n test --quiet -y pytest pytest-xdist byexample
+        mamba env update -n test --quiet -f repo2docker.yml
+        mamba env update -n test --quiet -f binder/environment.yml
+        conda list
+        mamba install --use-local -y libexactreal pyexactreal
+        conda list
+    - name: Run all example notebooks
+      shell: bash -l {0}
+      run: |
+        for notebook in `find -name '*.ipynb'`; do
+          jupyter nbconvert --execute --to notebook --inplace "$notebook"
+        done
+    - name: Check that all notebooks produced expected output
+      shell: bash -l {0}
+      run: |
+        git diff --exit-code
