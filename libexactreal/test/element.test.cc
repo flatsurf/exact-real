@@ -143,6 +143,7 @@ TEST_CASE("Element over ZZ", "[element][integer_ring]") {
         REQUIRE(x != *one);
       REQUIRE(mpz_class(1) * x == x);
       REQUIRE(mpz_class(0) * x == m->zero());
+      REQUIRE(x / mpz_class(1) == x);
     }
   }
 
@@ -224,6 +225,7 @@ TEST_CASE("Element over QQ", "[element][rational_field]") {
         REQUIRE(x != *one);
       REQUIRE(mpz_class(1) * x == x);
       REQUIRE(mpz_class(0) * x == m->zero());
+      REQUIRE(x / mpz_class(1) == x);
     }
 
     for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
@@ -233,6 +235,9 @@ TEST_CASE("Element over QQ", "[element][rational_field]") {
       REQUIRE(mpq_class(-1) * x == -x);
       REQUIRE(mpq_class(1) * x == x);
       REQUIRE(mpq_class(0) * x == m->zero());
+      REQUIRE(x / mpq_class(1) == x);
+      REQUIRE(x / mpq_class(1, 1) == x);
+      REQUIRE(x / mpq_class(1, 2) == 2 * x);
     }
   }
 
