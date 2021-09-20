@@ -152,10 +152,10 @@ jobs:
           # similarly cppyy on macOS seems to default to C++14, https://github.com/conda-forge/cppyy-feedstock/issues/21
           export EXTRA_CLING_ARGS="-std=c++17"
           if [[ "${{ matrix.sanitizer }}" == "address" || "${{ matrix.sanitizer }}" == "undefined" ]]; then
+            # Since the application (Python) has not been built with asan, we need to preload it explicitly.
             export EANTIC_LD_PRELOAD=$(gcc -print-file-name=libasan.so)
             export EANTIC_DYLD_INSERT_LIBRARIES=$(clang -print-file-name=libclang_rt.asan-x86_64.so)
-            # Leak detection reports too many false positives in Python; they
-            # disabled it in their CI actually.
+            # Leak detection reports too many false positives in Python; they disabled it in their CI actually.
             export ASAN_OPTIONS=detect_leaks=0
             # https://bitbucket.org/wlav/cppyy/issues/367/address-sanitizer-reports-a-alloc-dealloc
             export ASAN_OPTIONS="$ASAN_OPTIONS:alloc_dealloc_mismatch=0"
