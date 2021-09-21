@@ -114,9 +114,10 @@ jobs:
             python: "3.8"
           - on: macos-10.15
             python: "3.9"
-          - on: macos-10.15
-            python: "3.9"
-            sanitizer: address
+          # libtool strips -shared-asan from LDFLAGS but this is required to preload asan when building with clang
+          # - on: macos-10.15
+          #   python: "3.9"
+          #   sanitizer: address
           # Needs https://github.com/wbhart/flint2/pull/992
           # - on: macos-10.15
           #   python: "3.9"
