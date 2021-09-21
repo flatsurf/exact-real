@@ -96,9 +96,10 @@ jobs:
             python: "3.8"
           - on: ubuntu-20.04
             python: "3.9"
-          - on: ubuntu-20.04
-            python: "3.9"
-            sanitizer: address
+          # Needs libsanitizer=11, with the default sanitizer, we get "Failed to mmap".
+          # - on: ubuntu-20.04
+          #   python: "3.9"
+          #   sanitizer: address
           # Needs https://github.com/wbhart/flint2/pull/992
           # - on: ubuntu-20.04
           #   python: "3.9"
