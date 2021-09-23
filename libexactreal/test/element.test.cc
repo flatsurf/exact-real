@@ -271,6 +271,12 @@ TEST_CASE("Element over QQ", "[element][rational_field]") {
     REQUIRE(*(x * x).truediv(x) == x);
     REQUIRE(*((x + m->gen(0)) * (x - m->gen(0))).truediv(x - m->gen(0)) == x + m->gen(0));
   }
+
+  SECTION("Coefficients") {
+    auto x = m->gen(1);
+    REQUIRE(one.rationalCoefficients() == std::vector<mpq_class>({1, 0}));
+    REQUIRE(x.rationalCoefficients() == std::vector<mpq_class>({0, 1}));
+  }
 }
 
 TEST_CASE("Elements over Number Field", "[element][number_field]") {
