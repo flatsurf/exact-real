@@ -177,7 +177,6 @@ jobs:
           make V=1 `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo check-valgrind || echo check` VALGRIND_SUPPRESSIONS_FILES=`pwd`/../tools/valgrind/conda.supp
       - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
-        if: ${{ always() }}
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
         with:
