@@ -35,7 +35,7 @@ jobs:
         run: |
           cd libexactreal
           ./bootstrap
-          export CXXFLAGS="$CXXFLAGS -g -Og"
+          export CXXFLAGS="$CXXFLAGS -g -Og -fvisibility=hidden -fvisibility-inlines-hidden"
           ./configure --prefix="$PREFIX" --with-version-script
           make
       - name: check ABI compliance
