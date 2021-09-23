@@ -18,6 +18,7 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
+#include <unordered_set>
 #include <e-antic/renfxx.h>
 
 #include <boost/lexical_cast.hpp>
@@ -188,6 +189,10 @@ TEST_CASE("Element over ZZ", "[element][integer_ring]") {
     REQUIRE(!x.unit());
     REQUIRE(!zero.unit());
   }
+
+  SECTION("Hashing") {
+    REQUIRE(std::unordered_set{zero, one, x}.size() == 3);
+  }
 }
 
 TEST_CASE("Element over QQ", "[element][rational_field]") {
@@ -276,6 +281,10 @@ TEST_CASE("Element over QQ", "[element][rational_field]") {
     auto x = m->gen(1);
     REQUIRE(one.rationalCoefficients() == std::vector<mpq_class>({1, 0}));
     REQUIRE(x.rationalCoefficients() == std::vector<mpq_class>({0, 1}));
+  }
+
+  SECTION("Hashing") {
+    REQUIRE(std::unordered_set{elements[0], elements[1]}.size() == 2);
   }
 }
 
@@ -375,6 +384,10 @@ TEST_CASE("Elements over Number Field", "[element][number_field]") {
 
     REQUIRE(x + y - y == x);
     REQUIRE(y + x - x == y);
+  }
+
+  SECTION("Hashing") {
+    REQUIRE(std::unordered_set{elements[0], elements[1]}.size() == 2);
   }
 }
 
