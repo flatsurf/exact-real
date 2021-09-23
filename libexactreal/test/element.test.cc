@@ -319,6 +319,8 @@ TEST_CASE("Elements over Number Field", "[element][number_field]") {
 
     for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
       auto x = elements[i];
+      CAPTURE(x);
+
       REQUIRE(x + x == renf_elem_class(*K, 2) * x);
       REQUIRE(x - x == renf_elem_class(*K, 0) * x);
       REQUIRE(renf_elem_class(*K, -1) * x == -x);
@@ -330,11 +332,13 @@ TEST_CASE("Elements over Number Field", "[element][number_field]") {
       REQUIRE(mpq_class(1, 2) * x == x / 2);
 
       for (size_t j = 0; j < sizeof(elements) / sizeof(elements[0]); j++) {
+        CAPTURE(elements[j]);
+
         if (i == j) {
           REQUIRE((x + x).truediv(elements[j]) == 2);
           REQUIRE((x + x).floordiv(elements[j]) == 2);
         } else {
-          REQUIRE((x + x).floordiv(elements[j]) != 2);
+          REQUIRE((x + x).truediv(elements[j]) != 2);
         }
       }
     }
