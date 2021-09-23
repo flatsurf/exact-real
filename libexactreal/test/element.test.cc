@@ -246,6 +246,12 @@ TEST_CASE("Element over QQ", "[element][rational_field]") {
     }
   }
 
+  SECTION("Printing") {
+    REQUIRE(lexical_cast<string>(m->gen(0)) == "1");
+    REQUIRE(lexical_cast<string>(m->gen(1)) == "ℝ(0.051925…)");
+    REQUIRE(lexical_cast<string>(m->gen(0) + m->gen(1)) == "ℝ(0.051925…) + 1");
+  }
+
   SECTION("Cast to Rational") {
     REQUIRE(static_cast<std::optional<mpq_class>>(one) == mpq_class(1, 1));
     REQUIRE(static_cast<std::optional<mpq_class>>(one / 2) == mpq_class(1, 2));
@@ -351,6 +357,12 @@ TEST_CASE("Elements over Number Field", "[element][number_field]") {
         }
       }
     }
+  }
+
+  SECTION("Printing") {
+    REQUIRE(lexical_cast<string>(m->gen(0)) == "1");
+    REQUIRE(lexical_cast<string>(m->gen(1)) == "ℝ(0.275443…)");
+    REQUIRE(lexical_cast<string>(m->gen(0) + m->gen(1)) == "ℝ(0.275443…) + 1");
   }
 
   SECTION("Coefficients") {
