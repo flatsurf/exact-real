@@ -54,9 +54,7 @@ jobs:
           name: ABI
           path: libexactreal/test/ABI-new.dump
         if: ${{ always() }}
-      - name: show logs
-        shell: bash -l {0}
-        run: for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
+      - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3

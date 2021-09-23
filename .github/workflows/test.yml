@@ -74,9 +74,7 @@ jobs:
 
           echo "::group::test"
           make V=1 `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo check-valgrind || echo check` VALGRIND_SUPPRESSIONS_FILES=`pwd`/../tools/valgrind/conda.supp
-      - name: show logs
-        shell: bash -l {0}
-        run: for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
+      - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
@@ -177,9 +175,8 @@ jobs:
           echo "::group::test"
           cd pyexactreal
           make V=1 `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo check-valgrind || echo check` VALGRIND_SUPPRESSIONS_FILES=`pwd`/../tools/valgrind/conda.supp
-      - name: show logs
-        shell: bash -l {0}
-        run: for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
+      - uses: flatsurf/actions/show-logs@main
+        if: ${{ always() }}
         if: ${{ always() }}
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
@@ -205,9 +202,7 @@ jobs:
           ./bootstrap
           ./configure --prefix="$PREFIX"
           make distcheck
-      - name: show logs
-        shell: bash -l {0}
-        run: for log in `find . -name '*.log'`; do echo "::group::$log"; cat $log; echo "::endgroup"; done
+      - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
