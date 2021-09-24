@@ -24,6 +24,7 @@
 #include "../../../exact-real/integer_ring.hpp"
 #include "../../../exact-real/rational_field.hpp"
 #include "../../../exact-real/number_field.hpp"
+#include "../../../exact-real/external/spimpl/spimpl.h"
 
 namespace exactreal {
 
@@ -31,13 +32,17 @@ template <typename Ring>
 class LIBEXACTREAL_API Element {
  public:
   template <typename C>
-  std::vector<C> coefficients() const LIBEXACTREAL_API;
+  std::vector<C> coefficients() const;
 
   template <typename T, typename = typename Ring::template multiplication_t<T>>
   Element& operator*=(const T& c);
 
   template <typename T, typename = typename Ring::template division_t<T>, typename=void>
   Element& operator/=(const T& c);
+
+ private:
+  struct LIBEXACTREAL_LOCAL Implementation;
+  spimpl::impl_ptr<Implementation> impl;
 };
 
 template <typename Ring>
