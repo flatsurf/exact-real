@@ -156,7 +156,7 @@ jobs:
           # conda puts an explicit -std=c++14 on the command line on macOS, we override it here:
           export CXXFLAGS="$CXXFLAGS -std=c++17"
           # similarly cppyy on macOS seems to default to C++14, https://github.com/conda-forge/cppyy-feedstock/issues/21
-          export EXTRA_CLING_ARGS="$CXXFLAGS"
+          export EXTRA_CLING_ARGS="-UNDEBUG -O2 -std=c++17"
           if [[ "${{ matrix.sanitizer }}" == "address" || "${{ matrix.sanitizer }}" == "undefined" ]]; then
             # Since the application (Python) has not been built with asan, we need to preload it explicitly.
             export EXACTREAL_LD_PRELOAD=$(gcc -print-file-name=libasan.so)
