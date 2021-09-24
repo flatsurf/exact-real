@@ -36,8 +36,9 @@
 #ifndef LIBEXACTREAL_LEGACY_1_4_0_ELEMENT_HPP
 #define LIBEXACTREAL_LEGACY_1_4_0_ELEMENT_HPP
 
-#include <vector>
 #include <gmpxx.h>
+
+#include <vector>
 
 #include "../../../exact-real/forward.hpp"
 
@@ -52,6 +53,6 @@ Element<Ring>& Element_operator_mul_1_4_0(Element<Ring>&, const T&);
 template <typename Ring, typename T>
 Element<Ring>& Element_operator_div_1_4_0(Element<Ring>&, const T&);
 
-}
+}  // namespace exactreal
 
 #endif

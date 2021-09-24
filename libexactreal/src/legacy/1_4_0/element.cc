@@ -17,14 +17,14 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <e-antic/renf_elem_class.hpp>
-
 #include "element.hpp"
 
-#include "../../../exact-real/integer_ring.hpp"
-#include "../../../exact-real/rational_field.hpp"
-#include "../../../exact-real/number_field.hpp"
+#include <e-antic/renf_elem_class.hpp>
+
 #include "../../../exact-real/external/spimpl/spimpl.h"
+#include "../../../exact-real/integer_ring.hpp"
+#include "../../../exact-real/number_field.hpp"
+#include "../../../exact-real/rational_field.hpp"
 
 namespace exactreal {
 
@@ -37,7 +37,7 @@ class LIBEXACTREAL_API Element {
   template <typename T, typename = typename Ring::template multiplication_t<T>>
   Element& operator*=(const T& c);
 
-  template <typename T, typename = typename Ring::template division_t<T>, typename=void>
+  template <typename T, typename = typename Ring::template division_t<T>, typename = void>
   Element& operator/=(const T& c);
 
  private:
@@ -79,4 +79,4 @@ template Element<RationalField>& Element<RationalField>::operator/=(const mpq_cl
 template Element<NumberField>& Element<NumberField>::operator/=(const mpz_class&);
 template Element<NumberField>& Element<NumberField>::operator/=(const mpq_class&);
 
-}
+}  // namespace exactreal

@@ -18,10 +18,10 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <unordered_set>
 #include <e-antic/renfxx.h>
 
 #include <boost/lexical_cast.hpp>
+#include <unordered_set>
 
 #include "../exact-real/arb.hpp"
 #include "../exact-real/element.hpp"

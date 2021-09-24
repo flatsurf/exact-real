@@ -19,7 +19,6 @@
  *********************************************************************/
 
 #include "../exact-real/element.hpp"
-#include "legacy/1_4_0/element.hpp"
 
 #include <arb.h>
 #include <e-antic/renfxx.h>
@@ -34,6 +33,7 @@
 #include "../exact-real/real_number.hpp"
 #include "../exact-real/yap/arb.hpp"
 #include "external/gmpxxll/gmpxxll/mpz_class.hpp"
+#include "legacy/1_4_0/element.hpp"
 #include "util/assert.ipp"
 
 using namespace exactreal;
@@ -793,7 +793,7 @@ namespace exactreal {
 template class Element<IntegerRing>;
 template std::ostream& operator<<(std::ostream&, const Element<IntegerRing>&);
 template Element<IntegerRing>& Element<IntegerRing>::operator*=(const int&);
-template std::vector<mpz_class> Element_coefficients_1_4_0<IntegerRing, mpz_class>(const Element<IntegerRing> &);
+template std::vector<mpz_class> Element_coefficients_1_4_0<IntegerRing, mpz_class>(const Element<IntegerRing>&);
 template Element<IntegerRing>& Element_operator_mul_1_4_0(Element<IntegerRing>&, const mpz_class&);
 
 template class Element<RationalField>;
@@ -801,7 +801,7 @@ template Element<RationalField>::Element(const Element<IntegerRing>&);
 template std::ostream& operator<<(std::ostream&, const Element<RationalField>&);
 template Element<RationalField>& Element<RationalField>::operator*=(const int&);
 template Element<RationalField>& Element<RationalField>::operator/=(const int&);
-template std::vector<mpq_class> Element_coefficients_1_4_0<RationalField, mpq_class>(const Element<RationalField> &);
+template std::vector<mpq_class> Element_coefficients_1_4_0<RationalField, mpq_class>(const Element<RationalField>&);
 template Element<RationalField>& Element_operator_mul_1_4_0(Element<RationalField>&, const mpz_class&);
 template Element<RationalField>& Element_operator_mul_1_4_0(Element<RationalField>&, const mpq_class&);
 template Element<RationalField>& Element_operator_div_1_4_0(Element<RationalField>&, const mpz_class&);
@@ -813,8 +813,8 @@ template Element<NumberField>& Element<NumberField>::operator*=(const int&);
 template Element<NumberField>& Element<NumberField>::operator*=(const eantic::renf_elem_class&);
 template Element<NumberField>& Element<NumberField>::operator/=(const int&);
 template Element<NumberField>& Element<NumberField>::operator/=(const eantic::renf_elem_class&);
-template std::vector<mpq_class> Element_coefficients_1_4_0<NumberField, mpq_class>(const Element<NumberField> &);
-template std::vector<eantic::renf_elem_class> Element_coefficients_1_4_0<NumberField, eantic::renf_elem_class>(const Element<NumberField> &);
+template std::vector<mpq_class> Element_coefficients_1_4_0<NumberField, mpq_class>(const Element<NumberField>&);
+template std::vector<eantic::renf_elem_class> Element_coefficients_1_4_0<NumberField, eantic::renf_elem_class>(const Element<NumberField>&);
 template Element<NumberField>& Element_operator_mul_1_4_0(Element<NumberField>&, const mpz_class&);
 template Element<NumberField>& Element_operator_mul_1_4_0(Element<NumberField>&, const mpq_class&);
 template Element<NumberField>& Element_operator_div_1_4_0(Element<NumberField>&, const mpz_class&);

@@ -55,15 +55,14 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   template <bool Enabled = !std::is_same_v<Ring, IntegerRing>, std::enable_if_t<Enabled, bool> = true>
   Element(const Element<IntegerRing>& value);
 
-  template <bool Enabled = !std::is_same_v<Ring, RationalField> && Ring::contains_rationals,  std::enable_if_t<Enabled, bool> = true>
+  template <bool Enabled = !std::is_same_v<Ring, RationalField> && Ring::contains_rationals, std::enable_if_t<Enabled, bool> = true>
   Element(const Element<RationalField>& value);
 
   typename Ring::ElementClass operator[](const size) const;
   std::conditional<Ring::isField, mpq_class, mpz_class> operator[](const std::pair<size, size>&) const;
 
   template <typename C>
-  [[deprecated("Use the non-template coefficients() or rationalCoefficients() instead.")]]
-  std::vector<C> coefficients() const;
+  [[deprecated("Use the non-template coefficients() or rationalCoefficients() instead.")]] std::vector<C> coefficients() const;
 
   std::vector<typename Ring::ElementClass> coefficients() const;
 
@@ -95,7 +94,7 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
 
   // Divide this element by `c`.
   // As with multiplication, we provide specialized overloads for GMP types.
-  template <typename T, typename = typename Ring::template division_t<T>, typename=void>
+  template <typename T, typename = typename Ring::template division_t<T>, typename = void>
   Element& operator/=(const T& c);
   Element& operator/=(const mpz_class&);
   Element& operator/=(const mpq_class&);

@@ -17,13 +17,13 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#include <vector>
 #include <e-antic/renf_elem_class.hpp>
+#include <vector>
 
-#include "../../../exact-real/integer_ring.hpp"
-#include "../../../exact-real/rational_field.hpp"
-#include "../../../exact-real/number_field.hpp"
 #include "../../../exact-real/external/spimpl/spimpl.h"
+#include "../../../exact-real/integer_ring.hpp"
+#include "../../../exact-real/number_field.hpp"
+#include "../../../exact-real/rational_field.hpp"
 #include "../../external/catch2/single_include/catch2/catch.hpp"
 
 namespace exactreal {
@@ -40,7 +40,7 @@ class Element {
   template <typename T, typename = typename Ring::template multiplication_t<T>>
   Element& operator*=(const T& c);
 
-  template <typename T, typename = typename Ring::template division_t<T>, typename=void>
+  template <typename T, typename = typename Ring::template division_t<T>, typename = void>
   Element& operator/=(const T& c);
 
  private:
@@ -48,7 +48,7 @@ class Element {
   spimpl::impl_ptr<Implementation> impl;
 };
 
-}
+}  // namespace exactreal
 
 namespace exactreal::test {
 
@@ -68,37 +68,37 @@ TEST_CASE("1.4.0 ABI of Element<IntegerRing>", "[element][legacy]") {
 
 TEST_CASE("1.4.0 ABI of Element<RationalField>", "[element][legacy]") {
   auto x = Element<RationalField>(2);
-  // When building with clang and -fvisibility=hidden, there is no way to make
-  // functions visible that use an invisible type as a template argument. In
-  // this case, these functions use mpz_class and mpq_class as template
-  // arguments and these lack visibility attributes. Therefore, these legacy
-  // symbols are missing in such a dylib built with clang (that is why we
-  // removed them from the API.)
-  #ifndef __clang__
+// When building with clang and -fvisibility=hidden, there is no way to make
+// functions visible that use an invisible type as a template argument. In
+// this case, these functions use mpz_class and mpq_class as template
+// arguments and these lack visibility attributes. Therefore, these legacy
+// symbols are missing in such a dylib built with clang (that is why we
+// removed them from the API.)
+#ifndef __clang__
   x *= mpz_class(2);
   x *= mpq_class(2);
   x /= mpz_class(2);
   x /= mpq_class(2);
   REQUIRE(x.coefficients<mpq_class>() == std::vector<mpq_class>{2});
-  #endif
+#endif
 }
 
 TEST_CASE("1.4.0 ABI of Element<NumberField>", "[element][legacy]") {
   auto x = Element<NumberField>(eantic::renf_elem_class(2));
-  // When building with clang and -fvisibility=hidden, there is no way to make
-  // functions visible that use an invisible type as a template argument. In
-  // this case, these functions use mpz_class and mpq_class as template
-  // arguments and these lack visibility attributes. Therefore, these legacy
-  // symbols are missing in such a dylib built with clang (that is why we
-  // removed them from the API.)
-  #ifndef __clang__
+// When building with clang and -fvisibility=hidden, there is no way to make
+// functions visible that use an invisible type as a template argument. In
+// this case, these functions use mpz_class and mpq_class as template
+// arguments and these lack visibility attributes. Therefore, these legacy
+// symbols are missing in such a dylib built with clang (that is why we
+// removed them from the API.)
+#ifndef __clang__
   x *= mpz_class(2);
   x *= mpq_class(2);
   x /= mpz_class(2);
   x /= mpq_class(2);
   REQUIRE(x.coefficients<mpq_class>() == std::vector<mpq_class>{2});
-  #endif
+#endif
   REQUIRE(x.coefficients<eantic::renf_elem_class>() == std::vector<eantic::renf_elem_class>{2});
 }
 
-}
+}  // namespace exactreal::test
