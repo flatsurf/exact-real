@@ -54,26 +54,50 @@ namespace exactreal::test {
 
 TEST_CASE("1.4.0 ABI of Element<IntegerRing>", "[element][legacy]") {
   auto x = Element<IntegerRing>(2);
+  // When building with clang and -fvisibility=hidden, there is no way to make
+  // functions visible that use an invisible type as a template argument. In
+  // this case, these functions use mpz_class and mpq_class as template
+  // arguments and these lack visibility attributes. Therefore, these legacy
+  // symbols are missing in such a dylib built with clang (that is why we
+  // removed them from the API.)
+#ifndef __clang__
   x *= mpz_class(2);
   REQUIRE(x.coefficients<mpz_class>() == std::vector<mpz_class>{4});
+#endif
 }
 
 TEST_CASE("1.4.0 ABI of Element<RationalField>", "[element][legacy]") {
   auto x = Element<RationalField>(2);
+  // When building with clang and -fvisibility=hidden, there is no way to make
+  // functions visible that use an invisible type as a template argument. In
+  // this case, these functions use mpz_class and mpq_class as template
+  // arguments and these lack visibility attributes. Therefore, these legacy
+  // symbols are missing in such a dylib built with clang (that is why we
+  // removed them from the API.)
+  #ifndef __clang__
   x *= mpz_class(2);
   x *= mpq_class(2);
   x /= mpz_class(2);
   x /= mpq_class(2);
   REQUIRE(x.coefficients<mpq_class>() == std::vector<mpq_class>{2});
+  #endif
 }
 
 TEST_CASE("1.4.0 ABI of Element<NumberField>", "[element][legacy]") {
   auto x = Element<NumberField>(eantic::renf_elem_class(2));
+  // When building with clang and -fvisibility=hidden, there is no way to make
+  // functions visible that use an invisible type as a template argument. In
+  // this case, these functions use mpz_class and mpq_class as template
+  // arguments and these lack visibility attributes. Therefore, these legacy
+  // symbols are missing in such a dylib built with clang (that is why we
+  // removed them from the API.)
+  #ifndef __clang__
   x *= mpz_class(2);
   x *= mpq_class(2);
   x /= mpz_class(2);
   x /= mpq_class(2);
   REQUIRE(x.coefficients<mpq_class>() == std::vector<mpq_class>{2});
+  #endif
   REQUIRE(x.coefficients<eantic::renf_elem_class>() == std::vector<eantic::renf_elem_class>{2});
 }
 
