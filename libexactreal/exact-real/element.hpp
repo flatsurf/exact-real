@@ -182,7 +182,7 @@ LIBEXACTREAL_API std::ostream& operator<<(std::ostream&, const Element<R>&);
 namespace std {
 template <typename Ring>
 struct LIBEXACTREAL_API hash<exactreal::Element<Ring>> {
-  size_t operator()(const exactreal::Element<Ring>&) const noexcept;
+  size_t LIBEXACTREAL_API operator()(const exactreal::Element<Ring>&) const noexcept;
 };
 }  // namespace std
 
