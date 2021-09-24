@@ -102,8 +102,8 @@ conda activate exactreal
 You can try out the projects in this repository in a very limited environment
 online by clicking the following links:
 
-* **libexactreal** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/exact-real/master?filepath=binder%2FSample.libexactreal.ipynb) (might not work currently, due to [a bug in xeus-cling](https://github.com/jupyter-xeus/xeus-cling/issues/413))
-* **pyexactreal** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/exact-real/master?filepath=binder%2FSample.pyexactreal.ipynb)
+* **libexactreal** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/exact-real/2.1.0?filepath=binder%2FSample.libexactreal.ipynb) (might not work currently, due to [a bug in xeus-cling](https://github.com/jupyter-xeus/xeus-cling/issues/413))
+* **pyexactreal** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/exact-real/2.1.0?filepath=binder%2FSample.pyexactreal.ipynb)
 
 ## Build with conda-forge Dependencies
 

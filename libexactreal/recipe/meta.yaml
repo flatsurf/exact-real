@@ -12,8 +12,6 @@ build:
   number: {{ build_number }}
   # e-antic is not available on Windows yet
   skip: True  # [win]
-  # e-antic is not available on macOS yet
-  skip: True  # [osx]
   run_exports:
     - {{ pin_subpackage("libexactreal", max_pin="x") }}
 

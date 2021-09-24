@@ -65,7 +65,7 @@ class LIBEXACTREAL_API Module : boost::equality_comparable<Module<Ring>>,
 };
 
 template <typename R>
-std::ostream& operator<<(std::ostream&, const Module<R>&) LIBEXACTREAL_API;
+LIBEXACTREAL_API std::ostream& operator<<(std::ostream&, const Module<R>&);
 
 }  // namespace exactreal
 

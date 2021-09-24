@@ -22,5 +22,10 @@
 
 set -ex
 
+# We cannot run pytest directly since it would be invoked through its shebang
+# which makes macOS sanitize some environment variables. Instead, we go thorugh
+# our bin/python wrapper to set the necessary environment variables and invoke
+# the Python binary to run pytest which keeps our environment intact on macOS.
+
 IGNORE=`grep -L '>>>' @srcdir@/../src/pyexactreal/*.py | awk '{ print "--ignore=" $0 }'`
-pytest --verbose --doctest-modules $IGNORE '@srcdir@/../src/pyexactreal' $@
+python -m pytest --verbose --doctest-modules $IGNORE '@srcdir@/../src/pyexactreal' $@

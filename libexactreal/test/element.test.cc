@@ -1,7 +1,7 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
+ *        Copyright (C)      2019 Vincent Delecroix
  *        Copyright (C) 2019-2021 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
@@ -18,6 +18,7 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
+#include <unordered_set>
 #include <e-antic/renfxx.h>
 
 #include <boost/lexical_cast.hpp>
@@ -143,6 +144,7 @@ TEST_CASE("Element over ZZ", "[element][integer_ring]") {
         REQUIRE(x != *one);
       REQUIRE(mpz_class(1) * x == x);
       REQUIRE(mpz_class(0) * x == m->zero());
+      REQUIRE(x / mpz_class(1) == x);
     }
   }
 
@@ -172,8 +174,8 @@ TEST_CASE("Element over ZZ", "[element][integer_ring]") {
   }
 
   SECTION("Coefficients") {
-    REQUIRE(one.coefficients<mpq_class>() == std::vector<mpq_class>({1, 0}));
-    REQUIRE(x.coefficients<mpq_class>() == std::vector<mpq_class>({0, 1}));
+    REQUIRE(one.rationalCoefficients() == std::vector<mpq_class>({1, 0}));
+    REQUIRE(x.rationalCoefficients() == std::vector<mpq_class>({0, 1}));
   }
 
   SECTION("Floor & Ceil") {
@@ -186,6 +188,10 @@ TEST_CASE("Element over ZZ", "[element][integer_ring]") {
     REQUIRE(one.unit());
     REQUIRE(!x.unit());
     REQUIRE(!zero.unit());
+  }
+
+  SECTION("Hashing") {
+    REQUIRE(std::unordered_set{zero, one, x}.size() == 3);
   }
 }
 
@@ -224,6 +230,7 @@ TEST_CASE("Element over QQ", "[element][rational_field]") {
         REQUIRE(x != *one);
       REQUIRE(mpz_class(1) * x == x);
       REQUIRE(mpz_class(0) * x == m->zero());
+      REQUIRE(x / mpz_class(1) == x);
     }
 
     for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
@@ -233,7 +240,16 @@ TEST_CASE("Element over QQ", "[element][rational_field]") {
       REQUIRE(mpq_class(-1) * x == -x);
       REQUIRE(mpq_class(1) * x == x);
       REQUIRE(mpq_class(0) * x == m->zero());
+      REQUIRE(x / mpq_class(1) == x);
+      REQUIRE(x / mpq_class(1, 1) == x);
+      REQUIRE(x / mpq_class(1, 2) == 2 * x);
     }
+  }
+
+  SECTION("Printing") {
+    REQUIRE(lexical_cast<string>(m->gen(0)) == "1");
+    REQUIRE(lexical_cast<string>(m->gen(1)) == "ℝ(0.051925…)");
+    REQUIRE(lexical_cast<string>(m->gen(0) + m->gen(1)) == "ℝ(0.051925…) + 1");
   }
 
   SECTION("Cast to Rational") {
@@ -265,6 +281,16 @@ TEST_CASE("Element over QQ", "[element][rational_field]") {
     REQUIRE(*x.truediv(x) == 1);
     REQUIRE(*(x * x).truediv(x) == x);
     REQUIRE(*((x + m->gen(0)) * (x - m->gen(0))).truediv(x - m->gen(0)) == x + m->gen(0));
+  }
+
+  SECTION("Coefficients") {
+    auto x = m->gen(1);
+    REQUIRE(one.rationalCoefficients() == std::vector<mpq_class>({1, 0}));
+    REQUIRE(x.rationalCoefficients() == std::vector<mpq_class>({0, 1}));
+  }
+
+  SECTION("Hashing") {
+    REQUIRE(std::unordered_set{elements[0], elements[1]}.size() == 2);
   }
 }
 
@@ -308,6 +334,8 @@ TEST_CASE("Elements over Number Field", "[element][number_field]") {
 
     for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {
       auto x = elements[i];
+      CAPTURE(x);
+
       REQUIRE(x + x == renf_elem_class(*K, 2) * x);
       REQUIRE(x - x == renf_elem_class(*K, 0) * x);
       REQUIRE(renf_elem_class(*K, -1) * x == -x);
@@ -319,26 +347,34 @@ TEST_CASE("Elements over Number Field", "[element][number_field]") {
       REQUIRE(mpq_class(1, 2) * x == x / 2);
 
       for (size_t j = 0; j < sizeof(elements) / sizeof(elements[0]); j++) {
+        CAPTURE(elements[j]);
+
         if (i == j) {
           REQUIRE((x + x).truediv(elements[j]) == 2);
           REQUIRE((x + x).floordiv(elements[j]) == 2);
         } else {
-          REQUIRE((x + x).floordiv(elements[j]) != 2);
+          REQUIRE((x + x).truediv(elements[j]) != 2);
         }
       }
     }
+  }
+
+  SECTION("Printing") {
+    REQUIRE(lexical_cast<string>(m->gen(0)) == "1");
+    REQUIRE(lexical_cast<string>(m->gen(1)) == "ℝ(0.275443…)");
+    REQUIRE(lexical_cast<string>(m->gen(0) + m->gen(1)) == "ℝ(0.275443…) + 1");
   }
 
   SECTION("Coefficients") {
     REQUIRE(x.coefficients() == std::vector<renf_elem_class>({0, 1}));
     REQUIRE((a * x).coefficients() == std::vector<renf_elem_class>({0, a}));
 
-    REQUIRE(x.coefficients<mpq_class>() == std::vector<mpq_class>({0, 0, 1, 0}));
-    REQUIRE((a * x).coefficients<mpq_class>() == std::vector<mpq_class>({0, 0, 0, 1}));
+    REQUIRE(x.rationalCoefficients() == std::vector<mpq_class>({0, 0, 1, 0}));
+    REQUIRE((a * x).rationalCoefficients() == std::vector<mpq_class>({0, 0, 0, 1}));
 
     auto rationals = Module<NumberField>::make({RealNumber::rational(1)});
-    REQUIRE(rationals->zero().coefficients<mpq_class>() == std::vector<mpq_class>(1, 0));
-    REQUIRE(rationals->gen(0).coefficients<mpq_class>() == std::vector<mpq_class>(1, 1));
+    REQUIRE(rationals->zero().rationalCoefficients() == std::vector<mpq_class>(1, 0));
+    REQUIRE(rationals->gen(0).rationalCoefficients() == std::vector<mpq_class>(1, 1));
   }
 
   SECTION("Unit") {
@@ -360,6 +396,10 @@ TEST_CASE("Elements over Number Field", "[element][number_field]") {
 
     REQUIRE(x + y - y == x);
     REQUIRE(y + x - x == y);
+  }
+
+  SECTION("Hashing") {
+    REQUIRE(std::unordered_set{elements[0], elements[1]}.size() == 2);
   }
 }
 

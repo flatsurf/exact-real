@@ -3,7 +3,6 @@
 # conda env create -f environment.yml
 name: libexactreal-build
 channels:
-  - flatsurf
   - conda-forge
   - defaults
 dependencies:

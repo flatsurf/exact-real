@@ -52,6 +52,10 @@ class Element;
 template <typename Ring>
 class Module;
 
+struct IntegerRing;
+struct RationalField;
+struct NumberField;
+
 }  // namespace exactreal
 
 #endif

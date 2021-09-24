@@ -13,7 +13,8 @@ libexactreal_la_SOURCES =               \
     number_field.cc                     \
     constrained_random_real_number.cc   \
     arf.cc                              \
-    seed.cc
+    seed.cc                             \
+    legacy/1_4_0/element.cc
 
 libexactreal_la_LDFLAGS = -version-info $(libexactreal_version_info)
 
@@ -59,7 +60,8 @@ noinst_HEADERS =                                          \
     external/hash-combine/hash.hpp                        \
     external/unique-factory/unique_factory.hpp            \
     impl/real_number_base.hpp                             \
-    util/assert.ipp
+    util/assert.ipp                                       \
+    legacy/1_4_0/element.hpp
 
 $(builddir)/../exact-real/local.hpp: $(srcdir)/../exact-real/local.hpp.in Makefile
 	mkdir -p $(builddir)/libexactreal
