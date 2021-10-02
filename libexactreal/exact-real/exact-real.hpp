@@ -32,7 +32,6 @@
 #include "integer_ring.hpp"
 #include "module.hpp"
 #include "number_field.hpp"
-#include "number_field_ideal.hpp"
 #include "rational_field.hpp"
 #include "real_number.hpp"
 #include "seed.hpp"
