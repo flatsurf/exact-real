@@ -142,15 +142,15 @@ Arf& Arf::operator<<=(const long rhs) {
 
 Arf& Arf::operator>>=(const long rhs) { return this->operator<<=(-rhs); }
 
-bool Arf::operator<(const Arf& rhs) const { return arf_cmp(t, rhs.t) < 0; }
+bool operator<(const Arf& lhs, const Arf& rhs) { return arf_cmp(lhs.t, rhs.t) < 0; }
 
-bool Arf::operator==(const Arf& rhs) const { return arf_equal(t, rhs.t); }
+bool operator==(const Arf& lhs, const Arf& rhs) { return arf_equal(lhs.t, rhs.t); }
 
-bool Arf::operator<(long rhs) const { return arf_cmp_si(t, rhs) < 0; }
+bool operator<(const Arf& lhs, long rhs) { return arf_cmp_si(lhs.t, rhs) < 0; }
 
-bool Arf::operator>(long rhs) const { return arf_cmp_si(t, rhs) > 0; }
+bool operator>(const Arf& lhs, long rhs) { return arf_cmp_si(lhs.t, rhs) > 0; }
 
-bool Arf::operator==(long rhs) const { return arf_equal_si(t, rhs); }
+bool operator==(const Arf& lhs, long rhs) { return arf_equal_si(lhs.t, rhs); }
 
 Arf Arf::operator-() const {
   Arf ret;
