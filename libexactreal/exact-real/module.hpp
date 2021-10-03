@@ -1,8 +1,8 @@
-/**********************************************************************
+/* ********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C) 2019      Vincent Delecroix
+ *        Copyright (C) 2019-2021 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
- *********************************************************************/
+ * *******************************************************************/
 
 #ifndef LIBEXACTREAL_MODULE_HPP
 #define LIBEXACTREAL_MODULE_HPP
@@ -28,12 +28,14 @@
 #include "forward.hpp"
 
 namespace exactreal {
+/// TODO: Document me.
 template <typename Ring>
 class LIBEXACTREAL_API Module : boost::equality_comparable<Module<Ring>>,
                                 public std::enable_shared_from_this<Module<Ring>> {
  public:
   using Basis = std::vector<std::shared_ptr<const RealNumber>>;
 
+  /// TODO
   static std::shared_ptr<const Module<Ring>> make(const Basis&);
 
   static std::shared_ptr<const Module<Ring>> make(const Basis&, const Ring&);
@@ -46,6 +48,7 @@ class LIBEXACTREAL_API Module : boost::equality_comparable<Module<Ring>>,
   bool submodule(const Module&) const;
 
   const Basis& basis() const;
+  /// TODO
   Element<Ring> gen(size i) const;
   Element<Ring> zero() const;
 

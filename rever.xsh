@@ -43,6 +43,7 @@ $VERSION_BUMP_PATTERNS = [
     ('configure.ac', r'AC_INIT', r'AC_INIT([exact-real], [$VERSION], [julian.rueth@fsfe.org])'),
     ('libexactreal/configure.ac', r'AC_INIT', r'AC_INIT([libexactreal], [$VERSION], [julian.rueth@fsfe.org])'),
     ('pyexactreal/configure.ac', r'AC_INIT', r'AC_INIT([pyexactreal], [$VERSION], [julian.rueth@fsfe.org])'),
+    ('doc/configure.ac', r'AC_INIT', r'AC_INIT([exact-real-doc], [$VERSION], [julian.rueth@fsfe.org])'),
     ('libexactreal/recipe/meta.yaml', r"\{% set version =", r"{% set version = '$VERSION' %}"),
     ('libexactreal/recipe/meta.yaml', r"\{% set build_number =", r"{% set build_number = '0' %}"),
     ('pyexactreal/recipe/meta.yaml', r"\{% set version =", r"{% set version = '$VERSION' %}"),

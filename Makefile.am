@@ -1,4 +1,4 @@
-SUBDIRS = libexactreal pyexactreal
+SUBDIRS = @subdirs@
 
 ACLOCAL_AMFLAGS = -I m4
 

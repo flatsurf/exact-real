@@ -1,4 +1,4 @@
-/**********************************************************************
+/* ********************************************************************
  *  This file is part of exact-real.
  *
  *        Copyright (C) 2019 Vincent Delecroix
@@ -16,7 +16,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
- *********************************************************************/
+ * *******************************************************************/
 
 #ifndef LIBEXACTREAL_REAL_NUMBER_HPP
 #define LIBEXACTREAL_REAL_NUMBER_HPP
@@ -31,6 +31,7 @@
 
 namespace exactreal {
 
+/// TODO
 class LIBEXACTREAL_API RealNumber : public std::enable_shared_from_this<RealNumber>,
                                     boost::totally_ordered<RealNumber>,
                                     boost::totally_ordered<RealNumber, signed char>,
@@ -71,11 +72,11 @@ class LIBEXACTREAL_API RealNumber : public std::enable_shared_from_this<RealNumb
   bool operator==(const RealNumber&) const;
 
   template <typename Integer>
-  std::enable_if_t<std::is_integral_v<Integer>, bool> operator<(Integer) const noexcept;
+  std::enable_if_t<std::is_integral_v<Integer>, bool> operator<(Integer) const;
   template <typename Integer>
-  std::enable_if_t<std::is_integral_v<Integer>, bool> operator>(Integer) const noexcept;
+  std::enable_if_t<std::is_integral_v<Integer>, bool> operator>(Integer) const;
   template <typename Integer>
-  std::enable_if_t<std::is_integral_v<Integer>, bool> operator==(Integer) const noexcept;
+  std::enable_if_t<std::is_integral_v<Integer>, bool> operator==(Integer) const;
 
   bool operator<(const Arf&) const;
   bool operator>(const Arf&) const;
@@ -85,9 +86,9 @@ class LIBEXACTREAL_API RealNumber : public std::enable_shared_from_this<RealNumb
   bool operator>(const mpq_class&) const;
   bool operator==(const mpq_class&) const;
 
-  bool operator<(const mpz_class&) const noexcept;
-  bool operator>(const mpz_class&) const noexcept;
-  bool operator==(const mpz_class&) const noexcept;
+  bool operator<(const mpz_class&) const;
+  bool operator>(const mpz_class&) const;
+  bool operator==(const mpz_class&) const;
 
   // Return whether the Arb interval contains this real (0) or the number is left (-1) or right (1) of that interval.
   int cmp(const Arb&) const;
@@ -105,7 +106,7 @@ class LIBEXACTREAL_API RealNumber : public std::enable_shared_from_this<RealNumb
   virtual RealNumber const& operator>>(std::ostream&) const = 0;
   friend std::ostream& operator<<(std::ostream&, const RealNumber&) LIBEXACTREAL_API;
 
-  // A random real in the range [0, 1]
+  /// A random real in the range [0, 1]
   static std::shared_ptr<const RealNumber> random();
   static std::shared_ptr<const RealNumber> random(Seed seed);
   // A random real in the range [a, b]
@@ -116,6 +117,7 @@ class LIBEXACTREAL_API RealNumber : public std::enable_shared_from_this<RealNumb
   static std::shared_ptr<const RealNumber> random(const double d);
   static std::shared_ptr<const RealNumber> random(const double d, Seed seed);
 
+  /// TODO
   static std::shared_ptr<const RealNumber> rational(const mpq_class&);
   static std::shared_ptr<const RealNumber> liouville(size_t base = 2);
   static std::shared_ptr<const RealNumber> pi();
@@ -123,17 +125,17 @@ class LIBEXACTREAL_API RealNumber : public std::enable_shared_from_this<RealNumb
 };
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, bool> RealNumber::operator<(Integer rhs) const noexcept {
+std::enable_if_t<std::is_integral_v<Integer>, bool> RealNumber::operator<(Integer rhs) const {
   return this->operator<(Arf(rhs));
 }
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, bool> RealNumber::operator>(Integer rhs) const noexcept {
+std::enable_if_t<std::is_integral_v<Integer>, bool> RealNumber::operator>(Integer rhs) const {
   return this->operator>(Arf(rhs));
 }
 
 template <typename Integer>
-std::enable_if_t<std::is_integral_v<Integer>, bool> RealNumber::operator==(Integer rhs) const noexcept {
+std::enable_if_t<std::is_integral_v<Integer>, bool> RealNumber::operator==(Integer rhs) const {
   return this->operator==(Arf(rhs));
 }
 

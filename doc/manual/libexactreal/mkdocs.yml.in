@@ -1,0 +1,27 @@
+site_name: exact-real
+docs_dir: .
+strict: true
+site_url: https://flatsurf.github.io/exact-real/libexactreal/
+theme:
+  name: readthedocs
+  navigation_depth: 2
+extra_css:
+  - extra.css
+extra_javascript:
+  - extra.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+nav:
+- "Home": index.md
+- libexactreal:
+  - Overview: overview.md
+  - "Modules over the Reals": doc_module_hpp.md
+  - "Generators of Modules": doc_real_number_hpp.md
+  - "Elements of Modules": doc_element_hpp.md
+  - "Integer Coefficients": doc_integer_ring_hpp.md
+  - "Rational Coefficients" : doc_rational_field_hpp.md
+  - "Number Field Coefficients" : doc_number_field_hpp.md
+- pyexactreal:
+  - "Manual": "/exact-real/pyexactreal"
+markdown_extensions:
+  - toc:
+      permalink: True

@@ -1,7 +1,7 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019-2020 Julian Rüth
+ *        Copyright (C) 2019-2021 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,6 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
+
+/// Helpers for pyexactreal.
 
 #ifndef LIBEXACTREAL_CPPYY_HPP
 #define LIBEXACTREAL_CPPYY_HPP
@@ -62,8 +64,11 @@ Arf eval(T expression, prec prec, Arf::Round round) {
 
 template <typename S, typename T>
 using truediv_t = decltype(std::declval<S>().truediv(std::declval<T>()));
+
+#ifndef LIBEXACTREAL_DOCBUILD
 template <typename S, typename T>
 static constexpr bool has_truediv = boost::is_detected_v<truediv_t, S, T>;
+#endif
 
 // cppyy does not see the operators provided by boost::operators so we provide
 // something to make them explicit here:
@@ -75,11 +80,13 @@ template <typename S, typename T>
 auto mul(const S &lhs, const T &rhs) { return lhs * rhs; }
 template <typename S, typename T>
 auto truediv(const S &lhs, const T &rhs) {
+#ifndef LIBEXACTREAL_DOCBUILD
   if constexpr (has_truediv<const S &, const T &>) {
     return lhs.truediv(rhs);
   } else {
     return lhs / rhs;
   }
+#endif
 }
 template <typename T>
 auto neg(const T &value) { return -value; }
