@@ -777,7 +777,7 @@ Element<Ring>& Element_operator_div_1_4_0(Element<Ring>& x, const T& c) {
 
 namespace std {
 template <typename Ring>
-size_t hash<exactreal::Element<Ring>>::operator()(const exactreal::Element<Ring>& x) const noexcept {
+size_t hash<exactreal::Element<Ring>>::operator()(const exactreal::Element<Ring>& x) const {
   return hash<double>()(static_cast<double>(x));
 }
 }  // namespace std

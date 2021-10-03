@@ -40,7 +40,6 @@ using namespace exactreal;
 using boost::numeric_cast;
 using boost::adaptors::transformed;
 using std::is_same_v;
-using std::set;
 using std::shared_ptr;
 using std::string;
 using std::vector;
