@@ -355,19 +355,19 @@ Arb& Arb::operator=(Arb&& rhs) noexcept {
 }
 
 Arb& Arb::operator=(short rhs) {
-  return *this = (long) rhs;
+  return *this = static_cast<long>(rhs);
 }
 
 Arb& Arb::operator=(unsigned short rhs) {
-  return *this = (unsigned long) rhs;
+  return *this = static_cast<unsigned long>(rhs);
 }
 
 Arb& Arb::operator=(int rhs) {
-  return *this = (long) rhs;
+  return *this = static_cast<long>(rhs);
 }
 
 Arb& Arb::operator=(unsigned int rhs) {
-  return *this = (unsigned long) rhs;
+  return *this = static_cast<unsigned long>(rhs);
 }
 
 Arb& Arb::operator=(long rhs) {
