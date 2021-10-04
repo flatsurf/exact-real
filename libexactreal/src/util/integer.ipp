@@ -18,6 +18,15 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
+#ifndef LIBEXACTREAL_INTEGER_IPP
+#define LIBEXACTREAL_INTEGER_IPP
+
+#include <type_traits>
+#include <limits>
+
+#include <arf.h>
+#include "../external/gmpxxll/gmpxxll/mpz_class.hpp"
+
 namespace exactreal {
 namespace {
 template <typename Integer>
@@ -34,3 +43,5 @@ auto to_supported_integer(Integer value) {
 }
 }  // namespace
 }  // namespace exactreal
+
+#endif

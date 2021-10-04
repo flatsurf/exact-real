@@ -24,7 +24,6 @@
 
 #include <arf.h>
 
-#include "external/gmpxxll/gmpxxll/mpz_class.hpp"
 #include "util/integer.ipp"
 
 namespace {
@@ -125,9 +124,20 @@ Arf& Arf::operator=(Arf&& rhs) noexcept {
   return *this;
 }
 
+Arf& Arf::operator=(short rhs) {
+  return *this = to_supported_integer(rhs);
+}
+
+Arf& Arf::operator=(unsigned short rhs) {
+  return *this = to_supported_integer(rhs);
+}
+
 Arf& Arf::operator=(int rhs) {
-  arf_set_si(t, rhs);
-  return *this;
+  return *this = to_supported_integer(rhs);
+}
+
+Arf& Arf::operator=(unsigned int rhs) {
+  return *this = to_supported_integer(rhs);
 }
 
 Arf& Arf::operator=(long rhs) {
@@ -135,22 +145,75 @@ Arf& Arf::operator=(long rhs) {
   return *this;
 }
 
-Arf& Arf::operator<<=(const long rhs) {
+Arf& Arf::operator=(unsigned long rhs) {
+  arf_set_ui(t, rhs);
+  return *this;
+}
+
+Arf& Arf::operator=(long long rhs) {
+  return *this = to_supported_integer(rhs);
+}
+
+Arf& Arf::operator=(unsigned long long rhs) {
+  return *this = to_supported_integer(rhs);
+}
+
+Arf& Arf::operator<<=(long rhs) {
   arf_mul_2exp_si(t, t, rhs);
   return *this;
 }
 
-Arf& Arf::operator>>=(const long rhs) { return this->operator<<=(-rhs); }
+Arf& Arf::operator>>=(long rhs) { return this->operator<<=(-rhs); }
 
 bool operator<(const Arf& lhs, const Arf& rhs) { return arf_cmp(lhs.t, rhs.t) < 0; }
 
 bool operator==(const Arf& lhs, const Arf& rhs) { return arf_equal(lhs.t, rhs.t); }
+
+bool operator<(const Arf& lhs, short rhs) { return lhs < to_supported_integer(rhs); }
+
+bool operator>(const Arf& lhs, short rhs) { return lhs > to_supported_integer(rhs); }
+
+bool operator==(const Arf& lhs, short rhs) { return lhs == to_supported_integer(rhs); }
+
+bool operator<(const Arf& lhs, unsigned short rhs) { return lhs < to_supported_integer(rhs); }
+
+bool operator>(const Arf& lhs, unsigned short rhs) { return lhs > to_supported_integer(rhs); }
+
+bool operator==(const Arf& lhs, unsigned short rhs) { return lhs == to_supported_integer(rhs); }
+
+bool operator<(const Arf& lhs, int rhs) { return lhs < to_supported_integer(rhs); }
+
+bool operator>(const Arf& lhs, int rhs) { return lhs > to_supported_integer(rhs); }
+
+bool operator==(const Arf& lhs, int rhs) { return lhs == to_supported_integer(rhs); }
+
+bool operator<(const Arf& lhs, unsigned int rhs) { return lhs < to_supported_integer(rhs); }
+
+bool operator>(const Arf& lhs, unsigned int rhs) { return lhs > to_supported_integer(rhs); }
 
 bool operator<(const Arf& lhs, long rhs) { return arf_cmp_si(lhs.t, rhs) < 0; }
 
 bool operator>(const Arf& lhs, long rhs) { return arf_cmp_si(lhs.t, rhs) > 0; }
 
 bool operator==(const Arf& lhs, long rhs) { return arf_equal_si(lhs.t, rhs); }
+
+bool operator<(const Arf& lhs, unsigned long rhs) { return arf_cmp_ui(lhs.t, rhs) < 0; }
+
+bool operator>(const Arf& lhs, unsigned long rhs) { return arf_cmp_ui(lhs.t, rhs) > 0; }
+
+bool operator==(const Arf& lhs, unsigned long rhs) { return arf_cmp_ui(lhs.t, rhs) == 0; }
+
+bool operator<(const Arf& lhs, long long rhs) { return lhs < to_supported_integer(rhs); }
+
+bool operator>(const Arf& lhs, long long rhs) { return lhs > to_supported_integer(rhs); }
+
+bool operator==(const Arf& lhs, long long rhs) { return lhs == to_supported_integer(rhs); }
+
+bool operator<(const Arf& lhs, unsigned long long rhs) { return lhs < to_supported_integer(rhs); }
+
+bool operator>(const Arf& lhs, unsigned long long rhs) { return lhs > to_supported_integer(rhs); }
+
+bool operator==(const Arf& lhs, unsigned long long rhs) { return lhs == to_supported_integer(rhs); }
 
 Arf Arf::operator-() const {
   Arf ret;
