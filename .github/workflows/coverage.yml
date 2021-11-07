@@ -26,7 +26,7 @@ jobs:
         run: |
           ./bootstrap
           export CXXFLAGS="$CXXFLAGS --coverage -O0 -UNDEBUG"
-          ./configure --without-benchmark
+          ./configure --without-benchmark --without-doc
           make check
       - name: create & post coverage report
         shell: bash -l {0}

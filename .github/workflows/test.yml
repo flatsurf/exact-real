@@ -67,7 +67,7 @@ jobs:
           # conda puts an explicit -std=c++14 on the command line on macOS, we override it here:
           export CXXFLAGS="$CXXFLAGS ${{ steps.flags.outputs.shared }} -std=c++17"
           export LDFLAGS="$LDFLAGS ${{ steps.flags.outputs.shared }}"
-          ./configure --prefix="$PREFIX" --without-benchmark ${{ steps.flags.outputs.configure }}
+          ./configure --prefix="$PREFIX" --without-benchmark --without-doc ${{ steps.flags.outputs.configure }}
 
           echo "::group::make"
           make V=1
@@ -166,7 +166,7 @@ jobs:
             # https://bitbucket.org/wlav/cppyy/issues/367/address-sanitizer-reports-a-alloc-dealloc
             export ASAN_OPTIONS="$ASAN_OPTIONS:alloc_dealloc_mismatch=0"
           fi
-          ./configure --prefix="$PREFIX" --without-benchmark ${{ steps.flags.outputs.configure }}
+          ./configure --prefix="$PREFIX" --without-benchmark --without-doc ${{ steps.flags.outputs.configure }}
 
           echo "::group::make"
           make V=1

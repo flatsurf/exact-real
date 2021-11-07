@@ -32,7 +32,7 @@
   "repo_subdir": "libexactreal",
   "build_command": [
     "autoreconf -ivf",
-    "/bin/sh configure CXX='ccache c++'",
+    "/bin/sh configure --without-doc CXX='ccache c++'",
     "make"
   ],
   "install_command": [],
