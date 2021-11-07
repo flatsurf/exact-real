@@ -430,6 +430,32 @@ LIBEXACTREAL_2.0.0 {
 LIBEXACTREAL_2.2.0 {
   global:
     extern "C++" {
+      "exactreal::Arb::Arb(int)";
+      "exactreal::Arb::Arb(long long)";
+      "exactreal::Arb::Arb(long)";
+      "exactreal::Arb::Arb(short)";
+      "exactreal::Arb::Arb(unsigned int)";
+      "exactreal::Arb::Arb(unsigned long)";
+      "exactreal::Arb::Arb(unsigned short)";
+      "exactreal::operator!=(exactreal::Arb const&, __gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&)";
+      "exactreal::operator<(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&, exactreal::Arb const&)";
+      "exactreal::operator<(exactreal::Arb const&, __gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&)";
+      "exactreal::operator<(exactreal::Arb const&, __gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&)";
+      "exactreal::operator<=(__gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&, exactreal::Arb const&)";
+      "exactreal::operator<=(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&, exactreal::Arb const&)";
+      "exactreal::operator<=(exactreal::Arb const&, __gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&)";
+      "exactreal::operator<=(exactreal::Arb const&, __gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&)";
+      "exactreal::operator<=(exactreal::Arb const&, unsigned long long)";
+      "exactreal::operator==(exactreal::Arb const&, exactreal::Arb const&)";
+      "exactreal::operator>(__gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&, exactreal::Arb const&)";
+      "exactreal::operator>(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&, exactreal::Arb const&)";
+      "exactreal::operator>(exactreal::Arb const&, __gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&)";
+      "exactreal::operator>(exactreal::Arb const&, __gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&)";
+      "exactreal::operator>=(__gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&, exactreal::Arb const&)";
+      "exactreal::operator>=(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&, exactreal::Arb const&)";
+      "exactreal::operator>=(exactreal::Arb const&, __gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&)";
+      "exactreal::operator>=(exactreal::Arb const&, __gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&)";
+      "exactreal::operator>=(exactreal::Arb const&, unsigned long long)";
       "exactreal::Element<exactreal::IntegerRing>::rationalCoefficients() const";
       "exactreal::Element<exactreal::RationalField>::rationalCoefficients() const";
       "exactreal::Element<exactreal::NumberField>::rationalCoefficients() const";
