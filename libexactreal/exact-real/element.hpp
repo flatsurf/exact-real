@@ -44,7 +44,7 @@ namespace exactreal {
 ///
 ///     #include <exact-real/module.hpp>
 ///     #include <exact-real/rational_field.hpp>
-///     
+///
 ///     auto M = exactreal::Module<RationalField>({RealNumber::rational(1), RealNumber::random()});
 ///     auto one = M.gen(0);
 ///     auto x = M.gen(1);
@@ -62,7 +62,35 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
                                  boost::multipliable<Element<Ring>, RealNumber>,
                                  boost::multiplicative<Element<Ring>, typename Ring::ElementClass> {
  public:
+  /// Create the zero element in the trivial module.
+  ///
+  ///     #include <exact-real/element.hpp>
+  ///     #include <exact-real/rational_field.hpp>
+  ///
+  ///     exactreal::Element<RationalField> zero;
+  ///     std::cout << zero;
+  ///     // -> ...
+  ///
+  ///     std::cout << *zero.module();
+  ///     // -> ...
+  ///
   Element();
+
+  /// Create an element in the `parent` module.
+  ///
+  /// The element is given by `c_i x_i` where `c_i` are the entries of
+  /// `coefficients` and `x_i` are the generators of the module.
+  /// The number of coefficients must match the number of generators.
+  ///
+  ///     #include <exact-real/module.hpp>
+  ///     #include <exact-real/element.hpp>
+  ///     #include <exact-real/rational_field.hpp>
+  ///
+  ///     auto M = exactreal::Module<RationalField>({RealNumber::rational(1), RealNumber::random()});
+  ///     auto a = exactreal::Element<RationalField>(M, {2, 3});
+  ///     std::cout << a;
+  ///     // -> ...
+  ///
   Element(const std::shared_ptr<const Module<Ring>>& parent, const std::vector<typename Ring::ElementClass>& coefficients);
 
   Element(const typename Ring::ElementClass& value);
