@@ -579,7 +579,13 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   static Arb zero_pm_inf();
 
-  // TODO: What does this return?
+  /// Return an indeterminate, i.e., [NaN±∞] see [arb_indeterminate]().
+  ///
+  ///     #include <exact-real/arb.hpp>
+  ///
+  ///     std::cout << Arb::indeterminate();
+  ///     // -> (...)
+  ///
   static Arb indeterminate();
 
   /// Return the interval [-1, 1], i.e., the ball of radius one centered at
