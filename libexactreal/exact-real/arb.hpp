@@ -18,8 +18,6 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  * *******************************************************************/
 
-// TODO: Move arb/arf bits to a separate library.
-
 /// C++ Wrappers for a ball arithmetic [arb_t]().
 
 #ifndef LIBEXACTREAL_ARB_HPP
@@ -75,7 +73,7 @@ inline constexpr const prec ARB_PRECISION_FAST = 64;
 ///
 /// Note that many methods provided by arb's C API are not yet provided by this
 /// C++ wrapper. If something is missing for you, please let us know on our
-/// [GitHub issues page](TODO).
+/// [GitHub issues page](https://github.com/flatsurf/arbxx/issues).
 class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
  public:
   /// Create an exact zero element.
@@ -243,7 +241,13 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   explicit Arb(unsigned long long);
 
   /// Create an element from this string, see [arb_set_str]().
-  /// TODO: Add an example.
+  ///
+  ///     #include <exact-real/arb.hpp>
+  ///
+  ///     Arb x{"1/3", 64};
+  ///     std::cout << x;
+  ///     // -> (...)
+  ///
   Arb(const std::string&, const prec);
 
   ~Arb() noexcept;
