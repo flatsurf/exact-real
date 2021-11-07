@@ -64,7 +64,7 @@ namespace exactreal {
 ///
 /// Note that many methods provided by arb's C API are not yet provided by this
 /// C++ wrapper. If something is missing for you, please let us know on our
-/// [GitHub issues page](TODO).
+/// [GitHub issues page](https://github.com/flatsurf/arbxx/issues).
 class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
                              boost::totally_ordered<Arf>,
                              boost::totally_ordered<Arf, short>,
