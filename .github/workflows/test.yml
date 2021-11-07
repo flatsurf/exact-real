@@ -193,6 +193,7 @@ jobs:
         run: |
           mamba env update --quiet -n test -f libexactreal/environment.yml
           mamba env update --quiet -n test -f pyexactreal/environment.yml
+          mamba env update --quiet -n test -f doc/environment.yml
           conda list
       - name: make distcheck
         shell: bash -l {0}
