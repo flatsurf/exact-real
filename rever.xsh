@@ -50,6 +50,7 @@ $VERSION_BUMP_PATTERNS = [
     ('pyexactreal/recipe/meta.yaml', r"\{% set build_number =", r"{% set build_number = '0' %}"),
     ('README.md', r'\* \*\*libexactreal*\* \[!\[Binder\]', r'* **libexactreal* [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/exact-real/$VERSION?filepath=binder%2FSample.libexactreal.ipynb)'),
     ('README.md', r'\* \*\*pyexactreal\*\* \[!\[Binder\]', r'* **pyexactreal** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/exact-real/$VERSION?filepath=binder%2FSample.pyexactreal.ipynb)'),
+    ('doc/manual/pyexactreal/conf.py', r'release =', "release = '$VERSION'"),
 ]
 
 $CHANGELOG_FILENAME = 'ChangeLog'
