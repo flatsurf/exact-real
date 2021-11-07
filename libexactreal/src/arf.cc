@@ -158,6 +158,15 @@ Arf& Arf::operator=(unsigned long long rhs) {
   return *this = to_supported_integer(rhs);
 }
 
+Arf& Arf::operator=(const mpz_class& rhs) {
+  fmpz_t x;
+  fmpz_init_set_readonly(x, rhs.get_mpz_t());
+  arf_set_fmpz(arf_t(), x);
+  fmpz_clear_readonly(x);
+
+  return *this;
+}
+
 Arf& Arf::operator<<=(long rhs) {
   arf_mul_2exp_si(t, t, rhs);
   return *this;
