@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# Run Python 3 with environment variables set so that local headers and
+# libraries in this repository are used when running tests.
+
+# Usually, one would do this setup as part of test-env.sh, i.e.,
+# AM_TESTS_ENVIRONMENT. However, macOS drops DYLD_LIBRARY_PATH whenever a
+# shebang is followed, so we actually need to execute the Python binary
+# directly and pass a script to it as a parameter to keep DYLD_LIBRARY_PATH
+# alive.
+
+# Resolve #include <exact-real/*.hpp> relative to libexactreal in the source tree and
+# resolve #include "local.h" relative to libexactreal/exact-real in the build tree.
+export EXTRA_CLING_ARGS="-I@abs_srcdir@/../.. -I@abs_builddir@/../../exact-real -std=c++17 -Wno-unused-comparison $EXTRA_CLING_ARGS"
+
+# Load libexactreal.so from our build tree.
+export LD_LIBRARY_PATH="@abs_builddir@/../../src/.libs/:@abs_builddir@/../../srcxx/.libs/:$LD_LIBRARY_PATH"
+
+# Load libexactreal.dylib from our build tree.
+export DYLD_LIBRARY_PATH="@abs_builddir@/../../src/.libs/:@abs_builddir@/../../srcxx/.libs/:$DYLD_LIBRARY_PATH"
+
+exec python3 "$@"
+

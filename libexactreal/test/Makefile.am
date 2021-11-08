@@ -1,3 +1,9 @@
+if HAVE_BYEXAMPLE
+    MAYBE_BYEXAMPLE = byexample
+endif
+
+SUBDIRS = $(MAYBE_BYEXAMPLE)
+
 check_PROGRAMS = arb arb_yap real_number_product random_real_number rational_real_number module element constraint_random_real_number arf_yap arf cereal cppyy legacy_1_4_0_element
 
 TESTS = $(check_PROGRAMS)
