@@ -794,6 +794,7 @@ template class Element<IntegerRing>;
 template std::ostream& operator<<(std::ostream&, const Element<IntegerRing>&);
 template Element<IntegerRing>& Element<IntegerRing>::operator*=(const int&);
 template std::vector<mpz_class> Element_coefficients_1_4_0<IntegerRing, mpz_class>(const Element<IntegerRing>&);
+template std::vector<mpq_class> Element_coefficients_1_4_0<IntegerRing, mpq_class>(const Element<IntegerRing>&);
 template Element<IntegerRing>& Element_operator_mul_1_4_0(Element<IntegerRing>&, const mpz_class&);
 
 template class Element<RationalField>;

@@ -63,6 +63,7 @@ Element<Ring>& Element<Ring>::operator/=(const T& c) {
   return Element_operator_div_1_4_0<Ring, T>(*this, c);
 }
 
+template std::vector<mpq_class> Element<IntegerRing>::coefficients<mpq_class>() const;
 template std::vector<mpz_class> Element<IntegerRing>::coefficients<mpz_class>() const;
 template std::vector<mpq_class> Element<RationalField>::coefficients<mpq_class>() const;
 template std::vector<eantic::renf_elem_class> Element<NumberField>::coefficients<eantic::renf_elem_class>() const;
