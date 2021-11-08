@@ -1,7 +1,7 @@
 /* ********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
+ *        Copyright (C)      2019 Vincent Delecroix
  *        Copyright (C) 2019-2021 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
@@ -52,7 +52,7 @@ inline constexpr const prec ARB_PRECISION_FAST = 64;
 /// element and then use Arb functions directly:
 ///
 ///     #include <exact-real/arb.hpp>
-///     Arb x, y;
+///     exactreal::Arb x, y;
 ///
 ///     arb_add(x.arb_t(), x.arb_t(), y.arb_t(), 64);
 ///
@@ -60,7 +60,7 @@ inline constexpr const prec ARB_PRECISION_FAST = 64;
 ///
 ///     #include <exact-real/yap/arb.hpp>
 ///
-///     Arb x, y;
+///     exactreal::Arb x, y;
 ///
 ///     x += y(64);
 ///     x = (x + y)(64);
@@ -80,9 +80,9 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     Arb x;
+  ///     exactreal::Arb x;
   ///     std::cout << x;
-  ///     // -> (...)
+  ///     // -> 0
   ///
   Arb() noexcept;
 
@@ -90,9 +90,9 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     Arb x = 1337;
-  ///     Arb y{x};
-  ///     x == y
+  ///     exactreal::Arb x{1337};
+  ///     exactreal::Arb y{x};
+  ///     (x == y) == true
   ///     // -> true
   ///
   Arb(const Arb&) noexcept;
@@ -101,10 +101,10 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     Arb x = 1337;
-  ///     Arb y{std::move(x)};
+  ///     exactreal::Arb x{1337};
+  ///     exactreal::Arb y{std::move(x)};
   ///     std::cout << y;
-  ///     // -> (...)
+  ///     // -> 1337.00
   ///
   Arb(Arb&&) noexcept;
 
@@ -112,9 +112,9 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     Arb x = mpz_class{1337};
+  ///     exactreal::Arb x{mpz_class{1337}};
   ///     std::cout << x;
-  ///     // -> (...)
+  ///     // -> 1337.00
   ///
   explicit Arb(const mpz_class&);
 
@@ -124,15 +124,15 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     Arb x = mpq_class{3, 1024};
+  ///     exactreal::Arb x{mpq_class{1, 2}};
   ///     std::cout << x;
-  ///     // -> (...)
+  ///     // -> 0.500000
   ///
-  ///     Arb y = mpq_class{3, 1023};
-  ///     std::cout << y;
-  ///     // -> (...)
+  ///     exactreal::Arb y{mpq_class{1, 3}};
+  ///     std::cout << std::setprecision(32) << y;
+  ///     // -> [0.33333333333333333331526329712524 +/- 2.72e-20]
   ///
-  Arb(const mpq_class&);
+  explicit Arb(const mpq_class&);
 
   /// Create an element containing this rational using [arb_set_fmpq](), i.e.,
   /// by performing the division of numerator and denominator with precision
@@ -140,13 +140,13 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     Arb x{mpq_class{3, 1024}, 256};
+  ///     exactreal::Arb x{mpq_class{1, 2}, 256};
   ///     std::cout << x;
-  ///     // -> (...)
+  ///     // -> 0.500000
   ///
-  ///     Arb y{mpq_class{3, 1023}, 256};
-  ///     std::cout << y;
-  ///     // -> (...)
+  ///     exactreal::Arb y{mpq_class{1, 3}, 256};
+  ///     std::cout << std::setprecision(32) << y;
+  ///     // -> [0.33333333333333333333333333333333 +/- 3.34e-33]
   ///
   Arb(const mpq_class&, const prec);
 
@@ -161,9 +161,9 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///     auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
   ///     auto a = eantic::renf_elem_class(*K, std::vector{-1, 1});
   ///
-  ///     Arb x{a};
+  ///     exactreal::Arb x{a};
   ///     std::cout << x;
-  ///     // -> (...)
+  ///     // -> [0.414214 +/- 4.38e-7]
   ///
   explicit Arb(const eantic::renf_elem_class&);
 
@@ -177,19 +177,18 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///     auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
   ///     auto a = eantic::renf_elem_class(*K, std::vector{-1, 1});
   ///
-  ///     Arb x{a, 64};
-  ///     std::cout << x;
-  ///     // -> (...)
+  ///     exactreal::Arb x{a, 8};
+  ///     std::cout << std::setprecision(32) << x;
+  ///     // -> [0.41406250000000000000000000000000 +/- 7.82e-3]
   ///
-  ///     Arb y{a, 256};
-  ///     std::cout << y;
-  ///     // -> (...)
+  ///     exactreal::Arb y{a, 256};
+  ///     std::cout << std::setprecision(32) << y;
+  ///     // -> [0.41421356237309504880168872420970 +/- 1.93e-33]
   ///
-  ///     Arb z{a, 64};
-  ///     std::cout << z;
-  ///     // -> (...)
+  ///     exactreal::Arb z{a, 8};
+  ///     std::cout << std::setprecision(32) << z;
+  ///     // -> [0.41406250000000000000000000000000 +/- 7.82e-3]
   ///
-  /// Note how in this example, the precision increases from `x` to `z`.
   Arb(const eantic::renf_elem_class&, const prec);
 
   /// Create an Arb ball with lower and upper bound as given by the pair, see
@@ -198,14 +197,14 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///     #include <exact-real/arb.hpp>
   ///     #include <exact-real/arf.hpp>
   ///
-  ///     Arf lower{0}, upper{1};
-  ///     Arb x{std::pair{lower, upper}};
+  ///     exactreal::Arf lower{0}, upper{1};
+  ///     exactreal::Arb x{std::pair{lower, upper}};
   ///     std::cout << x;
-  ///     // -> (...)
+  ///     // -> [0.500000 +/- 0.501]
   ///
-  ///     Arb y{std::pair{lower, upper}, 64};
+  ///     exactreal::Arb y{std::pair{lower, upper}, 64};
   ///     std::cout << y;
-  ///     // -> (...)
+  ///     // -> [0.500000 +/- 0.501]
   ///
   explicit Arb(const std::pair<Arf, Arf>&, const prec = ARF_PREC_EXACT);
 
@@ -215,10 +214,10 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///     #include <exact-real/arb.hpp>
   ///     #include <exact-real/arf.hpp>
   ///
-  ///     Arf x{1};
-  ///     Arb y{x};
+  ///     exactreal::Arf x{1};
+  ///     exactreal::Arb y{x};
   ///     std::cout << y;
-  ///     // -> (...)
+  ///     // -> 1.00000
   ///
   explicit Arb(const Arf&);
 
@@ -227,9 +226,9 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     Arb x{1};
+  ///     exactreal::Arb x{1};
   ///     std::cout << x;
-  ///     // -> (...)
+  ///     // -> 1.00000
   ///
   explicit Arb(short);
   explicit Arb(unsigned short);
@@ -244,9 +243,9 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     Arb x{"1/3", 64};
+  ///     exactreal::Arb x{"[3.25 +/- 0.0001]", 64};
   ///     std::cout << x;
-  ///     // -> (...)
+  ///     // -> [3.25000 +/- 1.01e-4]
   ///
   Arb(const std::string&, const prec);
 
@@ -257,14 +256,14 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     Arb x{1}, y;
+  ///     exactreal::Arb x{1}, y;
   ///     y = std::move(x);
   ///     std::cout << y;
-  ///     // -> (...)
+  ///     // -> 1.00000
   ///
   ///     x = y;
   ///     std::cout << y;
-  ///     // -> (...)
+  ///     // -> 1.00000
   ///
   Arb& operator=(const Arb&) noexcept;
   Arb& operator=(Arb&&) noexcept;
@@ -274,10 +273,10 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     Arb x;
-  ///     x = 1
+  ///     exactreal::Arb x;
+  ///     x = 1;
   ///     std::cout << x;
-  ///     // -> (...)
+  ///     // -> 1.00000
   ///
   Arb& operator=(short);
   Arb& operator=(unsigned short);
@@ -295,9 +294,9 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     Arb x{1};
+  ///     exactreal::Arb x{1};
   ///     std::cout << -x;
-  ///     // -> (...)
+  ///     // -> -1.00000
   ///
   Arb operator-() const;
 
@@ -311,11 +310,13 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     Arb x{mpq_class{1, 3}};
+  ///     exactreal::Arb x{mpq_class{1, 3}};
   ///     (x < 1).has_value()
   ///     // -> true
+  ///
   ///     (x < 1).value()
   ///     // -> true
+  ///
   ///     (x < x).has_value()
   ///     // -> false
   ///
@@ -461,11 +462,11 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     Arb x{1};
+  ///     exactreal::Arb x{1};
   ///     x.is_exact()
   ///     // -> true
   ///
-  ///     Arb y{mpq_class{1, 3}};
+  ///     exactreal::Arb y{mpq_class{1, 3}};
   ///     y.is_exact()
   ///     // -> false
   ///
@@ -476,12 +477,13 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     Arb x{1};
+  ///     exactreal::Arb x{1};
   ///     x.is_finite()
   ///     // -> true
   ///
-  ///     Arb y = x / Arb{0};
-  ///     y.is_finit()
+  ///     exactreal::Arb y{1};
+  ///     arb_div_si(y.arb_t(), y.arb_t(), 0, 64);
+  ///     y.is_finite()
   ///     // -> false
   ///
   bool is_finite() const;
@@ -491,9 +493,10 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     Arb x{mpq_class{1, 3}};
-  ///     std::cout << static_cast<std::pair<Arf, Arf>>(x);
-  ///     // -> (...)
+  ///     exactreal::Arb x{mpq_class{1, 3}};
+  ///     auto bounds = static_cast<std::pair<exactreal::Arf, exactreal::Arf>>(x);
+  ///     std::cout << bounds.first << ", " << bounds.second;
+  ///     // -> 0.333333=1537228672809129301p-62, 0.333333=3074457345618258603p-63
   ///
   explicit operator std::pair<Arf, Arf>() const;
 
@@ -502,19 +505,20 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     Arb x{mpq_class{1, 3}};
+  ///     exactreal::Arb x{mpq_class{1, 3}};
   ///     static_cast<double>(x)
-  ///     // -> (...)
+  ///     // -> 0.333333
   ///
   explicit operator double() const;
 
   /// Return the exact midpoint of this ball.
   ///
   ///     #include <exact-real/arb.hpp>
+  ///     #include <exact-real/arf.hpp>
   ///
-  ///     Arb x{mpq_class{1, 3}};
-  ///     std::cout << static_cast<Arf>(x);
-  ///     // -> (...)
+  ///     exactreal::Arb x{mpq_class{1, 3}};
+  ///     std::cout << static_cast<exactreal::Arf>(x);
+  ///     // -> 0.333333=6148914691236517205p-64
   ///
   explicit operator Arf() const;
 
@@ -534,8 +538,8 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     std::cout << Arb::zero();
-  ///     // -> (...)
+  ///     std::cout << exactreal::Arb::zero();
+  ///     // -> 0
   ///
   static Arb zero();
 
@@ -544,28 +548,32 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     std::cout << Arb::one();
-  ///     // -> (...)
+  ///     std::cout << exactreal::Arb::one();
+  ///     // -> 1.00000
   ///
   static Arb one();
 
   /// Return plus infinity, i.e., the ball of radius zero centered at plus
   /// infinity, see [arb_pos_inf]().
+  /// Note that the result is printed as `[+/- inf]` unfortunately, see
+  /// https://github.com/fredrik-johansson/arb/issues/332.
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     std::cout << Arb::pos_inf();
-  ///     // -> (...)
+  ///     std::cout << exactreal::Arb::pos_inf();
+  ///     // -> [+/- inf]
   ///
   static Arb pos_inf();
 
   /// Return minus infinity, i.e., the ball of radius zero centered at minus
   /// infinity, see [arb_neg_inf]().
+  /// Note that the result is printed as `[+/- inf]` unfortunately, see
+  /// https://github.com/fredrik-johansson/arb/issues/332.
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     std::cout << Arb::pos_inf();
-  ///     // -> (...)
+  ///     std::cout << exactreal::Arb::neg_inf();
+  ///     // -> [+/- inf]
   ///
   static Arb neg_inf();
 
@@ -574,8 +582,8 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     std::cout << Arb::zero_pm_inf();
-  ///     // -> (...)
+  ///     std::cout << exactreal::Arb::zero_pm_inf();
+  ///     // -> [+/- inf]
   ///
   static Arb zero_pm_inf();
 
@@ -583,8 +591,8 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     std::cout << Arb::indeterminate();
-  ///     // -> (...)
+  ///     std::cout << exactreal::Arb::indeterminate();
+  ///     // -> nan
   ///
   static Arb indeterminate();
 
@@ -593,7 +601,7 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     std::cout << Arb::zero_pm_one();
+  ///     std::cout << exactreal::Arb::zero_pm_one();
   ///     // -> (...)
   ///
   static Arb zero_pm_one();
@@ -603,7 +611,7 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   ///
   ///     #include <exact-real/arb.hpp>
   ///
-  ///     std::cout << Arb::unit_interval();
+  ///     std::cout << exactreal::Arb::unit_interval();
   ///     // -> (...)
   ///
   static Arb unit_interval();

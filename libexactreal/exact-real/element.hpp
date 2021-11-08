@@ -45,7 +45,7 @@ namespace exactreal {
 ///     #include <exact-real/module.hpp>
 ///     #include <exact-real/rational_field.hpp>
 ///
-///     auto M = exactreal::Module<RationalField>({RealNumber::rational(1), RealNumber::random()});
+///     auto M = exactreal::Module<exactreal::RationalField>({RealNumber::rational(1), RealNumber::random()});
 ///     auto one = M.gen(0);
 ///     auto x = M.gen(1);
 ///     std::cout << x + one;
@@ -67,7 +67,7 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   ///     #include <exact-real/element.hpp>
   ///     #include <exact-real/rational_field.hpp>
   ///
-  ///     exactreal::Element<RationalField> zero;
+  ///     exactreal::Element<exactreal::RationalField> zero;
   ///     std::cout << zero;
   ///     // -> ...
   ///
@@ -86,8 +86,8 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   ///     #include <exact-real/element.hpp>
   ///     #include <exact-real/rational_field.hpp>
   ///
-  ///     auto M = exactreal::Module<RationalField>({RealNumber::rational(1), RealNumber::random()});
-  ///     auto a = exactreal::Element<RationalField>(M, {2, 3});
+  ///     auto M = exactreal::Module<exactreal::RationalField>({RealNumber::rational(1), RealNumber::random()});
+  ///     auto a = exactreal::Element<exactreal::RationalField>(M, {2, 3});
   ///     std::cout << a;
   ///     // -> ...
   ///

@@ -44,17 +44,17 @@ namespace exactreal {
 /// elements and then use Arb functions directly:
 ///
 ///     #include <exact-real/arf.hpp>
-///     Arf x, y;
+///     exactreal::Arf x, y;
 ///
-///     arf_add(x.arb_t(), x.arb_t(), y.arb_t(), 64, ARF_RND_NEAR);
+///     arf_add(x.arf_t(), x.arf_t(), y.arf_t(), 64, ARF_RND_NEAR);
 ///
 /// Using yap this can be rewritten as any of the following:
 ///
 ///     #include <exact-real/yap/arf.hpp>
 ///
-///     Arf x, y;
-///     x += y(64)(Arf::Round::NEAR);
-///     x = (x + y)(64, Arf::Round::NEAR);
+///     exactreal::Arf x, y;
+///     x += y(64)(exactreal::Arf::Round::NEAR);
+///     x = (x + y)(64, exactreal::Arf::Round::NEAR);
 ///
 /// Note that the latter might use an additional temporary Arf. See the
 /// yap/arf.hpp header for more details.
@@ -95,7 +95,8 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   /// Create a zero element.
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     Arf x;
+  ///
+  ///     exactreal::Arf x;
   ///     std::cout << x;
   ///     // -> 0
   ///
@@ -104,8 +105,9 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   /// Create a copy of an element.
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     Arf x{1};
-  ///     Arf y{x};
+  ///
+  ///     exactreal::Arf x{1};
+  ///     exactreal::Arf y{x};
   ///     std::cout << y;
   ///     // -> 1
   ///
@@ -114,8 +116,9 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   /// Create an element from another one.
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     Arf x{1};
-  ///     Arf y{std::move(x)};
+  ///
+  ///     exactreal::Arf x{1};
+  ///     exactreal::Arf y{std::move(x)};
   ///     std::cout << y;
   ///     // -> 1
   ///
@@ -125,18 +128,19 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   /// written in `base`.
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     Arf x{"abc", 16, -8);
+  ///
+  ///     exactreal::Arf x{"abc", 16, -8};
   ///     std::cout << x;
-  ///     // -> ...
+  ///     // -> 10.7344=687p-6
   ///
   Arf(const std::string& mantissa, int base, long exponent);
 
   /// Create the element `mantissa * 2^exponent`.
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     Arf x{2748, -8);
+  ///     exactreal::Arf x{2748, -8};
   ///     std::cout << x;
-  ///     // -> ...
+  ///     // -> 10.7344=687p-6
   ///
   explicit Arf(const mpz_class& mantissa, long exponent=0);
 
@@ -144,7 +148,8 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   /// Create a floating point number from an integer.
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     Arf x{2748};
+  ///
+  ///     exactreal::Arf x{2748};
   ///     std::cout << x;
   ///     // -> 2748
   ///
@@ -160,9 +165,10 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   /// Create a floating point element identical to this double.
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     Arf x{0.3};
+  ///
+  ///     exactreal::Arf x{0.3};
   ///     std::cout << x;
-  ///     // -> ...
+  ///     // -> 0.3=5404319552844595p-54
   ///
   explicit Arf(double);
 
@@ -171,20 +177,22 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   /// Make this element an identical copy of the provided one.
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     Arf x{1}, y;
+  ///
+  ///     exactreal::Arf x{1}, y;
   ///     y = x;
   ///     std::cout << y;
-  ///     // -> ...
+  ///     // -> 1
   ///
   Arf& operator=(const Arf&) noexcept;
 
   /// Move the value of the element into this one.
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     Arf x{1}, y;
+  ///
+  ///     exactreal::Arf x{1}, y;
   ///     y = std::move(x);
   ///     std::cout << y;
-  ///     // -> ...
+  ///     // -> 1
   ///
   Arf& operator=(Arf&&) noexcept;
 
@@ -192,10 +200,11 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   /// Reset the value to this integer.
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     Arf x;
+  ///
+  ///     exactreal::Arf x;
   ///     x = 1;
   ///     std::cout << x;
-  ///     // -> ...
+  ///     // -> 1
   ///
   Arf& operator=(short);
   Arf& operator=(unsigned short);
@@ -210,18 +219,20 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   /// Reset the value to the value of this double.
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     Arf x;
+  ///
+  ///     exactreal::Arf x;
   ///     x = 0.3;
   ///     std::cout << x;
-  ///     // -> ...
+  ///     // -> 0.3=5404319552844595p-54
   ///
   Arf& operator=(double);
 
   /// Return the negative of this value, see [arf_neg]().
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     Arf x{1}
-  ///     Arf y = -x;
+  ///
+  ///     exactreal::Arf x{1};
+  ///     exactreal::Arf y = -x;
   ///     std::cout << y;
   ///     // -> ...
   ///
@@ -231,9 +242,11 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   /// element, see [arf_get_d]().
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     Arf x{1, -65536}
+  ///
+  ///     exactreal::Arf x{1, -65536};
   ///     std::cout << static_cast<double>(x);
   ///     // -> 0
+  ///
   ///     x *= Arf{1, 65536};
   ///     std::cout << static_cast<double>(x);
   ///
@@ -242,8 +255,9 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   /// Return the absolute value of this element, see [arf_abs]().
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     Arf x{-1}
-  ///     Arf y = x.abs();
+  ///
+  ///     exactreal::Arf x{-1};
+  ///     exactreal::Arf y = x.abs();
   ///     std::cout << y;
   ///     // -> ...
   ///
@@ -253,7 +267,8 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   /// see [arf_floor]().
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     Arf x{-.5}
+  ///
+  ///     exactreal::Arf x{-.5};
   ///     std::cout << x.floor();
   ///     // -> -1
   ///
@@ -263,7 +278,8 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   /// element, see [arf_ceil]().
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     Arf x{-.5}
+  ///
+  ///     exactreal::Arf x{-.5};
   ///     std::cout << x.ceil();
   ///     // -> 0
   ///
@@ -273,7 +289,8 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   /// this element as `mantissa * 2^exponent`. See [arf_get_fmpz_2exp]().
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     Arf x{-1}
+  ///
+  ///     exactreal::Arf x{-1};
   ///     std::cout << x.mantissa();
   ///     // -> -1
   ///
@@ -283,7 +300,7 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   /// this element as `mantissa * 2^exponent`. See [arf_get_fmpz_2exp]().
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     Arf x{-1}
+  ///     exactreal::Arf x{-1}
   ///     std::cout << x.exponent();
   ///     // -> 0
   ///
@@ -292,7 +309,8 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   /// Return the floor of the logarithm of this element to base 2.
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     Arf x{-1}
+  ///
+  ///     exactreal::Arf x{-1}
   ///     x.logb()
   ///     // -> ...
   ///
@@ -301,7 +319,8 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   /// Return this element shifted down by `e`, i.e., multiplied by `2^-e`.
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     Arf x{-1}
+  ///
+  ///     exactreal::Arf x{-1}
   ///     x <<= 8;
   ///     std::cout << x;
   ///     // -> ...
@@ -311,7 +330,8 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   /// Return this element shifted up by `e`, i.e., multiplied by `2^e`.
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     Arf x{-1}
+  ///
+  ///     exactreal::Arf x{-1}
   ///     x >>= 8;
   ///     std::cout << x;
   ///     // -> ...
@@ -323,9 +343,11 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   /// instances and integer types.
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     Arf x{1}
+  ///
+  ///     exactreal::Arf x{1}
   ///     x < 2
   ///     // -> true
+  ///
   ///     x <= mpz_class{1}
   ///     // -> true
   ///
