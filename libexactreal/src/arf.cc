@@ -200,6 +200,8 @@ bool operator<(const Arf& lhs, unsigned int rhs) { return lhs < to_supported_int
 
 bool operator>(const Arf& lhs, unsigned int rhs) { return lhs > to_supported_integer(rhs); }
 
+bool operator==(const Arf& lhs, unsigned int rhs) { return lhs == to_supported_integer(rhs); }
+
 bool operator<(const Arf& lhs, long rhs) { return arf_cmp_si(lhs.t, rhs) < 0; }
 
 bool operator>(const Arf& lhs, long rhs) { return arf_cmp_si(lhs.t, rhs) > 0; }
@@ -223,6 +225,21 @@ bool operator<(const Arf& lhs, unsigned long long rhs) { return lhs < to_support
 bool operator>(const Arf& lhs, unsigned long long rhs) { return lhs > to_supported_integer(rhs); }
 
 bool operator==(const Arf& lhs, unsigned long long rhs) { return lhs == to_supported_integer(rhs); }
+
+bool operator<(const Arf& lhs, const mpz_class& rhs) {
+  Arf rhs_(rhs);
+  return lhs < rhs_;
+}
+
+bool operator>(const Arf& lhs, const mpz_class& rhs) {
+  Arf rhs_(rhs);
+  return lhs > rhs_;
+}
+
+bool operator==(const Arf& lhs, const mpz_class& rhs) {
+  Arf rhs_(rhs);
+  return lhs == rhs_;
+}
 
 Arf Arf::operator-() const {
   Arf ret;
