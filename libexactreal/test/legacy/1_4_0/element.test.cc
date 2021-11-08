@@ -63,6 +63,7 @@ TEST_CASE("1.4.0 ABI of Element<IntegerRing>", "[element][legacy]") {
 #ifndef __clang__
   x *= mpz_class(2);
   REQUIRE(x.coefficients<mpz_class>() == std::vector<mpz_class>{4});
+  REQUIRE(x.coefficients<mpq_class>() == std::vector<mpq_class>{4});
 #endif
 }
 

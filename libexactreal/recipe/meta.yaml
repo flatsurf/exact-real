@@ -1,4 +1,4 @@
-{% set version = '2.1.0' %}
+{% set version = '2.2.0' %}
 {% set build_number = '0' %}
 
 package:
@@ -24,7 +24,7 @@ requirements:
   host:
     - arb {{ arb }}
     - boost-cpp {{ boost_cpp }}
-    - e-antic >=1.0.0,<2
+    - libeantic >=1.0.0,<2
     - gmp {{ gmp }}
 
 test:
