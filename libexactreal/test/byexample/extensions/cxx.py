@@ -65,26 +65,34 @@ class MarkdownHppDelimiter(ZoneDelimiter):
     r"""
     Detect C/C++ examples in Markdown comments in header files like the ones
     that we are using for standardese.
+
+    TESTS::
+
+    >>> re = MarkdownHppDelimiter(verbosity=0, encoding=None).zone_regex()
+    >>> re.findall(r'''
+    ...     ///
+    ...     ///     DEMO
+    ...     ///     DEMO
+    ...     ///
+    ...     ///     DEMO
+    ...     ///
+    ... ''')
+    [('    ', '    ///     DEMO\n    ///     DEMO\n'), ('    ', '    ///     DEMO\n')]
+
+
     """
-    target = {'.h', '.hpp'}
+    target = {'.hpp'}
 
     @constant
     def zone_regex(self):
         return re.compile(r'''
-            # Begin with a Markdown fenced-code marker
-            ^[ ]*
-                (?:
-                    (?P<marker>///[ ]```(?:``)*)$ # fenced-code marker (backticks)
-                )
-            # then, grab everything until the first end marker
-            (?P<zone>.*?)
-            # finally, the end marker
-            (?(marker)   
-                  ^[ ]*(?P=marker) # we must match the same amount of backticks
-            )
+            # Begin with an empty line.
+            (?:^(?P<indent>[ ]*)///[ ]?$)\n
+            # Then grab every indented code block.
+            (?P<zone>(?:(?P=indent)///[ ][ ]{4}[^\n]*$\n)+)
             ''', re.DOTALL | re.MULTILINE | re.VERBOSE)
 
-    def __repr__(self): return "/// ``` ... ```"
+    def __repr__(self): return "///\n///    ..."
 
 class CxxPromptFinder(byexample.modules.cpp.CppPromptFinder):
     r"""
@@ -97,7 +105,7 @@ class CxxPromptFinder(byexample.modules.cpp.CppPromptFinder):
         return re.compile(r'''
             (?P<snippet>
                 (?:^                                # match the first line
-                  (?P<indent> [ ]* (?:///[ ])?)     # arbitrary indent, captured so we can strip it later
+                  (?P<indent> [ ]* (?:///[ ])?[ ]*) # arbitrary indent, captured so we can strip it later
                   [^\n]+                            # followed by anything on the same line
                 )
                 (?:\n
