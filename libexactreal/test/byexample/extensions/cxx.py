@@ -161,10 +161,11 @@ class CxxInterpreter(byexample.runner.ExampleRunner):
 
             lines = source.split('\n')
             definitions = [line for line in lines if line.startswith('#include')]
-            executables = [line for line in lines if not line.startswith('#include') and line]
+            definitions.append("#include <iostream>")
+
+            executables = ["std::cout << std::setprecision(6);"] + [line for line in lines if not line.startswith('#include') and line]
 
             if executables and not executables[-1].endswith(';'):
-                definitions.append("#include <iostream>")
                 executables[-1] = f"std::cout << std::boolalpha << ({executables[-1]});"
 
             exception = None
@@ -209,4 +210,3 @@ class CxxInterpreter(byexample.runner.ExampleRunner):
         self._child.join(1)
         if self._child.exitcode is None:
             self._child.kill()
-
