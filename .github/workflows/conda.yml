@@ -1,6 +1,6 @@
 name: Publish to Anaconda
 on:
-  push: { branches: [ "master" ] }
+  push: { tags: [ "*" ] }
   pull_request: { branches: [ "master" ] }
 
 concurrency:
