@@ -167,6 +167,11 @@ Arf& Arf::operator=(const mpz_class& rhs) {
   return *this;
 }
 
+Arf& Arf::operator=(double rhs) {
+  arf_set_d(arf_t(), rhs);
+  return *this;
+}
+
 Arf& Arf::operator<<=(long rhs) {
   arf_mul_2exp_si(t, t, rhs);
   return *this;

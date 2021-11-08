@@ -77,6 +77,8 @@ Arb::Arb(const Arf& midpoint) : Arb() {
   arb_set_arf(arb_t(), midpoint.arf_t());
 }
 
+Arb::Arb(const mpq_class& rat) : Arb(rat, ARB_PRECISION_FAST) {}
+
 Arb::Arb(const mpq_class& rat, const mp_limb_signed_t precision) : Arb() {
   fmpq_t x;
   fmpq_init_set_readonly(x, rat.get_mpq_t());
@@ -92,6 +94,8 @@ Arb::Arb(const mpz_class& value) : Arb() {
 }
 
 Arb::Arb(const std::string& value, const prec precision) : Arb() { arb_set_str(arb_t(), value.c_str(), precision); }
+
+Arb::Arb(const eantic::renf_elem_class& renf) : Arb(renf, ARB_PRECISION_FAST) {}
 
 Arb::Arb(const eantic::renf_elem_class& renf, const mp_limb_signed_t precision) : Arb() {
   renf_refine_embedding(renf.parent().renf_t(), precision);
@@ -122,11 +126,21 @@ Arb Arb::one() {
 }
 
 Arb Arb::pos_inf() {
-  return Arb(Arf(1. / 0.));
+  Arb ret;
+  arb_pos_inf(ret.arb_t());
+  return ret;
 }
 
 Arb Arb::neg_inf() {
-  return Arb(Arf(-1. / 0.));
+  Arb ret;
+  arb_neg_inf(ret.arb_t());
+  return ret;
+}
+
+Arb Arb::zero_pm_one() {
+  Arb ret;
+  arb_zero_pm_one(ret.arb_t());
+  return ret;
 }
 
 Arb Arb::zero_pm_inf() {
@@ -403,6 +417,12 @@ Arb::operator std::pair<Arf, Arf>() const {
 }
 
 Arb::operator double() const { return arf_get_d(arb_midref(arb_t()), ARF_RND_NEAR); }
+
+Arb::operator Arf() const {
+  Arf midpoint;
+  arf_set(midpoint.arf_t(), arb_midref(arb_t()));
+  return midpoint;
+}
 
 std::ostream& operator<<(std::ostream& os, const Arb& self) {
   // ARB_STR_MORE is essential. Otherwise, arb prints things such as [1.5 +/- .6]
