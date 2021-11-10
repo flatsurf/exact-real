@@ -20,8 +20,11 @@
 
 #include "../exact-real/element.hpp"
 
+#include <type_traits>
+
 #include <arb.h>
-#include <e-antic/renfxx.h>
+#include <e-antic/renf_class.hpp>
+#include <e-antic/renf_elem_class.hpp>
 
 #include <boost/lexical_cast.hpp>
 #include <boost/numeric/conversion/cast.hpp>
@@ -263,7 +266,12 @@ template <typename Ring>
 template <typename T, typename>
 Element<Ring>& Element<Ring>::operator*=(const T& rhs) {
   for (auto& c : impl->coefficients) {
-    c *= rhs;
+    if constexpr (std::is_same_v<T, short unsigned int>) {
+      // Work around https://github.com/flatsurf/e-antic/issues/216
+      c *= static_cast<int>(rhs);
+    } else {
+      c *= rhs;
+    }
   }
   return *this;
 }
@@ -285,10 +293,16 @@ Element<Ring>& Element<Ring>::operator*=(const mpq_class& rhs) {
 }
 
 template <typename Ring>
-template <typename T, typename, typename>
+template <typename T, typename Q, typename>
 Element<Ring>& Element<Ring>::operator/=(const T& rhs) {
   for (auto& c : impl->coefficients) {
-    c /= rhs;
+    LIBEXACTREAL_ASSERT_ARGUMENT((std::is_same_v<typename Ring::ElementClass, Q> || (c / rhs * rhs == c)), "Cannot divide " << c << " by " << rhs << " in this coefficient ring.");
+    if constexpr (std::is_same_v<T, short unsigned int>) {
+      // Work around https://github.com/flatsurf/e-antic/issues/216
+      c /= static_cast<int>(rhs);
+    } else {
+      c /= rhs;
+    }
   }
   return *this;
 }
@@ -792,7 +806,18 @@ namespace exactreal {
 
 template class Element<IntegerRing>;
 template std::ostream& operator<<(std::ostream&, const Element<IntegerRing>&);
+template Element<IntegerRing>& Element<IntegerRing>::operator*=(const short&);
+template Element<IntegerRing>& Element<IntegerRing>::operator*=(const unsigned short&);
 template Element<IntegerRing>& Element<IntegerRing>::operator*=(const int&);
+template Element<IntegerRing>& Element<IntegerRing>::operator*=(const unsigned int&);
+template Element<IntegerRing>& Element<IntegerRing>::operator*=(const long&);
+template Element<IntegerRing>& Element<IntegerRing>::operator*=(const unsigned long&);
+template Element<IntegerRing>& Element<IntegerRing>::operator/=(const short&);
+template Element<IntegerRing>& Element<IntegerRing>::operator/=(const unsigned short&);
+template Element<IntegerRing>& Element<IntegerRing>::operator/=(const int&);
+template Element<IntegerRing>& Element<IntegerRing>::operator/=(const unsigned int&);
+template Element<IntegerRing>& Element<IntegerRing>::operator/=(const long&);
+template Element<IntegerRing>& Element<IntegerRing>::operator/=(const unsigned long&);
 template std::vector<mpz_class> Element_coefficients_1_4_0<IntegerRing, mpz_class>(const Element<IntegerRing>&);
 template std::vector<mpq_class> Element_coefficients_1_4_0<IntegerRing, mpq_class>(const Element<IntegerRing>&);
 template Element<IntegerRing>& Element_operator_mul_1_4_0(Element<IntegerRing>&, const mpz_class&);
@@ -800,8 +825,18 @@ template Element<IntegerRing>& Element_operator_mul_1_4_0(Element<IntegerRing>&,
 template class Element<RationalField>;
 template Element<RationalField>::Element(const Element<IntegerRing>&);
 template std::ostream& operator<<(std::ostream&, const Element<RationalField>&);
+template Element<RationalField>& Element<RationalField>::operator*=(const short&);
+template Element<RationalField>& Element<RationalField>::operator*=(const unsigned short&);
 template Element<RationalField>& Element<RationalField>::operator*=(const int&);
+template Element<RationalField>& Element<RationalField>::operator*=(const unsigned int&);
+template Element<RationalField>& Element<RationalField>::operator*=(const long&);
+template Element<RationalField>& Element<RationalField>::operator*=(const unsigned long&);
+template Element<RationalField>& Element<RationalField>::operator/=(const short&);
+template Element<RationalField>& Element<RationalField>::operator/=(const unsigned short&);
 template Element<RationalField>& Element<RationalField>::operator/=(const int&);
+template Element<RationalField>& Element<RationalField>::operator/=(const unsigned int&);
+template Element<RationalField>& Element<RationalField>::operator/=(const long&);
+template Element<RationalField>& Element<RationalField>::operator/=(const unsigned long&);
 template std::vector<mpq_class> Element_coefficients_1_4_0<RationalField, mpq_class>(const Element<RationalField>&);
 template Element<RationalField>& Element_operator_mul_1_4_0(Element<RationalField>&, const mpz_class&);
 template Element<RationalField>& Element_operator_mul_1_4_0(Element<RationalField>&, const mpq_class&);
@@ -810,9 +845,19 @@ template Element<RationalField>& Element_operator_div_1_4_0(Element<RationalFiel
 
 template class Element<NumberField>;
 template std::ostream& operator<<(std::ostream&, const Element<NumberField>&);
+template Element<NumberField>& Element<NumberField>::operator*=(const short&);
+template Element<NumberField>& Element<NumberField>::operator*=(const unsigned short&);
 template Element<NumberField>& Element<NumberField>::operator*=(const int&);
+template Element<NumberField>& Element<NumberField>::operator*=(const unsigned int&);
+template Element<NumberField>& Element<NumberField>::operator*=(const long&);
+template Element<NumberField>& Element<NumberField>::operator*=(const unsigned long&);
 template Element<NumberField>& Element<NumberField>::operator*=(const eantic::renf_elem_class&);
+template Element<NumberField>& Element<NumberField>::operator/=(const short&);
+template Element<NumberField>& Element<NumberField>::operator/=(const unsigned short&);
 template Element<NumberField>& Element<NumberField>::operator/=(const int&);
+template Element<NumberField>& Element<NumberField>::operator/=(const unsigned int&);
+template Element<NumberField>& Element<NumberField>::operator/=(const long&);
+template Element<NumberField>& Element<NumberField>::operator/=(const unsigned long&);
 template Element<NumberField>& Element<NumberField>::operator/=(const eantic::renf_elem_class&);
 template std::vector<mpq_class> Element_coefficients_1_4_0<NumberField, mpq_class>(const Element<NumberField>&);
 template std::vector<eantic::renf_elem_class> Element_coefficients_1_4_0<NumberField, eantic::renf_elem_class>(const Element<NumberField>&);

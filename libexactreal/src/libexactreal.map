@@ -450,3 +450,39 @@ LIBEXACTREAL_2.2.0 {
       "exactreal::Element<exactreal::NumberField>::operator/=(__gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&)";
     };
 } LIBEXACTREAL_2.0.0;
+LIBEXACTREAL_2.3.0 {
+  global:
+    extern "C++" {
+      "exactreal::Element<exactreal::IntegerRing>& exactreal::Element<exactreal::IntegerRing>::operator*=<long, __gmp_expr<__mpz_struct [1], __gmp_binary_expr<__gmp_expr<__mpz_struct [1], __mpz_struct [1]>, long, __gmp_binary_multiplies> > >(long const&)";
+      "exactreal::Element<exactreal::IntegerRing>& exactreal::Element<exactreal::IntegerRing>::operator*=<short, __gmp_expr<__mpz_struct [1], __gmp_binary_expr<__gmp_expr<__mpz_struct [1], __mpz_struct [1]>, long, __gmp_binary_multiplies> > >(short const&)";
+      "exactreal::Element<exactreal::IntegerRing>& exactreal::Element<exactreal::IntegerRing>::operator*=<unsigned int, __gmp_expr<__mpz_struct [1], __gmp_binary_expr<__gmp_expr<__mpz_struct [1], __mpz_struct [1]>, unsigned long, __gmp_binary_multiplies> > >(unsigned int const&)";
+      "exactreal::Element<exactreal::IntegerRing>& exactreal::Element<exactreal::IntegerRing>::operator*=<unsigned long, __gmp_expr<__mpz_struct [1], __gmp_binary_expr<__gmp_expr<__mpz_struct [1], __mpz_struct [1]>, unsigned long, __gmp_binary_multiplies> > >(unsigned long const&)";
+      "exactreal::Element<exactreal::IntegerRing>& exactreal::Element<exactreal::IntegerRing>::operator*=<unsigned short, __gmp_expr<__mpz_struct [1], __gmp_binary_expr<__gmp_expr<__mpz_struct [1], __mpz_struct [1]>, unsigned long, __gmp_binary_multiplies> > >(unsigned short const&)";
+      "exactreal::Element<exactreal::IntegerRing>& exactreal::Element<exactreal::IntegerRing>::operator/=<int, __gmp_expr<__mpz_struct [1], __gmp_binary_expr<__gmp_expr<__mpz_struct [1], __mpz_struct [1]>, long, __gmp_binary_divides> >, void>(int const&)";
+      "exactreal::Element<exactreal::IntegerRing>& exactreal::Element<exactreal::IntegerRing>::operator/=<long, __gmp_expr<__mpz_struct [1], __gmp_binary_expr<__gmp_expr<__mpz_struct [1], __mpz_struct [1]>, long, __gmp_binary_divides> >, void>(long const&)";
+      "exactreal::Element<exactreal::IntegerRing>& exactreal::Element<exactreal::IntegerRing>::operator/=<short, __gmp_expr<__mpz_struct [1], __gmp_binary_expr<__gmp_expr<__mpz_struct [1], __mpz_struct [1]>, long, __gmp_binary_divides> >, void>(short const&)";
+      "exactreal::Element<exactreal::IntegerRing>& exactreal::Element<exactreal::IntegerRing>::operator/=<unsigned int, __gmp_expr<__mpz_struct [1], __gmp_binary_expr<__gmp_expr<__mpz_struct [1], __mpz_struct [1]>, unsigned long, __gmp_binary_divides> >, void>(unsigned int const&)";
+      "exactreal::Element<exactreal::IntegerRing>& exactreal::Element<exactreal::IntegerRing>::operator/=<unsigned long, __gmp_expr<__mpz_struct [1], __gmp_binary_expr<__gmp_expr<__mpz_struct [1], __mpz_struct [1]>, unsigned long, __gmp_binary_divides> >, void>(unsigned long const&)";
+      "exactreal::Element<exactreal::IntegerRing>& exactreal::Element<exactreal::IntegerRing>::operator/=<unsigned short, __gmp_expr<__mpz_struct [1], __gmp_binary_expr<__gmp_expr<__mpz_struct [1], __mpz_struct [1]>, unsigned long, __gmp_binary_divides> >, void>(unsigned short const&)";
+      "exactreal::Element<exactreal::NumberField>& exactreal::Element<exactreal::NumberField>::operator*=<long, eantic::renf_elem_class>(long const&)";
+      "exactreal::Element<exactreal::NumberField>& exactreal::Element<exactreal::NumberField>::operator*=<short, eantic::renf_elem_class>(short const&)";
+      "exactreal::Element<exactreal::NumberField>& exactreal::Element<exactreal::NumberField>::operator*=<unsigned int, eantic::renf_elem_class>(unsigned int const&)";
+      "exactreal::Element<exactreal::NumberField>& exactreal::Element<exactreal::NumberField>::operator*=<unsigned long, eantic::renf_elem_class>(unsigned long const&)";
+      "exactreal::Element<exactreal::NumberField>& exactreal::Element<exactreal::NumberField>::operator*=<unsigned short, eantic::renf_elem_class>(unsigned short const&)";
+      "exactreal::Element<exactreal::NumberField>& exactreal::Element<exactreal::NumberField>::operator/=<long, eantic::renf_elem_class, void>(long const&)";
+      "exactreal::Element<exactreal::NumberField>& exactreal::Element<exactreal::NumberField>::operator/=<short, eantic::renf_elem_class, void>(short const&)";
+      "exactreal::Element<exactreal::NumberField>& exactreal::Element<exactreal::NumberField>::operator/=<unsigned int, eantic::renf_elem_class, void>(unsigned int const&)";
+      "exactreal::Element<exactreal::NumberField>& exactreal::Element<exactreal::NumberField>::operator/=<unsigned long, eantic::renf_elem_class, void>(unsigned long const&)";
+      "exactreal::Element<exactreal::NumberField>& exactreal::Element<exactreal::NumberField>::operator/=<unsigned short, eantic::renf_elem_class, void>(unsigned short const&)";
+      "exactreal::Element<exactreal::RationalField>& exactreal::Element<exactreal::RationalField>::operator*=<long, __gmp_expr<__mpq_struct [1], __gmp_binary_expr<__gmp_expr<__mpq_struct [1], __mpq_struct [1]>, long, __gmp_binary_multiplies> > >(long const&)";
+      "exactreal::Element<exactreal::RationalField>& exactreal::Element<exactreal::RationalField>::operator*=<short, __gmp_expr<__mpq_struct [1], __gmp_binary_expr<__gmp_expr<__mpq_struct [1], __mpq_struct [1]>, long, __gmp_binary_multiplies> > >(short const&)";
+      "exactreal::Element<exactreal::RationalField>& exactreal::Element<exactreal::RationalField>::operator*=<unsigned int, __gmp_expr<__mpq_struct [1], __gmp_binary_expr<__gmp_expr<__mpq_struct [1], __mpq_struct [1]>, unsigned long, __gmp_binary_multiplies> > >(unsigned int const&)";
+      "exactreal::Element<exactreal::RationalField>& exactreal::Element<exactreal::RationalField>::operator*=<unsigned long, __gmp_expr<__mpq_struct [1], __gmp_binary_expr<__gmp_expr<__mpq_struct [1], __mpq_struct [1]>, unsigned long, __gmp_binary_multiplies> > >(unsigned long const&)";
+      "exactreal::Element<exactreal::RationalField>& exactreal::Element<exactreal::RationalField>::operator*=<unsigned short, __gmp_expr<__mpq_struct [1], __gmp_binary_expr<__gmp_expr<__mpq_struct [1], __mpq_struct [1]>, unsigned long, __gmp_binary_multiplies> > >(unsigned short const&)";
+      "exactreal::Element<exactreal::RationalField>& exactreal::Element<exactreal::RationalField>::operator/=<long, __gmp_expr<__mpq_struct [1], __gmp_binary_expr<__gmp_expr<__mpq_struct [1], __mpq_struct [1]>, long, __gmp_binary_divides> >, void>(long const&)";
+      "exactreal::Element<exactreal::RationalField>& exactreal::Element<exactreal::RationalField>::operator/=<short, __gmp_expr<__mpq_struct [1], __gmp_binary_expr<__gmp_expr<__mpq_struct [1], __mpq_struct [1]>, long, __gmp_binary_divides> >, void>(short const&)";
+      "exactreal::Element<exactreal::RationalField>& exactreal::Element<exactreal::RationalField>::operator/=<unsigned int, __gmp_expr<__mpq_struct [1], __gmp_binary_expr<__gmp_expr<__mpq_struct [1], __mpq_struct [1]>, unsigned long, __gmp_binary_divides> >, void>(unsigned int const&)";
+      "exactreal::Element<exactreal::RationalField>& exactreal::Element<exactreal::RationalField>::operator/=<unsigned long, __gmp_expr<__mpq_struct [1], __gmp_binary_expr<__gmp_expr<__mpq_struct [1], __mpq_struct [1]>, unsigned long, __gmp_binary_divides> >, void>(unsigned long const&)";
+      "exactreal::Element<exactreal::RationalField>& exactreal::Element<exactreal::RationalField>::operator/=<unsigned short, __gmp_expr<__mpq_struct [1], __gmp_binary_expr<__gmp_expr<__mpq_struct [1], __mpq_struct [1]>, unsigned long, __gmp_binary_divides> >, void>(unsigned short const&)";
+    };
+} LIBEXACTREAL_2.2.0;

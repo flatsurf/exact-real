@@ -45,7 +45,13 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
                                  boost::totally_ordered<Element<Ring>, mpz_class>,
                                  boost::totally_ordered<Element<Ring>, long long>,
                                  boost::multipliable<Element<Ring>, RealNumber>,
-                                 boost::multiplicative<Element<Ring>, typename Ring::ElementClass> {
+                                 boost::multiplicative<Element<Ring>, typename Ring::ElementClass>,
+                                 boost::multiplicative<Element<Ring>, short>,
+                                 boost::multiplicative<Element<Ring>, unsigned short>,
+                                 boost::multiplicative<Element<Ring>, int>,
+                                 boost::multiplicative<Element<Ring>, unsigned int>,
+                                 boost::multiplicative<Element<Ring>, long>,
+                                 boost::multiplicative<Element<Ring>, unsigned long> {
  public:
   Element();
   Element(const std::shared_ptr<const Module<Ring>>& parent, const std::vector<typename Ring::ElementClass>& coefficients);

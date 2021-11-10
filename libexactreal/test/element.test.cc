@@ -144,6 +144,18 @@ TEST_CASE("Element over ZZ", "[element][integer_ring]") {
         REQUIRE(x != *one);
       REQUIRE(mpz_class(1) * x == x);
       REQUIRE(mpz_class(0) * x == m->zero());
+      REQUIRE(x / static_cast<short>(1) == x);
+      REQUIRE(x / static_cast<unsigned short>(1) == x);
+      REQUIRE(x / 1 == x);
+      REQUIRE(x / 1u == x);
+      REQUIRE(x / 1l == x);
+      REQUIRE(x / 1ul == x);
+      REQUIRE(x * static_cast<short>(1) == x);
+      REQUIRE(x * static_cast<unsigned short>(1) == x);
+      REQUIRE(x * 1 == x);
+      REQUIRE(x * 1u == x);
+      REQUIRE(x * 1l == x);
+      REQUIRE(x * 1ul == x);
       REQUIRE(x / mpz_class(1) == x);
     }
   }
@@ -241,6 +253,18 @@ TEST_CASE("Element over QQ", "[element][rational_field]") {
       REQUIRE(mpq_class(1) * x == x);
       REQUIRE(mpq_class(0) * x == m->zero());
       REQUIRE(x / mpq_class(1) == x);
+      REQUIRE(x / static_cast<short>(1) == x);
+      REQUIRE(x / static_cast<unsigned short>(1) == x);
+      REQUIRE(x / 1 == x);
+      REQUIRE(x / 1u == x);
+      REQUIRE(x / 1l == x);
+      REQUIRE(x / 1ul == x);
+      REQUIRE(x * static_cast<short>(1) == x);
+      REQUIRE(x * static_cast<unsigned short>(1) == x);
+      REQUIRE(x * 1 == x);
+      REQUIRE(x * 1u == x);
+      REQUIRE(x * 1l == x);
+      REQUIRE(x * 1ul == x);
       REQUIRE(x / mpq_class(1, 1) == x);
       REQUIRE(x / mpq_class(1, 2) == 2 * x);
     }
@@ -330,6 +354,18 @@ TEST_CASE("Elements over Number Field", "[element][number_field]") {
         REQUIRE(x != *one);
       REQUIRE(mpz_class(1) * x == x);
       REQUIRE(mpz_class(0) * x == m->zero());
+      REQUIRE(x / static_cast<short>(1) == x);
+      REQUIRE(x / static_cast<unsigned short>(1) == x);
+      REQUIRE(x / 1 == x);
+      REQUIRE(x / 1u == x);
+      REQUIRE(x / 1l == x);
+      REQUIRE(x / 1ul == x);
+      REQUIRE(x * static_cast<short>(1) == x);
+      REQUIRE(x * static_cast<unsigned short>(1) == x);
+      REQUIRE(x * 1 == x);
+      REQUIRE(x * 1u == x);
+      REQUIRE(x * 1l == x);
+      REQUIRE(x * 1ul == x);
     }
 
     for (size_t i = 0; i < sizeof(elements) / sizeof(elements[0]); i++) {

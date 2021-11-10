@@ -42,6 +42,10 @@ struct LIBEXACTREAL_API IntegerRing : private boost::equality_comparable<Integer
   template <typename T, typename M = decltype(std::declval<const ElementClass&>() * std::declval<const T&>())>
   using multiplication_t = M;
 
+  // TODO: This is not working as expected: Q can be "mpz_class / int" which is
+  // not the same as "mpz_class" due to GMP's lazy evaluation of these expressions.
+  // However, we cannot simply fix this as this would be a breaking change
+  // since the ABI names of the operator/= changes when we do this.
   template <typename T, typename Q = decltype(std::declval<const ElementClass&>() / std::declval<const T&>())>
   using division_t = std::conditional_t<std::is_same_v<Q, mpz_class>, mpq_class, Q>;
 
