@@ -25,7 +25,7 @@
 
 #include <boost/blank.hpp>
 #include <boost/operators.hpp>
-#include <optional>
+#include <e-antic/renfxx_fwd.hpp>
 #include <type_traits>
 #include <vector>
 
@@ -94,7 +94,12 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
 
   // Divide this element by `c`.
   // As with multiplication, we provide specialized overloads for GMP types.
-  template <typename T, typename = typename Ring::template division_t<T>, typename = void>
+  template <typename T, typename Q = typename Ring::template division_t<T>, typename = 
+    // Unt
+    std::enable_if_t<
+      (std::is_same_v<Ring, RationalField> && std::is_same_v<T, int>) ||
+      (std::is_same_v<Ring, NumberField> && (std::is_same_v<T, int> || std::is_same_v<T, eantic::renf_elem_class>))
+    , void>>
   Element& operator/=(const T& c);
   Element& operator/=(const mpz_class&);
   Element& operator/=(const mpq_class&);
