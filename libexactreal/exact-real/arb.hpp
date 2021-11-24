@@ -598,35 +598,77 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
 
   /// Return the interval [-1, 1], i.e., the ball of radius one centered at
   /// zero, see [arb_zero_pm_one]().
+  /// Note that this prints as `[+/- 1.01]` instead of `[+/- 1.00]`, see
+  /// https://github.com/fredrik-johansson/arb/issues/391
   ///
   ///     #include <exact-real/arb.hpp>
   ///
   ///     std::cout << exactreal::Arb::zero_pm_one();
-  ///     // -> (...)
+  ///     // -> [+/- 1.01]
   ///
   static Arb zero_pm_one();
 
   /// Return the unit interval [0, 1], i.e., the ball of radius 1/2 centered at
   /// 1/2, see [arb_unit_interval]().
+  /// Note that that this does not print as `[0.5 +/- 0.5]`, see
+  /// https://github.com/fredrik-johansson/arb/issues/391
   ///
   ///     #include <exact-real/arb.hpp>
   ///
   ///     std::cout << exactreal::Arb::unit_interval();
-  ///     // -> (...)
+  ///     // -> [0.500000 +/- 0.501]
   ///
   static Arb unit_interval();
 
   /// Return a random element, see [arb_randtest]().
+  ///
+  ///     #include <exact-real/arb.hpp>
+  ///     #include <flint/flintxx/frandxx.h>
+  ///
+  ///     flint::frandxx rand;
+  ///     auto a = exactreal::Arb::randtest(rand, 64, 16);
+  ///     auto b = exactreal::Arb::randtest(rand, 64, 16);
+  ///     a.equal(b)
+  ///     // -> false
+  ///
   static Arb randtest(flint::frandxx&, prec precision, prec magbits);
 
-  /// Retrun a random element, see [arb_randtest_exact]().
+  /// Return a random element, see [arb_randtest_exact]().
+  ///
+  ///     #include <exact-real/arb.hpp>
+  ///     #include <flint/flintxx/frandxx.h>
+  ///
+  ///     flint::frandxx rand;
+  ///     auto a = exactreal::Arb::randtest_exact(rand, 64, 16);
+  ///     auto b = exactreal::Arb::randtest_exact(rand, 64, 16);
+  ///     a.equal(b)
+  ///     // -> false
+  ///
   static Arb randtest_exact(flint::frandxx&, prec precision, prec magbits);
 
-  // Return whether elements have the same midpoint and radius.
+  /// Return whether elements have the same midpoint and radius.
+  ///
+  ///     #include <exact-real/arb.hpp>
+  ///
+  ///     exactreal::Arb a;
+  ///     a.equal(a)
+  ///     // -> true
+  ///
   bool equal(const Arb&) const;
 
-  /// Swap two elements efficiently.
+  /// Swap two elements efficiently, see [arb_swap]().
   /// Used by some STL containers.
+  ///
+  ///     #include <exact-real/arb.hpp>
+  ///
+  ///     exactreal::Arb a{1}, b;
+  ///     std::cout << "a = " << a << ", b = " << b;
+  ///     // -> a = 1.00000, b = 0
+  ///
+  ///     swap(a, b);
+  ///     std::cout << "a = " << a << ", b = " << b;
+  ///     // -> a = 0, b = 1.00000
+  ///
   LIBEXACTREAL_API friend void swap(Arb&, Arb&);
 
   // Syntactic sugar for Yap, so that expresions such as x += y(64, Arf::Rount::NEAR) work.
@@ -648,7 +690,7 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   LIBEXACTREAL_LOCAL Arb& operator=(const yap::ArbExpr<Kind, Tuple>&);
 
  private:
-  // The underlying arb_t; use arb_t() to get a reference to it.
+  /// The underlying arb_t; use arb_t() to get a reference to it.
   ::arb_t t;
 };
 

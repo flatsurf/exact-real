@@ -155,6 +155,12 @@ Arb Arb::indeterminate() {
   return ret;
 }
 
+Arb Arb::unit_interval() {
+  Arb ret;
+  arb_unit_interval(ret.arb_t());
+  return ret;
+}
+
 arb_t& Arb::arb_t() { return t; }
 
 const arb_t& Arb::arb_t() const { return t; }
@@ -364,7 +370,7 @@ Arb& Arb::operator=(const Arb& rhs) noexcept {
 }
 
 Arb& Arb::operator=(Arb&& rhs) noexcept {
-  arb_swap(arb_t(), rhs.arb_t());
+  swap(*this, rhs);
   return *this;
 }
 
@@ -422,6 +428,10 @@ Arb::operator Arf() const {
   Arf midpoint;
   arf_set(midpoint.arf_t(), arb_midref(arb_t()));
   return midpoint;
+}
+
+void swap(Arb& a, Arb& b) {
+  arb_swap(a.arb_t(), b.arb_t());
 }
 
 std::ostream& operator<<(std::ostream& os, const Arb& self) {

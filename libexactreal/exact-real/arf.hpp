@@ -234,7 +234,7 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   ///     exactreal::Arf x{1};
   ///     exactreal::Arf y = -x;
   ///     std::cout << y;
-  ///     // -> ...
+  ///     // -> -1
   ///
   Arf operator-() const;
 
@@ -247,7 +247,7 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   ///     std::cout << static_cast<double>(x);
   ///     // -> 0
   ///
-  ///     x *= Arf{1, 65536};
+  ///     x *= exactreal::Arf{1, 65536};
   ///     std::cout << static_cast<double>(x);
   ///
   explicit operator double() const;

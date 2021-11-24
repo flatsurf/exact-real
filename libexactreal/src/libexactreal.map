@@ -404,6 +404,7 @@ LIBEXACTREAL_2.2.0 {
       "exactreal::Arb::operator=(unsigned long long)";
       "exactreal::Arb::operator=(unsigned long)";
       "exactreal::Arb::operator=(unsigned short)";
+      "exactreal::Arb::unit_interval()";
       "exactreal::Arf::Arf(long long)";
       "exactreal::Arf::Arf(short)";
       "exactreal::Arf::Arf(unsigned int)";
@@ -561,5 +562,6 @@ LIBEXACTREAL_2.2.0 {
       "exactreal::operator>=(unsigned long long, exactreal::Arb const&)";
       "exactreal::operator>=(unsigned long, exactreal::Arb const&)";
       "exactreal::operator>=(unsigned short, exactreal::Arb const&)";
+      "exactreal::swap(exactreal::Arb&, exactreal::Arb&)";
     };
 } LIBEXACTREAL_2.0.0;
