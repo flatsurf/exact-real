@@ -563,5 +563,6 @@ LIBEXACTREAL_2.2.0 {
       "exactreal::operator>=(unsigned long, exactreal::Arb const&)";
       "exactreal::operator>=(unsigned short, exactreal::Arb const&)";
       "exactreal::swap(exactreal::Arb&, exactreal::Arb&)";
+      "exactreal::swap(exactreal::Arf&, exactreal::Arf&)";
     };
 } LIBEXACTREAL_2.0.0;

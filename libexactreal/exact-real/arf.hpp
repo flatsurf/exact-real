@@ -247,8 +247,11 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   ///     std::cout << static_cast<double>(x);
   ///     // -> 0
   ///
-  ///     x *= exactreal::Arf{1, 65536};
+  ///     #include <exact-real/yap/arf.hpp>
+  ///
+  ///     x = (x * exactreal::Arf{1, 65536})(64, exactreal::Arf::Round::NEAR);
   ///     std::cout << static_cast<double>(x);
+  ///     // -> 1
   ///
   explicit operator double() const;
 
@@ -259,7 +262,7 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   ///     exactreal::Arf x{-1};
   ///     exactreal::Arf y = x.abs();
   ///     std::cout << y;
-  ///     // -> ...
+  ///     // -> 1
   ///
   Arf abs() const;
 
@@ -300,7 +303,7 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   /// this element as `mantissa * 2^exponent`. See [arf_get_fmpz_2exp]().
   ///
   ///     #include <exact-real/arf.hpp>
-  ///     exactreal::Arf x{-1}
+  ///     exactreal::Arf x{-1};
   ///     std::cout << x.exponent();
   ///     // -> 0
   ///
@@ -310,9 +313,9 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   ///
   ///     #include <exact-real/arf.hpp>
   ///
-  ///     exactreal::Arf x{-1}
+  ///     exactreal::Arf x{1025};
   ///     x.logb()
-  ///     // -> ...
+  ///     // -> 10
   ///
   long logb() const;
 
@@ -320,10 +323,10 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   ///
   ///     #include <exact-real/arf.hpp>
   ///
-  ///     exactreal::Arf x{-1}
-  ///     x <<= 8;
+  ///     exactreal::Arf x{-1};
+  ///     x >>= 8;
   ///     std::cout << x;
-  ///     // -> ...
+  ///     // -> -0.00390625=-1p-8
   ///
   Arf& operator>>=(const long e);
 
@@ -331,10 +334,10 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   ///
   ///     #include <exact-real/arf.hpp>
   ///
-  ///     exactreal::Arf x{-1}
-  ///     x >>= 8;
+  ///     exactreal::Arf x{-1};
+  ///     x <<= 8;
   ///     std::cout << x;
-  ///     // -> ...
+  ///     // -> -256
   ///
   Arf& operator<<=(const long e);
 
@@ -344,7 +347,7 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   ///
   ///     #include <exact-real/arf.hpp>
   ///
-  ///     exactreal::Arf x{1}
+  ///     exactreal::Arf x{1};
   ///     x < 2
   ///     // -> true
   ///
@@ -391,12 +394,48 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>,
   LIBEXACTREAL_API friend bool operator==(const Arf&, const mpz_class&);
 
   /// Return a random element, see [arf_randtest]().
-  static Arf randtest(flint::frandxx&, prec precision, prec magbits);
+  ///
+  ///     #include <exact-real/arf.hpp>
+  ///     #include <flint/flintxx/frandxx.h>
+  ///
+  ///     flint::frandxx rand;
+  ///     auto a = exactreal::Arf::randtest(rand, 64, 16);
+  ///     auto b = exactreal::Arf::randtest(rand, 64, 16);
+  ///     a == b
+  ///     // -> false
+  ///
+  LIBEXACTREAL_API static Arf randtest(flint::frandxx&, prec precision, prec magbits);
 
   /// Write this element to the output stream.
+  ///
+  ///     #include <exact-real/arf.hpp>
+  ///
+  ///     exactreal::Arf x{1};
+  ///     std::cout << x;
+  ///     // -> 1
+  ///
+  /// Non-integers and large numbers are written as their double approximation
+  /// and exactly, with an exponent for base two, here is for example `2^-16`:
+  ///
+  ///     exactreal::Arf x{1, -16};
+  ///     std::cout << x;
+  ///     // -> 1.52588e-05=1p-16
+  ///
   LIBEXACTREAL_API friend std::ostream& operator<<(std::ostream&, const Arf&);
 
-  // Provide swap for STL containers
+  /// Swap two elements efficiently.
+  /// This is used by some STL containers.
+  ///
+  ///     #include <exact-real/arf.hpp>
+  ///
+  ///     exactreal::Arf x{1}, y;
+  ///     std::cout << "x = " << x << ", y = " << y;
+  ///     // -> x = 1, y = 0
+  ///
+  ///     swap(x, y);
+  ///     std::cout << "x = " << x << ", y = " << y;
+  ///     // -> x = 0, y = 1
+  ///
   LIBEXACTREAL_API friend void swap(Arf& lhs, Arf& rhs);
 
   /// Return a reference to the underlying [arf_t]() element for direct

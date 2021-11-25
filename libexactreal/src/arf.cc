@@ -120,7 +120,7 @@ Arf& Arf::operator=(const Arf& rhs) noexcept {
 }
 
 Arf& Arf::operator=(Arf&& rhs) noexcept {
-  arf_swap(t, rhs.t);
+  swap(*this, rhs);
   return *this;
 }
 
@@ -300,6 +300,10 @@ Arf Arf::randtest(flint::frandxx& state, prec precision, prec magbits) {
   Arf ret;
   arf_randtest(ret.arf_t(), state._data(), precision, magbits);
   return ret;
+}
+
+void swap(Arf& a, Arf& b) {
+  arf_swap(a.arf_t(), b.arf_t());
 }
 
 std::ostream& operator<<(std::ostream& os, const Arf& self) {

@@ -44,12 +44,16 @@ namespace exactreal {
 ///
 ///     #include <exact-real/module.hpp>
 ///     #include <exact-real/rational_field.hpp>
+///     #include <exact-real/real_number.hpp>
+///     #include <exact-real/element.hpp>
 ///
-///     auto M = exactreal::Module<exactreal::RationalField>({RealNumber::rational(1), RealNumber::random()});
-///     auto one = M.gen(0);
-///     auto x = M.gen(1);
+///     auto M = exactreal::Module<exactreal::RationalField>::make({
+///       exactreal::RealNumber::rational(1),
+///       exactreal::RealNumber::random()});
+///     auto one = M->gen(0);
+///     auto x = M->gen(1);
 ///     std::cout << x + one;
-///     // -> ...
+///     // -> ℝ(<random>) + 1
 ///
 template <typename Ring>
 class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
@@ -69,7 +73,7 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   ///
   ///     exactreal::Element<exactreal::RationalField> zero;
   ///     std::cout << zero;
-  ///     // -> ...
+  ///     // -> 0
   ///
   ///     std::cout << *zero.module();
   ///     // -> ...
@@ -85,8 +89,11 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   ///     #include <exact-real/module.hpp>
   ///     #include <exact-real/element.hpp>
   ///     #include <exact-real/rational_field.hpp>
+  ///     #include <exact-real/real_number.hpp>
   ///
-  ///     auto M = exactreal::Module<exactreal::RationalField>({RealNumber::rational(1), RealNumber::random()});
+  ///     auto M = exactreal::Module<exactreal::RationalField>::make({
+  ///       exactreal::RealNumber::rational(1),
+  ///       exactreal::RealNumber::random()});
   ///     auto a = exactreal::Element<exactreal::RationalField>(M, {2, 3});
   ///     std::cout << a;
   ///     // -> ...
@@ -115,8 +122,11 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   ///     #include <exact-real/element.hpp>
   ///     #include <exact-real/integer_ring.hpp>
   ///     #include <exact-real/rational_field.hpp>
+  ///     #include <exact-real/real_number.hpp>
   ///
-  ///     auto M = exactreal::Module<exactreal::IntegerRing>({RealNumber::rational(1), RealNumber::random()});
+  ///     auto M = exactreal::Module<exactreal::IntegerRing>::make({
+  ///       exactreal::RealNumber::rational(1),
+  ///       exactreal::RealNumber::random()});
   ///     auto a = exactreal::Element<exactreal::IntegerRing>(M, {2, 3});
   ///     auto b = exactreal::Element<exactreal::RationalField>(a);
   ///    
@@ -126,10 +136,28 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   template <bool Enabled = !std::is_same_v<Ring, IntegerRing>, std::enable_if_t<Enabled, bool> = true>
   Element(const Element<IntegerRing>& value);
 
+  /// Create an element equal to `value` with coefficients in a [Ring](), i.e.,
+  /// coerce the coefficients of `value` to a bigger [Ring]().
+  ///
+  ///     #include <exact-real/module.hpp>
+  ///     #include <exact-real/element.hpp>
+  ///     #include <exact-real/rational_field.hpp>
+  ///     #include <exact-real/number_field.hpp>
+  ///     #include <exact-real/real_number.hpp>
+  ///
+  ///     auto M = exactreal::Module<exactreal::RationalField>::make({
+  ///       exactreal::RealNumber::rational(1),
+  ///       exactreal::RealNumber::random()});
+  ///     auto a = exactreal::Element<exactreal::RationalField>(M, {2, 3});
+  ///     auto b = exactreal::Element<exactreal::NumberField>(a);
+  ///    
+  ///     std::cout << b.parent();
+  ///     // -> 3
+  ///
   template <bool Enabled = !std::is_same_v<Ring, RationalField> && Ring::contains_rationals, std::enable_if_t<Enabled, bool> = true>
   Element(const Element<RationalField>& value);
 
-  typename Ring::ElementClass operator[](const size) const;
+  typename Ring::ElementClass operator[](size) const;
   std::conditional<Ring::isField, mpq_class, mpz_class> operator[](const std::pair<size, size>&) const;
 
   /// TODO: document
