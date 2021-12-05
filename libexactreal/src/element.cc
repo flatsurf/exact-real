@@ -809,6 +809,7 @@ template Element<RationalField>& Element_operator_div_1_4_0(Element<RationalFiel
 template Element<RationalField>& Element_operator_div_1_4_0(Element<RationalField>&, const mpq_class&);
 
 template class Element<NumberField>;
+template Element<NumberField>::Element(const Element<IntegerRing>&);
 template std::ostream& operator<<(std::ostream&, const Element<NumberField>&);
 template Element<NumberField>& Element<NumberField>::operator*=(const int&);
 template Element<NumberField>& Element<NumberField>::operator*=(const eantic::renf_elem_class&);
