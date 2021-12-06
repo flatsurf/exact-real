@@ -31,9 +31,9 @@
 ///     #include <exact-real/real_number.hpp>
 ///     #include <gmpxx.h>
 ///
-///     auto M = exactreal::Module::make({exactreal::RealNumber::rational(mpq_class{1, 2})}, exactreal::IntegerRing{});
+///     auto M = exactreal::Module<exactreal::IntegerRing>::make({exactreal::RealNumber::rational(mpq_class{1, 2})}, exactreal::IntegerRing{});
 ///     std::cout << *M;
-///     // -> ...
+///     // -> ℤ-Module(1/2)
 ///
 
 #ifndef LIBEXACTREAL_INTEGER_RING_HPP
@@ -44,6 +44,7 @@
 #include <boost/operators.hpp>
 #include <optional>
 #include <type_traits>
+#include <iosfwd>
 
 #include "forward.hpp"
 
@@ -57,9 +58,9 @@ namespace exactreal {
 ///     #include <exact-real/integer_ring.hpp>
 ///     #include <exact-real/module.hpp>
 ///
-///     auto M = exactreal::Module::make({}, exactreal::IntegerRing{});
+///     auto M = exactreal::Module<exactreal::IntegerRing>::make({}, exactreal::IntegerRing{});
 ///     std::cout << *M;
-///     // -> ...
+///     // -> ℤ-Module()
 ///
 struct LIBEXACTREAL_API IntegerRing : private boost::equality_comparable<IntegerRing> {
   /// Create the ring of integers.
@@ -68,7 +69,7 @@ struct LIBEXACTREAL_API IntegerRing : private boost::equality_comparable<Integer
   ///
   ///     exactreal::IntegerRing Z;
   ///     std::cout << Z;
-  ///     // -> ...
+  ///     // -> ℤ
   ///
   IntegerRing();
 
@@ -80,7 +81,7 @@ struct LIBEXACTREAL_API IntegerRing : private boost::equality_comparable<Integer
   ///
   ///     exactreal::IntegerRing Z{1337};
   ///     std::cout << Z;
-  ///     // -> ...
+  ///     // -> ℤ
   ///
   IntegerRing(const mpz_class&);
 
@@ -89,8 +90,8 @@ struct LIBEXACTREAL_API IntegerRing : private boost::equality_comparable<Integer
   ///     #include <exact-real/integer_ring.hpp>
   ///
   ///     exactreal::IntegerRing Z;
-  ///     std::cout << IntegerRing::compositum(Z, Z);
-  ///     // -> ...
+  ///     std::cout << exactreal::IntegerRing::compositum(Z, Z);
+  ///     // -> ℤ
   ///
   static IntegerRing compositum(const IntegerRing& lhs, const IntegerRing& rhs);
 
@@ -136,9 +137,10 @@ struct LIBEXACTREAL_API IntegerRing : private boost::equality_comparable<Integer
   /// The argument `prec` is ignored.
   ///
   ///     #include <exact-real/integer_ring.hpp>
+  ///     #include <exact-real/arb.hpp>
   ///
-  ///     std::cout << exactreal::IntegerRing::arb(1);
-  ///     // -> 1
+  ///     std::cout << exactreal::IntegerRing::arb(1, 64);
+  ///     // -> 1.00000
   ///
   static Arb arb(const ElementClass& x, long prec);
 
@@ -156,14 +158,18 @@ struct LIBEXACTREAL_API IntegerRing : private boost::equality_comparable<Integer
   ///     // -> true
   ///
   bool operator==(const IntegerRing&) const { return true; }
+
+  friend std::ostream& operator<<(std::ostream&, const IntegerRing&);
 };
+
+LIBEXACTREAL_API std::ostream& operator<<(std::ostream&, const IntegerRing&);
 
 }  // namespace exactreal
 
 namespace std {
 template <>
-struct hash<exactreal::IntegerRing> {
-  size_t operator()(const exactreal::IntegerRing&) const { return 0; }
+struct LIBEXACTREAL_API hash<exactreal::IntegerRing> {
+  size_t LIBEXACTREAL_API operator()(const exactreal::IntegerRing&) const { return 0; }
 };
 }  // namespace std
 

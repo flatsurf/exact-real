@@ -190,13 +190,7 @@ Element<Ring> Module<Ring>::zero() const {
 
 template <typename R>
 std::ostream& operator<<(std::ostream& os, const Module<R>& self) {
-  if constexpr (is_same_v<R, IntegerRing>) {
-    os << "ℤ-Module(";
-  } else if constexpr (is_same_v<R, RationalField>) {
-    os << "ℚ-Module(";
-  } else {
-    os << "K" /* self.ring() */ << "-Module(";
-  }
+  os << self.ring() << "-Module(";
   os << boost::algorithm::join(self.basis() | transformed(
                                                   [](auto& gen) { return boost::lexical_cast<string>(*gen); }),
                                ", ");

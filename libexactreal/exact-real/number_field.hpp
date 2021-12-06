@@ -34,9 +34,9 @@
 ///     #include <gmpxx.h>
 ///
 ///     auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
-///     auto M = exactreal::Module::make({exactreal::RealNumber::rational(1)}, exactreal::NumberField{K});
+///     auto M = exactreal::Module<exactreal::NumberField>::make({exactreal::RealNumber::rational(1)}, exactreal::NumberField{K});
 ///     std::cout << *M;
-///     // -> ...
+///     // -> NumberField(x^2 - 2, [1.414213562373095048801688724209698 +/- 1.96e-34])-Module(1)
 ///
 
 #ifndef LIBEXACTREAL_NUMBER_FIELD_HPP
@@ -48,6 +48,7 @@
 #include <boost/operators.hpp>
 #include <e-antic/renfxx_fwd.hpp>
 #include <memory>
+#include <iosfwd>
 #include <optional>
 
 #include "forward.hpp"
@@ -66,9 +67,9 @@ namespace exactreal {
 ///     #include <e-antic/renf_class.hpp>
 ///
 ///     auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
-///     auto M = exactreal::Module::make({}, exactreal::NumberField{K});
+///     auto M = exactreal::Module<exactreal::NumberField>::make({}, exactreal::NumberField{K});
 ///     std::cout << *M;
-///     // -> ...
+///     // -> NumberField(x^2 - 2, [1.414213562373095048801688724209698 +/- 1.96e-34])-Module()
 ///
 struct LIBEXACTREAL_API NumberField : boost::equality_comparable<NumberField> {
 
@@ -78,7 +79,7 @@ struct LIBEXACTREAL_API NumberField : boost::equality_comparable<NumberField> {
   ///
   ///     exactreal::NumberField Q;
   ///     std::cout << Q;
-  ///     // -> ...
+  ///     // -> NumberField(a-1, [+/- 2.01])
   ///
   NumberField();
 
@@ -89,7 +90,7 @@ struct LIBEXACTREAL_API NumberField : boost::equality_comparable<NumberField> {
   ///
   ///     auto K = exactreal::NumberField{*eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1")};
   ///     std::cout << K;
-  ///     // -> ...
+  ///     // -> NumberField(x^2 - 2, [1.414213562373095048801688724209698 +/- 1.96e-34])
   ///
   NumberField(const eantic::renf_class&);
 
@@ -100,19 +101,19 @@ struct LIBEXACTREAL_API NumberField : boost::equality_comparable<NumberField> {
   ///
   ///     auto K = exactreal::NumberField{eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1")};
   ///     std::cout << K;
-  ///     // -> ...
+  ///     // -> NumberField(x^2 - 2, [1.414213562373095048801688724209698 +/- 1.96e-34])
   ///
   NumberField(boost::intrusive_ptr<const eantic::renf_class>);
 
-  /// Create the number containing this number field element.
+  /// Create the number field containing this number field element.
   ///
   ///     #include <exact-real/number_field.hpp>
   ///     #include <e-antic/renf_class.hpp>
   ///
   ///     auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
   ///     auto N = exactreal::NumberField{K->one()};
-  ///     std::cout << K;
-  ///     // -> ...
+  ///     std::cout << N;
+  ///     // -> NumberField(x^2 - 2, [1.414213562373095048801688724209698 +/- 1.96e-34])
   ///
   NumberField(const eantic::renf_elem_class&);
 
@@ -138,7 +139,7 @@ struct LIBEXACTREAL_API NumberField : boost::equality_comparable<NumberField> {
   ///     
   ///     auto M = exactreal::NumberField::compositum(K, L);
   ///     std::cout << M;
-  ///     // -> ...
+  ///     // -> NumberField(x^2 - 2, [1.414213562373095048801688724209698 +/- 1.96e-34])
   ///
   static NumberField compositum(const NumberField& lhs, const NumberField& rhs);
 
@@ -172,10 +173,13 @@ struct LIBEXACTREAL_API NumberField : boost::equality_comparable<NumberField> {
   /// Return the number field element `x` as an element of this field.
   /// Note that this is only implemented in trivial cases.
   ///
+  ///     #include <exact-real/number_field.hpp>
+  ///     #include <e-antic/renf_elem_class.hpp>
+  ///
   ///     auto K = exactreal::NumberField{eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1")};
   ///     auto L = exactreal::NumberField{eantic::renf_class::make("y^3 - 2", "y", "1.4 +/- 1")};
-  ///     auto x = exactreal::NumberField{K}.coerce(L.one());
-  ///     x.parent() == K
+  ///     auto x = K.coerce(L.parameters->one());
+  ///     x.parent() == *K.parameters
   ///     // -> true
   ///
   ElementClass coerce(const ElementClass&) const;
@@ -189,10 +193,10 @@ struct LIBEXACTREAL_API NumberField : boost::equality_comparable<NumberField> {
   ///     #include <e-antic/renf_class.hpp>
   ///
   ///     auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
-  ///     exactreal::NumberField::unit(K.gen())
+  ///     exactreal::NumberField::unit(K->gen())
   ///     // -> true
   ///
-  ///     exactreal::NumberField::unit(K.zero())
+  ///     exactreal::NumberField::unit(K->zero())
   ///     // -> false
   ///     
   static bool unit(const ElementClass& x);
@@ -209,14 +213,18 @@ struct LIBEXACTREAL_API NumberField : boost::equality_comparable<NumberField> {
   ///     #include <e-antic/renf_class.hpp>
   ///
   ///     auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
-  ///     exactreal::NumberField::rational(K.gen()).has_value()
+  ///     exactreal::NumberField::rational(K->gen()).has_value()
   ///     // -> false
   ///
-  ///     exactreal::NumberField::rational(K.one()).has_value()
+  ///     exactreal::NumberField::rational(K->one()).has_value()
   ///     // -> true
   ///     
   static std::optional<mpq_class> rational(const ElementClass& x);
+
+  friend std::ostream& operator<<(std::ostream&, const NumberField&);
 };
+
+LIBEXACTREAL_API std::ostream& operator<<(std::ostream&, const NumberField&);
 
 }  // namespace exactreal
 

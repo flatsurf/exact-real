@@ -31,9 +31,9 @@
 ///     #include <exact-real/real_number.hpp>
 ///     #include <gmpxx.h>
 ///
-///     auto M = exactreal::Module::make({exactreal::RealNumber::rational(mpq_class{1, 2})}, exactreal::RationalField{});
+///     auto M = exactreal::Module<exactreal::RationalField>::make({exactreal::RealNumber::rational(mpq_class{1, 2})}, exactreal::RationalField{});
 ///     std::cout << *M;
-///     // -> ...
+///     // -> ℚ-Module(1/2)
 ///
 
 #ifndef LIBEXACTREAL_RATIONAL_FIELD_HPP
@@ -56,9 +56,9 @@ namespace exactreal {
 ///     #include <exact-real/rational_field.hpp>
 ///     #include <exact-real/module.hpp>
 ///
-///     auto M = exactreal::Module::make({}, exactreal::RationalField{});
+///     auto M = exactreal::Module<exactreal::RationalField>::make({}, exactreal::RationalField{});
 ///     std::cout << *M;
-///     // -> ...
+///     // -> ℚ-Module()
 ///
 struct LIBEXACTREAL_API RationalField : boost::equality_comparable<RationalField> {
   /// Create the rational field.
@@ -67,7 +67,7 @@ struct LIBEXACTREAL_API RationalField : boost::equality_comparable<RationalField
   ///
   ///     exactreal::RationalField Q;
   ///     std::cout << Q;
-  ///     // -> ...
+  ///     // -> ℚ
   ///
   RationalField();
 
@@ -79,7 +79,7 @@ struct LIBEXACTREAL_API RationalField : boost::equality_comparable<RationalField
   ///
   ///     exactreal::RationalField Q{1337};
   ///     std::cout << Q;
-  ///     // -> ...
+  ///     // -> ℚ
   ///
   RationalField(const mpq_class&);
 
@@ -89,8 +89,8 @@ struct LIBEXACTREAL_API RationalField : boost::equality_comparable<RationalField
   ///     #include <exact-real/rational_field.hpp>
   ///
   ///     exactreal::RationalField Q;
-  ///     std::cout << RationalField::compositum(Q, Q);
-  ///     // -> ...
+  ///     std::cout << exactreal::RationalField::compositum(Q, Q);
+  ///     // -> ℚ
   ///
   static RationalField compositum(const RationalField& lhs, const RationalField& rhs);
 
@@ -132,9 +132,10 @@ struct LIBEXACTREAL_API RationalField : boost::equality_comparable<RationalField
   /// Return an approximation to the rational `x` in ball arithmetic.
   ///
   ///     #include <exact-real/rational_field.hpp>
+  ///     #include <exact-real/arb.hpp>
   ///
   ///     std::cout << exactreal::RationalField::arb(mpq_class{1, 3}, 64);
-  ///     // -> 1
+  ///     // -> [0.333333 +/- 3.34e-7]
   ///
   static Arb arb(const ElementClass& x, long prec);
 
@@ -152,7 +153,11 @@ struct LIBEXACTREAL_API RationalField : boost::equality_comparable<RationalField
   ///     // -> true
   ///
   bool operator==(const RationalField&) const { return true; }
+
+  friend std::ostream& operator<<(std::ostream&, const RationalField&);
 };
+
+LIBEXACTREAL_API std::ostream& operator<<(std::ostream&, const RationalField&);
 
 }  // namespace exactreal
 

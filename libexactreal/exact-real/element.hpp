@@ -76,7 +76,7 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   ///     // -> 0
   ///
   ///     std::cout << *zero.module();
-  ///     // -> ...
+  ///     // -> ℚ-Module()
   ///
   Element();
 
@@ -96,7 +96,7 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   ///       exactreal::RealNumber::random()});
   ///     auto a = exactreal::Element<exactreal::RationalField>(M, {2, 3});
   ///     std::cout << a;
-  ///     // -> ...
+  ///     // -> 3*ℝ(<random>) + 2
   ///
   Element(const std::shared_ptr<const Module<Ring>>& parent, const std::vector<typename Ring::ElementClass>& coefficients);
 
@@ -110,8 +110,8 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   ///     std::cout << a;
   ///     // -> 3
   ///
-  ///     std::cout << a.parent();
-  ///     // -> ...
+  ///     std::cout << *a.module();
+  ///     // -> ℚ-Module(1)
   ///
   Element(const typename Ring::ElementClass& value);
 
@@ -130,7 +130,7 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   ///     auto a = exactreal::Element<exactreal::IntegerRing>(M, {2, 3});
   ///     auto b = exactreal::Element<exactreal::RationalField>(a);
   ///    
-  ///     std::cout << b.parent();
+  ///     std::cout << *b.module();
   ///     // -> 3
   ///
   template <bool Enabled = !std::is_same_v<Ring, IntegerRing>, std::enable_if_t<Enabled, bool> = true>
@@ -151,7 +151,7 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   ///     auto a = exactreal::Element<exactreal::RationalField>(M, {2, 3});
   ///     auto b = exactreal::Element<exactreal::NumberField>(a);
   ///    
-  ///     std::cout << b.parent();
+  ///     std::cout << b.module();
   ///     // -> 3
   ///
   template <bool Enabled = !std::is_same_v<Ring, RationalField> && Ring::contains_rationals, std::enable_if_t<Enabled, bool> = true>

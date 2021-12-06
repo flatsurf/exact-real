@@ -62,6 +62,11 @@ typename NumberField::ElementClass NumberField::coerce(const ElementClass& x) co
 
   throw std::logic_error("not implemented: coercion to this number field");
 }
+
+std::ostream& operator<<(std::ostream& os, const NumberField& K) {
+  return os << *K.parameters;
+}
+
 }  // namespace exactreal
 
 namespace std {

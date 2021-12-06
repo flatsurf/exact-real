@@ -480,6 +480,9 @@ LIBEXACTREAL_2.2.0 {
       "exactreal::operator<(unsigned long long, exactreal::Arb const&)";
       "exactreal::operator<(unsigned long, exactreal::Arb const&)";
       "exactreal::operator<(unsigned short, exactreal::Arb const&)";
+      "exactreal::operator<<(std::ostream&, exactreal::IntegerRing const&)";
+      "exactreal::operator<<(std::ostream&, exactreal::NumberField const&)";
+      "exactreal::operator<<(std::ostream&, exactreal::RationalField const&)";
       "exactreal::operator<=(__gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&, exactreal::Arb const&)";
       "exactreal::operator<=(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&, exactreal::Arb const&)";
       "exactreal::operator<=(exactreal::Arb const&, __gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&)";
