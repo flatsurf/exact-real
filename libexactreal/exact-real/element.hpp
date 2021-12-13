@@ -135,8 +135,21 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   template <bool Enabled = !std::is_same_v<Ring, RationalField> && Ring::contains_rationals, std::enable_if_t<Enabled, bool> = true>
   Element(const Element<RationalField>& value);
 
-  typename Ring::ElementClass operator[](size) const;
-  std::conditional<Ring::isField, mpq_class, mpz_class> operator[](const std::pair<size, size>&) const;
+  /// Return the coefficient of the `i`th generator of this element, i.e.,
+  /// $a_i$ when writing this element as $\sum a_i g_i$.
+  ///
+  ///     auto M = exactreal::Module<exactreal::RationalField>::make({
+  ///       exactreal::RealNumber::rational(1),
+  ///       exactreal::RealNumber::random()});
+  ///     auto one = M->gen(0);
+  ///
+  ///     std::cout << one[0];
+  ///     // -> 1
+  ///
+  ///     std::cout << one[1];
+  ///     // -> 0
+  ///
+  typename Ring::ElementClass operator[](size i) const;
 
   /// TODO: document
   std::vector<typename Ring::ElementClass> coefficients() const;

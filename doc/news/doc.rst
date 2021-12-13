@@ -18,7 +18,10 @@
   debugging much harder since any exception leads to program termination. (Note
   that this is a breaking ABI change.)
 
-* Removed not-implemented `NumberFieldIdeal`.
+* Removed `NumberFieldIdeal` which was not implemented at all anyway.
+
+* Removed `Element::operator[](const std::pair<size, size>&) const` which was
+  not implemented anyway.
 
 **Changed:**
 
