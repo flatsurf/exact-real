@@ -53,17 +53,12 @@ namespace exactreal {
 /// arithmetic works in that field. Rationals themselves are modeled by GMP's
 /// [`mpq_class`](https://gmplib.org/manual/C_002b_002b-Interface-Rationals).
 ///
-///     #include <exact-real/rational_field.hpp>
-///     #include <exact-real/module.hpp>
-///
 ///     auto M = exactreal::Module<exactreal::RationalField>::make({}, exactreal::RationalField{});
 ///     std::cout << *M;
 ///     // -> ℚ-Module()
 ///
 struct LIBEXACTREAL_API RationalField : boost::equality_comparable<RationalField> {
   /// Create the rational field.
-  ///
-  ///     #include <exact-real/rational_field.hpp>
   ///
   ///     exactreal::RationalField Q;
   ///     std::cout << Q;
@@ -75,8 +70,6 @@ struct LIBEXACTREAL_API RationalField : boost::equality_comparable<RationalField
   /// The argument is ignored. This method exists for symmetry with other
   /// coefficient rings.
   ///
-  ///     #include <exact-real/rational_field.hpp>
-  ///
   ///     exactreal::RationalField Q{1337};
   ///     std::cout << Q;
   ///     // -> ℚ
@@ -85,8 +78,6 @@ struct LIBEXACTREAL_API RationalField : boost::equality_comparable<RationalField
 
   /// Return the smallest rational field containing `lhs` and `rhs`, i.e., the
   /// rational field itself.
-  ///
-  ///     #include <exact-real/rational_field.hpp>
   ///
   ///     exactreal::RationalField Q;
   ///     std::cout << exactreal::RationalField::compositum(Q, Q);
@@ -119,8 +110,6 @@ struct LIBEXACTREAL_API RationalField : boost::equality_comparable<RationalField
   /// Return whether the rational `x` is a unit in this field, i.e., whether
   /// it is non-zero.
   ///
-  ///     #include <exact-real/rational_field.hpp>
-  ///
   ///     exactreal::RationalField::unit(2)
   ///     // -> true
   ///
@@ -131,7 +120,6 @@ struct LIBEXACTREAL_API RationalField : boost::equality_comparable<RationalField
 
   /// Return an approximation to the rational `x` in ball arithmetic.
   ///
-  ///     #include <exact-real/rational_field.hpp>
   ///     #include <exact-real/arb.hpp>
   ///
   ///     std::cout << exactreal::RationalField::arb(mpq_class{1, 3}, 64);
@@ -146,8 +134,6 @@ struct LIBEXACTREAL_API RationalField : boost::equality_comparable<RationalField
   static std::optional<mpq_class> rational(const ElementClass& x);
 
   /// Return whether this field is equal to another rational field, i.e., `true`.
-  ///
-  ///     #include <exact-real/rational_field.hpp>
   ///
   ///     exactreal::RationalField{} == exactreal::RationalField{1337}
   ///     // -> true

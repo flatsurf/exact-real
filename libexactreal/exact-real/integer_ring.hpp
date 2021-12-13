@@ -55,17 +55,12 @@ namespace exactreal {
 /// arithmetic works in that ring. Integers themselves are modeled by GMP's
 /// [`mpz_class`](https://gmplib.org/manual/C_002b_002b-Interface-Integers).
 ///
-///     #include <exact-real/integer_ring.hpp>
-///     #include <exact-real/module.hpp>
-///
 ///     auto M = exactreal::Module<exactreal::IntegerRing>::make({}, exactreal::IntegerRing{});
 ///     std::cout << *M;
 ///     // -> ℤ-Module()
 ///
 struct LIBEXACTREAL_API IntegerRing : private boost::equality_comparable<IntegerRing> {
   /// Create the ring of integers.
-  ///
-  ///     #include <exact-real/integer_ring.hpp>
   ///
   ///     exactreal::IntegerRing Z;
   ///     std::cout << Z;
@@ -77,8 +72,6 @@ struct LIBEXACTREAL_API IntegerRing : private boost::equality_comparable<Integer
   /// The argument is ignored. This method exists for symmetry with other
   /// coefficient rings.
   ///
-  ///     #include <exact-real/integer_ring.hpp>
-  ///
   ///     exactreal::IntegerRing Z{1337};
   ///     std::cout << Z;
   ///     // -> ℤ
@@ -86,8 +79,6 @@ struct LIBEXACTREAL_API IntegerRing : private boost::equality_comparable<Integer
   IntegerRing(const mpz_class&);
 
   /// Return the smallest integer ring containing `lhs` and `rhs`, i.e., the ring of integers itself.
-  ///
-  ///     #include <exact-real/integer_ring.hpp>
   ///
   ///     exactreal::IntegerRing Z;
   ///     std::cout << exactreal::IntegerRing::compositum(Z, Z);
@@ -120,8 +111,6 @@ struct LIBEXACTREAL_API IntegerRing : private boost::equality_comparable<Integer
   /// Return whether the integer `x` is a unit in this ring, i.e., whether it
   /// is ±1.
   ///
-  ///     #include <exact-real/integer_ring.hpp>
-  ///
   ///     exactreal::IntegerRing::unit(1)
   ///     // -> true
   ///
@@ -136,7 +125,6 @@ struct LIBEXACTREAL_API IntegerRing : private boost::equality_comparable<Integer
   /// Return an approximation to the integer `x` in ball arithmetic.
   /// The argument `prec` is ignored.
   ///
-  ///     #include <exact-real/integer_ring.hpp>
   ///     #include <exact-real/arb.hpp>
   ///
   ///     std::cout << exactreal::IntegerRing::arb(1, 64);
@@ -151,8 +139,6 @@ struct LIBEXACTREAL_API IntegerRing : private boost::equality_comparable<Integer
   static std::optional<mpq_class> rational(const ElementClass& x);
 
   /// Return whether this ring is equal to another integer ring, i.e., `true`.
-  ///
-  ///     #include <exact-real/integer_ring.hpp>
   ///
   ///     exactreal::IntegerRing{} == exactreal::IntegerRing{1337}
   ///     // -> true
