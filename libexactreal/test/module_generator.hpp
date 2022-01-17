@@ -59,6 +59,8 @@ struct ModuleGenerator : public Catch::Generators::IGenerator<const exactreal::M
       current = exactreal::Module<R>::make(basis);
     }
 
+    generators++;
+
     return true;
   }
 
