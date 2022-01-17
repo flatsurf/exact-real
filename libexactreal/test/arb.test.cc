@@ -36,21 +36,21 @@ TEST_CASE("Create/Destroy Arb", "[arb]") {
 }
 
 TEST_CASE("Initialization from Integer Types", "[arb]") {
-  REQUIRE(Arb(1u) == Arb(1));
-  REQUIRE(Arb(1) == Arb(1));
-  REQUIRE(Arb(1l) == Arb(1));
-  REQUIRE(Arb(1ul) == Arb(1));
-  REQUIRE(Arb(1ll) == Arb(1));
-  REQUIRE(Arb(1ull) == Arb(1));
-  REQUIRE(Arb(mpz_class(1)) == Arb(1));
+  REQUIRE((Arb(1u) == Arb(1)) && *(Arb(1u) == Arb(1)));
+  REQUIRE((Arb(1) == Arb(1)) && *(Arb(1) == Arb(1)));
+  REQUIRE((Arb(1l) == Arb(1)) && *(Arb(1l) == Arb(1)));
+  REQUIRE((Arb(1ul) == Arb(1)) && *(Arb(1ul) == Arb(1)));
+  REQUIRE((Arb(1ll) == Arb(1)) && *(Arb(1ll) == Arb(1)));
+  REQUIRE((Arb(1ull) == Arb(1)) && *(Arb(1ull) == Arb(1)));
+  REQUIRE((Arb(mpz_class(1)) == Arb(1)) && *(Arb(mpz_class(1)) == Arb(1)));
 
-  REQUIRE((Arb() = 1u) == Arb(1));
-  REQUIRE((Arb() = 1) == Arb(1));
-  REQUIRE((Arb() = 1ul) == Arb(1));
-  REQUIRE((Arb() = 1l) == Arb(1));
-  REQUIRE((Arb() = 1ull) == Arb(1));
-  REQUIRE((Arb() = 1ll) == Arb(1));
-  REQUIRE((Arb() = mpz_class(1)) == Arb(1));
+  REQUIRE(((Arb() = 1u) == Arb(1)) && *((Arb() = 1u) == Arb(1)));
+  REQUIRE(((Arb() = 1) == Arb(1)) && *((Arb() = 1) == Arb(1)));
+  REQUIRE(((Arb() = 1ul) == Arb(1)) && *((Arb() = 1ul) == Arb(1)));
+  REQUIRE(((Arb() = 1l) == Arb(1)) && *((Arb() = 1l) == Arb(1)));
+  REQUIRE(((Arb() = 1ull) == Arb(1)) && *((Arb() = 1ull) == Arb(1)));
+  REQUIRE(((Arb() = 1ll) == Arb(1)) && *((Arb() = 1ll) == Arb(1)));
+  REQUIRE(((Arb() = mpz_class(1)) == Arb(1)) && *((Arb() = mpz_class(1)) == Arb(1)));
 }
 
 TEST_CASE("Initialization from Number Field", "[arb]") {
