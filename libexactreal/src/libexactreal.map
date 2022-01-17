@@ -410,5 +410,7 @@ LIBEXACTREAL_2.3.0 {
       "exactreal::Module<exactreal::IntegerRing>::one() const";
       "exactreal::Module<exactreal::RationalField>::one() const";
       "exactreal::Module<exactreal::NumberField>::one() const";
+      "exactreal::Element<exactreal::NumberField>::Element<true, true>(exactreal::Element<exactreal::IntegerRing> const&)";
+      "exactreal::Element<exactreal::NumberField>::Element<true, true>(exactreal::Element<exactreal::RationalField> const&)";
     };
 } LIBEXACTREAL_2.2.0;
