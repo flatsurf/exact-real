@@ -349,8 +349,10 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
   }
 
   SECTION("Hashing") {
-    const auto set = std::unordered_set{M.zero(), M.zero()};
-    REQUIRE(set.size() == 1);
+    {
+      const auto set = std::unordered_set{M.zero(), M.zero()};
+      REQUIRE(set.size() == 1);
+    }
 
     if (M.rank()) {
       const auto set = std::unordered_set{M.zero(), M.one()};
