@@ -132,6 +132,15 @@ class ElementBenchmark : public benchmark::Fixture {
     }
   }
 
+  void nonzero(benchmark::State& state) {
+    const auto [element, __] = elements(state);
+    (void)__;
+
+    for (auto _ : state) {
+      benchmark::DoNotOptimize(static_cast<bool>(element));
+    }
+  }
+
   static void BenchmarkedDegrees(benchmark::internal::Benchmark* b) {
     // elements in zero variables, i.e., base ring elements
     b->Args({0});

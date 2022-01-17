@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C)      2019 Vincent Delecroix
+ *        Copyright (C) 2019-2022 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,6 +20,9 @@
 
 #include <boost/lexical_cast.hpp>
 
+#include <e-antic/renf_class.hpp>
+#include <e-antic/renf_elem_class.hpp>
+
 #include "../exact-real/arb.hpp"
 #include "external/catch2/single_include/catch2/catch.hpp"
 
@@ -33,24 +36,32 @@ TEST_CASE("Create/Destroy Arb", "[arb]") {
 }
 
 TEST_CASE("Initialization from Integer Types", "[arb]") {
-  REQUIRE(Arb(1u) == Arb(1));
-  REQUIRE(Arb(1) == Arb(1));
-  REQUIRE(Arb(1l) == Arb(1));
-  REQUIRE(Arb(1ul) == Arb(1));
-  REQUIRE(Arb(1ll) == Arb(1));
-  REQUIRE(Arb(1ull) == Arb(1));
-  REQUIRE(Arb(mpz_class(1)) == Arb(1));
+  REQUIRE(((Arb(1u) == Arb(1)) && *(Arb(1u) == Arb(1))));
+  REQUIRE(((Arb(1) == Arb(1)) && *(Arb(1) == Arb(1))));
+  REQUIRE(((Arb(1l) == Arb(1)) && *(Arb(1l) == Arb(1))));
+  REQUIRE(((Arb(1ul) == Arb(1)) && *(Arb(1ul) == Arb(1))));
+  REQUIRE(((Arb(1ll) == Arb(1)) && *(Arb(1ll) == Arb(1))));
+  REQUIRE(((Arb(1ull) == Arb(1)) && *(Arb(1ull) == Arb(1))));
+  REQUIRE(((Arb(mpz_class(1)) == Arb(1)) && *(Arb(mpz_class(1)) == Arb(1))));
 
-  REQUIRE((Arb() = 1u) == Arb(1));
-  REQUIRE((Arb() = 1) == Arb(1));
-  REQUIRE((Arb() = 1ul) == Arb(1));
-  REQUIRE((Arb() = 1l) == Arb(1));
-  REQUIRE((Arb() = 1ull) == Arb(1));
-  REQUIRE((Arb() = 1ll) == Arb(1));
-  REQUIRE((Arb() = mpz_class(1)) == Arb(1));
+  REQUIRE((((Arb() = 1u) == Arb(1)) && *((Arb() = 1u) == Arb(1))));
+  REQUIRE((((Arb() = 1) == Arb(1)) && *((Arb() = 1) == Arb(1))));
+  REQUIRE((((Arb() = 1ul) == Arb(1)) && *((Arb() = 1ul) == Arb(1))));
+  REQUIRE((((Arb() = 1l) == Arb(1)) && *((Arb() = 1l) == Arb(1))));
+  REQUIRE((((Arb() = 1ull) == Arb(1)) && *((Arb() = 1ull) == Arb(1))));
+  REQUIRE((((Arb() = 1ll) == Arb(1)) && *((Arb() = 1ll) == Arb(1))));
+  REQUIRE((((Arb() = mpz_class(1)) == Arb(1)) && *((Arb() = mpz_class(1)) == Arb(1))));
 }
 
-TEST_CASE("Relational Operators of Arb", "[arb]") {
+TEST_CASE("Initialization from Number Field", "[arb]") {
+  const auto K = eantic::renf_class::make("a^2 - 2", "a", "1.41 +/- 0.1", 64);
+
+  const auto a = K->gen();
+
+  REQUIRE(((Arb(a, 64) > Arb()) && *(Arb(a, 64) > Arb())));
+}
+
+TEST_CASE("Relational Operators with Arb", "[arb]") {
   Arb x(-1), y(1);
 
   REQUIRE(((x < y) && *(x < y)));
@@ -62,6 +73,34 @@ TEST_CASE("Relational Operators of Arb", "[arb]") {
   REQUIRE(((y > x) && !*(y < x)));
   REQUIRE(((x < y) && !*(x > y)));
   REQUIRE(((y >= x) && !*(y <= x)));
+  REQUIRE(((x <= y) && !*(x >= y)));
+}
+
+TEMPLATE_TEST_CASE("Relation Operators with Integers", "[arb]", unsigned short, short, unsigned int, int, unsigned long, long, unsigned long long, long long) {
+  Arb x(-1);
+  TestType y = 1;
+
+  REQUIRE(((x < y) && *(x < y)));
+
+  // Not provided, see https://github.com/flatsurf/exact-real/pull/152
+  // REQUIRE(((y > x) && *(y > x)));
+
+  REQUIRE(((x <= y) && *(x <= y)));
+
+  // Not provided, see https://github.com/flatsurf/exact-real/pull/152
+  // REQUIRE(((y >= x) && *(y >= x)));
+
+  REQUIRE(((x == x) && *(x == x)));
+  REQUIRE(((x != y) && *(x != y)));
+
+  // Not provided, see https://github.com/flatsurf/exact-real/pull/152
+  // REQUIRE(((y > x) && !*(y < x)));
+
+  REQUIRE(((x < y) && !*(x > y)));
+
+  // Not provided, see https://github.com/flatsurf/exact-real/pull/152
+  // REQUIRE(((y >= x) && !*(y <= x)));
+
   REQUIRE(((x <= y) && !*(x >= y)));
 }
 
