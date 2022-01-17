@@ -71,6 +71,17 @@ TEMPLATE_TEST_CASE("Module", "[module]", IntegerRing, RationalField, NumberField
     REQUIRE((rnd * rnd * rnd).module() != (rnd * rnd).module());
   }
 
+  SECTION("Construction of 1 Element") {
+    REQUIRE(Module<R>::make({RealNumber::rational(1), RealNumber::random()})->one() == 1);
+    REQUIRE(Module<R>::make({RealNumber::rational(mpq_class{1, 2}), RealNumber::random()})->one() == 1);
+
+    if constexpr (std::is_same_v<R, IntegerRing>) {
+      REQUIRE_THROWS(Module<R>::make({RealNumber::rational(2), RealNumber::random()})->one());
+    } else {
+      REQUIRE(Module<R>::make({RealNumber::rational(2), RealNumber::random()})->one() == 1);
+  }
+  }
+
   SECTION("Span of Modules") {
     const auto& m = GENERATE(take(4, modules<R>()));
     const auto& n = GENERATE(take(4, modules<R>()));

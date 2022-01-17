@@ -196,7 +196,7 @@ Element<Ring> Module<Ring>::one() const {
     if (rational) {
     if constexpr (std::is_same_v<Ring, IntegerRing>) {
       if (rational->get_num() == 1) {
-        return rational->get_num() * gen(g);
+        return rational->get_den() * gen(g);
       }
     } else {
         return mpq_class(rational->get_den(), rational->get_num()) * gen(g);
