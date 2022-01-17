@@ -588,7 +588,7 @@ bool Element<Ring>::operator==(const RealNumber& rhs) const {
 
 template <typename Ring>
 Element<Ring>::operator bool() const {
-  return std::any_of(begin(impl->coefficients), end(impl->coefficients), [](auto c) { return c != 0; });
+  return std::any_of(begin(impl->coefficients), end(impl->coefficients), [](const auto& c) { return c != 0; });
 }
 
 template <typename Ring>

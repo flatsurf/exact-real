@@ -148,6 +148,11 @@ TEST_CASE("Element over ZZ", "[element][integer_ring]") {
     }
   }
 
+  SECTION("Non-Zero / bool cast") {
+    REQUIRE(m->gen(0));
+    REQUIRE(!(0*m->gen(0)));
+  }
+
   SECTION("Printing") {
     REQUIRE(lexical_cast<string>(m->gen(0)) == "1");
     REQUIRE(lexical_cast<string>(m->gen(1)) == "ℝ(0.673083…)");
@@ -244,6 +249,11 @@ TEST_CASE("Element over QQ", "[element][rational_field]") {
       REQUIRE(x / mpq_class(1, 1) == x);
       REQUIRE(x / mpq_class(1, 2) == 2 * x);
     }
+  }
+
+  SECTION("Non-Zero / bool cast") {
+    REQUIRE(m->gen(0));
+    REQUIRE(!(0*m->gen(0)));
   }
 
   SECTION("Printing") {
@@ -357,6 +367,11 @@ TEST_CASE("Elements over Number Field", "[element][number_field]") {
         }
       }
     }
+  }
+
+  SECTION("Non-Zero / bool cast") {
+    REQUIRE(m->gen(0));
+    REQUIRE(!(0*m->gen(0)));
   }
 
   SECTION("Printing") {
