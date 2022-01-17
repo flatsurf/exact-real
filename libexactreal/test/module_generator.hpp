@@ -36,35 +36,34 @@ struct ModuleGenerator : public Catch::Generators::IGenerator<const exactreal::M
 {
   mutable std::shared_ptr<const exactreal::Module<R>> current;
 
-  int generators = 0;
+  int generators = -1;
 
-  ModuleGenerator() {
-    next();
-  }
+  ModuleGenerator() {}
 
   bool next() override {
-    typename exactreal::Module<R>::Basis basis;
-    for (int g = 0; g < generators; g++) {
-      if (g == 0) {
-        basis.push_back(exactreal::RealNumber::rational(1));
-      } else {
-        basis.push_back(exactreal::RealNumber::random());
-      }
-    }
-
-    if constexpr (std::is_same_v<R, exactreal::NumberField>) {
-      const auto K = eantic::renf_class::make("a^2 - 2", "a", "1.41 +/- 0.1", 64);
-      current = exactreal::Module<R>::make(basis, K);
-    } else {
-      current = exactreal::Module<R>::make(basis);
-    }
-
     generators++;
 
     return true;
   }
 
   const exactreal::Module<R>& get() const override {
+    if (current == nullptr || current->rank() != generators) {
+      typename exactreal::Module<R>::Basis basis;
+      for (int g = 0; g < generators; g++) {
+        if (g == 0) {
+          basis.push_back(exactreal::RealNumber::rational(1));
+        } else {
+          basis.push_back(exactreal::RealNumber::random());
+        }
+      }
+
+      if constexpr (std::is_same_v<R, exactreal::NumberField>) {
+        const auto K = eantic::renf_class::make("a^2 - 2", "a", "1.41 +/- 0.1", 64);
+        current = exactreal::Module<R>::make(basis, K);
+      } else {
+        current = exactreal::Module<R>::make(basis);
+      }
+    }
     return *current;
   }
 };

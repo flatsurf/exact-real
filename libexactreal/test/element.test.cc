@@ -165,6 +165,8 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
   SECTION("Coefficients") {
     const auto x = GENERATE_REF(elements<R>(M));
 
+    REQUIRE(*x.module() == M);
+
     CAPTURE(x);
 
     for (size_t g = 0; g < M.rank(); g++) {
@@ -283,7 +285,7 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
     CAPTURE(x, y);
 
     if (y)
-      REQUIRE(x + y > y);
+      REQUIRE(x + y > x);
 
     REQUIRE(x - x == 0);
   }
@@ -360,7 +362,9 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
 
     CAPTURE(x);
 
-    REQUIRE((x * x - x * x).module()->rank() == M.rank());
+    if (x != 0 && x != 1)
+      REQUIRE((x * x - x * x).module()->rank() > M.rank());
+
     REQUIRE((x * x - x * x).simplify().module()->rank() == 0);
   }
 
@@ -380,7 +384,9 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
 
     if (M.rank()) {
       REQUIRE(*x.truediv(M.one()) == x);
-      REQUIRE(*((x + M.one()) * (x - M.one())).truediv(x - M.one()) == x + M.one());
+
+      if (x != 1)
+        REQUIRE(*((x + M.one()) * (x - M.one())).truediv(x - M.one()) == x + M.one());
     }
 
     if (x) {

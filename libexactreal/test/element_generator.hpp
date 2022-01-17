@@ -32,6 +32,8 @@ namespace {
 template<typename R>
 struct ElementGenerator : public Catch::Generators::IGenerator<exactreal::Element<R>>
 {
+  int generator = -1;
+
   mutable exactreal::Element<R> current;
 
   std::shared_ptr<const exactreal::Module<R>> parent;
@@ -39,24 +41,16 @@ struct ElementGenerator : public Catch::Generators::IGenerator<exactreal::Elemen
   ElementGenerator(const exactreal::Module<R>& parent) : parent(parent.shared_from_this()) {}
 
   bool next() override {
-    if (!current) {
-      if (parent->rank()) {
-        current = parent->gen(0);
-        return true;
-      }
-    } else {
-      for (int g = 0; g < parent->rank() - 1; g++) {
-        if (current == parent->gen(g)) {
-          current = parent->gen(g+1);
-          return true;
-        }
-      }
-    }
-
-    return false;
+    generator++;
+    return generator < parent->rank();
   }
 
   const exactreal::Element<R>& get() const override {
+    if (generator == -1)
+      current = parent->zero();
+    else
+      current = parent->gen(generator);
+
     return current;
   }
 };

@@ -5,6 +5,7 @@
 **Fixed:**
 
 * Added missing implementation of `Element<NumberField>::Element(const Element<IntegerRing>&)` and `Element<Numberfield>::Element(const Element<RationalField>&)`.
+* Fix comparison of zero elements with real numbers.
 
 **Performance:**
 
