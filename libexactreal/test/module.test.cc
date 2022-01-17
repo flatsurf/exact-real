@@ -83,7 +83,7 @@ TEMPLATE_TEST_CASE("Module", "[module]", IntegerRing, RationalField, NumberField
 
   if constexpr (std::is_same_v<R, NumberField>) {
     SECTION("Trivial Composita") {
-      const auto& m = GENERATE(modules<R>());
+      const auto& m = GENERATE(take(4, modules<R>()));
       const auto& n = Module<R>::make({RealNumber::random()});
 
       const auto span = Module<R>::span(m.shared_from_this(), n);
