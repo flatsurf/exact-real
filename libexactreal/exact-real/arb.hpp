@@ -103,6 +103,7 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   std::optional<bool> operator>(const Arb&) const noexcept;
   std::optional<bool> operator<=(const Arb&) const noexcept;
   std::optional<bool> operator>=(const Arb&) const noexcept;
+
   template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
   std::optional<bool> operator<(Integer) const noexcept;
   template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
@@ -115,6 +116,7 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   std::optional<bool> operator==(Integer) const noexcept;
   template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
   std::optional<bool> operator!=(Integer) const noexcept;
+
   std::optional<bool> operator<(const mpq_class&) const noexcept;
   std::optional<bool> operator>(const mpq_class&) const noexcept;
   std::optional<bool> operator<=(const mpq_class&) const noexcept;
