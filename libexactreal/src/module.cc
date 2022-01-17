@@ -194,12 +194,12 @@ Element<Ring> Module<Ring>::one() const {
   for (int g = 0; g < rank(); g++) {
     auto rational = static_cast<std::optional<mpq_class>>(*basis()[g]);
     if (rational) {
-    if constexpr (std::is_same_v<Ring, IntegerRing>) {
-      if (rational->get_num() == 1) {
-        return rational->get_den() * gen(g);
-      }
-    } else {
-        return mpq_class(rational->get_den(), rational->get_num()) * gen(g);
+      if constexpr (std::is_same_v<Ring, IntegerRing>) {
+        if (rational->get_num() == 1) {
+          return rational->get_den() * gen(g);
+        }
+      } else {
+          return mpq_class(rational->get_den(), rational->get_num()) * gen(g);
       }
     }
   }
