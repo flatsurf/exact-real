@@ -342,10 +342,12 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
   }
 
   SECTION("Hashing") {
-    REQUIRE(std::unordered_set{M.zero(), M.zero()}.size() == 1);
+    const auto set = std::unordered_set{M.zero(), M.zero()};
+    REQUIRE(set.size() == 1);
 
     if (M.rank()) {
-      REQUIRE(std::unordered_set{M.zero(), M.one()}.size() == 2);
+      const auto set = std::unordered_set{M.zero(), M.one()};
+      REQUIRE(set.size() == 2);
     }
   }
 
