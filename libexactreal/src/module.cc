@@ -189,6 +189,23 @@ Element<Ring> Module<Ring>::zero() const {
   return Element(this->shared_from_this(), std::vector<typename Ring::ElementClass>(this->rank()));
 }
 
+template <typename Ring>
+Element<Ring> Module<Ring>::one() const {
+  for (int g = 0; g < rank(); g++) {
+    auto rational = static_cast<std::optional<mpq_class>>(*basis()[g]);
+    if (rational) {
+    if constexpr (std::is_same_v<Ring, IntegerRing>) {
+      if (rational->get_num() == 1) {
+        return rational->get_num() * gen(g);
+      }
+    } else {
+        return mpq_class(rational->get_den(), rational->get_num()) * gen(g);
+      }
+    }
+  }
+  throw std::logic_error("Module contains no 1 element.");
+}
+
 template <typename R>
 std::ostream& operator<<(std::ostream& os, const Module<R>& self) {
   if constexpr (is_same_v<R, IntegerRing>) {

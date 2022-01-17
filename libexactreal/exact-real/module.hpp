@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C)      2019 Vincent Delecroix
+ *        Copyright (C) 2019-2022 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -48,6 +48,10 @@ class LIBEXACTREAL_API Module : boost::equality_comparable<Module<Ring>>,
   const Basis& basis() const;
   Element<Ring> gen(size i) const;
   Element<Ring> zero() const;
+
+  /// Return a one element in this module.
+  /// If there is no such element, an exception is raised.
+  Element<Ring> one() const;
 
   // Return whether this module has the same generators in the same order over the same ring.
   bool operator==(const Module<Ring>& rhs) const;

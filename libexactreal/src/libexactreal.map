@@ -404,3 +404,11 @@ LIBEXACTREAL_2.2.0 {
       "exactreal::Element<exactreal::NumberField>::operator/=(__gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&)";
     };
 } LIBEXACTREAL_2.0.0;
+LIBEXACTREAL_2.3.0 {
+  global:
+    extern "C++" {
+      "exactreal::Module<exactreal::IntegerRing>::one() const";
+      "exactreal::Module<exactreal::RationalField>::one() const";
+      "exactreal::Module<exactreal::NumberField>::one() const";
+    };
+} LIBEXACTREAL_2.2.0;
