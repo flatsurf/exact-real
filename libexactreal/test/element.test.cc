@@ -71,7 +71,53 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
 
   const auto trivial = Element<IntegerRing>();
 
-  SECTION("Relational Operators") {
+  SECTION("Relation Operators with Integer Types") {
+    const auto x = GENERATE_REF(elements<R>(M));
+
+    CAPTURE(x);
+
+    REQUIRE((x <= static_cast<unsigned short>(0) || x >= static_cast<unsigned short>(0)));
+    REQUIRE((x == static_cast<unsigned short>(0) || x != static_cast<unsigned short>(0)));
+    if (x)
+      REQUIRE((x < static_cast<unsigned short>(0) || x > static_cast<unsigned short>(0)));
+
+    REQUIRE((x <= static_cast<short>(0) || x >= static_cast<short>(0)));
+    REQUIRE((x == static_cast<short>(0) || x != static_cast<short>(0)));
+    if (x)
+      REQUIRE((x < static_cast<short>(0) || x > static_cast<short>(0)));
+
+    REQUIRE((x <= 0u || x >= 0u));
+    REQUIRE((x == 0u || x != 0u));
+    if (x)
+      REQUIRE((x < 0u || x > 0u));
+
+    REQUIRE((x <= 0 || x >= 0));
+    REQUIRE((x == 0 || x != 0));
+    if (x)
+      REQUIRE((x < 0 || x > 0));
+
+    REQUIRE((x <= 0ul || x >= 0ul));
+    REQUIRE((x == 0ul || x != 0ul));
+    if (x)
+      REQUIRE((x < 0ul || x > 0ul));
+
+    REQUIRE((x <= 0l || x >= 0l));
+    REQUIRE((x == 0l || x != 0l));
+    if (x)
+      REQUIRE((x < 0l || x > 0l));
+
+    REQUIRE((x <= 0ull || x >= 0ull));
+    REQUIRE((x == 0ull || x != 0ull));
+    if (x)
+      REQUIRE((x < 0ull || x > 0ull));
+
+    REQUIRE((x <= 0ll || x >= 0ll));
+    REQUIRE((x == 0ll || x != 0ll));
+    if (x)
+      REQUIRE((x < 0ll || x > 0ll));
+  }
+
+  SECTION("Relational Operators With Element") {
     const auto x = GENERATE_REF(elements<R>(M));
     const auto y = GENERATE_REF(elements<R>(M));
 
@@ -93,6 +139,26 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
 
     if (x != y) {
       REQUIRE((x < y || x > y));
+    }
+  }
+
+  SECTION("Relational Operators With Real Numbers") {
+    const auto x = GENERATE_REF(elements<R>(M));
+
+    CAPTURE(x);
+
+    for (int i = 0; i < M.rank(); i++) {
+      const auto& g = *M.basis()[i];
+
+      REQUIRE((x <= g || x >= g));
+
+      if (x == M.gen(i)) {
+        REQUIRE(x == g);
+        REQUIRE((x <= g && x >= g));
+      } else {
+        REQUIRE(x != g);
+        REQUIRE((x < g || x > g));
+      }
     }
   }
 
