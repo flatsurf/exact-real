@@ -53,7 +53,7 @@ struct ModuleGenerator : public Catch::Generators::IGenerator<const exactreal::M
     }
 
     if constexpr (std::is_same_v<R, exactreal::NumberField>) {
-      auto K = eantic::renf_class::make("a^2 - 2", "a", "1.41 +/- 0.1", 64);
+      const auto K = eantic::renf_class::make("a^2 - 2", "a", "1.41 +/- 0.1", 64);
       current = exactreal::Module<R>::make(basis, K);
     } else {
       current = exactreal::Module<R>::make(basis);

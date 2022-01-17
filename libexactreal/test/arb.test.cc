@@ -20,6 +20,9 @@
 
 #include <boost/lexical_cast.hpp>
 
+#include <e-antic/renf_class.hpp>
+#include <e-antic/renf_elem_class.hpp>
+
 #include "../exact-real/arb.hpp"
 #include "external/catch2/single_include/catch2/catch.hpp"
 
@@ -48,6 +51,14 @@ TEST_CASE("Initialization from Integer Types", "[arb]") {
   REQUIRE((Arb() = 1ull) == Arb(1));
   REQUIRE((Arb() = 1ll) == Arb(1));
   REQUIRE((Arb() = mpz_class(1)) == Arb(1));
+}
+
+TEST_CASE("Initialization from Number Field", "[arb]") {
+  const auto K = eantic::renf_class::make("a^2 - 2", "a", "1.41 +/- 0.1", 64);
+
+  const auto a = K->gen();
+
+  REQUIRE((Arb(a, 64) > Arb()) && *(Arb(a, 64) > Arb()));
 }
 
 TEST_CASE("Relational Operators of Arb", "[arb]") {
