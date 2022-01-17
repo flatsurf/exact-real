@@ -1,7 +1,7 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
+ *        Copyright (C)      2019 Vincent Delecroix
  *        Copyright (C) 2019-2022 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
