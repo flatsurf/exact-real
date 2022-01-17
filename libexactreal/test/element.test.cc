@@ -73,8 +73,9 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
 
   SECTION("Relational Operators") {
     const auto x = GENERATE_REF(elements<R>(M));
+    const auto y = GENERATE_REF(elements<R>(M));
 
-    CAPTURE(x);
+    CAPTURE(x, y);
 
     REQUIRE(x == x);
     REQUIRE(!(x != x));
@@ -86,6 +87,12 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
 
     if (x != 1) {
       REQUIRE(x < 1);
+    }
+
+    REQUIRE((x <= y || x >= y));
+
+    if (x != y) {
+      REQUIRE((x < y || x > y));
     }
   }
 
