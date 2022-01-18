@@ -39,7 +39,7 @@ jobs:
       with:
         submodules: recursive
     - uses: conda-incubator/setup-miniconda@v2
-      with: { mamba-version: "*", channels: "flatsurf,conda-forge", python-version: "3.7", channel-priority: true }
+      with: { mamba-version: "*", channels: "conda-forge", python-version: "3.7", channel-priority: true }
     - uses: actions/download-artifact@v2
       with:
         name: conda-packages

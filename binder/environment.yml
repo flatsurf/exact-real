@@ -1,6 +1,5 @@
 name: binder
 channels:
-  - flatsurf
   - conda-forge
   - defaults
 dependencies:
