@@ -16,7 +16,7 @@
     "cppyy": ["2.2.0"],
     "cppyythonizations": [],
     "cxx-compiler": [],
-    "e-antic": ["1.0.3"],
+    "libeantic": ["1.0.3"],
     "gmp": [],
     "gmpxxll": [],
     "gmpxxyy": [],
