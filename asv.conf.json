@@ -20,7 +20,7 @@
     "gmp": [],
     "gmpxxll": [],
     "gmpxxyy": [],
-    "libflint": ["2.6.3"],
+    "libflint": [],
     "libtool": [],
     "make": [],
     "ppl": [],
