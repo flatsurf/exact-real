@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C)      2019 Vincent Delecroix
+ *        Copyright (C) 2019-2022 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
 #include "../exact-real/cereal.hpp"
 #include "../exact-real/real_number.hpp"
 #include "../exact-real/yap/arf.hpp"
-#include "external/unique-factory/unique_factory.hpp"
+#include "external/unique-factory/unique-factory/unique-factory.hpp"
 #include "impl/real_number_base.hpp"
 
 using namespace exactreal;
@@ -82,7 +82,7 @@ shared_ptr<const RealNumber> RealNumber::rational(const mpq_class& value) {
   struct Hash {
     size_t operator()(const mpq_class& self) const { return std::hash<double>()(self.get_d()); }
   };
-  static unique_factory::UniqueFactory<mpq_class, RationalRealNumber, Hash> factory;
+  static unique_factory::UniqueFactory<mpq_class, RationalRealNumber, unique_factory::KeepNothingAlive, Hash> factory;
   return factory.get(value, [&]() { return new RationalRealNumber(value); });
 }
 

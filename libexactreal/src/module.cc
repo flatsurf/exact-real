@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C)      2019 Vincent Delecroix
+ *        Copyright (C) 2019-2022 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -34,13 +34,12 @@
 #include "../exact-real/rational_field.hpp"
 #include "../exact-real/real_number.hpp"
 #include "external/hash-combine/hash.hpp"
-#include "external/unique-factory/unique_factory.hpp"
+#include "external/unique-factory/unique-factory/unique-factory.hpp"
 
 using namespace exactreal;
 using boost::numeric_cast;
 using boost::adaptors::transformed;
 using std::is_same_v;
-using std::set;
 using std::shared_ptr;
 using std::string;
 using std::vector;
@@ -90,7 +89,7 @@ class Module<Ring>::Implementation {
       }
     };
 
-    static unique_factory::UniqueFactory<Key, Module<Ring>, Hash> factory;
+    static unique_factory::UniqueFactory<Key, Module<Ring>, unique_factory::KeepNothingAlive, Hash> factory;
     return factory;
   }
 };
