@@ -196,21 +196,18 @@ class RealNumberProduct final : public RealNumberBase {
 }  // namespace
 
 std::shared_ptr<const RealNumber> RealNumber::operator*(const RealNumber& rhs) const {
-  auto rational = static_cast<std::optional<mpq_class>>(rhs);
-  if (rational) {
+  if (static_cast<std::optional<mpq_class>>(rhs))
+    // Call RationalRealNumber::operator* instead.
     return rhs * *this;
-  }
 
   Factors factors;
-  for (auto factor : {this->shared_from_this(), rhs.shared_from_this()}) {
-    assert(!static_cast<std::optional<mpq_class>>(*factor) && "All factors must be transcendental");
-    auto product = std::dynamic_pointer_cast<const RealNumberProduct>(factor);
-    if (product) {
-      for (auto& f : product->factors) {
-        factors[f.first] += f.second;
-      }
+  for (const auto* factor : {this, &rhs}) {
+    if (typeid(*factor) == typeid(const RealNumberProduct&)) {
+      const auto& product = static_cast<const RealNumberProduct&>(*factor);
+      for (const auto& [real, exponent] : product.factors)
+        factors[real] += exponent;
     } else {
-      factors[factor] += 1;
+      factors[factor->shared_from_this()] += 1;
     }
   }
 
