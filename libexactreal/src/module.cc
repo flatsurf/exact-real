@@ -89,7 +89,7 @@ class Module<Ring>::Implementation {
       }
     };
 
-    static unique_factory::UniqueFactory<Key, Module<Ring>, unique_factory::KeepNothingAlive, Hash> factory;
+    static unique_factory::UniqueFactory<Key, Module<Ring>, unique_factory::KeepSetAlive<Module<Ring>, 1024>, Hash> factory;
     return factory;
   }
 };
