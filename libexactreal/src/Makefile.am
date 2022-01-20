@@ -55,12 +55,12 @@ nobase_pkginclude_HEADERS =                                  \
     ../exact-real/yap/round_transformation.hpp               \
     ../exact-real/yap/terminal.hpp
 
-noinst_HEADERS =                                          \
-    external/gmpxxll/gmpxxll/mpz_class.hpp                \
-    external/hash-combine/hash.hpp                        \
-    external/unique-factory/unique_factory.hpp            \
-    impl/real_number_base.hpp                             \
-    util/assert.ipp                                       \
+noinst_HEADERS =                                               \
+    external/gmpxxll/gmpxxll/mpz_class.hpp                     \
+    external/hash-combine/hash.hpp                             \
+    external/unique-factory/unique-factory/unique-factory.hpp  \
+    impl/real_number_base.hpp                                  \
+    util/assert.ipp                                            \
     legacy/1_4_0/element.hpp
 
 $(builddir)/../exact-real/local.hpp: $(srcdir)/../exact-real/local.hpp.in Makefile
