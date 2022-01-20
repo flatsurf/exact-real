@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C)      2019 Vincent Delecroix
+ *        Copyright (C) 2019-2022 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,29 +27,45 @@
 namespace exactreal::test {
 
 TEST_CASE("Product of Real Numbers", "[real_number][product]") {
-  for (auto da : {.424554, 13.37, .012345, 1.00112233}) {
-    for (auto db : {.910621, 1.020304, 0.5}) {
-      auto a = RealNumber::random(da);
-      auto b = RealNumber::random(db);
-      auto a2 = *a * (*a);
-      auto b2 = *b * (*b);
-      auto ab = *a * (*b);
-      auto a2b2 = *ab * (*ab);
+  const auto a = GENERATE(RealNumber::rational(1), RealNumber::rational(mpq_class{2, 3}), RealNumber::random(.424554), RealNumber::random(13.37), RealNumber::random(.012345), RealNumber::random(1.00112233), RealNumber::random(-1.00112233));
+  const auto b = GENERATE(RealNumber::rational(1), RealNumber::rational(mpq_class{-3, 2}), RealNumber::random(.910621), RealNumber::random(1.020304), RealNumber::random(0.5));
 
-      REQUIRE(*ab == *(*b * (*a)));
-      REQUIRE(*ab != *a2);
-      REQUIRE(*a != *a2);
-      REQUIRE(*a2b2 == *(*a2 * (*b2)));
-      REQUIRE(*a2b2 != *ab);
+  CAPTURE(*a);
+  CAPTURE(*b);
 
-      testArf(a);
-      testArf(b);
-      testArf(a2);
-      testArf(b2);
-      testArf(ab);
-      testArf(a2b2);
-    }
+  auto a2 = *a * (*a);
+  auto b2 = *b * (*b);
+
+  testArf(a);
+  testArf(b);
+  testArf(a2);
+  testArf(b2);
+
+  if ((static_cast<std::optional<mpq_class>>(*a) && *a != 1 && !static_cast<std::optional<mpq_class>>(*b))
+   || (static_cast<std::optional<mpq_class>>(*b) && *b != 1 && !static_cast<std::optional<mpq_class>>(*a))) {
+    // Multiplication with rationals != 1 is not implemented.
+    REQUIRE_THROWS(*a * (*b));
+    return;
   }
+
+  auto ab = *a * (*b);
+  auto a2b2 = *ab * (*ab);
+
+  REQUIRE(*ab == *(*b * (*a)));
+
+  if (*a != *b && *a != 1)
+    REQUIRE(*ab != *a2);
+
+  if (*a != 1)
+    REQUIRE(*a != *a2);
+
+  REQUIRE(*a2b2 == *(*a2 * (*b2)));
+
+  if (*ab != 1)
+    REQUIRE(*a2b2 != *ab);
+
+  testArf(ab);
+  testArf(a2b2);
 }
 
 TEST_CASE("DegLex Order of Real Numbers", "[real_number][product][deglex]") {

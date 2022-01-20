@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C)      2019 Vincent Delecroix
+ *        Copyright (C) 2019-2022 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 #ifndef LIBEXACTREAL_TEST_ARF_HPP
 #define LIBEXACTREAL_TEST_ARF_HPP
 
-#include <boost/numeric/conversion/cast.hpp>
+#include <limits>
 #include <memory>
 
 #include "../exact-real/arb.hpp"
@@ -29,15 +29,13 @@
 #include "../exact-real/yap/arf.hpp"
 #include "external/catch2/single_include/catch2/catch.hpp"
 
-using boost::numeric_cast;
-
 namespace exactreal::test {
 
-Arf absoluteError(const Arf& expected, const Arf& actual) {
-  return (expected - actual)(ARF_PREC_EXACT, Arf::Round::NEAR);
+inline Arf absoluteError(const Arf& expected, const Arf& actual) {
+  return Arf((expected - actual)(ARF_PREC_EXACT, Arf::Round::NEAR)).abs();
 }
 
-Arf relativeError(const Arf& expected, const Arf& actual) {
+inline Arf relativeError(const Arf& expected, const Arf& actual) {
   if (expected == 0) {
     throw std::logic_error("relative error not defined for exact zero");
   }
@@ -45,21 +43,25 @@ Arf relativeError(const Arf& expected, const Arf& actual) {
   return (absoluteError(expected, actual) / expected.abs())(64, Arf::Round::NEAR);
 }
 
-long absoluteAccuracy(const Arf& expected, const Arf& actual) {
+inline long absoluteAccuracy(const Arf& expected, const Arf& actual) {
   return Arf((1 / absoluteError(expected, actual))(64, Arf::Round::NEAR)).logb();
 }
 
-long relativeAccuracy(const Arf& expected, const Arf& actual) {
-  return Arf((1 / relativeError(expected, actual))(64, Arf::Round::NEAR)).logb();
+inline long relativeAccuracy(const Arf& expected, const Arf& actual) {
+  const auto relError = relativeError(expected, actual);
+  if (relError == 0)
+    return std::numeric_limits<long>::max();
+
+  return Arf((1 / relError)(64, Arf::Round::NEAR)).logb();
 }
 
-void testArf(std::shared_ptr<const RealNumber> x) {
+inline void testArf(std::shared_ptr<const RealNumber> x) {
   if (!*x) {
     return;
   }
 
   // As it simplifies debugging quite a bit, we expect digits that we did not ask for to be 0.
-  REQUIRE(abs(x->arf(0).mantissa()) == 1);
+  CHECK(abs(x->arf(0).mantissa()) == 1);
 
   const long PREC = 4096;
 
@@ -94,9 +96,9 @@ void testArf(std::shared_ptr<const RealNumber> x) {
   }
 }
 
-// Force creation of code for easier debugging in gdb; so we can call operator*.
 }  // namespace exactreal::test
 
+// Force creation of code for easier debugging in gdb; so we can call operator*.
 template class std::shared_ptr<const exactreal::RealNumber>;
 
 #endif
