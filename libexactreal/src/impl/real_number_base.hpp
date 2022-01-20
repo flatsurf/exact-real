@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2020 Vincent Delecroix
- *        Copyright (C) 2020 Julian Rüth
+ *        Copyright (C)      2020 Vincent Delecroix
+ *        Copyright (C) 2020-2022 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -31,8 +31,18 @@ namespace exactreal {
 
 class RealNumberBase : public RealNumber {
  public:
+  RealNumberBase();
+
   virtual Arf arf(long prec) const final override;
   virtual Arf arf_(long prec) const = 0;
+
+  /// Unique identifier of this real number.
+  /// Real numbers are unique in the sense that a == b iff &a == &b.
+  /// So, in principle, we can uniquely identify a real number though its
+  /// memory address. However, when destroying and creating a real number, its
+  /// memory address might be reused. This can sometimes cause trouble, e.g.,
+  /// in caches that don't hold a strong reference to a real number.
+  const size_t id;
 
  private:
   mutable std::optional<Arf> arf54;

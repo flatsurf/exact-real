@@ -2,6 +2,7 @@ lib_LTLIBRARIES = libexactreal.la
 
 libexactreal_la_SOURCES =               \
     real_number.cc                      \
+    real_number_base.cc                 \
     rational_real_number.cc             \
     random_real_number.cc               \
     real_number_product.cc              \

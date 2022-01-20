@@ -34,28 +34,42 @@
 #include "impl/real_number_base.hpp"
 #include "util/assert.ipp"
 
-using namespace exactreal;
-using std::map;
-using std::optional;
-using std::shared_ptr;
-
-using Factors = map<shared_ptr<const RealNumber>, int>;
+namespace exactreal {
+using Factors = std::map<std::shared_ptr<const RealNumber>, int>;
 
 namespace {
-class RealNumberProduct;
 
+/// Return a factory that turns a map {real: exponent} into the product π real^exponent.
 auto& factory() {
-  struct Hash {
-    size_t operator()(const Factors& key) const {
-      using flatsurf::hash, flatsurf::hash_combine;
-      size_t ret = 0;
-      for (const auto& [r, n] : key)
-        ret = hash_combine(ret, hash(static_cast<double>(*r)), hash(n));
-      return ret;
+  class Key {
+   public:
+    Key(const Factors& factors) {
+      this->factors.reserve(factors.size() * 2);
+      for (const auto& factor: factors) {
+        this->factors.push_back(static_cast<const RealNumberBase&>(*factor.first).id);
+        this->factors.push_back(factor.second);
+      }
     }
+
+    bool operator==(const Key& rhs) const {
+      return this->factors == rhs.factors;
+    }
+
+    struct Hash {
+      size_t operator()(const Key& key) const {
+        using flatsurf::hash, flatsurf::hash_combine;
+        size_t ret = 0;
+        for (const auto factor : key.factors)
+          ret = hash_combine(ret, factor);
+        return ret;
+      }
+    };
+
+   private:
+    std::vector<long> factors;
   };
 
-  static unique_factory::UniqueFactory<Factors, RealNumberProduct, unique_factory::KeepSetAlive<RealNumberProduct, 1024>, Hash> factory;
+  static unique_factory::UniqueFactory<Key, RealNumber, unique_factory::KeepSetAlive<RealNumber, 1024>, Key::Hash> factory;
 
   return factory;
 }
@@ -63,9 +77,9 @@ auto& factory() {
 // A product of transcendental reals
 class RealNumberProduct final : public RealNumberBase {
  public:
-  explicit RealNumberProduct(const Factors& factors) : factors(factors) {
-    LIBEXACTREAL_ASSERT(std::all_of(begin(factors), end(factors), [](auto& factor) { return factor.second >= 1; }), "factors must appear at least once");
-    LIBEXACTREAL_ASSERT(std::all_of(begin(factors), end(factors), [](auto& factor) { return !static_cast<std::optional<mpq_class>>(*factor.first); }), "factors must be transcendental");
+  explicit RealNumberProduct(Factors factors) : factors(std::move(factors)) {
+    LIBEXACTREAL_ASSERT(std::all_of(begin(this->factors), end(this->factors), [](auto& factor) { return factor.second >= 1; }), "factors must appear at least once");
+    LIBEXACTREAL_ASSERT(std::all_of(begin(this->factors), end(this->factors), [](auto& factor) { return !static_cast<std::optional<mpq_class>>(*factor.first); }), "factors must be transcendental");
   }
 
   RealNumber const& operator>>(std::ostream& os) const override {
@@ -123,7 +137,7 @@ class RealNumberProduct final : public RealNumberBase {
       }
     }
 
-    return factory().get(quotient, [&]() { return new RealNumberProduct(quotient); });
+    return factory().get(quotient, [&]() { return new RealNumberProduct(std::move(quotient)); });
   }
 
   Arf arf_(long prec) const override {
@@ -181,8 +195,7 @@ class RealNumberProduct final : public RealNumberBase {
 };
 }  // namespace
 
-namespace exactreal {
-shared_ptr<const RealNumber> RealNumber::operator*(const RealNumber& rhs) const {
+std::shared_ptr<const RealNumber> RealNumber::operator*(const RealNumber& rhs) const {
   auto rational = static_cast<std::optional<mpq_class>>(rhs);
   if (rational) {
     return rhs * *this;
@@ -190,7 +203,7 @@ shared_ptr<const RealNumber> RealNumber::operator*(const RealNumber& rhs) const 
 
   Factors factors;
   for (auto factor : {this->shared_from_this(), rhs.shared_from_this()}) {
-    assert(!static_cast<optional<mpq_class>>(*factor) && "All factors must be transcendental");
+    assert(!static_cast<std::optional<mpq_class>>(*factor) && "All factors must be transcendental");
     auto product = std::dynamic_pointer_cast<const RealNumberProduct>(factor);
     if (product) {
       for (auto& f : product->factors) {
@@ -201,7 +214,7 @@ shared_ptr<const RealNumber> RealNumber::operator*(const RealNumber& rhs) const 
     }
   }
 
-  return factory().get(factors, [&]() { return new RealNumberProduct(factors); });
+  return factory().get(factors, [&]() { return new RealNumberProduct(std::move(factors)); });
 }
 
 bool RealNumber::deglex(const RealNumber& rhs_) const {
@@ -280,8 +293,6 @@ void save_product(cereal::JSONOutputArchive& archive, const std::shared_ptr<cons
 void load_product(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& base) {
   Factors factors;
   archive(cereal::make_nvp("factors", factors));
-  base = factory().get(factors, [&]() {
-    return new RealNumberProduct(Factors(begin(factors), end(factors)));
-  });
+  base = factory().get(factors, [&]() { return new RealNumberProduct(std::move(factors)); });
 }
 }  // namespace exactreal

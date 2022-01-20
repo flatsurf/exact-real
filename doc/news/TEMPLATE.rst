@@ -20,4 +20,4 @@
 
 **Performance:**
 
-* Imprved <news item>
+* Improved <news item>
