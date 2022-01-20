@@ -54,7 +54,9 @@ auto& factory() {
       return ret;
     }
   };
-  static unique_factory::UniqueFactory<Factors, RealNumberProduct, unique_factory::KeepNothingAlive, Hash> factory;
+
+  static unique_factory::UniqueFactory<Factors, RealNumberProduct, unique_factory::KeepSetAlive<RealNumberProduct, 1024>, Hash> factory;
+
   return factory;
 }
 
