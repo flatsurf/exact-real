@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C)      2019 Vincent Delecroix
+ *        Copyright (C) 2019-2022 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@
 #include "../exact-real/seed.hpp"
 #include "../exact-real/yap/arf.hpp"
 #include "external/hash-combine/hash.hpp"
-#include "external/unique-factory/unique_factory.hpp"
+#include "external/unique-factory/unique-factory/unique-factory.hpp"
 #include "impl/real_number_base.hpp"
 
 using namespace exactreal;
@@ -113,7 +113,7 @@ auto& factory() {
       return hash_combine(hash(std::get<0>(key)), hash(std::get<1>(key)), hash(static_cast<double>(*std::get<2>(key))));
     }
   };
-  static unique_factory::UniqueFactory<Key, ConstrainedRandomRealNumber, Hash> factory;
+  static unique_factory::UniqueFactory<Key, ConstrainedRandomRealNumber, unique_factory::KeepNothingAlive, Hash> factory;
   return factory;
 }
 }  // namespace
