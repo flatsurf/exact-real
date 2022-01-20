@@ -93,7 +93,7 @@ class Module<Ring>::Implementation {
     };
 
    private:
-    std::vector<int> basis;
+    std::vector<size_t> basis;
     Ring ring;
   };
 
