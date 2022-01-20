@@ -8,12 +8,12 @@ channels:
 dependencies:
   - automake
   - benchmark
-  - boost-cpp
+  - boost-cpp==1.74.0
   - coreutils
   - cxx-compiler
-  - e-antic>=1.0.0
-  - arb
-  - gmp
+  - libeantic>=1.0.2,<2
+  - arb>=2.21,<2.22
+  - gmp>6,<7
   - libtool
   - make
   # valgrind is only needed for make check-valgrind

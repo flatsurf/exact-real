@@ -63,7 +63,7 @@ class RationalRealNumber final : public RealNumberBase {
     if (typeid(rhs) == typeid(*this)) {
       return RealNumber::rational(value * static_cast<const RationalRealNumber*>(&rhs)->value);
     }
-    throw std::logic_error("not implemented - multiplication with non-trivial rational");
+    throw std::logic_error("not implemented - multiplication of rational real number != 1 with non-rational real number");
   }
 
   template <typename Archive>

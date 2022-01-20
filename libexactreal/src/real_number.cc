@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C)      2019 Vincent Delecroix
+ *        Copyright (C) 2019-2022 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -183,11 +183,20 @@ ostream& operator<<(ostream& os, const RealNumber& self) {
   return os;
 }
 
+template <typename T>
+const std::type_info& typeid_shared(const std::shared_ptr<T>& ptr) {
+  if (ptr == nullptr)
+    return typeid(nullptr);
+
+  const auto& value = *ptr;
+  return typeid(value);
+}
+
 const static Seed noSeed = Seed(0);
-const static std::type_info& RATIONAL = typeid(*RealNumber::rational(0));
-const static std::type_info& RANDOM = typeid(*RealNumber::random(noSeed));
-const static std::type_info& CONSTRAINED = typeid(*RealNumber::random(Arf(1), Arf(2), noSeed));
-const static std::type_info& PRODUCT = typeid(*((*RealNumber::random(noSeed)) * (*RealNumber::random(noSeed))));
+const static std::type_info& RATIONAL = typeid_shared(RealNumber::rational(0));
+const static std::type_info& RANDOM = typeid_shared(RealNumber::random(noSeed));
+const static std::type_info& CONSTRAINED = typeid_shared(RealNumber::random(Arf(1), Arf(2), noSeed));
+const static std::type_info& PRODUCT = typeid_shared((*RealNumber::random(noSeed)) * (*RealNumber::random(noSeed)));
 
 void save_rational(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& self);
 void save_random(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& self);
@@ -195,16 +204,16 @@ void save_constrained(cereal::JSONOutputArchive& archive, const std::shared_ptr<
 void save_product(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& self);
 
 void RealNumberCereal::save(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& self) {
-  if (typeid(*self) == RATIONAL) {
+  if (typeid_shared(self) == RATIONAL) {
     archive(cereal::make_nvp("kind", std::string("rational")));
     save_rational(archive, self);
-  } else if (typeid(*self) == RANDOM) {
+  } else if (typeid_shared(self) == RANDOM) {
     archive(cereal::make_nvp("kind", std::string("random")));
     save_random(archive, self);
-  } else if (typeid(*self) == CONSTRAINED) {
+  } else if (typeid_shared(self) == CONSTRAINED) {
     archive(cereal::make_nvp("kind", std::string("constrained")));
     save_constrained(archive, self);
-  } else if (typeid(*self) == PRODUCT) {
+  } else if (typeid_shared(self) == PRODUCT) {
     archive(cereal::make_nvp("kind", std::string("product")));
     save_product(archive, self);
   } else {
