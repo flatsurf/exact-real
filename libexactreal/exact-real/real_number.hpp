@@ -96,7 +96,7 @@ class LIBEXACTREAL_API RealNumber : public std::enable_shared_from_this<RealNumb
   // is smaller than rhs; This interprets most real numbers as indeterminates
   // and their products as products of these basic indeterminates. This is
   // used internally for the operator/. The indeterminates, i.e., real numbers,
-  // are ordered by their real value.
+  // are ordered consistently (by some internal identifiers.)
   bool deglex(const RealNumber& rhs) const;
 
   virtual std::shared_ptr<const RealNumber> operator*(const RealNumber&) const;

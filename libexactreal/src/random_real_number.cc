@@ -106,7 +106,7 @@ class RandomRealNumber final : public RealNumberBase {
 };
 
 auto& factory() {
-  static unique_factory::UniqueFactory<unsigned int, RandomRealNumber> factory;
+  static unique_factory::UniqueFactory<unsigned int, RealNumber> factory;
   return factory;
 }
 }  // namespace

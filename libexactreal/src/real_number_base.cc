@@ -23,8 +23,10 @@
 
 namespace exactreal {
 
-static std::atomic<long> next = 0;
+static std::atomic<size_t> next = 2147483659;
 
-RealNumberBase::RealNumberBase() : id(next++) {}
+RealNumberBase::RealNumberBase() : uniqueId(next++) {}
+
+size_t RealNumberBase::id(const RealNumber& self) { return static_cast<const RealNumberBase&>(self).uniqueId; }
 
 }

@@ -72,8 +72,8 @@ TEST_CASE("DegLex Order of Real Numbers", "[real_number][product][deglex]") {
   std::shared_ptr<const RealNumber> gens[]{RealNumber::rational(1), RealNumber::random(), RealNumber::random()};
 
   auto& one = *gens[0];
-  auto& x = *gens[1] < *gens[2] ? *gens[1] : *gens[2];
-  auto& y = *gens[1] < *gens[2] ? *gens[2] : *gens[1];
+  auto& x = *gens[1];
+  auto& y = *gens[2];
 
   std::shared_ptr<const RealNumber> products[] = {x * x, x * y, y * y};
 
@@ -96,11 +96,8 @@ TEST_CASE("DegLex Order of Real Numbers", "[real_number][product][deglex]") {
     REQUIRE(xx.deglex(*(x * yy)));
   }
 
-  SECTION("Indeterminates are Ordered by Value") {
-    REQUIRE(x.deglex(y));
-  }
-
   SECTION("Products of the same Total Degree are Ordered Lexicographically") {
+    // This test assumes that x < y (using knowledge about the internal ordering of elements.)
     REQUIRE(x.deglex(y));
     REQUIRE(xx.deglex(xy));
     REQUIRE(xx.deglex(yy));

@@ -36,15 +36,17 @@ class RealNumberBase : public RealNumber {
   virtual Arf arf(long prec) const final override;
   virtual Arf arf_(long prec) const = 0;
 
+  static size_t id(const RealNumber&);
+
+ private:
   /// Unique identifier of this real number.
   /// Real numbers are unique in the sense that a == b iff &a == &b.
   /// So, in principle, we can uniquely identify a real number though its
   /// memory address. However, when destroying and creating a real number, its
   /// memory address might be reused. This can sometimes cause trouble, e.g.,
   /// in caches that don't hold a strong reference to a real number.
-  const size_t id;
+  const size_t uniqueId;
 
- private:
   mutable std::optional<Arf> arf54;
   mutable std::optional<Arf> arf64;
   mutable std::unordered_map<long, Arf> large;

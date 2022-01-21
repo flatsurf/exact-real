@@ -82,7 +82,8 @@ shared_ptr<const RealNumber> RealNumber::rational(const mpq_class& value) {
   struct Hash {
     size_t operator()(const mpq_class& self) const { return std::hash<double>()(self.get_d()); }
   };
-  static unique_factory::UniqueFactory<mpq_class, RationalRealNumber, unique_factory::KeepNothingAlive, Hash> factory;
+  static unique_factory::UniqueFactory<mpq_class, RealNumber, unique_factory::KeepNothingAlive, Hash> factory;
+  
   return factory.get(value, [&]() { return new RationalRealNumber(value); });
 }
 

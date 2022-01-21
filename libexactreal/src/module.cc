@@ -71,7 +71,7 @@ class Module<Ring>::Implementation {
     Key(const Basis& basis, Ring ring) : ring(std::move(ring)) {
       this->basis.reserve(basis.size());
       for (const auto& real : basis)
-        this->basis.push_back(static_cast<const RealNumberBase&>(*real).id);
+        this->basis.push_back(RealNumberBase::id(*real));
     }
 
     bool operator==(const Key& rhs) const {
