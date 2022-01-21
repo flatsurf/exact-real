@@ -142,11 +142,7 @@ class Key {
       using L = std::decay_t<decltype(lhs)>;
       using R = std::decay_t<decltype(rhs)>;
 
-      if constexpr (std::is_same_v<L, MonomialsExponents> && std::is_same_v<R, MonomialsExponents>) {
-        return lhs.monomials == rhs.monomials && lhs.exponents == rhs.exponents;
-      } else if constexpr (std::is_same_v<L, MonomialsExponents> && std::is_same_v<R, Factors>) {
-        throw std::logic_error("not implemented: operator==(M, F)");
-      } else if constexpr (std::is_same_v<L, Factors> && std::is_same_v<R, MonomialsExponents>) {
+      const auto eq = [](const auto& lhs, const auto& rhs) {
         const auto eq = [](const auto& lhs_lhs_monomials, const auto& lhs_lhs_exponents, const auto& lhs_rhs_monomials, const auto& lhs_rhs_exponents, const auto& rhs_monomials, const auto& rhs_exponents) {
           using std::begin, std::end;
 
@@ -255,8 +251,17 @@ class Key {
             return eq(lhs_lhs_monomials, lhs_lhs_exponents, lhs_rhs_monomials, lhs_rhs_exponents, rhs.monomials, rhs.exponents);
           }
         }
+
+      };
+
+      if constexpr (std::is_same_v<L, MonomialsExponents> && std::is_same_v<R, MonomialsExponents>) {
+        return lhs.monomials == rhs.monomials && lhs.exponents == rhs.exponents;
       } else if constexpr (std::is_same_v<L, Factors> && std::is_same_v<R, Factors>) {
         LIBEXACTREAL_UNREACHABLE("There should never be a need to compare two Factors since they are persisted to MonomialsExponents once they are inserted into the cache.");
+      } else if constexpr (std::is_same_v<L, MonomialsExponents> && std::is_same_v<R, Factors>) {
+        return eq(rhs, lhs);
+      } else if constexpr (std::is_same_v<L, Factors> && std::is_same_v<R, MonomialsExponents>) {
+        return eq(lhs, rhs);
       } else {
         static_assert(false_t<L> && false_t<R>, "Unsuported cache key types.");
       }
