@@ -142,128 +142,129 @@ class Key {
       using L = std::decay_t<decltype(lhs)>;
       using R = std::decay_t<decltype(rhs)>;
 
-      const auto eq = [](const auto& lhs, const auto& rhs) {
-        const auto eq = [](const auto& lhs_lhs_monomials, const auto& lhs_lhs_exponents, const auto& lhs_rhs_monomials, const auto& lhs_rhs_exponents, const auto& rhs_monomials, const auto& rhs_exponents) {
-          using std::begin, std::end;
-
-          const size_t lhs_lhs_size = end(lhs_lhs_monomials) - begin(lhs_lhs_monomials);
-          const size_t lhs_rhs_size = end(lhs_rhs_monomials) - begin(lhs_rhs_monomials);
-          const size_t rhs_size = end(rhs_monomials) - begin(rhs_monomials);
-
-          size_t lhs_lhs_i = 0;
-          size_t lhs_rhs_i = 0;
-          size_t rhs_i = 0;
-
-          while(true) {
-            if (rhs_i == rhs_size) {
-              return lhs_lhs_i == lhs_lhs_size && lhs_rhs_i == lhs_rhs_size;
-            }
-
-            const size_t rhs_monomial = rhs_monomials[rhs_i];
-            const int rhs_exponent = rhs_exponents[rhs_i];
-            rhs_i++;
-
-            if (lhs_lhs_i != lhs_lhs_size) {
-              const size_t lhs_lhs_monomial = RealNumberBase::id(*lhs_lhs_monomials[lhs_lhs_i]);
-              const int lhs_lhs_exponent = lhs_lhs_exponents[lhs_lhs_i];
-
-              if (lhs_lhs_monomial < rhs_monomial) {
-                return false;
-              }
-
-              if (lhs_rhs_i != lhs_rhs_size) {
-                const size_t lhs_rhs_monomial = RealNumberBase::id(*lhs_rhs_monomials[lhs_rhs_i]);
-                const int lhs_rhs_exponent = lhs_rhs_exponents[lhs_rhs_i];
-
-                if (lhs_rhs_monomial < rhs_monomial) {
-                  return false;
-                }
-
-                if (lhs_lhs_monomial == rhs_monomial && lhs_rhs_monomial == rhs_monomial) {
-                  if (lhs_lhs_exponent + lhs_rhs_exponent != rhs_exponent) {
-                    return false;
-                  }
-
-                  lhs_lhs_i++;
-                  lhs_rhs_i++;
-                } else if (lhs_lhs_monomial == rhs_monomial) {
-                  if (lhs_lhs_exponent != rhs_exponent) {
-                    return false;
-                  }
-
-                  lhs_lhs_i++;
-                } else  if (lhs_rhs_monomial == rhs_monomial) {
-                  if (lhs_rhs_exponent != rhs_exponent) {
-                    return false;
-                  }
-
-                  lhs_rhs_i++;
-                } else {
-                  return false;
-                }
-              } else {
-                if (lhs_lhs_monomial != rhs_monomial || lhs_lhs_exponent != rhs_exponent) {
-                  return false;
-                }
-
-                lhs_lhs_i++;
-              }
-            } else if (lhs_rhs_i != lhs_rhs_size) {
-              const size_t lhs_rhs_monomial = RealNumberBase::id(*lhs_rhs_monomials[lhs_rhs_i]);
-              const int lhs_rhs_exponent = lhs_rhs_exponents[lhs_rhs_i];
-
-              if (lhs_rhs_monomial != rhs_monomial || lhs_rhs_exponent != rhs_exponent) {
-                return false;
-              }
-
-              lhs_rhs_i++;
-            } else {
-              return false;
-            }
-          }
-        };
-
-        if (typeid(*lhs.lhs) == typeid(const RealNumberProduct&)) {
-          const auto& lhs_lhs = static_cast<const RealNumberProduct&>(*lhs.lhs);
-
-          if (typeid(*lhs.rhs) == typeid(const RealNumberProduct&)) {
-            const auto& lhs_rhs = static_cast<const RealNumberProduct&>(*lhs.rhs);
-
-            return eq(lhs_lhs.monomials, lhs_lhs.exponents, lhs_rhs.monomials, lhs_rhs.exponents, rhs.monomials, rhs.exponents);
-          } else {
-            const RealNumber* lhs_rhs_monomials[]{ lhs.rhs };
-            int lhs_rhs_exponents[]{ 1 };
-
-            return eq(lhs_lhs.monomials, lhs_lhs.exponents, lhs_rhs_monomials, lhs_rhs_exponents, rhs.monomials, rhs.exponents);
-          }
-        } else {
-          const RealNumber* lhs_lhs_monomials[]{ lhs.lhs };
-          int lhs_lhs_exponents[]{ 1 };
-
-          if (typeid(*lhs.rhs) == typeid(const RealNumberProduct&)) {
-            const auto& lhs_rhs = static_cast<const RealNumberProduct&>(*lhs.rhs);
-
-            return eq(lhs_lhs_monomials, lhs_lhs_exponents, lhs_rhs.monomials, lhs_rhs.exponents, rhs.monomials, rhs.exponents);
-          } else {
-            const RealNumber* lhs_rhs_monomials[]{ lhs.rhs };
-            int lhs_rhs_exponents[]{ 1 };
-
-            return eq(lhs_lhs_monomials, lhs_lhs_exponents, lhs_rhs_monomials, lhs_rhs_exponents, rhs.monomials, rhs.exponents);
-          }
-        }
-
-      };
-
       if constexpr (std::is_same_v<L, MonomialsExponents> && std::is_same_v<R, MonomialsExponents>) {
         return lhs.monomials == rhs.monomials && lhs.exponents == rhs.exponents;
       } else if constexpr (std::is_same_v<L, Factors> && std::is_same_v<R, Factors>) {
         LIBEXACTREAL_UNREACHABLE("There should never be a need to compare two Factors since they are persisted to MonomialsExponents once they are inserted into the cache.");
-      } else if constexpr (std::is_same_v<L, MonomialsExponents> && std::is_same_v<R, Factors>) {
-        return eq(rhs, lhs);
-      } else if constexpr (std::is_same_v<L, Factors> && std::is_same_v<R, MonomialsExponents>) {
-        return eq(lhs, rhs);
       } else {
-        static_assert(false_t<L> && false_t<R>, "Unsuported cache key types.");
+        const auto eq = [](const auto& lhs, const auto& rhs) {
+          const auto eq = [](const auto& lhs_lhs_monomials, const auto& lhs_lhs_exponents, const auto& lhs_rhs_monomials, const auto& lhs_rhs_exponents, const auto& rhs_monomials, const auto& rhs_exponents) {
+            using std::begin, std::end;
+
+            const size_t lhs_lhs_size = end(lhs_lhs_monomials) - begin(lhs_lhs_monomials);
+            const size_t lhs_rhs_size = end(lhs_rhs_monomials) - begin(lhs_rhs_monomials);
+            const size_t rhs_size = end(rhs_monomials) - begin(rhs_monomials);
+
+            size_t lhs_lhs_i = 0;
+            size_t lhs_rhs_i = 0;
+            size_t rhs_i = 0;
+
+            while(true) {
+              if (rhs_i == rhs_size) {
+                return lhs_lhs_i == lhs_lhs_size && lhs_rhs_i == lhs_rhs_size;
+              }
+
+              const size_t rhs_monomial = rhs_monomials[rhs_i];
+              const int rhs_exponent = rhs_exponents[rhs_i];
+              rhs_i++;
+
+              if (lhs_lhs_i != lhs_lhs_size) {
+                const size_t lhs_lhs_monomial = RealNumberBase::id(*lhs_lhs_monomials[lhs_lhs_i]);
+                const int lhs_lhs_exponent = lhs_lhs_exponents[lhs_lhs_i];
+
+                if (lhs_lhs_monomial < rhs_monomial) {
+                  return false;
+                }
+
+                if (lhs_rhs_i != lhs_rhs_size) {
+                  const size_t lhs_rhs_monomial = RealNumberBase::id(*lhs_rhs_monomials[lhs_rhs_i]);
+                  const int lhs_rhs_exponent = lhs_rhs_exponents[lhs_rhs_i];
+
+                  if (lhs_rhs_monomial < rhs_monomial) {
+                    return false;
+                  }
+
+                  if (lhs_lhs_monomial == rhs_monomial && lhs_rhs_monomial == rhs_monomial) {
+                    if (lhs_lhs_exponent + lhs_rhs_exponent != rhs_exponent) {
+                      return false;
+                    }
+
+                    lhs_lhs_i++;
+                    lhs_rhs_i++;
+                  } else if (lhs_lhs_monomial == rhs_monomial) {
+                    if (lhs_lhs_exponent != rhs_exponent) {
+                      return false;
+                    }
+
+                    lhs_lhs_i++;
+                  } else  if (lhs_rhs_monomial == rhs_monomial) {
+                    if (lhs_rhs_exponent != rhs_exponent) {
+                      return false;
+                    }
+
+                    lhs_rhs_i++;
+                  } else {
+                    return false;
+                  }
+                } else {
+                  if (lhs_lhs_monomial != rhs_monomial || lhs_lhs_exponent != rhs_exponent) {
+                    return false;
+                  }
+
+                  lhs_lhs_i++;
+                }
+              } else if (lhs_rhs_i != lhs_rhs_size) {
+                const size_t lhs_rhs_monomial = RealNumberBase::id(*lhs_rhs_monomials[lhs_rhs_i]);
+                const int lhs_rhs_exponent = lhs_rhs_exponents[lhs_rhs_i];
+
+                if (lhs_rhs_monomial != rhs_monomial || lhs_rhs_exponent != rhs_exponent) {
+                  return false;
+                }
+
+                lhs_rhs_i++;
+              } else {
+                return false;
+              }
+            }
+          };
+
+          if (typeid(*lhs.lhs) == typeid(const RealNumberProduct&)) {
+            const auto& lhs_lhs = static_cast<const RealNumberProduct&>(*lhs.lhs);
+
+            if (typeid(*lhs.rhs) == typeid(const RealNumberProduct&)) {
+              const auto& lhs_rhs = static_cast<const RealNumberProduct&>(*lhs.rhs);
+
+              return eq(lhs_lhs.monomials, lhs_lhs.exponents, lhs_rhs.monomials, lhs_rhs.exponents, rhs.monomials, rhs.exponents);
+            } else {
+              const RealNumber* lhs_rhs_monomials[]{ lhs.rhs };
+              int lhs_rhs_exponents[]{ 1 };
+
+              return eq(lhs_lhs.monomials, lhs_lhs.exponents, lhs_rhs_monomials, lhs_rhs_exponents, rhs.monomials, rhs.exponents);
+            }
+          } else {
+            const RealNumber* lhs_lhs_monomials[]{ lhs.lhs };
+            int lhs_lhs_exponents[]{ 1 };
+
+            if (typeid(*lhs.rhs) == typeid(const RealNumberProduct&)) {
+              const auto& lhs_rhs = static_cast<const RealNumberProduct&>(*lhs.rhs);
+
+              return eq(lhs_lhs_monomials, lhs_lhs_exponents, lhs_rhs.monomials, lhs_rhs.exponents, rhs.monomials, rhs.exponents);
+            } else {
+              const RealNumber* lhs_rhs_monomials[]{ lhs.rhs };
+              int lhs_rhs_exponents[]{ 1 };
+
+              return eq(lhs_lhs_monomials, lhs_lhs_exponents, lhs_rhs_monomials, lhs_rhs_exponents, rhs.monomials, rhs.exponents);
+            }
+          }
+        };
+
+        if constexpr (std::is_same_v<L, MonomialsExponents> && std::is_same_v<R, Factors>) {
+          return eq(rhs, lhs);
+        } else if constexpr (std::is_same_v<L, Factors> && std::is_same_v<R, MonomialsExponents>) {
+          return eq(lhs, rhs);
+        } else {
+          static_assert(false_t<L> && false_t<R>, "Unsuported cache key types.");
+        }
       }
     }, this->data, rhs.data);
   }
@@ -649,7 +650,7 @@ bool RealNumber::deglex(const RealNumber& rhs_) const {
         }
       }
 
-      LIBEXACTREAL_UNREACHABLE("Real number products are distinct but " << *this << " and " << rhs_ << " coincide on every factor.");
+      LIBEXACTREAL_UNREACHABLE("Real number products pretend to be distinct values but they coincide in deglex comparison: " << *this << " and " << rhs_ << " coincide on every factor.");
     }
   }
 }
