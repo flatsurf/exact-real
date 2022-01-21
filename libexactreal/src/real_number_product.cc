@@ -474,7 +474,6 @@ std::optional<std::shared_ptr<const RealNumber>> RealNumberProduct::operator/(co
 
       if (lhs_monomial_id < rhs_monomial_id) {
         lhs_i++;
-        continue;
       } else if (lhs_monomial_id > rhs_monomial_id) {
         return std::nullopt;
       } else {
@@ -488,11 +487,16 @@ std::optional<std::shared_ptr<const RealNumber>> RealNumberProduct::operator/(co
       }
     }
   } else {
-    for (size_t lhs_i = 0; lhs_i < monomials.size(); lhs_i++) {
+    size_t lhs_i = 0;
+    for (;lhs_i < monomials.size(); lhs_i++) {
       if (*monomials[lhs_i] == rhs) {
         quotient[lhs_i]--;
+        break;
       }
     }
+
+    if (lhs_i == monomials.size())
+      return std::nullopt;
   }
 
   RealNumberProduct::Monomials monomials;
@@ -511,7 +515,7 @@ std::optional<std::shared_ptr<const RealNumber>> RealNumberProduct::operator/(co
   if (exponents.size() == 1 && exponents[0] == 1)
     return monomials[0];
 
-  return factory().get({monomials, quotient}, [&]() { return new RealNumberProduct(monomials, exponents); });
+  return factory().get({monomials, exponents}, [&]() { return new RealNumberProduct(monomials, exponents); });
 }
 
 Arf RealNumberProduct::arf_(long prec) const {
