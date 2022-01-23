@@ -580,3 +580,9 @@ LIBEXACTREAL_2.3.0 {
       "exactreal::Element<exactreal::NumberField>::Element<true, true>(exactreal::Element<exactreal::RationalField> const&)";
     };
 } LIBEXACTREAL_2.2.0;
+LIBEXACTREAL_2.4.0 {
+  global:
+    extern "C++" {
+      "exactreal::operator>=(exactreal::Arb const&, unsigned short)";
+    };
+};
