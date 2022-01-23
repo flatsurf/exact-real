@@ -1,7 +1,15 @@
+r"""
+Pretend that pytest is not installed.
+
+`sage -t` tries to invoke pytest on our files which does
+not always work. We use this file to pretend that pytest
+is not installed, see
+https://trac.sagemath.org/ticket/31103#comment:49
+"""
 ######################################################################
 #  This file is part of exact-real.
 #
-#        Copyright (C) 2020-2022 Julian Rüth
+#        Copyright (C) 2021-2022 Julian Rüth
 #
 #  exact-real is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -16,25 +24,4 @@
 #  You should have received a copy of the GNU General Public License
 #  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
 #####################################################################
-from rever.activity import Activity
-
-class AutotoolsDist(Activity):
-    def __init__(self, **kwargs):
-        super().__init__()
-        self.name = "autodist"
-        self.desc = "Creates a source tarball with make dist"
-        self.requires = {"commands": {"make": "make"}}
-
-    def __call__(self):
-        from tempfile import TemporaryDirectory
-        from xonsh.dirstack import DIRSTACK
-        with TemporaryDirectory() as tmp:
-            ./bootstrap
-            pushd @(tmp)
-            @(DIRSTACK[-1])/configure
-            make dist
-            mv *.tar.gz @(DIRSTACK[-1])
-            popd
-        return True
-
-$DAG['autodist'] = AutotoolsDist()
+raise ModuleNotFoundError

@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C)      2019 Vincent Delecroix
+ *        Copyright (C) 2019-2022 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -33,16 +33,9 @@
 #include "../exact-real/number_field.hpp"
 #include "../exact-real/rational_field.hpp"
 #include "../exact-real/real_number.hpp"
+#include "impl/real_number_base.hpp"
 #include "external/hash-combine/hash.hpp"
-#include "external/unique-factory/unique_factory.hpp"
-
-using namespace exactreal;
-using boost::numeric_cast;
-using boost::adaptors::transformed;
-using std::is_same_v;
-using std::shared_ptr;
-using std::string;
-using std::vector;
+#include "external/unique-factory/unique-factory/unique-factory.hpp"
 
 namespace exactreal {
 template <typename Ring>
@@ -73,8 +66,18 @@ class Module<Ring>::Implementation {
   Basis basis;
   Ring parameters;
 
-  static auto& factory() {
-    using Key = std::tuple<Basis, Ring>;
+  class Key {
+   public:
+    Key(const Basis& basis, Ring ring) : ring(std::move(ring)) {
+      this->basis.reserve(basis.size());
+      for (const auto& real : basis)
+        this->basis.push_back(RealNumberBase::id(*real));
+    }
+
+    bool operator==(const Key& rhs) const {
+      return this->ring == rhs.ring && this->basis == rhs.basis;
+    }
+
     struct Hash {
       size_t operator()(const Key& key) const {
         using flatsurf::hash, flatsurf::hash_combine;
@@ -83,13 +86,19 @@ class Module<Ring>::Implementation {
 
         size_t ret = hash(ring);
         for (const auto& b : basis)
-          ret = hash_combine(ret, hash(static_cast<double>(*b)));
+          ret = hash_combine(ret, b);
 
         return ret;
       }
     };
 
-    static unique_factory::UniqueFactory<Key, Module<Ring>, Hash> factory;
+   private:
+    std::vector<size_t> basis;
+    Ring ring;
+  };
+
+  static auto& factory() {
+    static unique_factory::UniqueFactory<Key, Module<Ring>, unique_factory::KeepSetAlive<Module<Ring>, 1024>, typename Key::Hash> factory;
     return factory;
   }
 };
@@ -98,15 +107,15 @@ template <typename Ring>
 Module<Ring>::Module(spimpl::unique_impl_ptr<Module<Ring>::Implementation>&& impl) : impl(std::move(impl)) {}
 
 template <typename Ring>
-shared_ptr<const Module<Ring>> Module<Ring>::make(const Basis& basis) {
+std::shared_ptr<const Module<Ring>> Module<Ring>::make(const Basis& basis) {
   return make(basis, Ring());
 }
 
 template <typename Ring>
-shared_ptr<const Module<Ring>> Module<Ring>::make(const Basis& basis_, const Ring& ring) {
+std::shared_ptr<const Module<Ring>> Module<Ring>::make(const Basis& basis_, const Ring& ring) {
   Basis basis = basis_;
   std::sort(begin(basis), end(basis), [](const auto& lhs, const auto& rhs) { return lhs->deglex(*rhs); });
-  return Module<Ring>::Implementation::factory().get(std::tuple{basis, ring}, [&]() {
+  return Module<Ring>::Implementation::factory().get(typename Module<Ring>::Implementation::Key{basis, ring}, [&]() {
     return new Module<Ring>(spimpl::make_unique_impl<Module<Ring>::Implementation>(basis, ring));
   });
 }
@@ -117,7 +126,7 @@ size Module<Ring>::rank() const {
 }
 
 template <typename Ring>
-vector<shared_ptr<const RealNumber>> const& Module<Ring>::basis() const {
+std::vector<std::shared_ptr<const RealNumber>> const& Module<Ring>::basis() const {
   return impl->basis;
 }
 
@@ -133,7 +142,7 @@ bool Module<Ring>::operator==(const Module<Ring>& rhs) const {
 }
 
 template <typename Ring>
-shared_ptr<const Module<Ring>> Module<Ring>::span(const shared_ptr<const Module<Ring>>& m, const shared_ptr<const Module<Ring>>& n) {
+std::shared_ptr<const Module<Ring>> Module<Ring>::span(const std::shared_ptr<const Module<Ring>>& m, const std::shared_ptr<const Module<Ring>>& n) {
   // When one of the modules is trivial, we do not need to worry about the parameters but just return the other
   if (m->basis().size() == 0) {
     return n;
@@ -179,7 +188,7 @@ bool Module<Ring>::submodule(const Module<Ring>& supermodule) const {
 template <typename Ring>
 Element<Ring> Module<Ring>::gen(size j) const {
   std::vector<typename Ring::ElementClass> coefficients(this->rank());
-  coefficients[numeric_cast<size_t>(j)] = 1;
+  coefficients[boost::numeric_cast<size_t>(j)] = 1;
   return Element(this->shared_from_this(), std::move(coefficients));
 }
 
@@ -188,11 +197,28 @@ Element<Ring> Module<Ring>::zero() const {
   return Element(this->shared_from_this(), std::vector<typename Ring::ElementClass>(this->rank()));
 }
 
+template <typename Ring>
+Element<Ring> Module<Ring>::one() const {
+  for (int g = 0; g < rank(); g++) {
+    auto rational = static_cast<std::optional<mpq_class>>(*basis()[g]);
+    if (rational) {
+      if constexpr (std::is_same_v<Ring, IntegerRing>) {
+        if (rational->get_num() == 1) {
+          return rational->get_den() * gen(g);
+        }
+      } else {
+          return mpq_class(rational->get_den(), rational->get_num()) * gen(g);
+      }
+    }
+  }
+  throw std::logic_error("Module contains no 1 element.");
+}
+
 template <typename R>
 std::ostream& operator<<(std::ostream& os, const Module<R>& self) {
   os << self.ring() << "-Module(";
-  os << boost::algorithm::join(self.basis() | transformed(
-                                                  [](auto& gen) { return boost::lexical_cast<string>(*gen); }),
+  os << boost::algorithm::join(self.basis() | boost::adaptors::transformed(
+                                                  [](auto& gen) { return boost::lexical_cast<std::string>(*gen); }),
                                ", ");
   return os << ")";
 }

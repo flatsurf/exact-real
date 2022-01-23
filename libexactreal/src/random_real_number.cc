@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C)      2019 Vincent Delecroix
+ *        Copyright (C) 2019-2022 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@
 #include "../exact-real/arf.hpp"
 #include "../exact-real/real_number.hpp"
 #include "../exact-real/seed.hpp"
-#include "external/unique-factory/unique_factory.hpp"
+#include "external/unique-factory/unique-factory/unique-factory.hpp"
 #include "impl/real_number_base.hpp"
 
 using namespace exactreal;
@@ -106,7 +106,7 @@ class RandomRealNumber final : public RealNumberBase {
 };
 
 auto& factory() {
-  static unique_factory::UniqueFactory<unsigned int, RandomRealNumber> factory;
+  static unique_factory::UniqueFactory<unsigned int, RealNumber> factory;
   return factory;
 }
 }  // namespace

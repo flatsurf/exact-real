@@ -570,3 +570,13 @@ LIBEXACTREAL_2.2.0 {
       "exactreal::swap(exactreal::Arf&, exactreal::Arf&)";
     };
 } LIBEXACTREAL_2.0.0;
+LIBEXACTREAL_2.3.0 {
+  global:
+    extern "C++" {
+      "exactreal::Module<exactreal::IntegerRing>::one() const";
+      "exactreal::Module<exactreal::RationalField>::one() const";
+      "exactreal::Module<exactreal::NumberField>::one() const";
+      "exactreal::Element<exactreal::NumberField>::Element<true, true>(exactreal::Element<exactreal::IntegerRing> const&)";
+      "exactreal::Element<exactreal::NumberField>::Element<true, true>(exactreal::Element<exactreal::RationalField> const&)";
+    };
+} LIBEXACTREAL_2.2.0;

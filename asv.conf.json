@@ -12,11 +12,11 @@
     "boost-cpp": [],
     "ccache": [],
     "coreutils": [],
-    "cppasv": [],
-    "cppyy": [],
+    "pip+cppasv": [],
+    "cppyy": ["2.2.0"],
     "cppyythonizations": [],
     "cxx-compiler": [],
-    "e-antic": [],
+    "libeantic": ["1.0.3"],
     "gmp": [],
     "gmpxxll": [],
     "gmpxxyy": [],
@@ -28,7 +28,7 @@
     "python": [],
     "setuptools": []
   },
-  "conda_channels": ["flatsurf", "conda-forge", "default"],
+  "conda_channels": ["conda-forge", "default"],
   "repo_subdir": "libexactreal",
   "build_command": [
     "autoreconf -ivf",

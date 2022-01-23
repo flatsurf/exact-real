@@ -95,6 +95,7 @@ struct LIBEXACTREAL_API IntegerRing : private boost::equality_comparable<Integer
   using multiplication_t = M;
 
   /// The result of dividing an integer by a `T`.
+  /// Note that this trait is broken, see https://github.com/flatsurf/exact-real/issues/148.
   template <typename T, typename Q = decltype(std::declval<const ElementClass&>() / std::declval<const T&>())>
   using division_t = std::conditional_t<std::is_same_v<Q, mpz_class>, mpq_class, Q>;
 

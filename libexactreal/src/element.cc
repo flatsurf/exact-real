@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019-2020 Julian Rüth
+ *        Copyright (C)      2019 Vincent Delecroix
+ *        Copyright (C) 2019-2022 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ class ElementImplementation {
 
   ElementImplementation(const shared_ptr<const Module<Ring>>& parent, const vector<typename Ring::ElementClass>& coefficients)
       : parent(parent), coefficients(coefficients) {
-    assert(static_cast<size>(coefficients.size()) == parent->rank());
+    LIBEXACTREAL_ASSERT(static_cast<size>(coefficients.size()) == parent->rank(), "Number of Coefficients " << coefficients.size() << " does not match rank of module " << parent->rank());
   }
 
   shared_ptr<const Module<Ring>> parent;
@@ -160,7 +160,7 @@ std::vector<mpq_class> Element<Ring>::rationalCoefficients() const {
     }
     return ret;
   } else {
-    static_assert(false_v<typename Ring::ElementClass>, "unsupported coefficient type");
+    static_assert(false_t<typename Ring::ElementClass>, "unsupported coefficient type");
   }
 }
 
@@ -239,7 +239,7 @@ Element<Ring>& Element<Ring>::operator*=(const Element<Ring>& rhs) {
   this->impl->parent = Module<Ring>::make(basis, this->impl->parent->ring());
   this->impl->coefficients = coefficients;
 
-  LIBEXACTREAL_ASSERT(this->impl->parent->basis() == basis, "order of generators in module is not deglex which is the assumption by Element::operator*=");
+  LIBEXACTREAL_ASSERT(this->impl->parent->basis() == basis, "order of generators in module is not deglex which is the assumption by Element::operator/=");
 
   return *this;
 }
@@ -564,11 +564,14 @@ bool Element<Ring>::operator==(const Element<Ring>& rhs) const {
 
 template <typename Ring>
 bool Element<Ring>::operator==(const RealNumber& rhs) const {
-  auto& gens = impl->parent->basis();
-  auto it = find_if(begin(gens), end(gens), [&](const auto& other) { return *other == rhs; });
-  if (it == end(gens)) {
-    throw logic_error("not implemented - equality of Element with unrelated RealNumber");
-  }
+  if (!*this)
+    return !rhs;
+
+  const auto& gens = impl->parent->basis();
+  const auto it = find_if(begin(gens), end(gens), [&](const auto& other) { return *other == rhs; });
+
+  LIBEXACTREAL_CHECK_ARGUMENT(it != end(gens), "not implemented - equality of Element " << *this << " with unrelated RealNumber " << rhs);
+
   const size at = it - begin(gens);
   for (size_t i = 0; i < impl->parent->rank(); i++) {
     if (impl->coefficients[i] == 0) {
@@ -588,7 +591,7 @@ bool Element<Ring>::operator==(const RealNumber& rhs) const {
 
 template <typename Ring>
 Element<Ring>::operator bool() const {
-  return std::any_of(begin(impl->coefficients), end(impl->coefficients), [](auto c) { return c != 0; });
+  return std::any_of(begin(impl->coefficients), end(impl->coefficients), [](const auto& c) { return c != 0; });
 }
 
 template <typename Ring>
@@ -810,6 +813,7 @@ template Element<RationalField>& Element_operator_div_1_4_0(Element<RationalFiel
 
 template class Element<NumberField>;
 template Element<NumberField>::Element(const Element<IntegerRing>&);
+template Element<NumberField>::Element(const Element<RationalField>&);
 template std::ostream& operator<<(std::ostream&, const Element<NumberField>&);
 template Element<NumberField>& Element<NumberField>::operator*=(const int&);
 template Element<NumberField>& Element<NumberField>::operator*=(const eantic::renf_elem_class&);
