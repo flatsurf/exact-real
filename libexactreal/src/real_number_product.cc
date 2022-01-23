@@ -72,7 +72,7 @@ class Key {
   };
 
   struct MonomialsExponents {
-    MonomialsExponents(const std::vector<std::shared_ptr<const RealNumber>> monomials, std::vector<int> exponents) : MonomialsExponents(
+    MonomialsExponents(const std::vector<std::shared_ptr<const RealNumber>>& monomials, std::vector<int> exponents) : MonomialsExponents(
       [&]() {
         std::vector<size_t> monomials_id;
         for (const auto& monomial : monomials)
@@ -81,7 +81,7 @@ class Key {
       }(),
       std::move(exponents)) {}
 
-    MonomialsExponents(std::vector<size_t> monomials, std::vector<int> exponents) : MonomialsExponents(std::move(monomials), std::move(exponents), [&]() {
+    MonomialsExponents(std::vector<size_t> monomials, std::vector<int> exponents) : monomials(std::move(monomials)), exponents(std::move(exponents)), hash([&]() {
       size_t hash = 1;
 
       const std::function<size_t(size_t, size_t)> pow = [&](size_t base, size_t exponent) -> size_t {
@@ -95,8 +95,8 @@ class Key {
           return pow(pow(base, exponent / 2), 2);
       };
 
-      for (size_t i = 0; i < monomials.size(); i++)
-        hash *= pow(monomials[i], exponents[i]);
+      for (size_t i = 0; i < this->monomials.size(); i++)
+        hash *= pow(this->monomials[i], this->exponents[i]);
       return hash;
     }()) {
     }
