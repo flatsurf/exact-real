@@ -315,7 +315,17 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
     }
   }
 
-  SECTION("explicit bool cast") {
+  SECTION("Failing Pushout with Incompatible Generators") {
+    auto N = Module<R>::make({RealNumber::rational(2)});
+
+    if (M.rank()) {
+      REQUIRE_THROWS(N->gen(0) + M.gen(0));
+    } else {
+      REQUIRE_NOTHROW(N->gen(0) + M.zero());
+    }
+  }
+
+  SECTION("Explicit bool Cast") {
     const auto x = GENERATE_REF(elements<R>(M));
 
     CAPTURE(x);

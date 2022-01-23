@@ -160,7 +160,7 @@ std::vector<mpq_class> Element<Ring>::rationalCoefficients() const {
     }
     return ret;
   } else {
-    static_assert(false_v<typename Ring::ElementClass>, "unsupported coefficient type");
+    static_assert(false_t<typename Ring::ElementClass>, "unsupported coefficient type");
   }
 }
 
@@ -239,7 +239,7 @@ Element<Ring>& Element<Ring>::operator*=(const Element<Ring>& rhs) {
   this->impl->parent = Module<Ring>::make(basis, this->impl->parent->ring());
   this->impl->coefficients = coefficients;
 
-  LIBEXACTREAL_ASSERT(this->impl->parent->basis() == basis, "order of generators in module is not deglex which is the assumption by Element::operator*=");
+  LIBEXACTREAL_ASSERT(this->impl->parent->basis() == basis, "order of generators in module is not deglex which is the assumption by Element::operator/=");
 
   return *this;
 }

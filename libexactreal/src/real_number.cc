@@ -113,7 +113,7 @@ bool RealNumber::operator<(const RealNumber& rhs) const {
 }
 
 bool RealNumber::operator==(const RealNumber& rhs) const {
-  // Since all real numbers are created by a UniqueFactory, it suffices to compare them for identity.
+  // All real numbers are unique in the sense that a == b iff &a == &b.
   return this == &rhs;
 }
 
@@ -183,6 +183,7 @@ ostream& operator<<(ostream& os, const RealNumber& self) {
   return os;
 }
 
+/// Return the typeid of the value of this shared pointer.
 template <typename T>
 const std::type_info& typeid_shared(const std::shared_ptr<T>& ptr) {
   if (ptr == nullptr)

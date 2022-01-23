@@ -113,7 +113,7 @@ auto& factory() {
       return hash_combine(hash(std::get<0>(key)), hash(std::get<1>(key)), hash(static_cast<double>(*std::get<2>(key))));
     }
   };
-  static unique_factory::UniqueFactory<Key, ConstrainedRandomRealNumber, unique_factory::KeepNothingAlive, Hash> factory;
+  static unique_factory::UniqueFactory<Key, RealNumber, unique_factory::KeepNothingAlive, Hash> factory;
   return factory;
 }
 }  // namespace

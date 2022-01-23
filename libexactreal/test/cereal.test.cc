@@ -107,17 +107,15 @@ TEST_CASE("Serialization of Arf", "[cereal][arf]") {
 }
 
 TEST_CASE("Serialization of RealNumber", "[cereal][real_number]") {
-  auto rnd = RealNumber::random();
-  test_serialization(rnd);
+  const auto x = RealNumber::random();
+  const auto y = RealNumber::random();
+  test_serialization(x);
 
-  rnd = (*rnd) * (*rnd);
-  test_serialization(rnd);
-
-  rnd = RealNumber::rational(mpq_class(13, 37));
-  test_serialization(rnd);
-
-  rnd = RealNumber::random(13.37);
-  test_serialization(rnd);
+  test_serialization((*x) * (*x));
+  test_serialization((*x) * (*y));
+  test_serialization((*y) * (*y));
+  test_serialization(RealNumber::rational(mpq_class(13, 37)));
+  test_serialization(RealNumber::random(13.37));
 }
 
 TEMPLATE_TEST_CASE("Serialization of Module", "[cereal][module]", (IntegerRing), (RationalField), (NumberField)) {
