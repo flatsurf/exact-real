@@ -85,14 +85,14 @@ class Key {
       size_t hash = 1;
 
       const std::function<size_t(size_t, size_t)> pow = [&](size_t base, size_t exponent) -> size_t {
-        if (exponent == 0)
-          return 1;
-        else if (exponent == 2)
-          return base * base;
-        else if (exponent % 2)
-          return base * pow(base, exponent-1);
-        else
-          return pow(pow(base, exponent / 2), 2);
+        size_t result = 1;
+        while(exponent) {
+          if (exponent & 1)
+            result *= base;
+          base *= base;
+          exponent >>= 1;
+        }
+        return result;
       };
 
       for (size_t i = 0; i < this->monomials.size(); i++)
