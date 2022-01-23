@@ -48,18 +48,29 @@ TEST_CASE("Product of Real Numbers", "[real_number][product]") {
     return;
   }
 
-  auto ab = *a * (*b);
-  auto a2b2 = *ab * (*ab);
+  auto ab = *a * *b;
+  auto a3 = *a2 * *a;
+  auto a2b = *a2 * *b;
+  auto ab2 = *a * *b2;
+  auto a2b2 = *ab * *ab;
 
-  REQUIRE(*ab == *(*b * (*a)));
+  REQUIRE(*a2 == *(*a **a));
+  REQUIRE(*ab == *(*b * *a));
+  REQUIRE(*ab == *(*a * *b));
+  REQUIRE(*b2 == *(*b **b));
+  REQUIRE(*a2b2 == *(*a2 * *b2));
+  REQUIRE(*a2b2 == *(*b2 * *a2));
+  REQUIRE(*a2b2 == *(*a2b * *b));
+  REQUIRE(*a2b2 == *(*b * *a2b));
+  REQUIRE(*a2b2 == *(*ab2 * *a));
+  REQUIRE(*a2b2 == *(*a * *ab2));
+  REQUIRE(*a2b2 == *(*ab * *ab));
 
   if (*a != *b && *a != 1)
     REQUIRE(*ab != *a2);
 
   if (*a != 1)
     REQUIRE(*a != *a2);
-
-  REQUIRE(*a2b2 == *(*a2 * (*b2)));
 
   if (*ab != 1)
     REQUIRE(*a2b2 != *ab);
@@ -105,7 +116,7 @@ TEST_CASE("DegLex Order of Real Numbers", "[real_number][product][deglex]") {
   }
 }
 
-TEST_CASE("Division of Real Numbers", "[real_number][truediv]") {
+TEST_CASE("Quotient of Real Numbers", "[real_number][truediv]") {
   const auto one = RealNumber::rational(1);
   const auto x = RealNumber::random();
   const auto y = RealNumber::random();
