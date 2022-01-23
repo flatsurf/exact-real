@@ -96,23 +96,34 @@ TEST_CASE("DegLex Order of Real Numbers", "[real_number][product][deglex]") {
     REQUIRE(!one.deglex(one));
     REQUIRE(!one.deglex(*RealNumber::rational(2)));
     REQUIRE(one.deglex(x));
+    REQUIRE(!(x.deglex(one)));
     REQUIRE(one.deglex(xy));
+    REQUIRE(!(xy.deglex(one)));
   }
 
   SECTION("Products are Ordered by Total Degree") {
     REQUIRE(x.deglex(xx));
+    REQUIRE(!(xx.deglex(x)));
     REQUIRE(y.deglex(xx));
+    REQUIRE(!(xx.deglex(y)));
     REQUIRE(xx.deglex(*(x * xx)));
+    REQUIRE(!(x * xx)->deglex(xx));
     REQUIRE(xx.deglex(*(x * xy)));
+    REQUIRE(!(x * xx)->deglex(xx));
     REQUIRE(xx.deglex(*(x * yy)));
+    REQUIRE(!(x * yy)->deglex(xx));
   }
 
   SECTION("Products of the same Total Degree are Ordered Lexicographically") {
     // This test assumes that x < y (using knowledge about the internal ordering of elements.)
     REQUIRE(x.deglex(y));
+    REQUIRE(!(y.deglex(x)));
     REQUIRE(xx.deglex(xy));
+    REQUIRE(!(xy.deglex(xx)));
     REQUIRE(xx.deglex(yy));
+    REQUIRE(!(yy.deglex(xx)));
     REQUIRE(xy.deglex(yy));
+    REQUIRE(!(yy.deglex(xy)));
   }
 }
 
