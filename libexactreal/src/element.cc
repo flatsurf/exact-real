@@ -151,7 +151,9 @@ std::vector<mpq_class> Element<Ring>::rationalCoefficients() const {
       mpz_class den = c.den();
       auto nums = c.num_vector();
       for (auto& num : nums) {
-        ret.push_back(mpq_class(num, den));
+        auto entry = mpq_class(num, den);
+        entry.canonicalize();
+        ret.push_back(std::move(entry));
       }
       LIBEXACTREAL_ASSERT(nums.size() <= impl->parent->ring().parameters->degree(), "rational coefficient list cannot be larger than absolute degree of number field");
       for (size_t i = nums.size(); i < impl->parent->ring().parameters->degree(); i++) {

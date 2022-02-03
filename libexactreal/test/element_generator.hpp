@@ -32,25 +32,55 @@ namespace {
 template<typename R>
 struct ElementGenerator : public Catch::Generators::IGenerator<exactreal::Element<R>>
 {
-  int generator = -1;
-
   mutable exactreal::Element<R> current;
 
   std::shared_ptr<const exactreal::Module<R>> parent;
 
-  ElementGenerator(const exactreal::Module<R>& parent) : parent(parent.shared_from_this()) {}
+  std::vector<typename R::ElementClass> coefficients;
+
+  ElementGenerator(const exactreal::Module<R>& parent) : parent(parent.shared_from_this()) {
+    coefficients.push_back(0);
+    coefficients.push_back(1);
+    coefficients.push_back(-2);
+    if constexpr (!std::is_same_v<R, exactreal::IntegerRing>) {
+      coefficients.push_back(mpq_class{-1, 3});
+      coefficients.push_back(mpq_class{2, 5});
+    }
+    if constexpr (std::is_same_v<R, exactreal::NumberField>) {
+      coefficients.push_back(parent.ring().parameters->gen());
+      coefficients.push_back(parent.ring().parameters->gen() / 3 + 1);
+    }
+
+    current = parent.zero();
+  }
 
   bool next() override {
-    generator++;
-    return generator < parent->rank();
+    auto coefficients = current.coefficients();
+
+    const std::function<bool(int)> increment = [&](int c) -> bool {
+      if (c == coefficients.size())
+        return false;
+
+      for (int i = 0; i < this->coefficients.size() - 1; i++) {
+        if (coefficients[c] == this->coefficients[i]) {
+          coefficients[c] = this->coefficients[i + 1];
+          return true;
+        }
+      }
+
+      coefficients[c] = this->coefficients[0];
+      return increment(c + 1);
+    };
+    
+    if (!increment(0))
+      return false;
+
+    current = exactreal::Element(parent, coefficients);
+
+    return true;
   }
 
   const exactreal::Element<R>& get() const override {
-    if (generator == -1)
-      current = parent->zero();
-    else
-      current = parent->gen(generator);
-
     return current;
   }
 };
