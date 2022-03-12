@@ -127,12 +127,12 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
     REQUIRE(!(x != x));
 
     if (x != 0) {
-      REQUIRE(x > 0);
-      REQUIRE(x > M.zero());
+      REQUIRE((x > 0 || x < 0));
+      REQUIRE((x > M.zero() || x < M.zero()));
     }
 
     if (x != 1) {
-      REQUIRE(x < 1);
+      REQUIRE((x < 1 || x > 1));
     }
 
     REQUIRE((x <= y || x >= y));
@@ -185,6 +185,22 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
     REQUIRE(Element<R>(M.shared_from_this(), x.coefficients()) == x);
   }
 
+  SECTION("Rational Coefficients") {
+    const auto x = GENERATE_REF(elements<R>(M));
+
+    CAPTURE(x);
+
+    for (auto& c : x.rationalCoefficients()) {
+      const auto num = c.get_num();
+      const auto den = c.get_den();
+
+      c.canonicalize();
+
+      REQUIRE(num == c.get_num());
+      REQUIRE(den == c.get_den());
+    }
+  }
+
   SECTION("Arithmetic with int Scalars") {
     const auto x = GENERATE_REF(elements<R>(M));
 
@@ -203,17 +219,21 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
 
     CAPTURE(x);
 
-    if (x != 0) {
+    if (x > 0) {
       REQUIRE(mpz_class(2) * x > x);
       REQUIRE(mpz_class(-1) * x < x);
       REQUIRE(mpz_class(-1) * x < M.zero());
+    } else if (x < 0) {
+      REQUIRE(mpz_class(2) * x < x);
+      REQUIRE(mpz_class(-1) * x > x);
+      REQUIRE(mpz_class(-1) * x > M.zero());
     }
 
     REQUIRE(x + x == mpz_class(2) * x);
     REQUIRE(x - x == mpz_class(0) * x);
     REQUIRE(mpz_class(-1) * x == -x);
 
-    if (M.rank()) {
+    if (x > 0) {
       REQUIRE(mpz_class(-1) * x < M.one());
     }
 
@@ -284,7 +304,7 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
 
     CAPTURE(x, y);
 
-    if (y)
+    if (y > 0)
       REQUIRE(x + y > x);
 
     REQUIRE(x - x == 0);
@@ -302,7 +322,9 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
 
     REQUIRE(x + trivial == x);
     REQUIRE(0 * x == trivial);
-    REQUIRE(x >= trivial);
+
+    if (x >= 0)
+      REQUIRE(x >= trivial);
   }
 
   SECTION("Promotion from Submodule") {
@@ -372,7 +394,7 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
 
     CAPTURE(x);
 
-    if (x != 0 && x != 1)
+    if (M.rank() && x && x.coefficients()[0] == 0)
       REQUIRE((x * x - x * x).module()->rank() > M.rank());
 
     REQUIRE((x * x - x * x).simplify().module()->rank() == 0);
@@ -424,10 +446,13 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
 
     CAPTURE(x);
 
-    if (x == 1)
-      REQUIRE(x.unit());
-    else
+    if constexpr (std::is_same_v<R, exactreal::IntegerRing>) {
+      REQUIRE(x.unit() == (x == 1 || x == -1));
+    } else if (M.rank() && x.coefficients()[0] == 0) {
       REQUIRE(!x.unit());
+    } else if (x.unit()) {
+      REQUIRE(x.coefficients()[0] != 0);
+    }
   }
 
   SECTION("Hashing") {
