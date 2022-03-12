@@ -39,7 +39,7 @@ jobs:
       - name: build flags
         id: flags
         run: |
-          echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"` `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo "--enable-valgrind"`
+          echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"` `[[ "${{ matrix.sanitizer }}" == "address" || "${{ matrix.sanitizer }}" == "undefined" ]] && echo "--without-byexample"` `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo "--enable-valgrind"`
           echo "::set-output name=shared::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address -fno-sanitize-recover -fno-omit-frame-pointer"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined -fno-sanitize-recover -fno-omit-frame-pointer"` `[[ "${{ matrix.on }}" == "macos-10.15" ]] && [[ "${{ matrix.sanitizer }}" == "address" || "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-Wl,-undefined,dynamic_lookup"`
       - uses: conda-incubator/setup-miniconda@v2
         with: { mamba-version: "*", channels: "conda-forge", channel-priority: true }
@@ -67,7 +67,7 @@ jobs:
           # conda puts an explicit -std=c++14 on the command line on macOS, we override it here:
           export CXXFLAGS="$CXXFLAGS ${{ steps.flags.outputs.shared }} -std=c++17"
           export LDFLAGS="$LDFLAGS ${{ steps.flags.outputs.shared }}"
-          ./configure --prefix="$PREFIX" --without-benchmark ${{ steps.flags.outputs.configure }}
+          ./configure --prefix="$PREFIX" --without-benchmark --without-doc ${{ steps.flags.outputs.configure }}
 
           echo "::group::make"
           make V=1
@@ -166,7 +166,7 @@ jobs:
             # https://bitbucket.org/wlav/cppyy/issues/367/address-sanitizer-reports-a-alloc-dealloc
             export ASAN_OPTIONS="$ASAN_OPTIONS:alloc_dealloc_mismatch=0"
           fi
-          ./configure --prefix="$PREFIX" --without-benchmark ${{ steps.flags.outputs.configure }}
+          ./configure --prefix="$PREFIX" --without-benchmark --without-doc ${{ steps.flags.outputs.configure }}
 
           echo "::group::make"
           make V=1
@@ -193,6 +193,7 @@ jobs:
         run: |
           mamba env update --quiet -n test -f libexactreal/environment.yml
           mamba env update --quiet -n test -f pyexactreal/environment.yml
+          mamba env update --quiet -n test -f doc/environment.yml
           conda list
       - name: make distcheck
         shell: bash -l {0}

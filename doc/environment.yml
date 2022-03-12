@@ -1,0 +1,20 @@
+# This file lists the dependencies needed to build the documentation of
+# exact-real.
+# Create a conda environment with these dependencies preinstalled with:
+# conda env create -n doc-exact-real-build -f libexactreal/environment.yml
+# conda env update -n doc-exact-real-build -f pyexactreal/environment.yml
+# conda env update -n doc-exact-real-build -f doc/environment.yml
+name: doc-exact-real-build
+channels:
+  - saraedum
+  - conda-forge
+  - defaults
+dependencies:
+  - standardese>=0.6.0
+  - sphinx
+  - mkdocs>=1.1.0
+  - pip
+  - pip:
+    - linkchecker
+    - sphinx_rtd_theme
+    - mkdocs-literate-nav

@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C) 2019      Vincent Delecroix
+ *        Copyright (C) 2019-2021 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
+
+/// Serialization with cereal.
 
 #ifndef LIBEXACTREAL_CEREAL_HPP
 #define LIBEXACTREAL_CEREAL_HPP
@@ -40,6 +42,8 @@ namespace exactreal {
 
 // A trivial wrapper for a T so we do not pollute the global namespace with our
 // serialization function for T.
+// We use this to serialize, e.g., GMP's mpz_class so we do not get into
+// conflict with other serialization functions for mpz_class.
 template <typename T>
 struct CerealWrap {
   CerealWrap() : inner() {}
@@ -69,6 +73,7 @@ struct CerealWrap {
 template <typename T>
 using MaybeWrap = std::conditional_t<CerealWrap<T>::needs_wrap(), CerealWrap<T>, T>;
 
+/// Serialize `self` to `archive`.
 template <typename Archive>
 void save(Archive& archive, const Arb& self) {
   char* serialized = arb_dump_str(self.arb_t());
@@ -78,6 +83,7 @@ void save(Archive& archive, const Arb& self) {
   flint_free(serialized);
 }
 
+/// Deserialize `self` from `archive`.
 template <typename Archive>
 void load(Archive& archive, Arb& self) {
   std::string data;
@@ -89,6 +95,7 @@ void load(Archive& archive, Arb& self) {
   }
 }
 
+/// Serialize `self` to `archive`.
 template <typename Archive>
 void save(Archive& archive, const Arf& self) {
   char* serialized = arf_dump_str(self.arf_t());
@@ -98,6 +105,7 @@ void save(Archive& archive, const Arf& self) {
   flint_free(serialized);
 }
 
+/// Deserialize `self` from `archive`.
 template <typename Archive>
 void load(Archive& archive, Arf& self) {
   std::string data;
@@ -109,6 +117,7 @@ void load(Archive& archive, Arf& self) {
   }
 }
 
+/// Serialize `self` to `archive`.
 template <typename Archive, typename Ring>
 void save(Archive& archive, const Element<Ring>& self) {
   archive(cereal::make_nvp("parent", self.module()));
@@ -119,6 +128,7 @@ void save(Archive& archive, const Element<Ring>& self) {
   archive(cereal::make_nvp("coefficients", coefficients));
 }
 
+/// Deserialize `self` from `archive`.
 template <typename Archive, typename Ring>
 void load(Archive& archive, Element<Ring>& self) {
   std::shared_ptr<const Module<Ring>> module;
@@ -134,16 +144,19 @@ void load(Archive& archive, Element<Ring>& self) {
   self = Element<Ring>(module, coeffs);
 }
 
+/// Serialize this ring to the archive.
 template <typename Archive>
 void serialize(Archive&, IntegerRing&) {
   // There's nothing to do for ZZ.
 }
 
+/// Serialize this field to the archive.
 template <typename Archive>
 void serialize(Archive&, RationalField&) {
   // There's nothing to do for QQ.
 }
 
+/// Serialize and deserialize the field `self` to `archive`.
 template <typename Archive>
 void serialize(Archive& archive, NumberField& self) {
   archive(cereal::make_nvp("field", self.parameters));
@@ -157,8 +170,12 @@ struct LIBEXACTREAL_API RealNumberCereal {
   static void load(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& self);
 };
 
+/// Serialization and deserialization methods for a `T` via `Cerealizer`.
+/// Extends the serialization methods of `Cerealizer` which only covers some
+/// archive types to all possible archive types.
 template <typename T, typename Cerealizer>
 struct ForwardingCereal {
+  /// Serialize `self` to `archive`.
   template <typename Archive>
   static void save(Archive& archive, const T& self) {
     using Native = typename Cerealizer::SupportedOutput;
@@ -172,6 +189,7 @@ struct ForwardingCereal {
     }
   }
 
+  /// Deserialize `self` from `archive`.
   template <typename Archive>
   static void load(Archive& archive, T& self) {
     using Native = typename Cerealizer::SupportedInput;
@@ -186,21 +204,25 @@ struct ForwardingCereal {
   }
 };
 
+/// Serialize a rational `mpq_class` to the archive.
 template <typename Archive>
 std::string save_minimal(const Archive&, const CerealWrap<mpq_class>& self) {
   return self->get_str();
 }
 
+/// Deserialize a rational `mpq_class` from the archive.
 template <typename Archive>
 void load_minimal(const Archive&, CerealWrap<mpq_class>& self, const std::string& value) {
   self = CerealWrap{mpq_class(value)};
 }
 
+/// Serialize an integer `mpz_class` to the archive.
 template <typename Archive>
 std::string save_minimal(const Archive&, const CerealWrap<mpz_class>& self) {
   return self->get_str();
 }
 
+/// Deserialize an integer `mpz_class` from the archive.
 template <typename Archive>
 void load_minimal(const Archive&, CerealWrap<mpz_class>& self, const std::string& value) {
   self = CerealWrap{mpz_class(value)};
@@ -208,6 +230,8 @@ void load_minimal(const Archive&, CerealWrap<mpz_class>& self, const std::string
 }  // namespace exactreal
 
 namespace cereal {
+
+/// Serialize a (shared pointer to a) real number to `archive`.
 template <typename Archive>
 void save(Archive& archive, const std::shared_ptr<const exactreal::RealNumber>& self) {
   // cereal has a fairly opinionated way of handling smart pointers to
@@ -223,6 +247,7 @@ void save(Archive& archive, const std::shared_ptr<const exactreal::RealNumber>& 
   }
 }
 
+/// Deserialize a (shared pointer to a) real number from `archive`.
 template <typename Archive>
 void load(Archive& archive, std::shared_ptr<const exactreal::RealNumber>& self) {
   uint32_t id;
@@ -236,6 +261,7 @@ void load(Archive& archive, std::shared_ptr<const exactreal::RealNumber>& self) 
   }
 }
 
+/// Serialize a (shared pointer to a) model to `archive`.
 template <typename Archive, typename Ring>
 void save(Archive& archive, const std::shared_ptr<const exactreal::Module<Ring>>& self) {
   uint32_t id = archive.registerSharedPointer(self.get());
@@ -247,6 +273,7 @@ void save(Archive& archive, const std::shared_ptr<const exactreal::Module<Ring>>
   }
 }
 
+/// Deserialize a (shared pointer to a) model from `archive`.
 template <typename Archive, typename Ring>
 void load(Archive& archive, std::shared_ptr<const exactreal::Module<Ring>>& self) {
   // cereal insists on creating a new instance of T when deserializing a

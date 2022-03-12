@@ -43,12 +43,14 @@ $VERSION_BUMP_PATTERNS = [
     ('configure.ac', r'AC_INIT', r'AC_INIT([exact-real], [$VERSION], [julian.rueth@fsfe.org])'),
     ('libexactreal/configure.ac', r'AC_INIT', r'AC_INIT([libexactreal], [$VERSION], [julian.rueth@fsfe.org])'),
     ('pyexactreal/configure.ac', r'AC_INIT', r'AC_INIT([pyexactreal], [$VERSION], [julian.rueth@fsfe.org])'),
+    ('doc/configure.ac', r'AC_INIT', r'AC_INIT([exact-real-doc], [$VERSION], [julian.rueth@fsfe.org])'),
     ('libexactreal/recipe/meta.yaml', r"\{% set version =", r"{% set version = '$VERSION' %}"),
     ('libexactreal/recipe/meta.yaml', r"\{% set build_number =", r"{% set build_number = '0' %}"),
     ('pyexactreal/recipe/meta.yaml', r"\{% set version =", r"{% set version = '$VERSION' %}"),
     ('pyexactreal/recipe/meta.yaml', r"\{% set build_number =", r"{% set build_number = '0' %}"),
     ('README.md', r'\* \*\*libexactreal*\* \[!\[Binder\]', r'* **libexactreal* [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/exact-real/$VERSION?filepath=binder%2FSample.libexactreal.ipynb)'),
     ('README.md', r'\* \*\*pyexactreal\*\* \[!\[Binder\]', r'* **pyexactreal** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/exact-real/$VERSION?filepath=binder%2FSample.pyexactreal.ipynb)'),
+    ('doc/manual/pyexactreal/conf.py', r'release =', "release = '$VERSION'"),
 ]
 
 $CHANGELOG_FILENAME = 'ChangeLog'

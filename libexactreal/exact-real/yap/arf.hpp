@@ -57,23 +57,23 @@ BOOST_YAP_USER_BINARY_OPERATOR(divides, yap::ArfExpr, yap::ArfExpr)
 BOOST_YAP_USER_UNARY_OPERATOR(negate, yap::ArfExpr, yap::ArfExpr)
 
 template <boost::yap::expr_kind Kind, typename Tuple>
-Arf::Arf(const yap::ArfExpr<Kind, Tuple>& expr) noexcept : Arf() {
+Arf::Arf(const yap::ArfExpr<Kind, Tuple>& expr) : Arf() {
   *this = expr;
 }
 
 template <boost::yap::expr_kind Kind, typename Tuple>
-Arf::Arf(yap::ArfExpr<Kind, Tuple>&& expr) noexcept : Arf() {
+Arf::Arf(yap::ArfExpr<Kind, Tuple>&& expr) : Arf() {
   *this = std::move(expr);
 }
 
 template <boost::yap::expr_kind Kind, typename Tuple>
-Arf& Arf::operator=(const yap::ArfExpr<Kind, Tuple>& expr) noexcept {
+Arf& Arf::operator=(const yap::ArfExpr<Kind, Tuple>& expr) {
   boost::yap::transform_strict(expr, yap::ArfAssignTransformation(*this));
   return *this;
 }
 
 template <boost::yap::expr_kind Kind, typename Tuple, typename Lambda>
-Arf& inplace_binop(Arf& self, const yap::ArfExpr<Kind, Tuple>& expr, Lambda op) noexcept {
+Arf& inplace_binop(Arf& self, const yap::ArfExpr<Kind, Tuple>& expr, Lambda op) {
   auto prec = boost::yap::transform_strict(expr, yap::PrecTransformation{});
   auto round = boost::yap::transform_strict(expr, yap::RoundTransformation{});
   if constexpr (!std::is_same_v<decltype(prec), ::exactreal::prec>) {
@@ -92,7 +92,7 @@ Arf& inplace_binop(Arf& self, const yap::ArfExpr<Kind, Tuple>& expr, Lambda op) 
 }
 
 template <typename... Args>
-decltype(auto) Arf::operator()(Args&&... args) const noexcept {
+decltype(auto) Arf::operator()(Args&&... args) const {
   return boost::yap::as_expr<yap::ArfExpr>(*this)(std::forward<Args>(args)...);
 }
 }  // namespace exactreal

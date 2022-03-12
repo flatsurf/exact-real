@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C)      2019 Vincent Delecroix
+ *        Copyright (C) 2019-2021 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
+
+#include <ostream>
 
 #include "../exact-real/rational_field.hpp"
 
@@ -35,4 +37,8 @@ bool RationalField::unit(const ElementClass& x) { return x != 0; }
 std::optional<mpq_class> RationalField::rational(const ElementClass& x) { return x; }
 
 mpz_class RationalField::floor(const ElementClass& x) { return x.get_num() / x.get_den(); }
+
+std::ostream& operator<<(std::ostream& os, const RationalField&) {
+  return os << "ℚ";
+}
 }  // namespace exactreal

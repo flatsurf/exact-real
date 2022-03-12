@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C) 2019      Vincent Delecroix
+ *        Copyright (C) 2019-2021 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,17 +18,30 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
-#ifndef LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
-#define LIBEXACTREAL_NUMBER_FIELD_IDEAL_HPP
+#ifndef LIBEXACTREAL_INTEGER_IPP
+#define LIBEXACTREAL_INTEGER_IPP
 
-#include "exact-real/forward.hpp"
+#include <type_traits>
+#include <limits>
+
+#include <arf.h>
+#include "../external/gmpxxll/gmpxxll/mpz_class.hpp"
 
 namespace exactreal {
+namespace {
+template <typename Integer>
+auto to_supported_integer(Integer value) {
+  using S = std::remove_cv_t<std::remove_reference_t<Integer>>;
 
-struct NumberFieldIdeal {
-  // No support for this in E-ANTIC yet
-};
-
+  using Long = std::conditional_t<std::numeric_limits<S>::is_signed, slong, ulong>;
+  if constexpr (std::numeric_limits<Long>::min() <= std::numeric_limits<S>::min() && std::numeric_limits<Long>::max() >= std::numeric_limits<S>::max()) {
+    // We can safely cast to a supported type without overflow
+    return static_cast<Long>(value);
+  } else {
+    return gmpxxll::mpz_class(value);
+  }
+}
+}  // namespace
 }  // namespace exactreal
 
 #endif

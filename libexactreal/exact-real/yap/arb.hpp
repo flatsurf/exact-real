@@ -1,4 +1,4 @@
-/**********************************************************************
+/* ********************************************************************
  *  This file is part of exact-real.
  *
  *        Copyright (C) 2019 Vincent Delecroix
@@ -16,7 +16,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
- *********************************************************************/
+ * *******************************************************************/
 
 #ifndef LIBEXACTREAL_YAP_ARB_HPP
 #define LIBEXACTREAL_YAP_ARB_HPP
@@ -52,23 +52,23 @@ BOOST_YAP_USER_BINARY_OPERATOR(divides, yap::ArbExpr, yap::ArbExpr)
 BOOST_YAP_USER_UNARY_OPERATOR(negate, yap::ArbExpr, yap::ArbExpr)
 
 template <boost::yap::expr_kind Kind, typename Tuple>
-Arb::Arb(const yap::ArbExpr<Kind, Tuple>& expr) noexcept : Arb() {
+Arb::Arb(const yap::ArbExpr<Kind, Tuple>& expr) : Arb() {
   *this = expr;
 }
 
 template <boost::yap::expr_kind Kind, typename Tuple>
-Arb::Arb(yap::ArbExpr<Kind, Tuple>&& expr) noexcept : Arb() {
+Arb::Arb(yap::ArbExpr<Kind, Tuple>&& expr) : Arb() {
   *this = std::move(expr);
 }
 
 template <boost::yap::expr_kind Kind, typename Tuple>
-Arb& Arb::operator=(const yap::ArbExpr<Kind, Tuple>& expr) noexcept {
+Arb& Arb::operator=(const yap::ArbExpr<Kind, Tuple>& expr) {
   boost::yap::transform_strict(expr, yap::ArbAssignTransformation(*this));
   return *this;
 }
 
 template <boost::yap::expr_kind Kind, typename Tuple, typename Lambda>
-Arb& inplace_binop(Arb& self, const yap::ArbExpr<Kind, Tuple>& expr, Lambda op) noexcept {
+Arb& inplace_binop(Arb& self, const yap::ArbExpr<Kind, Tuple>& expr, Lambda op) {
   auto prec = boost::yap::transform_strict(expr, yap::PrecTransformation{});
   if constexpr (!std::is_same_v<decltype(prec), ::exactreal::prec>) {
     static_assert(false_t<decltype(prec)>,
@@ -82,7 +82,7 @@ Arb& inplace_binop(Arb& self, const yap::ArbExpr<Kind, Tuple>& expr, Lambda op) 
 }
 
 template <typename... Args>
-decltype(auto) Arb::operator()(Args&&... args) const noexcept {
+decltype(auto) Arb::operator()(Args&&... args) const {
   return boost::yap::as_expr<yap::ArbExpr>(*this)(std::forward<Args>(args)...);
 }
 

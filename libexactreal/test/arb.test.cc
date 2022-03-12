@@ -36,16 +36,20 @@ TEST_CASE("Create/Destroy Arb", "[arb]") {
 }
 
 TEST_CASE("Initialization from Integer Types", "[arb]") {
-  REQUIRE(((Arb(1u) == Arb(1)) && *(Arb(1u) == Arb(1))));
+  REQUIRE(((Arb(static_cast<short>(1)) == Arb(1)) && *(Arb(static_cast<short>(1)) == Arb(1))));
+  REQUIRE(((Arb(static_cast<unsigned short>(1)) == Arb(1)) && *(Arb(static_cast<unsigned short>(1)) == Arb(1))));
   REQUIRE(((Arb(1) == Arb(1)) && *(Arb(1) == Arb(1))));
+  REQUIRE(((Arb(1u) == Arb(1)) && *(Arb(1u) == Arb(1))));
   REQUIRE(((Arb(1l) == Arb(1)) && *(Arb(1l) == Arb(1))));
   REQUIRE(((Arb(1ul) == Arb(1)) && *(Arb(1ul) == Arb(1))));
   REQUIRE(((Arb(1ll) == Arb(1)) && *(Arb(1ll) == Arb(1))));
   REQUIRE(((Arb(1ull) == Arb(1)) && *(Arb(1ull) == Arb(1))));
   REQUIRE(((Arb(mpz_class(1)) == Arb(1)) && *(Arb(mpz_class(1)) == Arb(1))));
 
-  REQUIRE((((Arb() = 1u) == Arb(1)) && *((Arb() = 1u) == Arb(1))));
+  REQUIRE((((Arb() = static_cast<short>(1)) == Arb(1)) && *((Arb() = static_cast<short>(1)) == Arb(1))));
+  REQUIRE((((Arb() = static_cast<unsigned short>(1)) == Arb(1)) && *((Arb() = static_cast<unsigned short>(1)) == Arb(1))));
   REQUIRE((((Arb() = 1) == Arb(1)) && *((Arb() = 1) == Arb(1))));
+  REQUIRE((((Arb() = 1u) == Arb(1)) && *((Arb() = 1u) == Arb(1))));
   REQUIRE((((Arb() = 1ul) == Arb(1)) && *((Arb() = 1ul) == Arb(1))));
   REQUIRE((((Arb() = 1l) == Arb(1)) && *((Arb() = 1l) == Arb(1))));
   REQUIRE((((Arb() = 1ull) == Arb(1)) && *((Arb() = 1ull) == Arb(1))));
@@ -74,6 +78,115 @@ TEST_CASE("Relational Operators with Arb", "[arb]") {
   REQUIRE(((x < y) && !*(x > y)));
   REQUIRE(((y >= x) && !*(y <= x)));
   REQUIRE(((x <= y) && !*(x >= y)));
+
+  REQUIRE(((x < static_cast<short>(1)) && *(x < static_cast<short>(1))));
+  REQUIRE(((static_cast<short>(1) > x) && *(static_cast<short>(1) > x)));
+  REQUIRE(((x <= static_cast<short>(1)) && *(x <= static_cast<short>(1))));
+  REQUIRE(((static_cast<short>(1) >= x) && *(static_cast<short>(1) >= x)));
+  REQUIRE(((x == x) && *(x == x)));
+  REQUIRE(((x != static_cast<short>(1)) && *(x != static_cast<short>(1))));
+  REQUIRE(((static_cast<short>(1) > x) && !*(static_cast<short>(1) < x)));
+  REQUIRE(((x < static_cast<short>(1)) && !*(x > static_cast<short>(1))));
+  REQUIRE(((static_cast<short>(1) >= x) && !*(static_cast<short>(1) <= x)));
+  REQUIRE(((x <= static_cast<short>(1)) && !*(x >= static_cast<short>(1))));
+
+  REQUIRE(((x < static_cast<unsigned short>(1)) && *(x < static_cast<unsigned short>(1))));
+  REQUIRE(((static_cast<unsigned short>(1) > x) && *(static_cast<unsigned short>(1) > x)));
+  REQUIRE(((x <= static_cast<unsigned short>(1)) && *(x <= static_cast<unsigned short>(1))));
+  REQUIRE(((static_cast<unsigned short>(1) >= x) && *(static_cast<unsigned short>(1) >= x)));
+  REQUIRE(((x == x) && *(x == x)));
+  REQUIRE(((x != static_cast<unsigned short>(1)) && *(x != static_cast<unsigned short>(1))));
+  REQUIRE(((static_cast<unsigned short>(1) > x) && !*(static_cast<unsigned short>(1) < x)));
+  REQUIRE(((x < static_cast<unsigned short>(1)) && !*(x > static_cast<unsigned short>(1))));
+  REQUIRE(((static_cast<unsigned short>(1) >= x) && !*(static_cast<unsigned short>(1) <= x)));
+
+  REQUIRE(((x < 1) && *(x < 1)));
+  REQUIRE(((1 > x) && *(1 > x)));
+  REQUIRE(((x <= 1) && *(x <= 1)));
+  REQUIRE(((1 >= x) && *(1 >= x)));
+  REQUIRE(((x == x) && *(x == x)));
+  REQUIRE(((x != 1) && *(x != 1)));
+  REQUIRE(((1 > x) && !*(1 < x)));
+  REQUIRE(((x < 1) && !*(x > 1)));
+  REQUIRE(((1 >= x) && !*(1 <= x)));
+  REQUIRE(((x <= 1) && !*(x >= 1)));
+
+  REQUIRE(((x < 1u) && *(x < 1u)));
+  REQUIRE(((1u > x) && *(1u > x)));
+  REQUIRE(((x <= 1u) && *(x <= 1u)));
+  REQUIRE(((1u >= x) && *(1u >= x)));
+  REQUIRE(((x == x) && *(x == x)));
+  REQUIRE(((x != 1u) && *(x != 1u)));
+  REQUIRE(((1u > x) && !*(1u < x)));
+  REQUIRE(((x < 1u) && !*(x > 1u)));
+  REQUIRE(((1u >= x) && !*(1u <= x)));
+  REQUIRE(((x <= 1u) && !*(x >= 1u)));
+
+  REQUIRE(((x < 1l) && *(x < 1l)));
+  REQUIRE(((1l > x) && *(1l > x)));
+  REQUIRE(((x <= 1l) && *(x <= 1l)));
+  REQUIRE(((1l >= x) && *(1l >= x)));
+  REQUIRE(((x == x) && *(x == x)));
+  REQUIRE(((x != 1l) && *(x != 1l)));
+  REQUIRE(((1l > x) && !*(1l < x)));
+  REQUIRE(((x < 1l) && !*(x > 1l)));
+  REQUIRE(((1l >= x) && !*(1l <= x)));
+  REQUIRE(((x <= 1l) && !*(x >= 1l)));
+
+  REQUIRE(((x < 1ul) && *(x < 1ul)));
+  REQUIRE(((1ul > x) && *(1ul > x)));
+  REQUIRE(((x <= 1ul) && *(x <= 1ul)));
+  REQUIRE(((1ul >= x) && *(1ul >= x)));
+  REQUIRE(((x == x) && *(x == x)));
+  REQUIRE(((x != 1ul) && *(x != 1ul)));
+  REQUIRE(((1ul > x) && !*(1ul < x)));
+  REQUIRE(((x < 1ul) && !*(x > 1ul)));
+  REQUIRE(((1ul >= x) && !*(1ul <= x)));
+  REQUIRE(((x <= 1ul) && !*(x >= 1ul)));
+
+  REQUIRE(((x < 1ll) && *(x < 1ll)));
+  REQUIRE(((1ll > x) && *(1ll > x)));
+  REQUIRE(((x <= 1ll) && *(x <= 1ll)));
+  REQUIRE(((1ll >= x) && *(1ll >= x)));
+  REQUIRE(((x == x) && *(x == x)));
+  REQUIRE(((x != 1ll) && *(x != 1ll)));
+  REQUIRE(((1ll > x) && !*(1ll < x)));
+  REQUIRE(((x < 1ll) && !*(x > 1ll)));
+  REQUIRE(((1ll >= x) && !*(1ll <= x)));
+  REQUIRE(((x <= 1ll) && !*(x >= 1ll)));
+
+  REQUIRE(((x < 1ull) && *(x < 1ull)));
+  REQUIRE(((1ull > x) && *(1ull > x)));
+  REQUIRE(((x <= 1ull) && *(x <= 1ull)));
+  REQUIRE(((1ull >= x) && *(1ull >= x)));
+  REQUIRE(((x == x) && *(x == x)));
+  REQUIRE(((x != 1ull) && *(x != 1ull)));
+  REQUIRE(((1ull > x) && !*(1ull < x)));
+  REQUIRE(((x < 1ull) && !*(x > 1ull)));
+  REQUIRE(((1ull >= x) && !*(1ull <= x)));
+  REQUIRE(((x <= 1ull) && !*(x >= 1ull)));
+
+  REQUIRE(((x < mpz_class{1}) && *(x < mpz_class{1})));
+  REQUIRE(((mpz_class{1} > x) && *(mpz_class{1} > x)));
+  REQUIRE(((x <= mpz_class{1}) && *(x <= mpz_class{1})));
+  REQUIRE(((mpz_class{1} >= x) && *(mpz_class{1} >= x)));
+  REQUIRE(((x == x) && *(x == x)));
+  REQUIRE(((x != mpz_class{1}) && *(x != mpz_class{1})));
+  REQUIRE(((mpz_class{1} > x) && !*(mpz_class{1} < x)));
+  REQUIRE(((x < mpz_class{1}) && !*(x > mpz_class{1})));
+  REQUIRE(((mpz_class{1} >= x) && !*(mpz_class{1} <= x)));
+  REQUIRE(((x <= mpz_class{1}) && !*(x >= mpz_class{1})));
+
+  REQUIRE(((x < mpq_class{1, 1}) && *(x < mpq_class{1, 1})));
+  REQUIRE(((mpq_class{1, 1} > x) && *(mpq_class{1, 1} > x)));
+  REQUIRE(((x <= mpq_class{1, 1}) && *(x <= mpq_class{1, 1})));
+  REQUIRE(((mpq_class{1, 1} >= x) && *(mpq_class{1, 1} >= x)));
+  REQUIRE(((x == x) && *(x == x)));
+  REQUIRE(((x != mpq_class{1, 1}) && *(x != mpq_class{1, 1})));
+  REQUIRE(((mpq_class{1, 1} > x) && !*(mpq_class{1, 1} < x)));
+  REQUIRE(((x < mpq_class{1, 1}) && !*(x > mpq_class{1, 1})));
+  REQUIRE(((mpq_class{1, 1} >= x) && !*(mpq_class{1, 1} <= x)));
+  REQUIRE(((x <= mpq_class{1, 1}) && !*(x >= mpq_class{1, 1})));
 }
 
 TEMPLATE_TEST_CASE("Relation Operators with Integers", "[arb]", unsigned short, short, unsigned int, int, unsigned long, long, unsigned long long, long long) {

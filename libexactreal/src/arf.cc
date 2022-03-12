@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C) 2019      Vincent Delecroix
+ *        Copyright (C) 2019-2021 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,14 +18,13 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
+#include <ostream>
+
 #include "../exact-real/arf.hpp"
 
 #include <arf.h>
 
-#include <ostream>
-
-using std::ostream;
-using std::string;
+#include "util/integer.ipp"
 
 namespace {
 std::pair<mpz_class, mpz_class> mantissa_exponent(const arf_t arf) {
@@ -45,12 +44,13 @@ std::pair<mpz_class, mpz_class> mantissa_exponent(const arf_t arf) {
 
   return std::make_pair(m, e);
 }
+
 }  // namespace
 
 namespace exactreal {
 Arf::Arf() noexcept { arf_init(t); }
 
-Arf::Arf(const string& mantissa, int base, long exponent) : Arf() {
+Arf::Arf(const std::string& mantissa, int base, long exponent) : Arf() {
   fmpz_t m, e;
   fmpz_init(m);
   fmpz_init(e);
@@ -63,7 +63,7 @@ Arf::Arf(const string& mantissa, int base, long exponent) : Arf() {
   fmpz_clear(m);
 }
 
-Arf::Arf(const mpz_class& mantissa, long exponent) noexcept : Arf() {
+Arf::Arf(const mpz_class& mantissa, long exponent) : Arf() {
   fmpz_t m, e;
   fmpz_init(m);
   fmpz_init(e);
@@ -76,23 +76,43 @@ Arf::Arf(const mpz_class& mantissa, long exponent) noexcept : Arf() {
   fmpz_clear(m);
 }
 
-Arf::Arf(const long value) noexcept : Arf() { arf_set_si(t, value); }
+Arf::Arf(short value) : Arf(static_cast<long>(value)) {}
 
-Arf::Arf(const int value) noexcept : Arf(static_cast<long>(value)) {}
+Arf::Arf(unsigned short value) : Arf(static_cast<unsigned long>(value)) {}
+
+Arf::Arf(int value) : Arf(static_cast<long>(value)) {}
+
+Arf::Arf(unsigned int value) : Arf(static_cast<unsigned long>(value)) {}
+
+Arf::Arf(long value) : Arf() {
+  arf_set_si(t, value);
+}
+
+Arf::Arf(unsigned long value) : Arf() {
+  arf_set_ui(t, value);
+}
+
+Arf::Arf(long long value) : Arf() {
+  *this = value;
+}
+
+Arf::Arf(unsigned long long value) : Arf() {
+  *this = value;
+}
 
 Arf::Arf(const Arf& value) noexcept : Arf() { arf_set(t, value.t); }
 
-Arf::Arf(const double value) noexcept : Arf() { arf_set_d(t, value); }
+Arf::Arf(double value) : Arf() { arf_set_d(t, value); }
 
 Arf::Arf(Arf&& value) noexcept : Arf() { this->operator=(std::move(value)); }
 
 Arf::~Arf() noexcept { arf_clear(t); }
 
-arf_t& Arf::arf_t() noexcept { return t; }
+arf_t& Arf::arf_t() { return t; }
 
-const arf_t& Arf::arf_t() const noexcept { return t; }
+const arf_t& Arf::arf_t() const { return t; }
 
-Arf::operator double() const noexcept { return arf_get_d(t, ARF_RND_NEAR); }
+Arf::operator double() const { return arf_get_d(t, ARF_RND_NEAR); }
 
 Arf& Arf::operator=(const Arf& rhs) noexcept {
   arf_set(t, rhs.t);
@@ -100,50 +120,145 @@ Arf& Arf::operator=(const Arf& rhs) noexcept {
 }
 
 Arf& Arf::operator=(Arf&& rhs) noexcept {
-  arf_swap(t, rhs.t);
+  swap(*this, rhs);
   return *this;
 }
 
-Arf& Arf::operator=(int rhs) noexcept {
+Arf& Arf::operator=(short rhs) {
+  return *this = to_supported_integer(rhs);
+}
+
+Arf& Arf::operator=(unsigned short rhs) {
+  return *this = to_supported_integer(rhs);
+}
+
+Arf& Arf::operator=(int rhs) {
+  return *this = to_supported_integer(rhs);
+}
+
+Arf& Arf::operator=(unsigned int rhs) {
+  return *this = to_supported_integer(rhs);
+}
+
+Arf& Arf::operator=(long rhs) {
   arf_set_si(t, rhs);
   return *this;
 }
 
-Arf& Arf::operator=(long rhs) noexcept {
-  arf_set_si(t, rhs);
+Arf& Arf::operator=(unsigned long rhs) {
+  arf_set_ui(t, rhs);
   return *this;
 }
 
-Arf& Arf::operator<<=(const long rhs) noexcept {
+Arf& Arf::operator=(long long rhs) {
+  return *this = to_supported_integer(rhs);
+}
+
+Arf& Arf::operator=(unsigned long long rhs) {
+  return *this = to_supported_integer(rhs);
+}
+
+Arf& Arf::operator=(const mpz_class& rhs) {
+  fmpz_t x;
+  fmpz_init_set_readonly(x, rhs.get_mpz_t());
+  arf_set_fmpz(arf_t(), x);
+  fmpz_clear_readonly(x);
+
+  return *this;
+}
+
+Arf& Arf::operator=(double rhs) {
+  arf_set_d(arf_t(), rhs);
+  return *this;
+}
+
+Arf& Arf::operator<<=(long rhs) {
   arf_mul_2exp_si(t, t, rhs);
   return *this;
 }
 
-Arf& Arf::operator>>=(const long rhs) noexcept { return this->operator<<=(-rhs); }
+Arf& Arf::operator>>=(long rhs) { return this->operator<<=(-rhs); }
 
-bool Arf::operator<(const Arf& rhs) const noexcept { return arf_cmp(t, rhs.t) < 0; }
+bool operator<(const Arf& lhs, const Arf& rhs) { return arf_cmp(lhs.t, rhs.t) < 0; }
 
-bool Arf::operator==(const Arf& rhs) const noexcept { return arf_equal(t, rhs.t); }
+bool operator==(const Arf& lhs, const Arf& rhs) { return arf_equal(lhs.t, rhs.t); }
 
-bool Arf::operator<(long rhs) const noexcept { return arf_cmp_si(t, rhs) < 0; }
+bool operator<(const Arf& lhs, short rhs) { return lhs < to_supported_integer(rhs); }
 
-bool Arf::operator>(long rhs) const noexcept { return arf_cmp_si(t, rhs) > 0; }
+bool operator>(const Arf& lhs, short rhs) { return lhs > to_supported_integer(rhs); }
 
-bool Arf::operator==(long rhs) const noexcept { return arf_equal_si(t, rhs); }
+bool operator==(const Arf& lhs, short rhs) { return lhs == to_supported_integer(rhs); }
 
-Arf Arf::operator-() const noexcept {
+bool operator<(const Arf& lhs, unsigned short rhs) { return lhs < to_supported_integer(rhs); }
+
+bool operator>(const Arf& lhs, unsigned short rhs) { return lhs > to_supported_integer(rhs); }
+
+bool operator==(const Arf& lhs, unsigned short rhs) { return lhs == to_supported_integer(rhs); }
+
+bool operator<(const Arf& lhs, int rhs) { return lhs < to_supported_integer(rhs); }
+
+bool operator>(const Arf& lhs, int rhs) { return lhs > to_supported_integer(rhs); }
+
+bool operator==(const Arf& lhs, int rhs) { return lhs == to_supported_integer(rhs); }
+
+bool operator<(const Arf& lhs, unsigned int rhs) { return lhs < to_supported_integer(rhs); }
+
+bool operator>(const Arf& lhs, unsigned int rhs) { return lhs > to_supported_integer(rhs); }
+
+bool operator==(const Arf& lhs, unsigned int rhs) { return lhs == to_supported_integer(rhs); }
+
+bool operator<(const Arf& lhs, long rhs) { return arf_cmp_si(lhs.t, rhs) < 0; }
+
+bool operator>(const Arf& lhs, long rhs) { return arf_cmp_si(lhs.t, rhs) > 0; }
+
+bool operator==(const Arf& lhs, long rhs) { return arf_equal_si(lhs.t, rhs); }
+
+bool operator<(const Arf& lhs, unsigned long rhs) { return arf_cmp_ui(lhs.t, rhs) < 0; }
+
+bool operator>(const Arf& lhs, unsigned long rhs) { return arf_cmp_ui(lhs.t, rhs) > 0; }
+
+bool operator==(const Arf& lhs, unsigned long rhs) { return arf_cmp_ui(lhs.t, rhs) == 0; }
+
+bool operator<(const Arf& lhs, long long rhs) { return lhs < to_supported_integer(rhs); }
+
+bool operator>(const Arf& lhs, long long rhs) { return lhs > to_supported_integer(rhs); }
+
+bool operator==(const Arf& lhs, long long rhs) { return lhs == to_supported_integer(rhs); }
+
+bool operator<(const Arf& lhs, unsigned long long rhs) { return lhs < to_supported_integer(rhs); }
+
+bool operator>(const Arf& lhs, unsigned long long rhs) { return lhs > to_supported_integer(rhs); }
+
+bool operator==(const Arf& lhs, unsigned long long rhs) { return lhs == to_supported_integer(rhs); }
+
+bool operator<(const Arf& lhs, const mpz_class& rhs) {
+  Arf rhs_(rhs);
+  return lhs < rhs_;
+}
+
+bool operator>(const Arf& lhs, const mpz_class& rhs) {
+  Arf rhs_(rhs);
+  return lhs > rhs_;
+}
+
+bool operator==(const Arf& lhs, const mpz_class& rhs) {
+  Arf rhs_(rhs);
+  return lhs == rhs_;
+}
+
+Arf Arf::operator-() const {
   Arf ret;
   arf_neg(ret.t, t);
   return ret;
 }
 
-Arf Arf::abs() const noexcept {
+Arf Arf::abs() const {
   Arf ret;
   arf_abs(ret.t, t);
   return ret;
 }
 
-mpz_class Arf::floor() const noexcept {
+mpz_class Arf::floor() const {
   Arf floor;
   arf_floor(floor.t, t);
   fmpz_t fmpz_floor;
@@ -155,7 +270,7 @@ mpz_class Arf::floor() const noexcept {
   return ret;
 }
 
-mpz_class Arf::ceil() const noexcept {
+mpz_class Arf::ceil() const {
   Arf ceil;
   arf_ceil(ceil.t, t);
   fmpz_t fmpz_ceil;
@@ -167,11 +282,11 @@ mpz_class Arf::ceil() const noexcept {
   return ret;
 }
 
-mpz_class Arf::mantissa() const noexcept { return mantissa_exponent(t).first; }
+mpz_class Arf::mantissa() const { return mantissa_exponent(t).first; }
 
-mpz_class Arf::exponent() const noexcept { return mantissa_exponent(t).second; }
+mpz_class Arf::exponent() const { return mantissa_exponent(t).second; }
 
-long Arf::logb() const noexcept {
+long Arf::logb() const {
   Arf _;
   fmpz_t e;
   fmpz_init(e);
@@ -181,13 +296,17 @@ long Arf::logb() const noexcept {
   return ret;
 }
 
-Arf Arf::randtest(flint::frandxx& state, prec precision, prec magbits) noexcept {
+Arf Arf::randtest(flint::frandxx& state, prec precision, prec magbits) {
   Arf ret;
   arf_randtest(ret.arf_t(), state._data(), precision, magbits);
   return ret;
 }
 
-ostream& operator<<(ostream& os, const Arf& self) {
+void swap(Arf& a, Arf& b) {
+  arf_swap(a.arf_t(), b.arf_t());
+}
+
+std::ostream& operator<<(std::ostream& os, const Arf& self) {
   if (arf_is_zero(self.t)) {
     return os << 0;
   } else if (arf_is_pos_inf(self.t)) {
