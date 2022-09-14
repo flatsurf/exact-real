@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C)      2019 Vincent Delecroix
+ *        Copyright (C) 2019-2022 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -215,7 +215,11 @@ void save(Archive& archive, const std::shared_ptr<const exactreal::RealNumber>& 
   // implementation, so we hook into cereal's registerSharedPointer to get our
   // real numbers properly deduplicated but handle the actual serialization &
   // deserialization ourselves through our factory functions.
+#if CEREAL_VERSION >= 10301
+  uint32_t id = archive.registerSharedPointer(std::shared_ptr<const exactreal::RealNumber>(self.get(), [](auto) {}));
+#else
   uint32_t id = archive.registerSharedPointer(self.get());
+#endif
 
   archive(cereal::make_nvp("shared", id));
   if (id & cereal::detail::msb_32bit) {
@@ -238,7 +242,11 @@ void load(Archive& archive, std::shared_ptr<const exactreal::RealNumber>& self) 
 
 template <typename Archive, typename Ring>
 void save(Archive& archive, const std::shared_ptr<const exactreal::Module<Ring>>& self) {
+#if CEREAL_VERSION >= 10301
+  uint32_t id = archive.registerSharedPointer(self);
+#else
   uint32_t id = archive.registerSharedPointer(self.get());
+#endif
 
   archive(cereal::make_nvp("shared", id));
   if (id & cereal::detail::msb_32bit) {
