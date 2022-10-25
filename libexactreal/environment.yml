@@ -12,7 +12,7 @@ dependencies:
   - coreutils
   - cxx-compiler
   - libeantic>=1.2.2,<2
-  - arb>=2.21,<2.22
+  - arb>=2.23,<2.24
   - gmp>6,<7
   - libtool
   - make
