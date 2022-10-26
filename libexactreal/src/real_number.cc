@@ -31,11 +31,6 @@
 using std::max;
 using std::ostream;
 
-namespace cereal {
-struct JSONInputArchive;
-struct JSONOutputArchive;
-}
-
 namespace exactreal {
 
 const long ARF_DOUBLE_PRECISION = 54;
