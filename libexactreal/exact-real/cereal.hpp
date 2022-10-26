@@ -25,10 +25,12 @@
 #include <cereal/cereal.hpp>
 #include <cereal/types/memory.hpp>
 #include <cereal/types/vector.hpp>
+#include <cereal/types/map.hpp>
 #include <e-antic/cereal.hpp>
 
 #include "arb.hpp"
 #include "arf.hpp"
+#include "cereal.interface.hpp"
 #include "element.hpp"
 #include "integer_ring.hpp"
 #include "module.hpp"
@@ -68,6 +70,79 @@ struct CerealWrap {
 
 template <typename T>
 using MaybeWrap = std::conditional_t<CerealWrap<T>::needs_wrap(), CerealWrap<T>, T>;
+
+template <typename Archive>
+struct Cerealizer : public ICerealizer {
+  Cerealizer(Archive& archive): archive(archive) {}
+
+  virtual void save(const std::string& name, const std::string& value) {
+    archive(cereal::make_nvp(name, value));
+  }
+
+  virtual void save(const std::string& name, const mpq_class& value) {
+    save(name, value.get_str());
+  }
+
+  virtual void save(const std::string& name, unsigned int value) {
+    archive(cereal::make_nvp(name, value));
+  }
+
+  virtual void save(const std::string& name, long value) {
+    archive(cereal::make_nvp(name, value));
+  }
+
+  virtual void save(const std::string& name, const Arf& value) {
+    archive(cereal::make_nvp(name, value));
+  }
+
+  virtual void save(const std::string& name, const std::shared_ptr<const RealNumber>& value) {
+    archive(cereal::make_nvp(name, value));
+  }
+
+  virtual void save(const std::string& name, const std::map<std::shared_ptr<const RealNumber>, int>& value) {
+    archive(cereal::make_nvp(name, value));
+  }
+
+ private:
+  Archive& archive;
+};
+
+template <typename Archive>
+struct Decerealizer : public IDecerealizer {
+  Decerealizer(Archive& archive): archive(archive) {}
+
+  virtual void load(const std::string& name, std::string& value) {
+    archive(cereal::make_nvp(name, value));
+  }
+
+  virtual void load(const std::string& name, mpq_class& value) {
+    std::string str;
+    load(name, str);
+    value = mpq_class(str);
+  }
+
+  virtual void load(const std::string& name, unsigned int& value) {
+    archive(cereal::make_nvp(name, value));
+  }
+
+  virtual void load(const std::string& name, long& value) {
+    archive(cereal::make_nvp(name, value));
+  }
+
+  virtual void load(const std::string& name, Arf& value) {
+    archive(cereal::make_nvp(name, value));
+  }
+
+  virtual void load(const std::string& name, std::shared_ptr<const RealNumber>& value) {
+    archive(cereal::make_nvp(name, value));
+  }
+
+  virtual void load(const std::string& name, std::map<std::shared_ptr<const RealNumber>, int>& value) {
+    archive(cereal::make_nvp(name, value));
+  }
+ private:
+  Archive& archive;
+};
 
 template <typename Archive>
 void save(Archive& archive, const Arb& self) {
@@ -149,43 +224,6 @@ void serialize(Archive& archive, NumberField& self) {
   archive(cereal::make_nvp("field", self.parameters));
 }
 
-struct LIBEXACTREAL_API RealNumberCereal {
-  using SupportedOutput = cereal::JSONOutputArchive;
-  using SupportedInput = cereal::JSONInputArchive;
-
-  static void save(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& self);
-  static void load(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& self);
-};
-
-template <typename T, typename Cerealizer>
-struct ForwardingCereal {
-  template <typename Archive>
-  static void save(Archive& archive, const T& self) {
-    using Native = typename Cerealizer::SupportedOutput;
-
-    if constexpr (std::is_same_v<Archive, Native>) {
-      Cerealizer::save(archive, self);
-    } else {
-      std::stringstream s;
-      save(Native(s), self);
-      archive(s.str());
-    }
-  }
-
-  template <typename Archive>
-  static void load(Archive& archive, T& self) {
-    using Native = typename Cerealizer::SupportedInput;
-
-    if constexpr (std::is_same_v<Archive, Native>) {
-      Cerealizer::load(archive, self);
-    } else {
-      std::string s;
-      archive(s);
-      load(Native(std::stringstream(s)), self);
-    }
-  }
-};
-
 template <typename Archive>
 std::string save_minimal(const Archive&, const CerealWrap<mpq_class>& self) {
   return self->get_str();
@@ -216,14 +254,15 @@ void save(Archive& archive, const std::shared_ptr<const exactreal::RealNumber>& 
   // real numbers properly deduplicated but handle the actual serialization &
   // deserialization ourselves through our factory functions.
 #if CEREAL_VERSION >= 10301
-  uint32_t id = archive.registerSharedPointer(std::shared_ptr<const exactreal::RealNumber>(self.get(), [](auto) {}));
+  uint32_t id = archive.registerSharedPointer(self);
 #else
   uint32_t id = archive.registerSharedPointer(self.get());
 #endif
 
   archive(cereal::make_nvp("shared", id));
   if (id & cereal::detail::msb_32bit) {
-    exactreal::ForwardingCereal<std::shared_ptr<const exactreal::RealNumber>, exactreal::RealNumberCereal>::save(archive, self);
+    auto cerealizer = exactreal::Cerealizer(archive);
+    exactreal::RealNumber::save(cerealizer, self);
   }
 }
 
@@ -233,7 +272,8 @@ void load(Archive& archive, std::shared_ptr<const exactreal::RealNumber>& self) 
   archive(cereal::make_nvp("shared", id));
 
   if (id & cereal::detail::msb_32bit) {
-    exactreal::ForwardingCereal<std::shared_ptr<const exactreal::RealNumber>, exactreal::RealNumberCereal>::load(archive, self);
+    auto decerealizer = exactreal::Decerealizer(archive);
+    exactreal::RealNumber::load(decerealizer, self);
     archive.registerSharedPointer(id, std::static_pointer_cast<void>(std::const_pointer_cast<exactreal::RealNumber>(self)));
   } else {
     self = std::static_pointer_cast<const exactreal::RealNumber>(archive.getSharedPointer(id));

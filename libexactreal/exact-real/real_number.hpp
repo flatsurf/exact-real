@@ -105,6 +105,9 @@ class LIBEXACTREAL_API RealNumber : public std::enable_shared_from_this<RealNumb
   virtual RealNumber const& operator>>(std::ostream&) const = 0;
   friend std::ostream& operator<<(std::ostream&, const RealNumber&) LIBEXACTREAL_API;
 
+  static void load(IDecerealizer&, std::shared_ptr<const RealNumber>&);
+  static void save(ICerealizer&, const std::shared_ptr<const RealNumber>&);
+
   // A random real in the range [0, 1]
   static std::shared_ptr<const RealNumber> random();
   static std::shared_ptr<const RealNumber> random(Seed seed);

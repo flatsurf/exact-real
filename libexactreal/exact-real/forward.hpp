@@ -56,6 +56,9 @@ struct IntegerRing;
 struct RationalField;
 struct NumberField;
 
+struct ICerealizer;
+struct IDecerealizer;
+
 }  // namespace exactreal
 
 #endif

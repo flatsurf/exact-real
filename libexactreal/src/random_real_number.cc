@@ -23,16 +23,16 @@
 
 #include <boost/random/linear_congruential.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
-#include <cereal/archives/json.hpp>
-#include <cereal/cereal.hpp>
 #include <sstream>
 
 #include "../exact-real/arb.hpp"
 #include "../exact-real/arf.hpp"
+#include "../exact-real/cereal.interface.hpp"
 #include "../exact-real/real_number.hpp"
 #include "../exact-real/seed.hpp"
 #include "external/unique-factory/unique-factory/unique-factory.hpp"
 #include "impl/real_number_base.hpp"
+#include "util/assert.ipp"
 
 using namespace exactreal;
 using boost::random::rand48;
@@ -43,6 +43,11 @@ using std::string;
 using std::stringstream;
 
 namespace {
+
+auto& factory() {
+  static unique_factory::UniqueFactory<unsigned int, RealNumber> factory;
+  return factory;
+}
 
 // A random real number in [0, 1]
 class RandomRealNumber final : public RealNumberBase {
@@ -89,9 +94,14 @@ class RandomRealNumber final : public RealNumberBase {
     return *this;
   }
 
-  template <typename Archive>
-  void save(Archive& archive) const {
-    archive(cereal::make_nvp("seed", seed));
+  static void save(ICerealizer& archive, const std::shared_ptr<const RandomRealNumber>& self) {
+    archive.save("seed", self->seed);
+  }
+
+  static void load(IDecerealizer& archive, std::shared_ptr<const RealNumber>& self) {
+    unsigned int seed;
+    archive.load("seed", seed);
+    self = factory().get(seed, [&]() { return new RandomRealNumber(seed); });
   }
 
  private:
@@ -105,10 +115,6 @@ class RandomRealNumber final : public RealNumberBase {
   rand48 rng() const { return rand48(seed); }
 };
 
-auto& factory() {
-  static unique_factory::UniqueFactory<unsigned int, RealNumber> factory;
-  return factory;
-}
 }  // namespace
 
 namespace exactreal {
@@ -120,13 +126,13 @@ shared_ptr<const RealNumber> RealNumber::random(Seed seed) {
   return factory().get(seed.value, [&]() { return new RandomRealNumber(seed.value); });
 }
 
-void save_random(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& base) {
-  std::dynamic_pointer_cast<const RandomRealNumber>(base)->save(archive);
+void save_random(ICerealizer& archive, const std::shared_ptr<const RealNumber>& base) {
+  const auto& self = std::dynamic_pointer_cast<const RandomRealNumber>(base);
+  LIBEXACTREAL_ASSERT(self, "cannot serialize this real number as a random number");
+  RandomRealNumber::save(archive, self);
 }
 
-void load_random(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& base) {
-  unsigned int seed;
-  archive(cereal::make_nvp("seed", seed));
-  base = factory().get(seed, [&]() { return new RandomRealNumber(seed); });
+void load_random(IDecerealizer& archive, std::shared_ptr<const RealNumber>& self) {
+  RandomRealNumber::load(archive, self);
 }
 }  // namespace exactreal

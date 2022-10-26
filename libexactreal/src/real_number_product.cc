@@ -19,16 +19,13 @@
  *********************************************************************/
 
 #include <cassert>
-#include <cereal/archives/json.hpp>
-#include <cereal/cereal.hpp>
-#include <cereal/types/map.hpp>
 #include <memory>
 #include <set>
 #include <vector>
 #include <variant>
 
-#include "../exact-real/cereal.hpp"
 #include "../exact-real/real_number.hpp"
+#include "../exact-real/cereal.interface.hpp"
 #include "../exact-real/yap/arf.hpp"
 #include "external/unique-factory/unique-factory/unique-factory.hpp"
 #include "impl/real_number_base.hpp"
@@ -61,8 +58,8 @@ class RealNumberProduct final : public RealNumberBase {
   std::vector<int> exponents;
   size_t hash;
 
-  template <typename Archive>
-  void save(Archive& archive) const;
+  static void save(ICerealizer& archive, const std::shared_ptr<const RealNumberProduct>& self);
+  static void load(IDecerealizer& archive, std::shared_ptr<const RealNumber>& self);
 };
 
 class Key {
@@ -102,7 +99,7 @@ class Key {
     }
 
     MonomialsExponents(std::vector<size_t> monomials, std::vector<int> exponents, size_t hash) : monomials(std::move(monomials)), exponents(std::move(exponents)), hash(hash) {}
-  
+
     std::vector<size_t> monomials;
     std::vector<int> exponents;
     size_t hash;
@@ -561,14 +558,35 @@ int RealNumberProduct::totalDegree() const {
   return totalDegree;
 }
 
-template <typename Archive>
-void RealNumberProduct::save(Archive& archive) const {
+void RealNumberProduct::save(ICerealizer& archive, const std::shared_ptr<const RealNumberProduct>& self) {
   std::map<std::shared_ptr<const RealNumber>, int> factors;
 
-  for (size_t i = 0; i < monomials.size(); i++)
-    factors[monomials[i]] = exponents[i];
+  for (size_t i = 0; i < self->monomials.size(); i++)
+    factors[self->monomials[i]] = self->exponents[i];
 
-  archive(cereal::make_nvp("factors", factors));
+  archive.save("factors", factors);
+}
+
+void RealNumberProduct::load(IDecerealizer& archive, std::shared_ptr<const RealNumber>& self) {
+  std::map<std::shared_ptr<const RealNumber>, int> factors;
+
+  archive.load("factors", factors);
+
+  std::vector<std::shared_ptr<const RealNumber>> monomials;
+
+  for (const auto& factor : factors)
+    monomials.push_back(factor.first);
+
+  std::sort(begin(monomials), end(monomials), [](const auto& lhs, const auto& rhs) {
+    return RealNumberBase::id(*lhs) < RealNumberBase::id(*rhs);
+  });
+
+  std::vector<int> exponents;
+
+  for (size_t i = 0; i < monomials.size(); i++)
+    exponents.push_back(factors[monomials[i]]);
+
+  self = factory().get({monomials, exponents}, [&]() { return new RealNumberProduct(monomials, exponents); });
 }
 }  // namespace
 
@@ -631,7 +649,7 @@ bool RealNumber::deglex(const RealNumber& rhs_) const {
           if (lhs_monomial < rhs_monomial) {
             // x < y
             return true;
-          } else if (lhs_monomial > rhs_monomial) { 
+          } else if (lhs_monomial > rhs_monomial) {
             // y > x
             return false;
           } else {
@@ -659,29 +677,13 @@ bool RealNumber::deglex(const RealNumber& rhs_) const {
   }
 }
 
-void save_product(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& base) {
-  std::dynamic_pointer_cast<const RealNumberProduct>(base)->save(archive);
+void save_product(ICerealizer& archive, const std::shared_ptr<const RealNumber>& base) {
+  const auto& self = std::dynamic_pointer_cast<const RealNumberProduct>(base);
+  LIBEXACTREAL_ASSERT(self, "cannot serialize this real number as a rational");
+  RealNumberProduct::save(archive, self);
 }
 
-void load_product(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& base) {
-  std::map<std::shared_ptr<const RealNumber>, int> factors;
-
-  archive(cereal::make_nvp("factors", factors));
-  
-  std::vector<std::shared_ptr<const RealNumber>> monomials;
-
-  for (const auto& factor : factors)
-    monomials.push_back(factor.first);
-
-  std::sort(begin(monomials), end(monomials), [](const auto& lhs, const auto& rhs) {
-    return RealNumberBase::id(*lhs) < RealNumberBase::id(*rhs);
-  });
-
-  std::vector<int> exponents;
-
-  for (size_t i = 0; i < monomials.size(); i++)
-    exponents.push_back(factors[monomials[i]]);
-
-  base = factory().get({monomials, exponents}, [&]() { return new RealNumberProduct(monomials, exponents); });
+void load_product(IDecerealizer& archive, std::shared_ptr<const RealNumber>& self) {
+  RealNumberProduct::load(archive, self);
 }
 }  // namespace exactreal

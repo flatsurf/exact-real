@@ -29,6 +29,7 @@ nobase_pkginclude_HEADERS =                                  \
     ../exact-real/arb.hpp                                    \
     ../exact-real/arf.hpp                                    \
     ../exact-real/cereal.hpp                                 \
+    ../exact-real/cereal.interface.hpp                       \
     ../exact-real/cppyy.hpp                                  \
     ../exact-real/element.hpp                                \
     ../exact-real/exact-real.hpp                             \

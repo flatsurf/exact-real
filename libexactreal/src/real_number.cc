@@ -23,13 +23,18 @@
 #include <cassert>
 
 #include "../exact-real/arb.hpp"
-#include "../exact-real/cereal.hpp"
+#include "../exact-real/cereal.interface.hpp"
 #include "../exact-real/seed.hpp"
 #include "../exact-real/yap/arf.hpp"
 #include "impl/real_number_base.hpp"
 
 using std::max;
 using std::ostream;
+
+namespace cereal {
+struct JSONInputArchive;
+struct JSONOutputArchive;
+}
 
 namespace exactreal {
 
@@ -189,7 +194,7 @@ const std::type_info& typeid_shared(const std::shared_ptr<T>& ptr) {
   if (ptr == nullptr)
     return typeid(nullptr);
 
-  const auto& value = *ptr;
+  const T& value = *ptr;
   return typeid(value);
 }
 
@@ -199,37 +204,47 @@ const static std::type_info& RANDOM = typeid_shared(RealNumber::random(noSeed));
 const static std::type_info& CONSTRAINED = typeid_shared(RealNumber::random(Arf(1), Arf(2), noSeed));
 const static std::type_info& PRODUCT = typeid_shared((*RealNumber::random(noSeed)) * (*RealNumber::random(noSeed)));
 
-void save_rational(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& self);
-void save_random(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& self);
-void save_constrained(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& self);
-void save_product(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& self);
+void save_rational(ICerealizer& archive, const std::shared_ptr<const RealNumber>& self);
+void save_random(ICerealizer& archive, const std::shared_ptr<const RealNumber>& self);
+void save_constrained(ICerealizer& archive, const std::shared_ptr<const RealNumber>& self);
+void save_product(ICerealizer& archive, const std::shared_ptr<const RealNumber>& self);
 
-void RealNumberCereal::save(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& self) {
+// These symbols are not exposed anymore in the headers. It should be removed with the next major release.
+struct LIBEXACTREAL_API RealNumberCereal {
+  static void save(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& self) {
+    throw std::logic_error("The old cereal serialization ABI of libeaxctreal caused segfaults due to breaking changes in cereal. The ABI is therefore not supported anymore. Please recompile your code to use the new ABI.");
+  }
+  static void load(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& self) {
+    throw std::logic_error("The old cereal serialization ABI of libeaxctreal caused segfaults due to breaking changes in cereal. The ABI is therefore not supported anymore. Please recompile your code to use the new ABI.");
+  }
+};
+
+void RealNumber::save(ICerealizer& archive, const std::shared_ptr<const RealNumber>& self) {
   if (typeid_shared(self) == RATIONAL) {
-    archive(cereal::make_nvp("kind", std::string("rational")));
+    archive.save("kind", "rational");
     save_rational(archive, self);
   } else if (typeid_shared(self) == RANDOM) {
-    archive(cereal::make_nvp("kind", std::string("random")));
+    archive.save("kind", "random");
     save_random(archive, self);
   } else if (typeid_shared(self) == CONSTRAINED) {
-    archive(cereal::make_nvp("kind", std::string("constrained")));
+    archive.save("kind", "constrained");
     save_constrained(archive, self);
   } else if (typeid_shared(self) == PRODUCT) {
-    archive(cereal::make_nvp("kind", std::string("product")));
+    archive.save("kind", "product");
     save_product(archive, self);
   } else {
-    throw std::logic_error("not implemented -- RealNumberCereal::save");
+    throw std::logic_error("not implemented -- RealNumber::save");
   }
 }
 
-void load_rational(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& self);
-void load_random(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& self);
-void load_constrained(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& self);
-void load_product(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& self);
+void load_rational(IDecerealizer& archive, std::shared_ptr<const RealNumber>& self);
+void load_random(IDecerealizer& archive, std::shared_ptr<const RealNumber>& self);
+void load_constrained(IDecerealizer& archive, std::shared_ptr<const RealNumber>& self);
+void load_product(IDecerealizer& archive, std::shared_ptr<const RealNumber>& self);
 
-void RealNumberCereal::load(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& self) {
+void RealNumber::load(IDecerealizer& archive, std::shared_ptr<const RealNumber>& self) {
   std::string kind;
-  archive(cereal::make_nvp("kind", kind));
+  archive.load("kind", kind);
   if (kind == "rational") {
     load_rational(archive, self);
   } else if (kind == "random") {
@@ -239,7 +254,7 @@ void RealNumberCereal::load(cereal::JSONInputArchive& archive, std::shared_ptr<c
   } else if (kind == "product") {
     load_product(archive, self);
   } else {
-    throw std::logic_error("not implemented - RealNumberCereal::load()");
+    throw std::logic_error("not implemented - RealNumber::load()");
   }
 }
 
