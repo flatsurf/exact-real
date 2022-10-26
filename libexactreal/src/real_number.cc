@@ -209,16 +209,6 @@ void save_random(ICerealizer& archive, const std::shared_ptr<const RealNumber>& 
 void save_constrained(ICerealizer& archive, const std::shared_ptr<const RealNumber>& self);
 void save_product(ICerealizer& archive, const std::shared_ptr<const RealNumber>& self);
 
-// These symbols are not exposed anymore in the headers. It should be removed with the next major release.
-struct LIBEXACTREAL_API RealNumberCereal {
-  static void save(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& self) {
-    throw std::logic_error("The old cereal serialization ABI of libeaxctreal caused segfaults due to breaking changes in cereal. The ABI is therefore not supported anymore. Please recompile your code to use the new ABI.");
-  }
-  static void load(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& self) {
-    throw std::logic_error("The old cereal serialization ABI of libeaxctreal caused segfaults due to breaking changes in cereal. The ABI is therefore not supported anymore. Please recompile your code to use the new ABI.");
-  }
-};
-
 void RealNumber::save(ICerealizer& archive, const std::shared_ptr<const RealNumber>& self) {
   if (typeid_shared(self) == RATIONAL) {
     archive.save("kind", "rational");
