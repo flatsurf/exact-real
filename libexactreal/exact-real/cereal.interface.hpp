@@ -29,7 +29,7 @@
 
 namespace exactreal {
 
-struct ICerealizer {
+struct LIBEXACTREAL_API ICerealizer {
   virtual void save(const std::string& name, const std::string& value) = 0;
   virtual void save(const std::string& name, const mpq_class& value) = 0;
   virtual void save(const std::string& name, unsigned int value) = 0;
@@ -40,7 +40,7 @@ struct ICerealizer {
 
 };
 
-struct IDecerealizer {
+struct LIBEXACTREAL_API IDecerealizer {
   virtual void load(const std::string& name, std::string& value) = 0;
   virtual void load(const std::string& name, mpq_class& value) = 0;
   virtual void load(const std::string& name, unsigned int& value) = 0;
