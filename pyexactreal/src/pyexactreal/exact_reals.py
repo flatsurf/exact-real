@@ -819,7 +819,8 @@ class ExactReals(UniqueRepresentation, CommutativeRing):
             sage: x + y
             Traceback (most recent call last):
             ...
-            logic_error: ... at most one generator can be rational ...
+            TypeError: ...
+                logic_error: at most one generator can be rational
 
         """
         module = self._module_factory([exactreal.RealNumber.rational(q)])
