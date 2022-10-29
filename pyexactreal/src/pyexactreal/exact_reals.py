@@ -7,7 +7,7 @@ fixd real embedded number field.
 
 EXAMPLES::
 
-    sage: from pyexactreal import ExactReals
+    sage: from pyexactreal import ExactReals  # random output by cppyy on macOS if xcode is not installed
     sage: R = ExactReals(); R
     Real Numbers as (Rational Field)-Module
 

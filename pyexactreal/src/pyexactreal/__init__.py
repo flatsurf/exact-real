@@ -3,7 +3,7 @@ Python and SageMath wrappers for libexactreal
 
 EXAMPLES::
 
-    >>> from pyexactreal import RealNumber
+    >>> from pyexactreal import RealNumber  # random output by cppyy on macOS if xcode is not installed
     >>> x = RealNumber.random()
     >>> x
     ℝ(0.303644…)
