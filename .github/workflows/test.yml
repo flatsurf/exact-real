@@ -19,13 +19,13 @@ jobs:
     strategy:
       matrix:
         include:
-          - on: ubuntu-20.04
-          - on: ubuntu-20.04
+          - on: ubuntu-22.04
+          - on: ubuntu-22.04
             sanitizer: address
           # Needs https://github.com/wbhart/flint2/pull/992
-          # - on: ubuntu-20.04
+          # - on: ubuntu-22.04
           #   sanitizer: undefined
-          - on: ubuntu-20.04
+          - on: ubuntu-22.04
             sanitizer: valgrind
           - on: macos-10.15
           - on: macos-10.15
@@ -86,40 +86,40 @@ jobs:
     strategy:
       matrix:
         include:
-          - on: ubuntu-20.04
-            python: "3.6"
-          - on: ubuntu-20.04
+          - on: ubuntu-22.04
             python: "3.7"
-          - on: ubuntu-20.04
+          - on: ubuntu-22.04
             python: "3.8"
-          - on: ubuntu-20.04
+          - on: ubuntu-22.04
             python: "3.9"
+          - on: ubuntu-22.04
+            python: "3.10"
           # Needs libsanitizer=11, with the default sanitizer, we get "Failed to mmap".
-          # - on: ubuntu-20.04
-          #   python: "3.9"
+          # - on: ubuntu-22.04
+          #   python: "3.10"
           #   sanitizer: address
           # Needs https://github.com/wbhart/flint2/pull/992
-          # - on: ubuntu-20.04
-          #   python: "3.9"
+          # - on: ubuntu-22.04
+          #   python: "3.10"
           #   sanitizer: undefined
-          - on: ubuntu-20.04
+          - on: ubuntu-22.04
             python: "3.9"
             sanitizer: valgrind
           - on: macos-10.15
-            python: "3.6"
-          - on: macos-10.15
             python: "3.7"
           - on: macos-10.15
             python: "3.8"
           - on: macos-10.15
             python: "3.9"
+          - on: macos-10.15
+            python: "3.10"
           # libtool strips -shared-asan from LDFLAGS but this is required to preload asan when building with clang
           # - on: macos-10.15
-          #   python: "3.9"
+          #   python: "3.10"
           #   sanitizer: address
           # Needs https://github.com/wbhart/flint2/pull/992
           # - on: macos-10.15
-          #   python: "3.9"
+          #   python: "3.10"
           #   sanitizer: undefined
     steps:
       - uses: actions/checkout@v2
@@ -182,7 +182,7 @@ jobs:
           limit-access-to-actor: true
         if: ${{ failure() && github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
   distcheck:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
