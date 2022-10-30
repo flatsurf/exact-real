@@ -59,17 +59,21 @@ std::string toString(const T& x) {
 
 template <typename T>
 T test_serialization(const T& x) {
+  CAPTURE(x);
+
   std::stringstream s;
 
   {
     JSONOutputArchive archive(s);
-    archive(cereal::make_nvp("test", x));
+    archive(x);
   }
+
+  CAPTURE(s.str());
 
   T y;
   {
     JSONInputArchive archive(s);
-    archive(cereal::make_nvp("test", y));
+    archive(y);
   }
 
   if constexpr (std::is_same_v<T, Arb>) {

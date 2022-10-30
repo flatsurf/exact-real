@@ -7,7 +7,7 @@ fixd real embedded number field.
 
 EXAMPLES::
 
-    sage: from pyexactreal import ExactReals
+    sage: from pyexactreal import ExactReals  # random output by cppyy on macOS if xcode is not installed
     sage: R = ExactReals(); R
     Real Numbers as (Rational Field)-Module
 
@@ -819,7 +819,8 @@ class ExactReals(UniqueRepresentation, CommutativeRing):
             sage: x + y
             Traceback (most recent call last):
             ...
-            cppyy.gbl.std.logic_error: ... at most one generator can be rational ...
+            TypeError: ...
+                logic_error: at most one generator can be rational
 
         """
         module = self._module_factory([exactreal.RealNumber.rational(q)])

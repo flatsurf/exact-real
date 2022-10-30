@@ -414,3 +414,10 @@ LIBEXACTREAL_2.3.0 {
       "exactreal::Element<exactreal::NumberField>::Element<true, true>(exactreal::Element<exactreal::RationalField> const&)";
     };
 } LIBEXACTREAL_2.2.0;
+LIBEXACTREAL_3.0.0 {
+  global:
+    extern "C++" {
+      "exactreal::RealNumber::load(exactreal::IDecerealizer&, std::shared_ptr<exactreal::RealNumber const>&)";
+      "exactreal::RealNumber::save(exactreal::ICerealizer&, std::shared_ptr<exactreal::RealNumber const> const&)";
+    };
+} LIBEXACTREAL_2.3.0;

@@ -11,8 +11,8 @@ dependencies:
   - boost-cpp==1.74.0
   - coreutils
   - cxx-compiler
-  - libeantic>=1.0.2,<2
-  - arb>=2.21,<2.22
+  - libeantic>=1.2.2,<2
+  - arb>=2.23,<2.24
   - gmp>6,<7
   - libtool
   - make

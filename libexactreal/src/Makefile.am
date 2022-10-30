@@ -29,6 +29,7 @@ nobase_pkginclude_HEADERS =                                  \
     ../exact-real/arb.hpp                                    \
     ../exact-real/arf.hpp                                    \
     ../exact-real/cereal.hpp                                 \
+    ../exact-real/cereal.interface.hpp                       \
     ../exact-real/cppyy.hpp                                  \
     ../exact-real/element.hpp                                \
     ../exact-real/exact-real.hpp                             \
@@ -74,17 +75,11 @@ VPATH = $(srcdir) $(builddir)
 BUILT_SOURCES = ../exact-real/local.hpp
 # Distribute local.hpp.in as part of the tarball, but not local.hpp
 EXTRA_DIST = ../exact-real/local.hpp.in
-# We vendor the header-only library Cereal (serialization with C++) which we
-# use in some of our source files.
-# Cereal is basically not packaged in any distribution since it is a
-# header-only library that people always vendor into their source tree.
-EXTRA_DIST += external/cereal/include
-AM_CPPFLAGS = -isystem $(srcdir)/external/cereal/include
 generatedincludedir = $(includedir)/exact-real
 nodist_generatedinclude_HEADERS = ../exact-real/local.hpp
 
 # We are building the libexactreal library so visibility attributes should be
 # set, see https://gcc.gnu.org/wiki/Visibility
-AM_CPPFLAGS += -DBUILD_LIBEXACTREAL
+AM_CPPFLAGS = -DBUILD_LIBEXACTREAL
 
 CLEANFILES = ../exact-real/local.hpp

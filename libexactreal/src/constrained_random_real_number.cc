@@ -25,18 +25,17 @@
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/random/linear_congruential.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
-#include <cereal/archives/json.hpp>
-#include <cereal/cereal.hpp>
 #include <memory>
 #include <sstream>
 
-#include "../exact-real/cereal.hpp"
+#include "../exact-real/cereal.interface.hpp"
 #include "../exact-real/real_number.hpp"
 #include "../exact-real/seed.hpp"
 #include "../exact-real/yap/arf.hpp"
 #include "external/hash-combine/hash.hpp"
 #include "external/unique-factory/unique-factory/unique-factory.hpp"
 #include "impl/real_number_base.hpp"
+#include "util/assert.ipp"
 
 using namespace exactreal;
 using boost::lexical_cast;
@@ -48,6 +47,18 @@ using std::shared_ptr;
 using std::string;
 
 namespace {
+
+auto& factory() {
+  using Key = std::tuple<Arf, long, std::shared_ptr<const RealNumber>>;
+  struct Hash {
+    size_t operator()(const Key& key) const {
+      using flatsurf::hash_combine, flatsurf::hash;
+      return hash_combine(hash(std::get<0>(key)), hash(std::get<1>(key)), hash(static_cast<double>(*std::get<2>(key))));
+    }
+  };
+  static unique_factory::UniqueFactory<Key, RealNumber, unique_factory::KeepNothingAlive, Hash> factory;
+  return factory;
+}
 
 // A random real number in [a, b]
 class ConstrainedRandomRealNumber final : public RealNumberBase {
@@ -92,11 +103,21 @@ class ConstrainedRandomRealNumber final : public RealNumberBase {
     return *this;
   }
 
-  template <typename Archive>
-  void save(Archive& archive) const {
-    archive(cereal::make_nvp("initial", initial),
-            cereal::make_nvp("e", e),
-            cereal::make_nvp("inner", inner));
+  static void save(ICerealizer& archive, const std::shared_ptr<const ConstrainedRandomRealNumber>& self) {
+    archive.save("initial", self->initial);
+    archive.save("e", self->e);
+    archive.save("inner", self->inner);
+  }
+
+  static void load(IDecerealizer& archive, std::shared_ptr<const RealNumber>& self) {
+    Arf initial;
+    long e;
+    shared_ptr<const RealNumber> inner;
+    archive.load("initial", initial);
+    archive.load("e", e);
+    archive.load("inner", inner);
+
+    self = factory().get(std::tuple{initial, e, inner}, [&]() { return new ConstrainedRandomRealNumber(initial, e, inner); });
   }
 
  private:
@@ -105,17 +126,6 @@ class ConstrainedRandomRealNumber final : public RealNumberBase {
   shared_ptr<const RealNumber> inner;
 };
 
-auto& factory() {
-  using Key = std::tuple<Arf, long, std::shared_ptr<const RealNumber>>;
-  struct Hash {
-    size_t operator()(const Key& key) const {
-      using flatsurf::hash_combine, flatsurf::hash;
-      return hash_combine(hash(std::get<0>(key)), hash(std::get<1>(key)), hash(static_cast<double>(*std::get<2>(key))));
-    }
-  };
-  static unique_factory::UniqueFactory<Key, RealNumber, unique_factory::KeepNothingAlive, Hash> factory;
-  return factory;
-}
 }  // namespace
 
 namespace exactreal {
@@ -211,16 +221,14 @@ shared_ptr<const RealNumber> RealNumber::random(const double x, Seed seed) {
   return random(lower, upper, seed);
 }
 
-void save_constrained(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& base) {
-  std::dynamic_pointer_cast<const ConstrainedRandomRealNumber>(base)->save(archive);
+void save_constrained(ICerealizer& archive, const std::shared_ptr<const RealNumber>& base) {
+  const auto& self = std::dynamic_pointer_cast<const ConstrainedRandomRealNumber>(base);
+  LIBEXACTREAL_ASSERT(self, "cannot serialize this real number as a rational");
+  ConstrainedRandomRealNumber::save(archive, self);
 }
 
-void load_constrained(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& base) {
-  Arf initial;
-  long e;
-  shared_ptr<const RealNumber> inner;
-  archive(initial, e, inner);
-
-  base = factory().get(std::tuple{initial, e, inner}, [&]() { return new ConstrainedRandomRealNumber(initial, e, inner); });
+void load_constrained(IDecerealizer& archive, std::shared_ptr<const RealNumber>& self) {
+  ConstrainedRandomRealNumber::load(archive, self);
 }
+
 }  // namespace exactreal

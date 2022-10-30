@@ -20,14 +20,12 @@
 
 #include <gmpxx.h>
 
-#include <cereal/archives/json.hpp>
-#include <cereal/cereal.hpp>
-
-#include "../exact-real/cereal.hpp"
 #include "../exact-real/real_number.hpp"
+#include "../exact-real/cereal.interface.hpp"
 #include "../exact-real/yap/arf.hpp"
 #include "external/unique-factory/unique-factory/unique-factory.hpp"
 #include "impl/real_number_base.hpp"
+#include "util/assert.ipp"
 
 using namespace exactreal;
 using std::ostream;
@@ -66,9 +64,14 @@ class RationalRealNumber final : public RealNumberBase {
     throw std::logic_error("not implemented - multiplication of rational real number != 1 with non-rational real number");
   }
 
-  template <typename Archive>
-  void save(Archive& archive) const {
-    archive(cereal::make_nvp("value", CerealWrap{value}));
+  static void save(ICerealizer& archive, const std::shared_ptr<const RationalRealNumber>& self) {
+    archive.save("value", self->value);
+  }
+
+  static void load(IDecerealizer& archive, std::shared_ptr<const RealNumber>& self) {
+    mpq_class value;
+    archive.load("value", value);
+    self = RealNumber::rational(value);
   }
 
  private:
@@ -87,14 +90,14 @@ shared_ptr<const RealNumber> RealNumber::rational(const mpq_class& value) {
   return factory.get(value, [&]() { return new RationalRealNumber(value); });
 }
 
-void save_rational(cereal::JSONOutputArchive& archive, const std::shared_ptr<const RealNumber>& base) {
-  std::dynamic_pointer_cast<const RationalRealNumber>(base)->save(archive);
+void save_rational(ICerealizer& archive, const std::shared_ptr<const RealNumber>& base) {
+  const auto& self = std::dynamic_pointer_cast<const RationalRealNumber>(base);
+  LIBEXACTREAL_ASSERT(self, "cannot serialize this real number as a rational");
+  RationalRealNumber::save(archive, self);
 }
 
-void load_rational(cereal::JSONInputArchive& archive, std::shared_ptr<const RealNumber>& base) {
-  CerealWrap<mpq_class> value;
-  archive(cereal::make_nvp("value", value));
-  base = RealNumber::rational(*value);
+void load_rational(IDecerealizer& archive, std::shared_ptr<const RealNumber>& self) {
+  RationalRealNumber::load(archive, self);
 }
 
 }  // namespace exactreal

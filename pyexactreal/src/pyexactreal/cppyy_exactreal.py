@@ -201,10 +201,7 @@ cppyy.py.add_pythonization(enable_pretty_printing, "eantic")
 
 cppyy.py.add_pythonization(lambda proxy, name: enable_cereal(proxy, name, ["exact-real/cereal.hpp"]), "exactreal")
 
-# Set EXTRA_CLING_ARGS="-I /usr/include" or wherever exact-real/cppyy.hpp can
-# be resolved if the following line fails to find the header file.
-cppyy.add_include_path(os.path.join(os.path.dirname(__file__), 'include'))
-
+# You might want to set EXTRA_CLING_ARGS="-I /usr/include" or wherever exact-real/cppyy.hpp can be resolved.
 cppyy.include("exact-real/cppyy.hpp")
 cppyy.include("e-antic/renfxx.h")
 
