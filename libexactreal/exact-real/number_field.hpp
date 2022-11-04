@@ -2,7 +2,7 @@
  *  This file is part of exact-real.
  *
  *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019-2020 Julian Rüth
+ *        Copyright (C) 2019-2022 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@
 #include <memory>
 #include <optional>
 
-#include "forward.hpp"
+#include "rational_field.hpp"
 
 namespace exactreal {
 
@@ -48,11 +48,13 @@ class LIBEXACTREAL_API NumberField : boost::equality_comparable<NumberField> {
 
   typedef eantic::renf_elem_class ElementClass;
 
-  template <typename T, typename M = decltype(std::declval<const ElementClass&>() * std::declval<const T&>())>
-  using multiplication_t = M;
+  // Whether a number field element supports multiplication with a T.
+  template <typename T>
+  static constexpr bool can_multiply = RationalField::can_multiply<T> || std::is_same_v<T, eantic::renf_elem_class>;
 
-  template <typename T, typename Q = decltype(std::declval<const ElementClass&>() / std::declval<const T&>())>
-  using division_t = Q;
+  // Whether a number field element supports exact division by a T.
+  template <typename T>
+  static constexpr bool can_divide = can_multiply<T>;
 
   static constexpr bool contains_rationals = true;
 

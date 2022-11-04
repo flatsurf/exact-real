@@ -33,7 +33,6 @@
 #include "../exact-real/real_number.hpp"
 #include "../exact-real/yap/arb.hpp"
 #include "external/gmpxxll/gmpxxll/mpz_class.hpp"
-#include "legacy/1_4_0/element.hpp"
 #include "util/assert.ipp"
 
 using namespace exactreal;
@@ -287,7 +286,7 @@ Element<Ring>& Element<Ring>::operator*=(const mpq_class& rhs) {
 }
 
 template <typename Ring>
-template <typename T, typename, typename>
+template <typename T, typename>
 Element<Ring>& Element<Ring>::operator/=(const T& rhs) {
   for (auto& c : impl->coefficients) {
     c /= rhs;

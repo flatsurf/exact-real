@@ -2,7 +2,7 @@
  *  This file is part of exact-real.
  *
  *        Copyright (C)      2019 Vincent Delecroix
- *        Copyright (C) 2019-2021 Julian Rüth
+ *        Copyright (C) 2019-2022 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -87,19 +87,14 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   // coefficient type. However, we need to define multiplication separately for
   // mpz_class and mpq_class since we cannot export symbols with these as
   // template arguments when building on clang with -fvisibility=hidden.
-  template <typename T, typename = typename Ring::template multiplication_t<T>>
+  template <typename T, typename = std::enable_if_t<Ring::template can_multiply<T>, bool>>
   Element& operator*=(const T& c);
   Element& operator*=(const mpz_class&);
   Element& operator*=(const mpq_class&);
 
   // Divide this element by `c`.
   // As with multiplication, we provide specialized overloads for GMP types.
-  template <typename T, typename Q = typename Ring::template division_t<T>, typename = 
-    // Unt
-    std::enable_if_t<
-      (std::is_same_v<Ring, RationalField> && std::is_same_v<T, int>) ||
-      (std::is_same_v<Ring, NumberField> && (std::is_same_v<T, int> || std::is_same_v<T, eantic::renf_elem_class>))
-    , void>>
+  template <typename T, typename = std::enable_if_t<Ring::template can_divide<T>, bool>>
   Element& operator/=(const T& c);
   Element& operator/=(const mpz_class&);
   Element& operator/=(const mpq_class&);

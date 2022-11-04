@@ -2,7 +2,7 @@
  *  This file is part of exact-real.
  *
  *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019-2020 Julian Rüth
+ *        Copyright (C) 2019-2022 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -39,12 +39,13 @@ struct LIBEXACTREAL_API IntegerRing : private boost::equality_comparable<Integer
 
   typedef mpz_class ElementClass;
 
-  template <typename T, typename M = decltype(std::declval<const ElementClass&>() * std::declval<const T&>())>
-  using multiplication_t = M;
+  // Whether an integer supports multiplication with a T.
+  template <typename T>
+  static constexpr bool can_multiply = std::is_integral_v<T> || std::is_same_v<T, mpz_class>;
 
-  // Note that this trait is broken, see https://github.com/flatsurf/exact-real/issues/148.
-  template <typename T, typename Q = decltype(std::declval<const ElementClass&>() / std::declval<const T&>())>
-  using division_t = std::conditional_t<std::is_same_v<Q, mpz_class>, mpq_class, Q>;
+  // Whether an integer supports exact division by a T.
+  template <typename>
+  static constexpr bool can_divide = false;
 
   static constexpr bool contains_rationals = false;
 

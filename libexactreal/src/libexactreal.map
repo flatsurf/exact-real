@@ -419,5 +419,7 @@ LIBEXACTREAL_3.0.0 {
     extern "C++" {
       "exactreal::RealNumber::load(exactreal::IDecerealizer&, std::shared_ptr<exactreal::RealNumber const>&)";
       "exactreal::RealNumber::save(exactreal::ICerealizer&, std::shared_ptr<exactreal::RealNumber const> const&)";
+      "exactreal::Element<exactreal::NumberField>& exactreal::Element<exactreal::NumberField>::operator*=<eantic::renf_elem_class, bool>(eantic::renf_elem_class const&)";
+      "exactreal::Element<exactreal::NumberField>& exactreal::Element<exactreal::NumberField>::operator/=<eantic::renf_elem_class, bool>(eantic::renf_elem_class const&)";
     };
 } LIBEXACTREAL_2.3.0;
