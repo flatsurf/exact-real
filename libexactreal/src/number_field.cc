@@ -73,6 +73,14 @@ typename NumberField::ElementClass NumberField::coerce(const ElementClass& x) co
 
 template <typename T>
 NumberField::ElementClass& NumberField::imul(NumberField::ElementClass& lhs, const T& rhs) {
+  // e-antic has no char operators (because they could lead to errors with strings, e.g., from Python.)
+  if constexpr (std::is_same_v<T, char>)
+    return imul(lhs, static_cast<short>(rhs));
+
+  // e-antic has no char operators (because they could lead to errors with strings, e.g., from Python.)
+  if constexpr (std::is_same_v<T, unsigned char>)
+    return imul(lhs, static_cast<unsigned short>(rhs));
+
   return lhs *= rhs;
 }
 
@@ -80,6 +88,14 @@ template <typename T>
 NumberField::ElementClass& NumberField::idiv(NumberField::ElementClass& lhs, const T& rhs) {
   if (!rhs)
     throw std::invalid_argument("division by zero");
+
+  // e-antic has no char operators (because they could lead to errors with strings, e.g., from Python.)
+  if constexpr (std::is_same_v<T, char>)
+    return idiv(lhs, static_cast<short>(rhs));
+
+  // e-antic has no char operators (because they could lead to errors with strings, e.g., from Python.)
+  if constexpr (std::is_same_v<T, unsigned char>)
+    return idiv(lhs, static_cast<unsigned short>(rhs));
 
   return lhs /= rhs;
 }
