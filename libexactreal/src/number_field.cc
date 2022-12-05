@@ -73,15 +73,15 @@ typename NumberField::ElementClass NumberField::coerce(const ElementClass& x) co
 
 template <typename T>
 NumberField::ElementClass& NumberField::imul(NumberField::ElementClass& lhs, const T& rhs) {
-  // e-antic has no char operators (because they could lead to errors with strings, e.g., from Python.)
-  if constexpr (std::is_same_v<T, char>)
+  if constexpr (std::is_same_v<T, char>) {
+    // e-antic has no char operators (because they could lead to errors with strings, e.g., from Python.)
     return imul(lhs, static_cast<short>(rhs));
-
-  // e-antic has no char operators (because they could lead to errors with strings, e.g., from Python.)
-  if constexpr (std::is_same_v<T, unsigned char>)
+  } else if constexpr (std::is_same_v<T, unsigned char>) {
+    // e-antic has no char operators (because they could lead to errors with strings, e.g., from Python.)
     return imul(lhs, static_cast<unsigned short>(rhs));
-
-  return lhs *= rhs;
+  } else {
+    return lhs *= rhs;
+  }
 }
 
 template <typename T>
@@ -89,15 +89,15 @@ NumberField::ElementClass& NumberField::idiv(NumberField::ElementClass& lhs, con
   if (!rhs)
     throw std::invalid_argument("division by zero");
 
-  // e-antic has no char operators (because they could lead to errors with strings, e.g., from Python.)
-  if constexpr (std::is_same_v<T, char>)
+  if constexpr (std::is_same_v<T, char>) {
+    // e-antic has no char operators (because they could lead to errors with strings, e.g., from Python.)
     return idiv(lhs, static_cast<short>(rhs));
-
-  // e-antic has no char operators (because they could lead to errors with strings, e.g., from Python.)
-  if constexpr (std::is_same_v<T, unsigned char>)
+  } else if constexpr (std::is_same_v<T, unsigned char>) {
+    // e-antic has no char operators (because they could lead to errors with strings, e.g., from Python.)
     return idiv(lhs, static_cast<unsigned short>(rhs));
-
-  return lhs /= rhs;
+  } else {
+    return lhs /= rhs;
+  }
 }
 
 }  // namespace exactreal
