@@ -73,15 +73,7 @@ typename NumberField::ElementClass NumberField::coerce(const ElementClass& x) co
 
 template <typename T>
 NumberField::ElementClass& NumberField::imul(NumberField::ElementClass& lhs, const T& rhs) {
-  if constexpr (std::is_same_v<T, char>) {
-    // e-antic has no char operators (because they could lead to errors with strings, e.g., from Python.)
-    return imul(lhs, static_cast<short>(rhs));
-  } else if constexpr (std::is_same_v<T, unsigned char>) {
-    // e-antic has no char operators (because they could lead to errors with strings, e.g., from Python.)
-    return imul(lhs, static_cast<unsigned short>(rhs));
-  } else {
-    return lhs *= rhs;
-  }
+  return lhs *= rhs;
 }
 
 template <typename T>
@@ -89,15 +81,7 @@ NumberField::ElementClass& NumberField::idiv(NumberField::ElementClass& lhs, con
   if (!rhs)
     throw std::invalid_argument("division by zero");
 
-  if constexpr (std::is_same_v<T, char>) {
-    // e-antic has no char operators (because they could lead to errors with strings, e.g., from Python.)
-    return idiv(lhs, static_cast<short>(rhs));
-  } else if constexpr (std::is_same_v<T, unsigned char>) {
-    // e-antic has no char operators (because they could lead to errors with strings, e.g., from Python.)
-    return idiv(lhs, static_cast<unsigned short>(rhs));
-  } else {
-    return lhs /= rhs;
-  }
+  return lhs /= rhs;
 }
 
 }  // namespace exactreal
@@ -111,8 +95,6 @@ size_t hash<exactreal::NumberField>::operator()(const exactreal::NumberField& se
 }  // namespace std
 
 // Instantiations of templates so implementations are generated for the linker
-template exactreal::NumberField::ElementClass& exactreal::NumberField::imul<char>(NumberField::ElementClass&, const char&);
-template exactreal::NumberField::ElementClass& exactreal::NumberField::imul<unsigned char>(NumberField::ElementClass&, const unsigned char&);
 template exactreal::NumberField::ElementClass& exactreal::NumberField::imul<short>(NumberField::ElementClass&, const short&);
 template exactreal::NumberField::ElementClass& exactreal::NumberField::imul<unsigned short>(NumberField::ElementClass&, const unsigned short&);
 template exactreal::NumberField::ElementClass& exactreal::NumberField::imul<int>(NumberField::ElementClass&, const int&);
@@ -124,8 +106,6 @@ template exactreal::NumberField::ElementClass& exactreal::NumberField::imul<unsi
 template exactreal::NumberField::ElementClass& exactreal::NumberField::imul<mpz_class>(NumberField::ElementClass&, const mpz_class&);
 template exactreal::NumberField::ElementClass& exactreal::NumberField::imul<mpq_class>(NumberField::ElementClass&, const mpq_class&);
 template exactreal::NumberField::ElementClass& exactreal::NumberField::imul<eantic::renf_elem_class>(NumberField::ElementClass&, const eantic::renf_elem_class&);
-template exactreal::NumberField::ElementClass& exactreal::NumberField::idiv<char>(NumberField::ElementClass&, const char&);
-template exactreal::NumberField::ElementClass& exactreal::NumberField::idiv<unsigned char>(NumberField::ElementClass&, const unsigned char&);
 template exactreal::NumberField::ElementClass& exactreal::NumberField::idiv<short>(NumberField::ElementClass&, const short&);
 template exactreal::NumberField::ElementClass& exactreal::NumberField::idiv<unsigned short>(NumberField::ElementClass&, const unsigned short&);
 template exactreal::NumberField::ElementClass& exactreal::NumberField::idiv<int>(NumberField::ElementClass&, const int&);

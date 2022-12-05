@@ -277,18 +277,6 @@ Element<Ring> Element<Ring>::operator-() const {
 }
 
 template <typename Ring>
-Element<Ring>& Element<Ring>::operator*=(char rhs) {
-  (*impl) *= rhs;
-  return *this;
-}
-
-template <typename Ring>
-Element<Ring>& Element<Ring>::operator*=(unsigned char rhs) {
-  (*impl) *= rhs;
-  return *this;
-}
-
-template <typename Ring>
 Element<Ring>& Element<Ring>::operator*=(short rhs) {
   (*impl) *= rhs;
   return *this;
@@ -352,18 +340,6 @@ template <typename Ring>
 template <bool Enabled, std::enable_if_t<Enabled, bool>>
 Element<Ring>& Element<Ring>::operator*=(const typename Ring::ElementClass& rhs) {
   (*impl) *= rhs;
-  return *this;
-}
-
-template <typename Ring>
-Element<Ring>& Element<Ring>::operator/=(char rhs) {
-  (*impl) /= rhs;
-  return *this;
-}
-
-template <typename Ring>
-Element<Ring>& Element<Ring>::operator/=(unsigned char rhs) {
-  (*impl) /= rhs;
   return *this;
 }
 

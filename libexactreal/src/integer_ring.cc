@@ -96,8 +96,6 @@ size_t hash<exactreal::IntegerRing>::operator()(const exactreal::IntegerRing&) c
 }
 
 // Instantiations of templates so implementations are generated for the linker
-template exactreal::IntegerRing::ElementClass& exactreal::IntegerRing::imul<char>(IntegerRing::ElementClass&, const char&);
-template exactreal::IntegerRing::ElementClass& exactreal::IntegerRing::imul<unsigned char>(IntegerRing::ElementClass&, const unsigned char&);
 template exactreal::IntegerRing::ElementClass& exactreal::IntegerRing::imul<short>(IntegerRing::ElementClass&, const short&);
 template exactreal::IntegerRing::ElementClass& exactreal::IntegerRing::imul<unsigned short>(IntegerRing::ElementClass&, const unsigned short&);
 template exactreal::IntegerRing::ElementClass& exactreal::IntegerRing::imul<int>(IntegerRing::ElementClass&, const int&);
@@ -108,8 +106,6 @@ template exactreal::IntegerRing::ElementClass& exactreal::IntegerRing::imul<long
 template exactreal::IntegerRing::ElementClass& exactreal::IntegerRing::imul<unsigned long long>(IntegerRing::ElementClass&, const unsigned long long&);
 template exactreal::IntegerRing::ElementClass& exactreal::IntegerRing::imul<mpz_class>(IntegerRing::ElementClass&, const mpz_class&);
 template exactreal::IntegerRing::ElementClass& exactreal::IntegerRing::imul<mpq_class>(IntegerRing::ElementClass&, const mpq_class&);
-template exactreal::IntegerRing::ElementClass& exactreal::IntegerRing::idiv<char>(IntegerRing::ElementClass&, const char&);
-template exactreal::IntegerRing::ElementClass& exactreal::IntegerRing::idiv<unsigned char>(IntegerRing::ElementClass&, const unsigned char&);
 template exactreal::IntegerRing::ElementClass& exactreal::IntegerRing::idiv<short>(IntegerRing::ElementClass&, const short&);
 template exactreal::IntegerRing::ElementClass& exactreal::IntegerRing::idiv<unsigned short>(IntegerRing::ElementClass&, const unsigned short&);
 template exactreal::IntegerRing::ElementClass& exactreal::IntegerRing::idiv<int>(IntegerRing::ElementClass&, const int&);

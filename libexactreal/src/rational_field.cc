@@ -90,8 +90,6 @@ size_t hash<exactreal::RationalField>::operator()(const exactreal::RationalField
 }
 
 // Instantiations of templates so implementations are generated for the linker
-template exactreal::RationalField::ElementClass& exactreal::RationalField::imul<char>(RationalField::ElementClass&, const char&);
-template exactreal::RationalField::ElementClass& exactreal::RationalField::imul<unsigned char>(RationalField::ElementClass&, const unsigned char&);
 template exactreal::RationalField::ElementClass& exactreal::RationalField::imul<short>(RationalField::ElementClass&, const short&);
 template exactreal::RationalField::ElementClass& exactreal::RationalField::imul<unsigned short>(RationalField::ElementClass&, const unsigned short&);
 template exactreal::RationalField::ElementClass& exactreal::RationalField::imul<int>(RationalField::ElementClass&, const int&);
@@ -102,8 +100,6 @@ template exactreal::RationalField::ElementClass& exactreal::RationalField::imul<
 template exactreal::RationalField::ElementClass& exactreal::RationalField::imul<unsigned long long>(RationalField::ElementClass&, const unsigned long long&);
 template exactreal::RationalField::ElementClass& exactreal::RationalField::imul<mpz_class>(RationalField::ElementClass&, const mpz_class&);
 template exactreal::RationalField::ElementClass& exactreal::RationalField::imul<mpq_class>(RationalField::ElementClass&, const mpq_class&);
-template exactreal::RationalField::ElementClass& exactreal::RationalField::idiv<char>(RationalField::ElementClass&, const char&);
-template exactreal::RationalField::ElementClass& exactreal::RationalField::idiv<unsigned char>(RationalField::ElementClass&, const unsigned char&);
 template exactreal::RationalField::ElementClass& exactreal::RationalField::idiv<short>(RationalField::ElementClass&, const short&);
 template exactreal::RationalField::ElementClass& exactreal::RationalField::idiv<unsigned short>(RationalField::ElementClass&, const unsigned short&);
 template exactreal::RationalField::ElementClass& exactreal::RationalField::idiv<int>(RationalField::ElementClass&, const int&);

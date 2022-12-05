@@ -76,16 +76,6 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
 
     CAPTURE(x);
 
-    REQUIRE((x <= static_cast<unsigned char>(0) || x >= static_cast<unsigned char>(0)));
-    REQUIRE((x == static_cast<unsigned char>(0) || x != static_cast<unsigned char>(0)));
-    if (x)
-      REQUIRE((x < static_cast<unsigned char>(0) || x > static_cast<unsigned char>(0)));
-
-    REQUIRE((x <= static_cast<char>(0) || x >= static_cast<char>(0)));
-    REQUIRE((x == static_cast<char>(0) || x != static_cast<char>(0)));
-    if (x)
-      REQUIRE((x < static_cast<char>(0) || x > static_cast<char>(0)));
-
     REQUIRE((x <= static_cast<unsigned short>(0) || x >= static_cast<unsigned short>(0)));
     REQUIRE((x == static_cast<unsigned short>(0) || x != static_cast<unsigned short>(0)));
     if (x)
@@ -237,8 +227,6 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
       REQUIRE(x / I(1) == x);
     };
 
-    test(static_cast<char>(0));
-    test(static_cast<unsigned char>(0));
     test(static_cast<short>(0));
     test(static_cast<unsigned short>(0));
     test(static_cast<int>(0));

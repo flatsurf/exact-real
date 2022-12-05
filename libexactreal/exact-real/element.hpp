@@ -51,8 +51,6 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
                                    boost::totally_ordered<Element<Ring>, typename Ring::ElementClass>,
                                    boost::totally_ordered<Element<Ring>, mpq_class>,
                                    boost::totally_ordered<Element<Ring>, mpz_class>,
-                                   boost::totally_ordered<Element<Ring>, char>,
-                                   boost::totally_ordered<Element<Ring>, unsigned char>,
                                    boost::totally_ordered<Element<Ring>, short>,
                                    boost::totally_ordered<Element<Ring>, unsigned short>,
                                    boost::totally_ordered<Element<Ring>, int>,
@@ -71,8 +69,6 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
                                    boost::multiplicative<Element<Ring>, typename Ring::ElementClass>,
                                    boost::multiplicative<Element<Ring>, mpz_class>,
                                    boost::multiplicative<Element<Ring>, mpq_class>,
-                                   boost::multiplicative<Element<Ring>, char>,
-                                   boost::multiplicative<Element<Ring>, unsigned char>,
                                    boost::multiplicative<Element<Ring>, short>,
                                    boost::multiplicative<Element<Ring>, unsigned short>,
                                    boost::multiplicative<Element<Ring>, int>,
@@ -117,8 +113,6 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
 
   Element operator-() const;
 
-  Element& operator*=(char);
-  Element& operator*=(unsigned char);
   Element& operator*=(short);
   Element& operator*=(unsigned short);
   Element& operator*=(int);
@@ -133,8 +127,6 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   template <bool Enabled = !std::is_same_v<typename Ring::ElementClass, mpz_class> && !std::is_same_v<typename Ring::ElementClass, mpq_class>, std::enable_if_t<Enabled, bool> = true>
   Element& operator*=(const typename Ring::ElementClass&);
 
-  Element& operator/=(char);
-  Element& operator/=(unsigned char);
   Element& operator/=(short);
   Element& operator/=(unsigned short);
   Element& operator/=(int);
