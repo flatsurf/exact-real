@@ -1,7 +1,7 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
+ *        Copyright (C)      2019 Vincent Delecroix
  *        Copyright (C) 2019-2022 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
@@ -33,6 +33,8 @@
 
 namespace exactreal {
 
+// Implements e-antic number field arithmetic for coefficients in expressions
+// making up an Element.
 class LIBEXACTREAL_API NumberField : boost::equality_comparable<NumberField> {
  public:
   NumberField();
@@ -44,17 +46,7 @@ class LIBEXACTREAL_API NumberField : boost::equality_comparable<NumberField> {
 
   static NumberField compositum(const NumberField& lhs, const NumberField& rhs);
 
-  bool operator==(const NumberField&) const;
-
   typedef eantic::renf_elem_class ElementClass;
-
-  // Whether a number field element supports multiplication with a T.
-  template <typename T>
-  static constexpr bool can_multiply = RationalField::can_multiply<T> || std::is_same_v<T, eantic::renf_elem_class>;
-
-  // Whether a number field element supports exact division by a T.
-  template <typename T>
-  static constexpr bool can_divide = can_multiply<T>;
 
   static constexpr bool contains_rationals = true;
 
@@ -65,6 +57,16 @@ class LIBEXACTREAL_API NumberField : boost::equality_comparable<NumberField> {
   static mpz_class floor(const ElementClass& x);
   static Arb arb(const ElementClass& x, long prec);
   static std::optional<mpq_class> rational(const ElementClass& x);
+
+  // Return the result of exact multiplication of an ElementClass.
+  template <typename T>
+  static ElementClass& imul(ElementClass&, const T&);
+
+  // Return the result of exact division of an ElementClass.
+  template <typename T>
+  static ElementClass& idiv(ElementClass&, const T&);
+
+  bool operator==(const NumberField&) const;
 };
 
 }  // namespace exactreal
