@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019-2020 Julian Rüth
+ *        Copyright (C)      2019 Vincent Delecroix
+ *        Copyright (C) 2019-2022 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -29,10 +29,12 @@
 #include <memory>
 #include <optional>
 
-#include "forward.hpp"
+#include "rational_field.hpp"
 
 namespace exactreal {
 
+// Implements e-antic number field arithmetic for coefficients in expressions
+// making up an Element.
 class LIBEXACTREAL_API NumberField : boost::equality_comparable<NumberField> {
  public:
   NumberField();
@@ -44,15 +46,7 @@ class LIBEXACTREAL_API NumberField : boost::equality_comparable<NumberField> {
 
   static NumberField compositum(const NumberField& lhs, const NumberField& rhs);
 
-  bool operator==(const NumberField&) const;
-
   typedef eantic::renf_elem_class ElementClass;
-
-  template <typename T, typename M = decltype(std::declval<const ElementClass&>() * std::declval<const T&>())>
-  using multiplication_t = M;
-
-  template <typename T, typename Q = decltype(std::declval<const ElementClass&>() / std::declval<const T&>())>
-  using division_t = Q;
 
   static constexpr bool contains_rationals = true;
 
@@ -63,6 +57,16 @@ class LIBEXACTREAL_API NumberField : boost::equality_comparable<NumberField> {
   static mpz_class floor(const ElementClass& x);
   static Arb arb(const ElementClass& x, long prec);
   static std::optional<mpq_class> rational(const ElementClass& x);
+
+  // Return the result of exact multiplication of an ElementClass.
+  template <typename T>
+  static ElementClass& imul(ElementClass&, const T&);
+
+  // Return the result of exact division of an ElementClass.
+  template <typename T>
+  static ElementClass& idiv(ElementClass&, const T&);
+
+  bool operator==(const NumberField&) const;
 };
 
 }  // namespace exactreal

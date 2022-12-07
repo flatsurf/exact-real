@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019-2020 Julian Rüth
+ *        Copyright (C)      2019 Vincent Delecroix
+ *        Copyright (C) 2019-2022 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -26,10 +26,11 @@
 #include <boost/operators.hpp>
 #include <optional>
 
-#include "forward.hpp"
+#include "integer_ring.hpp"
 
 namespace exactreal {
 
+// Implements rational arithmetic for rational coefficients in expressions making up an Element.
 struct LIBEXACTREAL_API RationalField : boost::equality_comparable<RationalField> {
   RationalField();
   RationalField(const mpq_class&);
@@ -38,22 +39,25 @@ struct LIBEXACTREAL_API RationalField : boost::equality_comparable<RationalField
 
   typedef mpq_class ElementClass;
 
-  template <typename T, typename M = decltype(std::declval<const ElementClass&>() * std::declval<const T&>())>
-  using multiplication_t = M;
-
-  template <typename T, typename Q = decltype(std::declval<const ElementClass&>() / std::declval<const T&>())>
-  using division_t = Q;
-
   static constexpr bool contains_rationals = true;
 
-  ElementClass coerce(const ElementClass& x) const { return x; }
+  ElementClass coerce(const ElementClass& x) const;
 
   static constexpr bool isField = true;
   static bool unit(const ElementClass&);
   static Arb arb(const ElementClass& x, long prec);
   static mpz_class floor(const ElementClass& x);
   static std::optional<mpq_class> rational(const ElementClass& x);
-  bool operator==(const RationalField&) const { return true; }
+
+  // Return the result of exact multiplication of an ElementClass.
+  template <typename T>
+  static ElementClass& imul(ElementClass&, const T&);
+
+  // Return the result of exact division of an ElementClass.
+  template <typename T>
+  static ElementClass& idiv(ElementClass&, const T&);
+
+  bool operator==(const RationalField&) const;
 };
 
 }  // namespace exactreal
@@ -61,7 +65,7 @@ struct LIBEXACTREAL_API RationalField : boost::equality_comparable<RationalField
 namespace std {
 template <>
 struct hash<exactreal::RationalField> {
-  size_t operator()(const exactreal::RationalField&) const { return 0; }
+  size_t operator()(const exactreal::RationalField&) const;
 };
 }  // namespace std
 

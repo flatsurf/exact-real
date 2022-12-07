@@ -2,7 +2,7 @@
  *  This file is part of exact-real.
  *
  *        Copyright (C)      2019 Vincent Delecroix
- *        Copyright (C) 2019-2021 Julian Rüth
+ *        Copyright (C) 2019-2022 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,6 +25,8 @@
 
 #include <boost/blank.hpp>
 #include <boost/operators.hpp>
+#include <boost/mp11/utility.hpp>
+#include <boost/mp11/algorithm.hpp>
 #include <e-antic/renfxx_fwd.hpp>
 #include <type_traits>
 #include <vector>
@@ -40,17 +42,46 @@ template <typename Ring>
 class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
                                  boost::multipliable<Element<Ring>>,
                                  boost::totally_ordered<Element<Ring>>,
-                                 boost::totally_ordered<Element<Ring>, RealNumber>,
-                                 boost::totally_ordered<Element<Ring>, mpq_class>,
-                                 boost::totally_ordered<Element<Ring>, mpz_class>,
-                                 boost::totally_ordered<Element<Ring>, long long>,
+                                 // Element can be <= compared with many other
+                                 // types. We need to deduplicate these
+                                 // comparisons since ElementClass might be
+                                 // mpz_class or mpq_class.
+                                 boost::mp11::mp_unique<boost::mp11::mp_inherit<
+                                   boost::totally_ordered<Element<Ring>, RealNumber>,
+                                   boost::totally_ordered<Element<Ring>, typename Ring::ElementClass>,
+                                   boost::totally_ordered<Element<Ring>, mpq_class>,
+                                   boost::totally_ordered<Element<Ring>, mpz_class>,
+                                   boost::totally_ordered<Element<Ring>, short>,
+                                   boost::totally_ordered<Element<Ring>, unsigned short>,
+                                   boost::totally_ordered<Element<Ring>, int>,
+                                   boost::totally_ordered<Element<Ring>, unsigned int>,
+                                   boost::totally_ordered<Element<Ring>, long>,
+                                   boost::totally_ordered<Element<Ring>, unsigned long>,
+                                   boost::totally_ordered<Element<Ring>, long long>,
+                                   boost::totally_ordered<Element<Ring>, unsigned long long>>>,
                                  boost::multipliable<Element<Ring>, RealNumber>,
-                                 boost::multiplicative<Element<Ring>, typename Ring::ElementClass> {
+                                 // Element supports multiplication and
+                                 // division  with many other types. We need to
+                                 // deduplicate these operators since
+                                 // ElementClass might be mpz_class or
+                                 // mpq_class.
+                                 boost::mp11::mp_unique<boost::mp11::mp_inherit<
+                                   boost::multiplicative<Element<Ring>, typename Ring::ElementClass>,
+                                   boost::multiplicative<Element<Ring>, mpz_class>,
+                                   boost::multiplicative<Element<Ring>, mpq_class>,
+                                   boost::multiplicative<Element<Ring>, short>,
+                                   boost::multiplicative<Element<Ring>, unsigned short>,
+                                   boost::multiplicative<Element<Ring>, int>,
+                                   boost::multiplicative<Element<Ring>, unsigned int>,
+                                   boost::multiplicative<Element<Ring>, long>,
+                                   boost::multiplicative<Element<Ring>, unsigned long>,
+                                   boost::multiplicative<Element<Ring>, long long>,
+                                   boost::multiplicative<Element<Ring>, unsigned long long>>> {
  public:
   Element();
   Element(const std::shared_ptr<const Module<Ring>>& parent, const std::vector<typename Ring::ElementClass>& coefficients);
 
-  Element(const typename Ring::ElementClass& value);
+  explicit Element(const typename Ring::ElementClass& value);
 
   template <bool Enabled = !std::is_same_v<Ring, IntegerRing>, std::enable_if_t<Enabled, bool> = true>
   Element(const Element<IntegerRing>& value);
@@ -82,27 +113,33 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
 
   Element operator-() const;
 
-  // Multiply this element with `c`.
-  // This overload is available for every type that multiplies with the
-  // coefficient type. However, we need to define multiplication separately for
-  // mpz_class and mpq_class since we cannot export symbols with these as
-  // template arguments when building on clang with -fvisibility=hidden.
-  template <typename T, typename = typename Ring::template multiplication_t<T>>
-  Element& operator*=(const T& c);
+  Element& operator*=(short);
+  Element& operator*=(unsigned short);
+  Element& operator*=(int);
+  Element& operator*=(unsigned int);
+  Element& operator*=(long);
+  Element& operator*=(unsigned long);
+  Element& operator*=(long long);
+  Element& operator*=(unsigned long long);
   Element& operator*=(const mpz_class&);
   Element& operator*=(const mpq_class&);
 
-  // Divide this element by `c`.
-  // As with multiplication, we provide specialized overloads for GMP types.
-  template <typename T, typename Q = typename Ring::template division_t<T>, typename = 
-    // Unt
-    std::enable_if_t<
-      (std::is_same_v<Ring, RationalField> && std::is_same_v<T, int>) ||
-      (std::is_same_v<Ring, NumberField> && (std::is_same_v<T, int> || std::is_same_v<T, eantic::renf_elem_class>))
-    , void>>
-  Element& operator/=(const T& c);
+  template <bool Enabled = !std::is_same_v<typename Ring::ElementClass, mpz_class> && !std::is_same_v<typename Ring::ElementClass, mpq_class>, std::enable_if_t<Enabled, bool> = true>
+  Element& operator*=(const typename Ring::ElementClass&);
+
+  Element& operator/=(short);
+  Element& operator/=(unsigned short);
+  Element& operator/=(int);
+  Element& operator/=(unsigned int);
+  Element& operator/=(long);
+  Element& operator/=(unsigned long);
+  Element& operator/=(long long);
+  Element& operator/=(unsigned long long);
   Element& operator/=(const mpz_class&);
   Element& operator/=(const mpq_class&);
+
+  template <bool Enabled = !std::is_same_v<typename Ring::ElementClass, mpz_class> && !std::is_same_v<typename Ring::ElementClass, mpq_class>, std::enable_if_t<Enabled, bool> = true>
+  Element& operator/=(const typename Ring::ElementClass&);
 
   std::optional<Element> truediv(const Element&) const;
 

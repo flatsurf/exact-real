@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019-2020 Julian Rüth
+ *        Copyright (C)      2019 Vincent Delecroix
+ *        Copyright (C) 2019-2022 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
 
 namespace exactreal {
 
+// Implements integer arithmetic for integer coefficients in expressions making up an Element.
 struct LIBEXACTREAL_API IntegerRing : private boost::equality_comparable<IntegerRing> {
   IntegerRing();
   IntegerRing(const mpz_class&);
@@ -39,23 +40,25 @@ struct LIBEXACTREAL_API IntegerRing : private boost::equality_comparable<Integer
 
   typedef mpz_class ElementClass;
 
-  template <typename T, typename M = decltype(std::declval<const ElementClass&>() * std::declval<const T&>())>
-  using multiplication_t = M;
-
-  // Note that this trait is broken, see https://github.com/flatsurf/exact-real/issues/148.
-  template <typename T, typename Q = decltype(std::declval<const ElementClass&>() / std::declval<const T&>())>
-  using division_t = std::conditional_t<std::is_same_v<Q, mpz_class>, mpq_class, Q>;
-
   static constexpr bool contains_rationals = false;
 
-  ElementClass coerce(const ElementClass& x) const { return x; }
+  ElementClass coerce(const ElementClass& x) const;
 
   static constexpr bool isField = false;
   static bool unit(const ElementClass& x);
   static Arb arb(const ElementClass& x, long prec);
   static mpz_class floor(const ElementClass& x);
   static std::optional<mpq_class> rational(const ElementClass& x);
-  bool operator==(const IntegerRing&) const { return true; }
+
+  // Return the result of exact multiplication of an ElementClass.
+  template <typename T>
+  static ElementClass& imul(ElementClass&, const T&);
+
+  // Return the result of exact division of an ElementClass.
+  template <typename T>
+  static ElementClass& idiv(ElementClass&, const T&);
+
+  bool operator==(const IntegerRing&) const;
 };
 
 }  // namespace exactreal
@@ -63,7 +66,7 @@ struct LIBEXACTREAL_API IntegerRing : private boost::equality_comparable<Integer
 namespace std {
 template <>
 struct hash<exactreal::IntegerRing> {
-  size_t operator()(const exactreal::IntegerRing&) const { return 0; }
+  size_t operator()(const exactreal::IntegerRing&) const;
 };
 }  // namespace std
 

@@ -201,17 +201,40 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
     }
   }
 
-  SECTION("Arithmetic with int Scalars") {
+  SECTION("Arithmetic with Primitive Integer Scalars") {
     const auto x = GENERATE_REF(elements<R>(M));
 
     CAPTURE(x);
 
-    REQUIRE(x + x == 2 * x);
-    REQUIRE(x - x == 0 * x);
-    REQUIRE(-1 * x == -x);
-    REQUIRE(1 * x == x);
-    REQUIRE(0 * x == M.zero());
-    REQUIRE(trivial * x == trivial);
+    const auto test = [&](const auto& prototype) {
+      using I = decltype(prototype);
+
+      REQUIRE(x + x == I(2) * x);
+      REQUIRE(x + x == x * I(2));
+      REQUIRE(x - x == I(0) * x);
+      REQUIRE(x - x == x * I(0));
+
+      if constexpr (std::is_signed_v<I>) {
+        REQUIRE(I(-1) * x == -x);
+        REQUIRE(x * I(-1) == -x);
+      }
+
+      REQUIRE(I(1) * x == x);
+      REQUIRE(x * I(1) == x);
+      REQUIRE(I(0) * x == M.zero());
+      REQUIRE(x * I(0) == M.zero());
+
+      REQUIRE(x / I(1) == x);
+    };
+
+    test(static_cast<short>(0));
+    test(static_cast<unsigned short>(0));
+    test(static_cast<int>(0));
+    test(static_cast<unsigned int>(0));
+    test(static_cast<long>(0));
+    test(static_cast<unsigned long>(0));
+    test(static_cast<long long>(0));
+    test(static_cast<unsigned long long>(0));
   }
 
   SECTION("Arithmetic with mpz Scalars") {
@@ -242,21 +265,19 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
     REQUIRE(x / mpz_class(1) == x);
   }
 
-  if constexpr (!std::is_same_v<R, IntegerRing>) {
-    SECTION("Arithmetic with mpq Scalars") {
-      const auto x = GENERATE_REF(elements<R>(M));
+  SECTION("Arithmetic with mpq Scalars") {
+    const auto x = GENERATE_REF(elements<R>(M));
 
-      CAPTURE(x);
+    CAPTURE(x);
 
-      REQUIRE(x + x == mpq_class(2) * x);
-      REQUIRE(x - x == mpq_class(0) * x);
-      REQUIRE(mpq_class(-1) * x == -x);
-      REQUIRE(mpq_class(1) * x == x);
-      REQUIRE(mpq_class(0) * x == M.zero());
-      REQUIRE(x / mpq_class(1) == x);
-      REQUIRE(x / mpq_class(1, 1) == x);
-      REQUIRE(x / mpq_class(1, 2) == 2 * x);
-    }
+    REQUIRE(x + x == mpq_class(2) * x);
+    REQUIRE(x - x == mpq_class(0) * x);
+    REQUIRE(mpq_class(-1) * x == -x);
+    REQUIRE(mpq_class(1) * x == x);
+    REQUIRE(mpq_class(0) * x == M.zero());
+    REQUIRE(x / mpq_class(1) == x);
+    REQUIRE(x / mpq_class(1, 1) == x);
+    REQUIRE(x / mpq_class(1, 2) == 2 * x);
   }
 
   if constexpr (std::is_same_v<R, NumberField>) {
@@ -387,6 +408,8 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
     if (x != 1 && x != 0) {
       REQUIRE(x * x != x);
     }
+
+    REQUIRE(trivial * x == trivial);
   }
 
   SECTION("Simplification") {
