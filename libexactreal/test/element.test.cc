@@ -71,7 +71,7 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
 
   const auto trivial = Element<IntegerRing>();
 
-  SECTION("Relation Operators with Integer Types") {
+  SECTION("Relation Operators with Integers and Fractions") {
     const auto x = GENERATE_REF(elements<R>(M));
 
     CAPTURE(x);
@@ -126,6 +126,14 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
     test(static_cast<unsigned long long>(0));
     test(std::numeric_limits<unsigned long long>::min());
     test(std::numeric_limits<unsigned long long>::max());
+
+    test(mpz_class(0));
+    test(mpz_class(1));
+    test(mpz_class(-1));
+
+    test(mpq_class(0));
+    test(mpq_class(1));
+    test(mpq_class(-1));
   }
 
   SECTION("Relational Operators With Element") {
