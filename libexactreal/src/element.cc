@@ -586,12 +586,82 @@ bool Element<Ring>::operator>(const mpz_class& rhs) const {
 }
 
 template <typename Ring>
+bool Element<Ring>::operator<(short rhs) const {
+  return lt(*this, rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator>(short rhs) const {
+  return gt(*this, rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator<(unsigned short rhs) const {
+  return lt(*this, rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator>(unsigned short rhs) const {
+  return gt(*this, rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator<(int rhs) const {
+  return lt(*this, rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator>(int rhs) const {
+  return gt(*this, rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator<(unsigned int rhs) const {
+  return lt(*this, rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator>(unsigned int rhs) const {
+  return gt(*this, rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator<(long rhs) const {
+  return lt(*this, rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator>(long rhs) const {
+  return gt(*this, rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator<(unsigned long rhs) const {
+  return lt(*this, rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator>(unsigned long rhs) const {
+  return gt(*this, rhs);
+}
+
+template <typename Ring>
 bool Element<Ring>::operator<(long long rhs) const {
   return lt(*this, rhs);
 }
 
 template <typename Ring>
 bool Element<Ring>::operator>(long long rhs) const {
+  return gt(*this, rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator<(unsigned long long rhs) const {
+  return lt(*this, rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator>(unsigned long long rhs) const {
   return gt(*this, rhs);
 }
 
@@ -611,7 +681,42 @@ bool Element<Ring>::operator==(const mpz_class& rhs) const {
 }
 
 template <typename Ring>
+bool Element<Ring>::operator==(short rhs) const {
+  return *this == mpq_class(rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator==(unsigned short rhs) const {
+  return *this == mpq_class(rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator==(int rhs) const {
+  return *this == mpq_class(rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator==(unsigned int rhs) const {
+  return *this == mpq_class(rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator==(long rhs) const {
+  return *this == mpq_class(rhs);
+}
+
+template <typename Ring>
+bool Element<Ring>::operator==(unsigned long rhs) const {
+  return *this == mpq_class(rhs);
+}
+
+template <typename Ring>
 bool Element<Ring>::operator==(long long rhs) const {
+  return *this == mpq_class(boost::lexical_cast<std::string>(rhs));
+}
+
+template <typename Ring>
+bool Element<Ring>::operator==(unsigned long long rhs) const {
   return *this == mpq_class(boost::lexical_cast<std::string>(rhs));
 }
 
