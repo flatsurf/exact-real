@@ -71,50 +71,69 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
 
   const auto trivial = Element<IntegerRing>();
 
-  SECTION("Relation Operators with Integer Types") {
+  SECTION("Relation Operators with Integers and Fractions") {
     const auto x = GENERATE_REF(elements<R>(M));
 
     CAPTURE(x);
 
-    REQUIRE((x <= static_cast<unsigned short>(0) || x >= static_cast<unsigned short>(0)));
-    REQUIRE((x == static_cast<unsigned short>(0) || x != static_cast<unsigned short>(0)));
-    if (x)
-      REQUIRE((x < static_cast<unsigned short>(0) || x > static_cast<unsigned short>(0)));
+    const auto test = [&](const auto c) {
+      REQUIRE((x <= c || x >= c));
+      REQUIRE((x <= c) == (c >= x));
+      REQUIRE((x >= c) == (c <= x));
 
-    REQUIRE((x <= static_cast<short>(0) || x >= static_cast<short>(0)));
-    REQUIRE((x == static_cast<short>(0) || x != static_cast<short>(0)));
-    if (x)
-      REQUIRE((x < static_cast<short>(0) || x > static_cast<short>(0)));
+      REQUIRE((x == c) != (x != c));
 
-    REQUIRE((x <= 0u || x >= 0u));
-    REQUIRE((x == 0u || x != 0u));
-    if (x)
-      REQUIRE((x < 0u || x > 0u));
+      if (x != c)
+        REQUIRE((x < c) != (x > c));
 
-    REQUIRE((x <= 0 || x >= 0));
-    REQUIRE((x == 0 || x != 0));
-    if (x)
-      REQUIRE((x < 0 || x > 0));
+      REQUIRE((x < c) == (c > x));
+      REQUIRE((x > c) == (c < x));
 
-    REQUIRE((x <= 0ul || x >= 0ul));
-    REQUIRE((x == 0ul || x != 0ul));
-    if (x)
-      REQUIRE((x < 0ul || x > 0ul));
+      if (x < 0 && c >= 0)
+        REQUIRE(x < c);
+      if (x > 0 && c <= 0)
+        REQUIRE(x > c);
+    };
 
-    REQUIRE((x <= 0l || x >= 0l));
-    REQUIRE((x == 0l || x != 0l));
-    if (x)
-      REQUIRE((x < 0l || x > 0l));
+    test(static_cast<short>(0));
+    test(std::numeric_limits<short>::min());
+    test(std::numeric_limits<short>::max());
 
-    REQUIRE((x <= 0ull || x >= 0ull));
-    REQUIRE((x == 0ull || x != 0ull));
-    if (x)
-      REQUIRE((x < 0ull || x > 0ull));
+    test(static_cast<unsigned short>(0));
+    test(std::numeric_limits<unsigned short>::min());
+    test(std::numeric_limits<unsigned short>::max());
 
-    REQUIRE((x <= 0ll || x >= 0ll));
-    REQUIRE((x == 0ll || x != 0ll));
-    if (x)
-      REQUIRE((x < 0ll || x > 0ll));
+    test(static_cast<int>(0));
+    test(std::numeric_limits<int>::min());
+    test(std::numeric_limits<int>::max());
+
+    test(static_cast<unsigned int>(0));
+    test(std::numeric_limits<unsigned int>::min());
+    test(std::numeric_limits<unsigned int>::max());
+
+    test(static_cast<long>(0));
+    test(std::numeric_limits<long>::min());
+    test(std::numeric_limits<long>::max());
+
+    test(static_cast<unsigned long>(0));
+    test(std::numeric_limits<unsigned long>::min());
+    test(std::numeric_limits<unsigned long>::max());
+
+    test(static_cast<long long>(0));
+    test(std::numeric_limits<long long>::min());
+    test(std::numeric_limits<long long>::max());
+
+    test(static_cast<unsigned long long>(0));
+    test(std::numeric_limits<unsigned long long>::min());
+    test(std::numeric_limits<unsigned long long>::max());
+
+    test(mpz_class(0));
+    test(mpz_class(1));
+    test(mpz_class(-1));
+
+    test(mpq_class(0));
+    test(mpq_class(1));
+    test(mpq_class(-1));
   }
 
   SECTION("Relational Operators With Element") {

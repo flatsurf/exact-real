@@ -166,9 +166,37 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   bool operator<(const mpz_class&) const;
   bool operator>(const mpz_class&) const;
 
+  bool operator==(short) const;
+  bool operator<(short) const;
+  bool operator>(short) const;
+
+  bool operator==(unsigned short) const;
+  bool operator<(unsigned short) const;
+  bool operator>(unsigned short) const;
+
+  bool operator==(int) const;
+  bool operator<(int) const;
+  bool operator>(int) const;
+
+  bool operator==(unsigned int) const;
+  bool operator<(unsigned int) const;
+  bool operator>(unsigned int) const;
+
+  bool operator==(long) const;
+  bool operator<(long) const;
+  bool operator>(long) const;
+
+  bool operator==(unsigned long) const;
+  bool operator<(unsigned long) const;
+  bool operator>(unsigned long) const;
+
   bool operator==(long long) const;
   bool operator<(long long) const;
   bool operator>(long long) const;
+
+  bool operator==(unsigned long long) const;
+  bool operator<(unsigned long long) const;
+  bool operator>(unsigned long long) const;
 
   explicit operator bool() const;
   // Return the closest double; ties are rounded to even.
