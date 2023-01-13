@@ -22,7 +22,7 @@
 #include <memory>
 #include <set>
 #include <vector>
-#include <variant>
+#include <boost/variant2/variant.hpp>
 
 #include "../exact-real/real_number.hpp"
 #include "../exact-real/cereal.interface.hpp"
@@ -107,7 +107,7 @@ class Key {
  public:
   struct Hash {
     size_t operator()(const Key& key) const {
-      return std::visit([&](const auto& data) -> size_t {
+      return boost::variant2::visit([&](const auto& data) -> size_t {
         return this->operator()(data);
       }, key.data);
     }
@@ -135,7 +135,7 @@ class Key {
   }
 
   bool operator==(const Key& rhs) const {
-    return std::visit([](const auto& lhs, const auto& rhs) -> bool {
+    return boost::variant2::visit([](const auto& lhs, const auto& rhs) -> bool {
       using L = std::decay_t<decltype(lhs)>;
       using R = std::decay_t<decltype(rhs)>;
 
@@ -267,7 +267,7 @@ class Key {
   }
 
   RealNumber* persist() const {
-    return std::visit([&](const auto& data) -> RealNumber* {
+    return boost::variant2::visit([&](const auto& data) -> RealNumber* {
       using T = std::decay_t<decltype(data)>;
       if constexpr (std::is_same_v<T, Factors>) {
         const auto persist = [&](const auto& lhs_monomials, const auto& lhs_exponents, const auto& rhs_monomials, const auto& rhs_exponents) -> RealNumber* {
@@ -399,7 +399,7 @@ class Key {
 
  private:
 
-  mutable std::variant<Factors, MonomialsExponents> data;
+  mutable boost::variant2::variant<Factors, MonomialsExponents> data;
 };
 
 
