@@ -92,9 +92,6 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
   typename Ring::ElementClass operator[](const size) const;
   std::conditional<Ring::isField, mpq_class, mpz_class> operator[](const std::pair<size, size>&) const;
 
-  template <typename C>
-  [[deprecated("Use the non-template coefficients() or rationalCoefficients() instead.")]] std::vector<C> coefficients() const;
-
   std::vector<typename Ring::ElementClass> coefficients() const;
 
   std::vector<mpq_class> rationalCoefficients() const;
