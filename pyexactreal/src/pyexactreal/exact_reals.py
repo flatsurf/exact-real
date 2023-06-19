@@ -33,7 +33,7 @@ The module is automatically enlarged as needed::
 # ********************************************************************
 #  This file is part of exact-real.
 #
-#        Copyright (C) 2019 Julian Rüth
+#        Copyright (C) 2019-2023 Julian Rüth
 #
 #  exact-real is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -52,12 +52,11 @@ The module is automatically enlarged as needed::
 import cppyy
 import gmpxxyy
 
-from sage.all import QQ, UniqueRepresentation, ZZ, RR, IntegralDomains, Morphism, Hom, SetsWithPartialMaps, NumberFieldElement, CommutativeRing, coerce
+from sage.all import QQ, UniqueRepresentation, ZZ, IntegralDomains, Morphism, Hom, CommutativeRing, coerce
 from sage.structure.element import IntegralDomainElement, coerce_binop
-from sage.categories.action import Action
-from sage.structure.coerce import RightModuleAction
-from pyexactreal import exactreal, QQModule, ZZModule, NumberFieldModule
+from pyexactreal import exactreal, QQModule, NumberFieldModule
 from pyeantic import eantic, RealEmbeddedNumberField
+
 
 class ExactRealElement(IntegralDomainElement):
     r"""
@@ -85,6 +84,7 @@ class ExactRealElement(IntegralDomainElement):
         ℚ-Module(ℝ(0...))
 
     """
+
     def __init__(self, parent, value):
         if not isinstance(value, parent._element_factory):
             if value == 0:
@@ -606,6 +606,64 @@ class ExactRealElement(IntegralDomainElement):
         """
         return self if self >= 0 else -self
 
+    def is_square(self):
+        r"""
+        Return whether this element is a square in its parent.
+
+        .. NOTE::
+
+            This is only implemented in trivial cases.
+
+        EXAMPLES::
+
+            sage: from pyexactreal import ExactReals
+            sage: R = ExactReals()
+            sage: x = R.random_element()
+            sage: x.is_square()
+            Traceback (most recent call last):
+            ...
+            NotImplementedError: is_square() only implemented for algebraic elements
+            sage: (x**2).is_square()
+            Traceback (most recent call last):
+            ...
+            NotImplementedError: is_square() only implemented for algebraic elements
+
+        ::
+
+            sage: K.<a> = QuadraticField(2)
+            sage: R = ExactReals(K)
+            sage: x = R.random_element()
+            sage: x.is_square()
+            Traceback (most recent call last):
+            ...
+            NotImplementedError: is_square() only implemented for algebraic elements
+            sage: y = x**2 + (a + 1)*x + 1
+            sage: y.is_square()
+            Traceback (most recent call last):
+            ...
+            NotImplementedError: is_square() only implemented for algebraic elements
+            sage: (y**2).is_square()
+            Traceback (most recent call last):
+            ...
+            NotImplementedError: is_square() only implemented for algebraic elements
+            sage: R(2).is_square()
+            True
+            sage: R(3).is_square()
+            False
+
+        """
+        K = self.parent()._number_field
+        try:
+            self = K(self)
+        except TypeError:
+            # A correct algorithm would be to rewrite this element as a
+            # multivariate polynomial and then use is_square() from SageMath.
+            # However, such a decomposition is not exposed by the C++ API of
+            # exact-real yet.
+            raise NotImplementedError("is_square() only implemented for algebraic elements")
+
+        return self.is_square()
+
 
 class ExactReals(UniqueRepresentation, CommutativeRing):
     r"""
@@ -656,16 +714,16 @@ class ExactReals(UniqueRepresentation, CommutativeRing):
         if base is QQ:
             self._element_factory = exactreal.Element[type(exactreal.RationalField())]
             self._module_factory = lambda gens: QQModule(*gens)
-            number_field = QQ
+            self._number_field = QQ
         else:
             base = RealEmbeddedNumberField(base)
             ring = exactreal.NumberField(base.renf)
             self._element_factory = exactreal.Element[type(ring)]
             self._module_factory = lambda gens: NumberFieldModule(ring, *gens)
-            number_field = base.number_field
+            self._number_field = base.number_field
 
         CommutativeRing.__init__(self, base, category=category)
-        H = Hom(number_field, self)
+        H = Hom(self._number_field, self)
         coercion = H.__make_element_class__(CoercionExactRealsNumberField)(H)
         self.register_coercion(coercion)
 
@@ -726,7 +784,7 @@ class ExactReals(UniqueRepresentation, CommutativeRing):
             Real Numbers as (Rational Field)-Module
 
         """
-        return "Real Numbers as (%s)-Module"%(self.base(),)
+        return "Real Numbers as (%s)-Module" % (self.base(),)
 
     def characteristic(self):
         r"""
@@ -877,5 +935,6 @@ class CoercionExactRealsNumberField(Morphism):
           To:   Real Numbers as (Rational Field)-Module
 
     """
+
     def _call_(self, x):
         return self.codomain().base_ring()(x) * self.codomain().rational(1)
