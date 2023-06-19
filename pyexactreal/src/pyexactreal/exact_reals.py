@@ -559,7 +559,7 @@ class ExactRealElement(IntegralDomainElement):
 
     def _algebraic_(self, A):
         r"""
-        Return the algebraic value of this element if it is algrebraic.
+        Return the algebraic value of this element if it is algebraic.
 
         EXAMPLES::
 
