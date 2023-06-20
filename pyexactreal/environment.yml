@@ -7,7 +7,7 @@ channels:
   - defaults
 dependencies:
   - automake
-  - boost-cpp==1.74.0
+  - boost-cpp==1.78.0
   - coreutils
   # Do not use 2.4.2 due to https://github.com/wlav/cppyy/issues/171
   - cppyy>=2.1.0,<2.4.2
