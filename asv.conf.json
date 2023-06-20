@@ -13,7 +13,7 @@
     "ccache": [],
     "coreutils": [],
     "pip+cppasv": [],
-    "cppyy": ["2.2.0"],
+    "cppyy": ["2.4.1"],
     "cppyythonizations": [],
     "cxx-compiler": [],
     "libeantic": ["1.0.3"],
