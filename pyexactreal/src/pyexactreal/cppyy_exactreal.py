@@ -381,10 +381,8 @@ class Yap(object):
                 term<exactreal::Arb ... &>[=1.00000]
 
         """
-        import platform
-        if platform.system() == "Darwin":
-            return repr(self.value)
-
+        # With cppyy 2.4.2 from conda-forge, the YAP printing below sometimes
+        # segfaults on macOS. We therefore disable a test for it, see arf.py.
         import cppyy
         cppyy.include("boost/yap/print.hpp")
         os = cppyy.gbl.std.stringstream()
