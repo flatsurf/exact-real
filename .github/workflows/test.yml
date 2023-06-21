@@ -90,8 +90,6 @@ jobs:
       matrix:
         include:
           - on: ubuntu-22.04
-            python: "3.7"
-          - on: ubuntu-22.04
             python: "3.8"
           - on: ubuntu-22.04
             python: "3.9"
@@ -108,8 +106,6 @@ jobs:
           - on: ubuntu-22.04
             python: "3.9"
             sanitizer: valgrind
-          - on: macos-12
-            python: "3.7"
           - on: macos-12
             python: "3.8"
           - on: macos-12
