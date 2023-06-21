@@ -384,10 +384,10 @@ class Yap(object):
         import cppyy
         cppyy.include("boost/yap/print.hpp")
         os = cppyy.gbl.std.stringstream()
-        try:
+
+        import cppyy.ll
+        with cppyy.ll.signals_as_exception():
             cppyy.gbl.boost.yap.print(os, self.value)
-        except:
-            return repr(self.value)
         return os.str().strip()
 
 def makeModule(traits, gens, ring=None):
