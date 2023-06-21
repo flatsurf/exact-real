@@ -4,7 +4,6 @@
 name: libexactreal-build
 channels:
   - conda-forge
-  - defaults
 dependencies:
   - automake
   - benchmark

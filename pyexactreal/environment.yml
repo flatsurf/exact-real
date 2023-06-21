@@ -4,7 +4,6 @@
 name: pyexactreal-build
 channels:
   - conda-forge
-  - defaults
 dependencies:
   - automake
   - boost-cpp==1.78.0
