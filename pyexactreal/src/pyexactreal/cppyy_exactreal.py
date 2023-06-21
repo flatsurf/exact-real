@@ -34,6 +34,8 @@ import gmpxxyy
 
 from cppyythonizations.pickling.cereal import enable_cereal
 from cppyythonizations.printing import enable_pretty_printing
+from cppyythonizations.operators.order import enable_order
+from cppyythonizations.util import filtered
 
 class NotRepresentableError(ArithmeticError):
     r"""
@@ -204,6 +206,9 @@ cppyy.py.add_pythonization(lambda proxy, name: enable_cereal(proxy, name, ["exac
 # You might want to set EXTRA_CLING_ARGS="-I /usr/include" or wherever exact-real/cppyy.hpp can be resolved.
 cppyy.include("exact-real/cppyy.hpp")
 cppyy.include("e-antic/renfxx.h")
+
+# Work around https://github.com/wlav/cppyy/issues/171
+cppyy.py.add_pythonization(filtered("RealNumber")(enable_order), "exactreal")
 
 from cppyy.gbl import exactreal
 
