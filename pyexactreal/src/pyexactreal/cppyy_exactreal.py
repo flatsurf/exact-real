@@ -381,6 +381,10 @@ class Yap(object):
                 term<exactreal::Arb ... &>[=1.00000]
 
         """
+        import platform
+        if platform.system() == "Darwin":
+            return repr(self.value)
+
         import cppyy
         cppyy.include("boost/yap/print.hpp")
         os = cppyy.gbl.std.stringstream()
