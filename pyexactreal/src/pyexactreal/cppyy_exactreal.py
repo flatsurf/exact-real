@@ -34,7 +34,7 @@ import gmpxxyy
 
 from cppyythonizations.pickling.cereal import enable_cereal
 from cppyythonizations.printing import enable_pretty_printing
-from cppyythonizations.operators.order import enable_order
+from cppyythonizations.operators.order import enable_total_order
 from cppyythonizations.util import filtered
 
 class NotRepresentableError(ArithmeticError):
@@ -208,7 +208,7 @@ cppyy.include("exact-real/cppyy.hpp")
 cppyy.include("e-antic/renfxx.h")
 
 # Work around https://github.com/wlav/cppyy/issues/171
-cppyy.py.add_pythonization(filtered("RealNumber")(enable_order), "exactreal")
+cppyy.py.add_pythonization(filtered("RealNumber")(enable_total_order), "exactreal")
 
 from cppyy.gbl import exactreal
 
