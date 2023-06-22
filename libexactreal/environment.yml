@@ -4,11 +4,10 @@
 name: libexactreal-build
 channels:
   - conda-forge
-  - defaults
 dependencies:
   - automake
   - benchmark
-  - boost-cpp==1.74.0
+  - boost-cpp==1.78.0
   - coreutils
   - cxx-compiler
   - libeantic>=1.3.0,<2

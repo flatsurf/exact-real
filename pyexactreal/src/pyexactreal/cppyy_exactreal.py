@@ -34,6 +34,8 @@ import gmpxxyy
 
 from cppyythonizations.pickling.cereal import enable_cereal
 from cppyythonizations.printing import enable_pretty_printing
+from cppyythonizations.operators.order import enable_total_order
+from cppyythonizations.util import filtered
 
 class NotRepresentableError(ArithmeticError):
     r"""
@@ -204,6 +206,9 @@ cppyy.py.add_pythonization(lambda proxy, name: enable_cereal(proxy, name, ["exac
 # You might want to set EXTRA_CLING_ARGS="-I /usr/include" or wherever exact-real/cppyy.hpp can be resolved.
 cppyy.include("exact-real/cppyy.hpp")
 cppyy.include("e-antic/renfxx.h")
+
+# Work around https://github.com/wlav/cppyy/issues/171
+cppyy.py.add_pythonization(filtered("RealNumber")(enable_total_order), "exactreal")
 
 from cppyy.gbl import exactreal
 
@@ -376,6 +381,8 @@ class Yap(object):
                 term<exactreal::Arb ... &>[=1.00000]
 
         """
+        # With cppyy 2.4.2 from conda-forge, the YAP printing below sometimes
+        # segfaults on macOS. We therefore disable a test for it, see arf.py.
         import cppyy
         cppyy.include("boost/yap/print.hpp")
         os = cppyy.gbl.std.stringstream()
