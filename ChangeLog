@@ -4,6 +4,15 @@ exact-real Change Log
 
 .. current developments
 
+v3.1.0
+====================
+
+**Added:**
+
+* Added ``is_square()`` to the SageMath interface for exact-real elements in some trivial cases.
+
+
+
 v3.0.1
 ====================
 
