@@ -208,7 +208,7 @@ cppyy.include("exact-real/cppyy.hpp")
 cppyy.include("e-antic/renfxx.h")
 
 # Work around https://github.com/wlav/cppyy/issues/171
-cppyy.py.add_pythonization(filtered("RealNumber")(enable_total_order), "exactreal")
+# cppyy.py.add_pythonization(filtered("RealNumber")(enable_total_order), "exactreal")
 
 from cppyy.gbl import exactreal
 
