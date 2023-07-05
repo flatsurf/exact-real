@@ -140,6 +140,7 @@ jobs:
         run: |
           mamba env update --quiet -n test -f libexactreal/environment.yml
           mamba env update --quiet -n test -f pyexactreal/environment.yml
+          pip install cppyy==2.4.2
           conda list
       - name: configure & build & test
         run: |
