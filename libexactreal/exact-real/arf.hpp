@@ -21,8 +21,14 @@
 #ifndef LIBEXACTREAL_ARF_HPP
 #define LIBEXACTREAL_ARF_HPP
 
+#include <flint/flint.h>
+
+#if __FLINT_RELEASE < 30000
 #include <arf.h>
-#include <flint/flintxx/frandxx.h>
+#else
+#include <flint/arf.h>
+#endif
+
 #include <gmpxx.h>
 
 #include <boost/operators.hpp>
@@ -107,7 +113,7 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>, boost::totally_or
   bool operator>(long) const noexcept;
   bool operator==(long) const noexcept;
 
-  static Arf randtest(flint::frandxx&, prec precision, prec magbits) noexcept;
+  static Arf randtest(flint_rand_t, prec precision, prec magbits) noexcept;
 
   friend std::ostream& operator<<(std::ostream&, const Arf&) LIBEXACTREAL_API;
 

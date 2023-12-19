@@ -20,7 +20,13 @@
 
 #include "../exact-real/arb.hpp"
 
+#include <flint/flint.h>
+
+#if __FLINT_RELEASE < 30000
 #include <arb.h>
+#else
+#include <flint/arb.h>
+#endif
 #include <e-antic/renfxx.h>
 #include <flint/fmpz.h>
 
@@ -98,15 +104,15 @@ Arb::Arb(const renf_elem_class& renf, const mp_limb_signed_t precision) noexcept
 
 Arb::~Arb() noexcept { arb_clear(arb_t()); }
 
-Arb Arb::randtest_exact(flint::frandxx& state, prec precision, prec magbits) noexcept {
+Arb Arb::randtest_exact(flint_rand_t state, prec precision, prec magbits) noexcept {
   Arb ret;
-  arb_randtest_exact(ret.arb_t(), state._data(), precision, magbits);
+  arb_randtest_exact(ret.arb_t(), state, precision, magbits);
   return ret;
 }
 
-Arb Arb::randtest(flint::frandxx& state, prec precision, prec magbits) noexcept {
+Arb Arb::randtest(flint_rand_t state, prec precision, prec magbits) noexcept {
   Arb ret;
-  arb_randtest(ret.arb_t(), state._data(), precision, magbits);
+  arb_randtest(ret.arb_t(), state, precision, magbits);
   return ret;
 }
 

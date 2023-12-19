@@ -21,7 +21,7 @@
 #ifndef EXACTREAL_TEST_ARF_HPP
 #define EXACTREAL_TEST_ARF_HPP
 
-#include <flint/flintxx/frandxx.h>
+#include <flint/flint.h>
 
 #include <cassert>
 
@@ -33,15 +33,24 @@ using std::unique_ptr;
 namespace exactreal::test {
 
 struct ArfTester {
-  ArfTester() { reset(); }
+  ArfTester() {
+    flint_randinit(flint_rand);
+  }
 
-  unique_ptr<flint::frandxx> flint_rand;
+  ~ArfTester() {
+    flint_randclear(flint_rand);
+  }
 
-  void reset() { flint_rand = make_unique<flint::frandxx>(); }
+  flint_rand_t flint_rand;
+
+  void reset() {
+    flint_randclear(flint_rand);
+    flint_randinit(flint_rand);
+  }
 
   Arf random(prec prec = 53, size mag = 10) {
     assert(prec != 0);
-    return Arf::randtest(*flint_rand, prec, mag);
+    return Arf::randtest(flint_rand, prec, mag);
   }
 };
 

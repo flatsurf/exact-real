@@ -27,7 +27,13 @@
 #ifndef LIBEXACTREAL_LOCAL_HPP
 #define LIBEXACTREAL_LOCAL_HPP
 
+#include <flint/flint.h>
+
+#if __FLINT_RELEASE < 30000
 #include <arb.h>
+#else
+#include <flint/arb.h>
+#endif
 
 namespace exactreal {
 // We use the same type that Arb uses to specify precisions. This is a signed

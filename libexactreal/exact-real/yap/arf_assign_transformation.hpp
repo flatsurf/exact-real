@@ -89,13 +89,13 @@ struct ArfAssignTransformation : AssignTransformation<Arf, ArfAssignTransformati
     // it's strangely possible that roundBound is actually 0 here.
 
     if constexpr (tag == boost::yap::expr_kind::plus) {
-      arf_add(this->value.arf_t(), this->value.arf_t(), rhs.arf_t(), *precision, static_cast<int>(*round));
+      arf_add(this->value.arf_t(), this->value.arf_t(), rhs.arf_t(), *precision, static_cast<arf_rnd_t>(*round));
     } else if constexpr (tag == boost::yap::expr_kind::minus) {
-      arf_sub(this->value.arf_t(), this->value.arf_t(), rhs.arf_t(), *precision, static_cast<int>(*round));
+      arf_sub(this->value.arf_t(), this->value.arf_t(), rhs.arf_t(), *precision, static_cast<arf_rnd_t>(*round));
     } else if constexpr (tag == boost::yap::expr_kind::multiplies) {
-      arf_mul(this->value.arf_t(), this->value.arf_t(), rhs.arf_t(), *precision, static_cast<int>(*round));
+      arf_mul(this->value.arf_t(), this->value.arf_t(), rhs.arf_t(), *precision, static_cast<arf_rnd_t>(*round));
     } else if constexpr (tag == boost::yap::expr_kind::divides) {
-      arf_div(this->value.arf_t(), this->value.arf_t(), rhs.arf_t(), *precision, static_cast<int>(*round));
+      arf_div(this->value.arf_t(), this->value.arf_t(), rhs.arf_t(), *precision, static_cast<arf_rnd_t>(*round));
     } else {
       static_assert(false_v<tag>, "unsupported binary operation");
     }

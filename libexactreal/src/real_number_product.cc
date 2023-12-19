@@ -19,6 +19,7 @@
  *********************************************************************/
 
 #include <cassert>
+#include <cmath>
 #include <memory>
 #include <set>
 #include <vector>

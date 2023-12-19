@@ -21,10 +21,10 @@
 #ifndef EXACTREAL_TEST_ARB_HPP
 #define EXACTREAL_TEST_ARB_HPP
 
-#include <flint/flintxx/frandxx.h>
-
 #include <cassert>
 #include <memory>
+
+#include <flint/flint.h>
 
 #include "../exact-real/arb.hpp"
 
@@ -34,16 +34,27 @@ using std::unique_ptr;
 namespace exactreal::test {
 
 struct ArbTester {
-  ArbTester() { reset(); }
+  ArbTester() {
+    flint_randinit(flint_rand);
+  }
 
-  unique_ptr<flint::frandxx> flint_rand;
+  ~ArbTester() {
+    flint_randclear(flint_rand);
+  }
 
-  void reset() { flint_rand = make_unique<flint::frandxx>(); }
+  flint_rand_t flint_rand;
+
+  void reset() {
+    flint_randclear(flint_rand);
+    flint_randinit(flint_rand);
+  }
+
+
 
   Arb random(prec prec = 53, size mag = 10) {
     assert(prec != 0);
     while (1) {
-      Arb ret = Arb::randtest(*flint_rand, prec, mag);
+      Arb ret = Arb::randtest(flint_rand, prec, mag);
       if (!ret.is_exact()) {
         return ret;
       }

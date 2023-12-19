@@ -37,8 +37,16 @@ AC_LANG([C++])
 dnl We use some C++17 features, such as if constexpr
 AX_CXX_COMPILE_STDCXX(17)
 
-AC_CHECK_HEADERS([arb.h], , AC_MSG_ERROR([Arb headers not found]))
-AC_CHECK_LIB([arb], [arb_load_str], , AC_MSG_ERROR([Arb library >=2.17.0 not found]), [-lgmp -lmpfr -lflint])
+AC_CHECK_HEADERS([flint/arb.h], [
+  dnl We are building against FLINT 3 (which ships Arb.)
+  AC_CHECK_HEADERS([flint/arb.h], , AC_MSG_ERROR([Arb headers not found]))
+  AC_CHECK_LIB([flint], [arb_load_str], , AC_MSG_ERROR([FLINT library >=3 not found]), [-lgmp -lmpfr -lflint])
+], [
+  dnl We are building against FLINT 2 (which does not ship Arb yet.)
+  AC_CHECK_HEADERS([arb.h], , AC_MSG_ERROR([Arb headers not found]))
+  AC_CHECK_LIB([arb], [arb_load_str], , AC_MSG_ERROR([Arb library >=2.17.0 not found]), [-lgmp -lmpfr -lflint])
+])
+
 
 AC_CHECK_HEADERS([gmpxx.h], , AC_MSG_ERROR([GMP headers for C++ not found]))
 dnl GMPXX does not contain anything that we can check for with AX_CXX_CHECK_LIB
