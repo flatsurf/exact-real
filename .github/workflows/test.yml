@@ -23,16 +23,34 @@ jobs:
       matrix:
         include:
           - on: ubuntu-22.04
+            libflint: 2
+          - on: ubuntu-22.04
+            libflint: 3
           - on: ubuntu-22.04
             sanitizer: address
+            libflint: 2
+          - on: ubuntu-22.04
+            sanitizer: address
+            libflint: 3
           # Needs https://github.com/wbhart/flint2/pull/992
           # - on: ubuntu-22.04
           #   sanitizer: undefined
           - on: ubuntu-22.04
             sanitizer: valgrind
+            libflint: 2
+          - on: ubuntu-22.04
+            sanitizer: valgrind
+            libflint: 3
           - on: macos-12
+            libflint: 2
+          - on: macos-12
+            libflint: 3
           - on: macos-12
             sanitizer: address
+            libflint: 2
+          - on: macos-12
+            sanitizer: address
+            libflint: 3
           # Needs https://github.com/wbhart/flint2/pull/992
           # - on: macos-12
           #   sanitizer: undefined
@@ -54,8 +72,14 @@ jobs:
         if: ${{ matrix.sanitizer == 'valgrind' }}
       - name: install dependencies
         run: |
+          mamba env update --quiet -n test -f libexactreal/environment-flint2.yml
+          conda list
+        if ${{ matrix.libflint == '2' }}
+      - name: install dependencies
+        run: |
           mamba env update --quiet -n test -f libexactreal/environment.yml
           conda list
+        if ${{ matrix.libflint == '3' }}
       - name: configure & build & test
         run: |
           echo "::group::bootstrap"
@@ -138,7 +162,8 @@ jobs:
         if: ${{ matrix.sanitizer == 'valgrind' }}
       - name: install dependencies
         run: |
-          mamba env update --quiet -n test -f libexactreal/environment.yml
+          # Since SageMath does not support FLINT 3, we only test with FLINT 2
+          mamba env update --quiet -n test -f libexactreal/environment-flint2.yml
           mamba env update --quiet -n test -f pyexactreal/environment.yml
           conda list
       - name: configure & build & test
@@ -189,7 +214,8 @@ jobs:
         with: { miniforge-variant: "Mambaforge", miniforge-version: "latest" }
       - name: install dependencies
         run: |
-          mamba env update --quiet -n test -f libexactreal/environment.yml
+          # Since SageMath only supports FLINT 2, we only test with FLINT 2.
+          mamba env update --quiet -n test -f libexactreal/environment-flint2.yml
           mamba env update --quiet -n test -f pyexactreal/environment.yml
           conda list
       - name: make distcheck

@@ -25,7 +25,7 @@ requirements:
   host:
     - arb {{ arb }}
     - boost-cpp {{ boost_cpp }}
-    - libeantic >=1.0.0,<2
+    - libflint {{ libflint }}
     - gmp {{ gmp }}
 
 test:

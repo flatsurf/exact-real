@@ -11,6 +11,7 @@ dependencies:
   - coreutils
   - cxx-compiler
   - libeantic>=2,<3
+  - libflint>=3,<4
   - gmp>6,<7
   - libtool
   - make
