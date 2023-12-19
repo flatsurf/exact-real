@@ -529,7 +529,7 @@ Arf RealNumberProduct::arf_(long prec) const {
   // ulp.
   long nfactors = totalDegree();
 
-  long workingPrec = prec + static_cast<long>(ceil(log2(nfactors * 2 + (nfactors - 1)) + 1));
+  long workingPrec = prec + static_cast<long>(ceil(log2(static_cast<double>(nfactors * 2 + (nfactors - 1)) + 1)));
 
   Arf ret(1);
   for (size_t i = 0; i < monomials.size(); i++)
