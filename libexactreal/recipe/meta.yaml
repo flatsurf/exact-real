@@ -23,8 +23,8 @@ requirements:
     - coreutils
     - {{ compiler('cxx') }}
   host:
-    - arb {{ arb }}
     - boost-cpp {{ boost_cpp }}
+    - libeantic {{ libeantic }}
     - libflint {{ libflint }}
     - gmp {{ gmp }}
 
