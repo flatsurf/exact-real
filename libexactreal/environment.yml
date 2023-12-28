@@ -7,7 +7,7 @@ channels:
 dependencies:
   - automake
   - benchmark
-  - boost-cpp==1.78.0
+  - boost-cpp==1.82.0
   - coreutils
   - cxx-compiler
   - libeantic>=2,<3
