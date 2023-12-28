@@ -49,8 +49,6 @@ struct ArbTester {
     flint_randinit(flint_rand);
   }
 
-
-
   Arb random(prec prec = 53, size mag = 10) {
     assert(prec != 0);
     while (1) {
