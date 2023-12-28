@@ -21,6 +21,7 @@
 #define LIBEXACTREAL_CPPYY_HPP
 
 #include <boost/type_traits/is_detected.hpp>
+#include <boost/yap/print.hpp>
 #include <iosfwd>
 #include <memory>
 #include <sstream>
@@ -112,6 +113,15 @@ T deserialize(const std::string &serialized) {
     archive(value);
   }
   return value;
+}
+
+// boost::yap::print fails to instantiate on macOS so we wrap it here.
+template <typename Expr>
+std::string print(const Expr& expr) {
+  std::ostringstream os;
+
+  boost::yap::print(os, expr);
+  return os.str();
 }
 }  // namespace cppyy
 

@@ -381,11 +381,7 @@ class Yap(object):
                 term<exactreal::Arb ... &>[=1.00000]
 
         """
-        import cppyy
-        cppyy.include("boost/yap/print.hpp")
-        os = cppyy.gbl.std.ostringstream()
-        cppyy.gbl.boost.yap.print(os, self.value)
-        return os.str().strip()
+        return cppyy.gbl.exactreal.cppyy.print(self.value).strip()
 
 def makeModule(traits, gens, ring=None):
     r"""
