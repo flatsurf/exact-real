@@ -73,7 +73,7 @@ jobs:
         run: |
           mamba env update --quiet -n test -f libexactreal/environment.yml
           conda list
-        if ${{ matrix.libflint == '3' }}
+        if: ${{ matrix.libflint == '3' }}
       - name: configure & build & test
         run: |
           echo "::group::bootstrap"
