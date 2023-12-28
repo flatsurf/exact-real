@@ -74,7 +74,7 @@ jobs:
         run: |
           mamba env update --quiet -n test -f libexactreal/environment-flint2.yml
           conda list
-        if ${{ matrix.libflint == '2' }}
+        if: ${{ matrix.libflint == '2' }}
       - name: install dependencies
         run: |
           mamba env update --quiet -n test -f libexactreal/environment.yml
