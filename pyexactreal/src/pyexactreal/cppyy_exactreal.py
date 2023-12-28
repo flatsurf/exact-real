@@ -381,15 +381,10 @@ class Yap(object):
                 term<exactreal::Arb ... &>[=1.00000]
 
         """
-        # With cppyy 2.4.2 from conda-forge, the YAP printing below sometimes
-        # segfaults on macOS. We therefore disable a test for it, see arf.py.
         import cppyy
         cppyy.include("boost/yap/print.hpp")
-        os = cppyy.gbl.std.stringstream()
-        try:
-            cppyy.gbl.boost.yap.print(os, self.value)
-        except:
-            return repr(self.value)
+        os = cppyy.gbl.std.ostringstream()
+        cppyy.gbl.boost.yap.print(os, self.value)
         return os.str().strip()
 
 def makeModule(traits, gens, ring=None):
