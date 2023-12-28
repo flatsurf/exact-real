@@ -121,6 +121,7 @@ std::string print(const Expr& expr) {
   std::ostringstream os;
 
   boost::yap::print(os, expr);
+  os << std::ends;
   return os.str();
 }
 }  // namespace cppyy
