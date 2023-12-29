@@ -2,12 +2,6 @@ name: Test
 on:
   push: { branches: [ "master" ] }
   pull_request: { branches: [ "master" ] }
-  workflow_dispatch:
-    inputs:
-      debug_enabled:
-        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
-        required: false
-        default: false
 
 concurrency:
   group: test-${{ github.ref }}
@@ -23,16 +17,34 @@ jobs:
       matrix:
         include:
           - on: ubuntu-22.04
+            libflint: 2
+          - on: ubuntu-22.04
+            libflint: 3
           - on: ubuntu-22.04
             sanitizer: address
+            libflint: 2
+          - on: ubuntu-22.04
+            sanitizer: address
+            libflint: 3
           # Needs https://github.com/wbhart/flint2/pull/992
           # - on: ubuntu-22.04
           #   sanitizer: undefined
           - on: ubuntu-22.04
             sanitizer: valgrind
+            libflint: 2
+          - on: ubuntu-22.04
+            sanitizer: valgrind
+            libflint: 3
           - on: macos-12
+            libflint: 2
+          - on: macos-12
+            libflint: 3
           - on: macos-12
             sanitizer: address
+            libflint: 2
+          - on: macos-12
+            sanitizer: address
+            libflint: 3
           # Needs https://github.com/wbhart/flint2/pull/992
           # - on: macos-12
           #   sanitizer: undefined
@@ -54,8 +66,14 @@ jobs:
         if: ${{ matrix.sanitizer == 'valgrind' }}
       - name: install dependencies
         run: |
+          mamba env update --quiet -n test -f libexactreal/environment-flint2.yml
+          conda list
+        if: ${{ matrix.libflint == '2' }}
+      - name: install dependencies
+        run: |
           mamba env update --quiet -n test -f libexactreal/environment.yml
           conda list
+        if: ${{ matrix.libflint == '3' }}
       - name: configure & build & test
         run: |
           echo "::group::bootstrap"
@@ -76,11 +94,6 @@ jobs:
           make V=1 `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo check-valgrind || echo check` VALGRIND_SUPPRESSIONS_FILES=`pwd`/../tools/valgrind/conda.supp
       - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        with:
-          limit-access-to-actor: true
-        if: ${{ failure() && github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
   test-pyexactreal:
     runs-on: ${{ matrix.on }}
     defaults:
@@ -138,7 +151,8 @@ jobs:
         if: ${{ matrix.sanitizer == 'valgrind' }}
       - name: install dependencies
         run: |
-          mamba env update --quiet -n test -f libexactreal/environment.yml
+          # Since SageMath does not support FLINT 3, we only test with FLINT 2
+          mamba env update --quiet -n test -f libexactreal/environment-flint2.yml
           mamba env update --quiet -n test -f pyexactreal/environment.yml
           conda list
       - name: configure & build & test
@@ -172,11 +186,6 @@ jobs:
           make V=1 `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo check-valgrind || echo check` VALGRIND_SUPPRESSIONS_FILES=`pwd`/../tools/valgrind/conda.supp
       - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        with:
-          limit-access-to-actor: true
-        if: ${{ failure() && github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
   distcheck:
     runs-on: ubuntu-22.04
     defaults:
@@ -189,7 +198,8 @@ jobs:
         with: { miniforge-variant: "Mambaforge", miniforge-version: "latest" }
       - name: install dependencies
         run: |
-          mamba env update --quiet -n test -f libexactreal/environment.yml
+          # Since SageMath only supports FLINT 2, we only test with FLINT 2.
+          mamba env update --quiet -n test -f libexactreal/environment-flint2.yml
           mamba env update --quiet -n test -f pyexactreal/environment.yml
           conda list
       - name: make distcheck
@@ -199,11 +209,6 @@ jobs:
           make distcheck
       - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        with:
-          limit-access-to-actor: true
-        if: ${{ failure() && github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
 
 env:
   MAKEFLAGS: -j2

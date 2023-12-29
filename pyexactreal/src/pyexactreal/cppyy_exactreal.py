@@ -146,9 +146,7 @@ def enable_yap(proxy, name):
         >>> from pyexactreal import exactreal
         >>> a = exactreal.Arb(1)
         >>> b = a + a; b
-        expr<+>
-            term<exactreal::Arb ... &>[=1.00000]
-            term<exactreal::Arb ... &>[=1.00000]
+        arithmetic expression
         >>> b(64)
         2.00000
         >>> b += b
@@ -226,11 +224,7 @@ class Yap(object):
         >>> a += a
         >>> a += a
         >>> a
-        expr<+>
-            expr<+> const &
-                expr<+> const &
-                    expr<+> const &
-                    ...
+        arithmetic expression
         >>> a(64)
         16.0000
 
@@ -369,28 +363,20 @@ class Yap(object):
         r"""
         Return a printable representation of this Yap expression.
 
-        EXAMPLES:
+        .. NOTE:
 
-        We use Yap's own debug printer. It's quite verbose::
+        Previously, we used Yap's debug printer. While it works fine most of
+        the time, we ran into spurious segfauls on macOS in CI runs. Therefore,
+        we disabled such fancy printing here, in particular, because we
+        probably want to get rid of most of this overly fancy Arb wrap.
 
             >>> from pyexactreal import exactreal
             >>> a = exactreal.Arb(1)
             >>> a + a
-            expr<+>
-                term<exactreal::Arb ... &>[=1.00000]
-                term<exactreal::Arb ... &>[=1.00000]
+            arithmetic expression
 
         """
-        # With cppyy 2.4.2 from conda-forge, the YAP printing below sometimes
-        # segfaults on macOS. We therefore disable a test for it, see arf.py.
-        import cppyy
-        cppyy.include("boost/yap/print.hpp")
-        os = cppyy.gbl.std.stringstream()
-        try:
-            cppyy.gbl.boost.yap.print(os, self.value)
-        except:
-            return repr(self.value)
-        return os.str().strip()
+        return "arithmetic expression"
 
 def makeModule(traits, gens, ring=None):
     r"""

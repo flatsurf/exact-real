@@ -18,7 +18,14 @@
  *  along with exact-real. If not, see <https://www.gnu.org/licenses/>.
  *********************************************************************/
 
+#include <flint/flint.h>
+
+#if __FLINT_RELEASE < 30000
 #include <arb.h>
+#else
+#include <flint/arb.h>
+#endif
+#include <e-antic/renfxx.h>
 #include <gmpxx.h>
 
 #include <boost/lexical_cast.hpp>

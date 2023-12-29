@@ -20,7 +20,13 @@
 
 #include "../exact-real/element.hpp"
 
+#include <flint/flint.h>
+
+#if __FLINT_RELEASE < 30000
 #include <arb.h>
+#else
+#include <flint/arb.h>
+#endif
 #include <e-antic/renfxx.h>
 
 #include <boost/lexical_cast.hpp>

@@ -20,7 +20,13 @@
 
 #include "../exact-real/arf.hpp"
 
+#include <flint/flint.h>
+
+#if __FLINT_RELEASE < 30000
 #include <arf.h>
+#else
+#include <flint/arf.h>
+#endif
 
 #include <ostream>
 
@@ -181,9 +187,9 @@ long Arf::logb() const noexcept {
   return ret;
 }
 
-Arf Arf::randtest(flint::frandxx& state, prec precision, prec magbits) noexcept {
+Arf Arf::randtest(flint_rand_t state, prec precision, prec magbits) noexcept {
   Arf ret;
-  arf_randtest(ret.arf_t(), state._data(), precision, magbits);
+  arf_randtest(ret.arf_t(), state, precision, magbits);
   return ret;
 }
 

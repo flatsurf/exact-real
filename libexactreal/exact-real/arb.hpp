@@ -21,8 +21,14 @@
 #ifndef LIBEXACTREAL_ARB_HPP
 #define LIBEXACTREAL_ARB_HPP
 
+#include <flint/flint.h>
+
+#if __FLINT_RELEASE < 30000
 #include <arb.h>
-#include <flint/flintxx/frandxx.h>
+#else
+#include <flint/arb.h>
+#endif
+
 #include <gmpxx.h>
 
 #include <boost/yap/algorithm_fwd.hpp>
@@ -150,8 +156,8 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   static Arb indeterminate() noexcept;
   static Arb zero_pm_one() noexcept;
   static Arb unit_interval() noexcept;
-  static Arb randtest(flint::frandxx&, prec precision, prec magbits) noexcept;
-  static Arb randtest_exact(flint::frandxx&, prec precision, prec magbits) noexcept;
+  static Arb randtest(flint_rand_t, prec precision, prec magbits) noexcept;
+  static Arb randtest_exact(flint_rand_t, prec precision, prec magbits) noexcept;
 
   // Return whether elements have the same midpoint and radius.
   bool equal(const Arb&) const noexcept;

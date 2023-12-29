@@ -51,7 +51,6 @@ BENCHMARK_REGISTER_F(ArbBenchmark, Create);
 
 BENCHMARK_DEFINE_F(ArbBenchmark, CreateMove)
 (benchmark::State& state) {
-  flint::frandxx rand;
   Arb x = random(state);
   Arb z = x;
   bool skip = false;

@@ -31,12 +31,8 @@ def test_arithmetic():
     a = Arf(1)
     b = Arf(2)
 
-    # The following test segfaults on macOS with cppyy 2.4.2 (we don't
-    # understand why at the moment so we disable the test.)
-    import platform
-    if platform.system() != "Darwin":
-        # Expressions do not get evaluated without specifying a precision/rounding
-        assert str(a + a).startswith("expr<+>")
+    # Expressions do not get evaluated without specifying a precision/rounding
+    assert str(a + a) == "arithmetic expression"
 
     assert (a + a)(64, Arf.Round.DOWN) == b
 
