@@ -96,11 +96,15 @@ auto optional_rational(const Element<Ring> &element) { return static_cast<std::o
 // A helper to get RAII that cereal needs to make sure that its output has been flushed.
 template <typename T, typename Archive>
 std::string serialize(const T &value) {
-  std::stringstream serialized;
+  // We use the deprecated strstream to work around a segfault on macOS. The
+  // segfault does not happen here on macOS but with the print() below. In any
+  // case, we are trying to use the same code path for both use cases.
+  std::strstream serialized;
   {
     Archive archive(serialized);
     archive(value);
   }
+  serialized << std::ends;
   return serialized.str();
 }
 
