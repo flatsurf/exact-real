@@ -24,7 +24,7 @@
 #include <boost/yap/print.hpp>
 #include <iosfwd>
 #include <memory>
-#include <sstream>
+#include <strstream>
 
 #include "element.hpp"
 #include "integer_ring.hpp"
@@ -118,7 +118,14 @@ T deserialize(const std::string &serialized) {
 // boost::yap::print fails to instantiate on macOS so we wrap it here.
 template <typename Expr>
 std::string print(const Expr& expr) {
-  std::ostringstream os;
+  // Mysteriously, when using a stringstream on macOS, we get a segfault with
+  // this code unless we explicitly terminate the stream with an std::ends.
+  // (However, the ends then shows up as an explicit null terminator in the
+  // string and no such null terminator should be necessary with a
+  // stringstream. With a (deprecated) strstream, the null terminator is
+  // however necessary and everything just works, so we keep this as a
+  // workaround for the time being.)
+  std::strstream os;
 
   boost::yap::print(os, expr);
   os << std::ends;
