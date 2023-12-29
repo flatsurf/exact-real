@@ -25,6 +25,7 @@
 #include <iosfwd>
 #include <memory>
 #include <strstream>
+#include <sstream>
 
 #include "element.hpp"
 #include "integer_ring.hpp"
