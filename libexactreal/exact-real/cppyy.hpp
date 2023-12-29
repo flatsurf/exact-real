@@ -24,7 +24,6 @@
 #include <boost/yap/print.hpp>
 #include <iosfwd>
 #include <memory>
-#include <strstream>
 #include <sstream>
 
 #include "element.hpp"
@@ -96,15 +95,11 @@ auto optional_rational(const Element<Ring> &element) { return static_cast<std::o
 // A helper to get RAII that cereal needs to make sure that its output has been flushed.
 template <typename T, typename Archive>
 std::string serialize(const T &value) {
-  // We use the deprecated strstream to work around a segfault on macOS. The
-  // segfault does not happen here on macOS but with the print() below. In any
-  // case, we are trying to use the same code path for both use cases.
-  std::strstream serialized;
+  std::ostringstream serialized;
   {
     Archive archive(serialized);
     archive(value);
   }
-  serialized << std::ends;
   return serialized.str();
 }
 
@@ -118,23 +113,6 @@ T deserialize(const std::string &serialized) {
     archive(value);
   }
   return value;
-}
-
-// boost::yap::print fails to instantiate on macOS so we wrap it here.
-template <typename Expr>
-std::string print(const Expr& expr) {
-  // Mysteriously, when using a stringstream on macOS, we get a segfault with
-  // this code unless we explicitly terminate the stream with an std::ends.
-  // (However, the ends then shows up as an explicit null terminator in the
-  // string and no such null terminator should be necessary with a
-  // stringstream. With a (deprecated) strstream, the null terminator is
-  // however necessary and everything just works, so we keep this as a
-  // workaround for the time being.)
-  std::strstream os;
-
-  boost::yap::print(os, expr);
-  os << std::ends;
-  return os.str();
 }
 }  // namespace cppyy
 

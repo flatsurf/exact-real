@@ -32,7 +32,7 @@ def test_arithmetic():
     b = Arf(2)
 
     # Expressions do not get evaluated without specifying a precision/rounding
-    assert str(a + a).startswith("expr<+>")
+    assert str(a + a) == "arithmetic expression"
 
     assert (a + a)(64, Arf.Round.DOWN) == b
 

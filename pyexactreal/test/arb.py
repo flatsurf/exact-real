@@ -36,7 +36,7 @@ def test_arithmetic():
     b += a
 
     # expressions do not get evaluated without specifying a precision
-    assert str(a + a).startswith("expr<+>")
+    assert str(a + a) == "arithmetic expression"
 
     assert -(-a) == a
 
