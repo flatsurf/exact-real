@@ -1,0 +1,291 @@
+# This file describes the [pixi](https://pixi.sh) interface to exact-real, see
+# the README for how to use pixi with exact-real.
+
+[project]
+channels = ["conda-forge"]
+description = "Exact Computations with Real Numbers"
+name = "exact-real"
+platforms = ["linux-64", "osx-64"]
+
+[environments]
+libexactreal-flint-29 = ["libexactreal", "flint-29"]
+libexactreal-flint-30 = ["libexactreal", "flint-30"]
+pyexactreal-sagemath-100 = ["libexactreal", "pyexactreal", "sagemath-100"]
+pyexactreal-sagemath-101 = ["libexactreal", "pyexactreal", "sagemath-101"]
+pyexactreal-sagemath-102 = ["libexactreal", "pyexactreal", "sagemath-102"]
+pyexactreal-sagemath-103 = ["libexactreal", "pyexactreal", "sagemath-103"]
+pyexactreal-sagemath-104 = ["libexactreal", "pyexactreal", "sagemath-104"]
+pyexactreal-sagemath-105 = ["libexactreal", "pyexactreal", "sagemath-105"]
+dev = ["dev", "libexactreal", "pyexactreal"]
+env-address-sanitizer = ["address-sanitizer", "libexactreal", "pyexactreal"]
+env-undefined-sanitizer = ["undefined-sanitizer", "libexactreal", "pyexactreal"]
+env-coverage = ["coverage", "libexactreal", "pyexactreal"]
+
+##############
+# ACTIVATION #
+##############
+[activation.env]
+MAKEFLAGS = "-j$(nproc)"
+CFLAGS = "-g3"
+CXXFLAGS = "-g3 -fvisibility=hidden -fvisibility-inlines-hidden"
+
+[feature.address-sanitizer.activation.env]
+CFLAGS = "-fsanitize=address -fno-sanitize-recover -fno-omit-frame-pointer"
+CXXFLAGS = "-fsanitize=address -fno-sanitize-recover -fno-omit-frame-pointer"
+LDFLAGS = "-fsanitize=address"
+
+[feature.undefined-sanitizer.activation.env]
+CFLAGS = "-fsanitize=undefined -fno-sanitize-recover -fno-omit-frame-pointer"
+CXXFLAGS = "-fsanitize=undefined -fno-sanitize-recover -fno-omit-frame-pointer"
+LDFLAGS = "-fsanitize=undefined"
+
+[feature.coverage.activation.env]
+CFLAGS = "-coverage -O0 -UNDEBUG"
+CXXFLAGS = "-coverage -O0 -UNDEBUG"
+
+#########
+# TASKS #
+#########
+[tasks.bootstrap]
+cmd = "./bootstrap"
+inputs = ["configure.ac", "{libexactreal,pyexactreal}/configure.ac", "Makefile.am", "{libexactreal,pyexactreal}/**/Makefile.am"]
+outputs = ["configure", "{libexactreal,pyexactreal}/configure", "Makefile.in", "{libexactreal,pyexactreal}/**/*.in"]
+
+[feature.libexactreal.tasks.configure-libexactreal]
+cmd = './configure --prefix="$CONDA_PREFIX"'
+cwd = "libexactreal"
+depends-on = ["bootstrap"]
+inputs = ["libexactreal/configure", "libexactreal/**/*.in"]
+
+[feature.libexactreal.target.linux.tasks.configure-libexactreal]
+cmd = './configure --prefix="$CONDA_PREFIX" --with-version-script'
+cwd = "libexactreal"
+depends-on = ["bootstrap"]
+inputs = ["libexactreal/configure", "libexactreal/**/*.in"]
+
+[feature.libexactreal.tasks.build-libexactreal]
+cmd = "make check TESTS="
+cwd = "libexactreal"
+depends-on = ["configure-libexactreal"]
+
+[feature.libexactreal.tasks.test-libexactreal]
+cmd = "make check"
+cwd = "libexactreal"
+depends-on = ["build-libexactreal"]
+
+[feature.pyexactreal.tasks.test-libexactreal-valgrind]
+cmd = "make check-valgrind"
+cwd = "libexactreal"
+depends-on = ["build-libexactreal"]
+
+[feature.pyexactreal.tasks.configure-pyexactreal]
+cmd = './configure --prefix="$CONDA_PREFIX" --with-sage'
+cwd = "pyexactreal"
+depends-on = ["bootstrap"]
+inputs = ["pyexactreal/configure", "pyexactreal/**/*.in"]
+
+[feature.pyexactreal.tasks.build-pyexactreal]
+cmd = "make"
+cwd = "pyexactreal"
+depends-on = ["configure-pyexactreal"]
+
+[feature.pyexactreal.tasks.test-pyexactreal]
+cmd = "make check"
+cwd = "pyexactreal"
+depends-on = ["build-pyexactreal", "build-libexactreal"]
+
+[feature.pyexactreal.tasks.test-pyexactreal-valgrind]
+cmd = "make check-valgrind"
+cwd = "pyexactreal"
+depends-on = ["build-pyexactreal", "build-libexactreal"]
+
+[feature.dev.tasks]
+codespell = { cmd = "codespell $(git ls-files)" }
+
+# "build" is a shortcut that should (together with its dependencies) run in the "dev" environment.
+# To achieve this, we need to split it into two tasks like this (otherwise,
+# pixi is going to ask which environment the dependencies should run in.)
+build = { cmd = "pixi run dev-build" }
+dev-build = { depends-on = ["build-libexactreal", "build-pyexactreal"] }
+
+# "test" is a shortcut that should (together with its dependencies) run in the "dev" environment.
+# To achieve this, we need to split it into two tasks like this (otherwise,
+# pixi is going to ask which environment the dependencies should run in.)
+test = { cmd = "pixi run dev-test" }
+dev-test = { depends-on = ["test-libexactreal", "test-pyexactreal"] }
+
+# "sage" is a shortcut that should (together with its dependencies) run in the "dev" environment.
+# To achieve this, we need to split it into two tasks like this (otherwise,
+# pixi is going to ask which environment the dependencies should run in.)
+sage = { cmd = "pixi run dev-sage" }
+dev-sage = { cmd = "pyexactreal-sage" , env = { PATH = "./pyexactreal/test/bin/:$PATH"}, depends-on = ["build-libexactreal", "build-pyexactreal"] }
+
+# "clean" is a shortcut that should (together with its dependencies) run in the "dev" environment.
+# To achieve this, we need to split it into two tasks like this (otherwise,
+# pixi is going to ask which environment the dependencies should run in.)
+clean = { cmd = "pixi run dev-clean" }
+dev-clean = { cmd = "make clean", depends-on = ["configure"] }
+
+# "compile-commands" is a shortcut that generates a compile_commands.json that many
+# IDEs expect to make sense of C/C++ code.
+# This shortcut should run with its dependencies in the "dev" environment.
+# To achieve this, we need to split it into two tasks like this (otherwise,
+# pixi is going to ask which environment the dependencies should run in.)
+compile-commands = { cmd = "pixi run dev-compile-commands" }
+dev-compile-commands = { cwd = "libexactreal", cmd = "compiledb make -n check TESTS=", depends-on = ["build-libexactreal"] }
+
+[feature.dev.tasks.configure]
+cmd = './configure --prefix="$CONDA_PREFIX"'
+inputs = ["configure", "{libexactreal,pyexactreal}/configure", "Makefile.in", "{libexactreal,pyexactreal}/**/*.in"]
+outputs = ["Makefile", "{libexactreal,pyexactreal}/**/Makefile"]
+depends-on = ["bootstrap"]
+
+[feature.dev.tasks.distcheck]
+cmd = "make distcheck"
+depends-on = ["configure"]
+
+[feature.dev.target.linux-64.tasks.compiler-warnings-clang]
+# The env hack is necessary to work around https://github.com/prefix-dev/pixi/issues/3287
+# We disable -Wdeprecated-declarations because we use our own deprecated API, e.g., for testing.
+cmd = """
+/usr/bin/env -u '?' sh -c '
+make clean &&
+make check TESTS= CPP=clang-cpp CC=clang CXX=clang++ CFLAGS=\"$CFLAGS -Werror -Wall -Wextra\" CXXFLAGS=\"$CXXFLAGS -Werror -Wall -Wextra -Wno-deprecated-declarations -UNDEBUG\" &&
+make clean &&
+make check TESTS= CPP=clang-cpp CC=clang CXX=clang++ CFLAGS=\"$CFLAGS -Werror -Wall -Wextra\" CXXFLAGS=\"$CXXFLAGS -Werror -Wall -Wextra -Wno-deprecated-declarations -fclang-abi-compat=17 -DNDEBUG\"
+'
+"""
+cwd = "libexactreal"
+depends-on = "configure-libexactreal"
+
+[feature.dev.target.linux-64.tasks.compiler-warnings-gcc]
+# The env hack is necessary to work around https://github.com/prefix-dev/pixi/issues/3287
+# We disable -Wsign-compare because .size() in C++ is well-known to be broken.
+# We disable -Wdeprecated-declarations because we use our own deprecated API, e.g., for testing.
+# We disable -Wdangling-reference because our tests rely on GENERATE_REF that does actually create a dangling reference.
+cmd = """
+/usr/bin/env -u '?' sh -c '
+make clean &&
+make check TESTS= CFLAGS=\"$CXFLAGS -Werror -Wall -Wextra" CXXFLAGS=\"$CXXFLAGS -Werror -Wall -Wextra -Wno-sign-compare -Wno-deprecated-declarations -Wno-dangling-reference -UNDEBUG\" &&
+make clean &&
+make check TESTS= CFLAGS=\"$CXFLAGS -Werror -Wall -Wextra" CXXFLAGS=\"$CXXFLAGS -Werror -Wall -Wextra -Wno-sign-compare -Wno-deprecated-declarations -Wno-dangling-reference -DNDEBUG\"
+'
+"""
+cwd = "libexactreal"
+depends-on = "configure-libexactreal"
+
+[feature.dev.tasks.configure-libexactreal]
+cmd = './configure --prefix="$CONDA_PREFIX" --with-benchmark'
+cwd = "libexactreal"
+depends-on = ["bootstrap"]
+inputs = ["libexactreal/configure", "libexactreal/**/*.in"]
+
+[feature.dev.target.linux.tasks.configure-libexactreal]
+cmd = './configure --prefix="$CONDA_PREFIX" --with-benchmark --with-version-script'
+cwd = "libexactreal"
+depends-on = ["bootstrap"]
+inputs = ["libexactreal/configure", "libexactreal/**/*.in"]
+
+[feature.coverage.tasks.configure-libexactreal]
+# The gcov build has visibility issues when the version script is enabled.
+cmd = './configure --prefix="$CONDA_PREFIX"'
+cwd = "libexactreal"
+depends-on = ["bootstrap"]
+inputs = ["libexactreal/configure", "libexactreal/**/*.in"]
+
+################
+# DEPENDENCIES #
+################
+[dependencies]
+automake = "*"
+make = "*"
+libtool = "*"
+coreutils = "*"
+
+[feature.libexactreal.dependencies]
+c-compiler = "*"
+cxx-compiler = "*"
+gmp = "*"
+libflint = "*"
+boost-cpp = "*"
+libeantic = "*"
+
+[feature.pyexactreal.dependencies]
+python = "*"
+cppyy = "*"
+cppyythonizations = "*"
+pytest = "*"
+setuptools = "*"
+sagelib = "*"
+pyeantic = "*"
+# Some extra dependencies that are needed by SageMath doctesting here.
+ipywidgets = "*"
+
+[feature.pyexactreal.pypi-dependencies]
+pyexactreal = { path = "pyexactreal/src", editable = true }
+
+[feature.dev.dependencies]
+libflint = "3.*"
+py = "*"
+sagelib = "==10.3"
+codespell = "*"
+clangdev = "*"
+compiledb = "*"
+benchmark = "*"
+
+[feature.dev.target.linux.dependencies]
+# A recent functioning valgrind is only available on conda-forge linux builds.
+valgrind = "*"
+
+[feature.address-sanitizer.target.linux.dependencies]
+# Work around https://github.com/actions/runner-images/issues/9491
+gcc = ">=14.2"
+gxx = ">=14.2"
+
+[feature.undefined-sanitizer.target.linux.dependencies]
+# Work around https://github.com/actions/runner-images/issues/9491
+gcc = ">=14.2"
+gxx = ">=14.2"
+
+[feature.flint-29.dependencies]
+libflint = "2.9.*"
+arb = "*"
+
+[feature.flint-30.dependencies]
+libflint = "3.0.*"
+
+[feature.sagemath-100.dependencies]
+# SageMath 10.0 shipped with Python 3.11 so we make sure that these compatible versions are installed.
+python = "3.11.*"
+sagelib = "==10.0"
+# SageMath 10.0 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+
+[feature.sagemath-101.dependencies]
+# SageMath 10.1 shipped with Python 3.11 so we make sure that these compatible versions are installed.
+python = "3.11.*"
+sagelib = "==10.1"
+# SageMath 10.1 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+
+[feature.sagemath-102.dependencies]
+# SageMath 10.2 shipped with Python 3.11 so we make sure that these compatible versions are installed.
+python = "3.11.*"
+sagelib = "==10.2"
+# SageMath 10.2 used a FLINT <3 so we need to add our dependencies arb and ANTIC
+arb = "*"
+
+[feature.sagemath-103.dependencies]
+# SageMath 10.3 shipped with Python 3.11 so we make sure that these compatible versions are installed.
+python = "3.11.*"
+sagelib = "==10.3"
+
+[feature.sagemath-104.dependencies]
+# SageMath 10.4 shipped with Python 3.11 so we make sure that these compatible versions are installed.
+python = "3.11.*"
+sagelib = "==10.4"
+
+[feature.sagemath-105.dependencies]
+# SageMath 10.5 shipped with Python 3.12 so we make sure that these compatible versions are installed.
+python = "3.12.*"
+sagelib = "==10.5"

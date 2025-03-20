@@ -8,207 +8,44 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test-libexactreal:
+  test:
     runs-on: ${{ matrix.on }}
-    defaults:
-      run:
-        shell: bash -el {0}
     strategy:
       matrix:
         include:
-          - on: ubuntu-22.04
-            libflint: 2
-          - on: ubuntu-22.04
-            libflint: 3
-          - on: ubuntu-22.04
-            sanitizer: address
-            libflint: 2
-          - on: ubuntu-22.04
-            sanitizer: address
-            libflint: 3
-          # Needs https://github.com/wbhart/flint2/pull/992
-          # - on: ubuntu-22.04
-          #   sanitizer: undefined
-          - on: ubuntu-22.04
-            sanitizer: valgrind
-            libflint: 2
-          - on: ubuntu-22.04
-            sanitizer: valgrind
-            libflint: 3
-          - on: macos-12
-            libflint: 2
-          - on: macos-12
-            libflint: 3
-          - on: macos-12
-            sanitizer: address
-            libflint: 2
-          - on: macos-12
-            sanitizer: address
-            libflint: 3
-          # Needs https://github.com/wbhart/flint2/pull/992
-          # - on: macos-12
-          #   sanitizer: undefined
+        - { task: "test-libexactreal", environment: "libexactreal-flint-29", on: "ubuntu-24.04" }
+        - { task: "test-libexactreal", environment: "libexactreal-flint-29", on: "macos-13" }
+        - { task: "test-libexactreal", environment: "libexactreal-flint-30", on: "ubuntu-24.04" }
+        - { task: "test-libexactreal", environment: "libexactreal-flint-30", on: "macos-13" }
+        - { task: "test-libexactreal", environment: "env-address-sanitizer", on: "ubuntu-24.04" }
+        - { task: "test-libexactreal", environment: "env-undefined-sanitizer", on: "ubuntu-24.04" }
+        - { task: "test-libexactreal-valgrind", environment: "dev", on: "ubuntu-24.04" }
+        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-100", on: "ubuntu-24.04" }
+        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-100", on: "macos-13" }
+        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-101", on: "ubuntu-24.04" }
+        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-101", on: "macos-13" }
+        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-102", on: "ubuntu-24.04" }
+        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-102", on: "macos-13" }
+        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-103", on: "ubuntu-24.04" }
+        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-103", on: "macos-13" }
+        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-104", on: "ubuntu-24.04" }
+        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-104", on: "macos-13" }
+        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-105", on: "ubuntu-24.04" }
+        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-105", on: "macos-13" }
+        - { task: "test-pyexactreal-valgrind", environment: "dev", on: "ubuntu-24.04" }
+        - { task: "distcheck", environment: "dev", on: "ubuntu-24.04" }
+        - { task: "distcheck", environment: "dev", on: "macos-13" }
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with: { submodules: recursive }
-      - name: build flags
-        id: flags
-        run: |
-          echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"` `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo "--enable-valgrind"`
-          echo "::set-output name=shared::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address -fno-sanitize-recover -fno-omit-frame-pointer"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined -fno-sanitize-recover -fno-omit-frame-pointer"` `[[ "${{ matrix.on }}" == "macos-12" ]] && [[ "${{ matrix.sanitizer }}" == "address" || "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-Wl,-undefined,dynamic_lookup"`
-      - uses: conda-incubator/setup-miniconda@v2
-        with: { miniforge-variant: "Mambaforge", miniforge-version: "latest" }
-      - name: install valgrind
+      - uses: prefix-dev/setup-pixi@v0.8.1
+        with: { pixi-version: v0.42.1 }
+      - name: install valgrind dependencies
         run: |
           sudo apt update
           sudo apt install -y libc6-dbg
-          mamba install valgrind
-        if: ${{ matrix.sanitizer == 'valgrind' }}
-      - name: install dependencies
-        run: |
-          mamba env update --quiet -n test -f libexactreal/environment-flint2.yml
-          conda list
-        if: ${{ matrix.libflint == '2' }}
-      - name: install dependencies
-        run: |
-          mamba env update --quiet -n test -f libexactreal/environment.yml
-          conda list
-        if: ${{ matrix.libflint == '3' }}
-      - name: configure & build & test
-        run: |
-          echo "::group::bootstrap"
-          cd libexactreal
-          ./bootstrap
-
-          echo "::group::configure"
-          export CXXFLAGS="$CXXFLAGS -UNDEBUG -g3 -fvisibility=hidden -fvisibility-inlines-hidden"
-          # conda puts an explicit -std=c++14 on the command line on macOS, we override it here:
-          export CXXFLAGS="$CXXFLAGS ${{ steps.flags.outputs.shared }} -std=c++17"
-          export LDFLAGS="$LDFLAGS ${{ steps.flags.outputs.shared }}"
-          ./configure --prefix="$PREFIX" --without-benchmark ${{ steps.flags.outputs.configure }}
-
-          echo "::group::make"
-          make V=1
-
-          echo "::group::test"
-          make V=1 `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo check-valgrind || echo check` VALGRIND_SUPPRESSIONS_FILES=`pwd`/../tools/valgrind/conda.supp
+        if: endsWith(matrix.task || '', 'valgrind')
+      - name: run ${{ matrix.task }}
+        run: pixi run -e ${{ matrix.environment }} ${{ matrix.task }}
       - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
-  test-pyexactreal:
-    runs-on: ${{ matrix.on }}
-    defaults:
-      run:
-        shell: bash -el {0}
-    strategy:
-      matrix:
-        include:
-          - on: ubuntu-22.04
-            python: "3.8"
-          - on: ubuntu-22.04
-            python: "3.9"
-          - on: ubuntu-22.04
-            python: "3.10"
-          # Needs libsanitizer=11, with the default sanitizer, we get "Failed to mmap".
-          # - on: ubuntu-22.04
-          #   python: "3.10"
-          #   sanitizer: address
-          # Needs https://github.com/wbhart/flint2/pull/992
-          # - on: ubuntu-22.04
-          #   python: "3.10"
-          #   sanitizer: undefined
-          - on: ubuntu-22.04
-            python: "3.9"
-            sanitizer: valgrind
-          - on: macos-12
-            python: "3.8"
-          - on: macos-12
-            python: "3.9"
-          - on: macos-12
-            python: "3.10"
-          # libtool strips -shared-asan from LDFLAGS but this is required to preload asan when building with clang
-          # - on: macos-12
-          #   python: "3.10"
-          #   sanitizer: address
-          # Needs https://github.com/wbhart/flint2/pull/992
-          # - on: macos-12
-          #   python: "3.10"
-          #   sanitizer: undefined
-    steps:
-      - uses: actions/checkout@v2
-        with: { submodules: recursive }
-      - name: build flags
-        id: flags
-        run: |
-          echo "::set-output name=configure::"`[[ ${{ runner.os }} == "Linux" ]] && echo "--with-version-script"` `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo "--enable-valgrind"`
-          echo "::set-output name=shared::"`[[ "${{ matrix.sanitizer }}" == "address" ]] && echo "-fsanitize=address -fno-sanitize-recover -fno-omit-frame-pointer"` `[[ "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-fsanitize=undefined -fno-sanitize-recover -fno-omit-frame-pointer"` `[[ "${{ matrix.on }}" == "macos-12" ]] && [[ "${{ matrix.sanitizer }}" == "address" || "${{ matrix.sanitizer }}" == "undefined" ]] && echo "-Wl,-undefined,dynamic_lookup"`
-      - uses: conda-incubator/setup-miniconda@v2
-        with: { miniforge-variant: "Mambaforge", miniforge-version: "latest", python-version: "${{ matrix.python }}" }
-      - name: install valgrind
-        run: |
-          sudo apt update
-          sudo apt install -y libc6-dbg
-          mamba install valgrind
-        if: ${{ matrix.sanitizer == 'valgrind' }}
-      - name: install dependencies
-        run: |
-          # Since SageMath does not support FLINT 3, we only test with FLINT 2
-          mamba env update --quiet -n test -f libexactreal/environment-flint2.yml
-          mamba env update --quiet -n test -f pyexactreal/environment.yml
-          conda list
-      - name: configure & build & test
-        run: |
-          echo "::group::bootstrap"
-          ./bootstrap
-
-          echo "::group::configure"
-          export CXXFLAGS="$CXXFLAGS -UNDEBUG -g3 -fvisibility=hidden -fvisibility-inlines-hidden ${{ steps.flags.outputs.shared }}"
-          export LDFLAGS="$LDFLAGS ${{ steps.flags.outputs.shared }}"
-          # conda puts an explicit -std=c++14 on the command line on macOS, we override it here:
-          export CXXFLAGS="$CXXFLAGS -std=c++17"
-          # similarly cppyy on macOS seems to default to C++14, https://github.com/conda-forge/cppyy-feedstock/issues/21
-          export EXTRA_CLING_ARGS="-UNDEBUG -O2 -std=c++17"
-          if [[ "${{ matrix.sanitizer }}" == "address" || "${{ matrix.sanitizer }}" == "undefined" ]]; then
-            # Since the application (Python) has not been built with asan, we need to preload it explicitly.
-            export EXACTREAL_LD_PRELOAD=$(gcc -print-file-name=libasan.so)
-            export EXACTREAL_DYLD_INSERT_LIBRARIES=$(clang -print-file-name=libclang_rt.asan-x86_64.so)
-            # Leak detection reports too many false positives in Python; they disabled it in their CI actually.
-            export ASAN_OPTIONS=detect_leaks=0
-            # https://bitbucket.org/wlav/cppyy/issues/367/address-sanitizer-reports-a-alloc-dealloc
-            export ASAN_OPTIONS="$ASAN_OPTIONS:alloc_dealloc_mismatch=0"
-          fi
-          ./configure --prefix="$PREFIX" --without-benchmark ${{ steps.flags.outputs.configure }}
-
-          echo "::group::make"
-          make V=1
-
-          echo "::group::test"
-          cd pyexactreal
-          make V=1 `[[ "${{ matrix.sanitizer }}" == "valgrind" ]] && echo check-valgrind || echo check` VALGRIND_SUPPRESSIONS_FILES=`pwd`/../tools/valgrind/conda.supp
-      - uses: flatsurf/actions/show-logs@main
-        if: ${{ always() }}
-  distcheck:
-    runs-on: ubuntu-22.04
-    defaults:
-      run:
-        shell: bash -el {0}
-    steps:
-      - uses: actions/checkout@v2
-        with: { submodules: recursive }
-      - uses: conda-incubator/setup-miniconda@v2
-        with: { miniforge-variant: "Mambaforge", miniforge-version: "latest" }
-      - name: install dependencies
-        run: |
-          # Since SageMath only supports FLINT 2, we only test with FLINT 2.
-          mamba env update --quiet -n test -f libexactreal/environment-flint2.yml
-          mamba env update --quiet -n test -f pyexactreal/environment.yml
-          conda list
-      - name: make distcheck
-        run: |
-          ./bootstrap
-          ./configure --prefix="$PREFIX"
-          make distcheck
-      - uses: flatsurf/actions/show-logs@main
-        if: ${{ always() }}
-
-env:
-  MAKEFLAGS: -j2
