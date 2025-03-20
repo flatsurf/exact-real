@@ -244,7 +244,7 @@ v1.4.0
 
 **Changed:**
 
-* simplified internal factory pattern by ugrading unique-factory
+* simplified internal factory pattern by upgrading unique-factory
 
 **Fixed:**
 

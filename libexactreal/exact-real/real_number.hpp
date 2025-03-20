@@ -115,7 +115,7 @@ class LIBEXACTREAL_API RealNumber : public std::enable_shared_from_this<RealNumb
   static std::shared_ptr<const RealNumber> random(const Arf& a, const Arf& b);
   static std::shared_ptr<const RealNumber> random(const Arf& a, const Arf& b, Seed seed);
   // A random real number, close to d; mostly useful to port code from doubles
-  // that are meant to ressemble random reals
+  // that are meant to resemble random reals
   static std::shared_ptr<const RealNumber> random(const double d);
   static std::shared_ptr<const RealNumber> random(const double d, Seed seed);
 

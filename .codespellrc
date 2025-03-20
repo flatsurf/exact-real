@@ -1,0 +1,4 @@
+[codespell]
+skip = libexactreal/src/external/**/*,libexactreal/test/external/**/*,pixi.lock
+ignore-words-list = rever,ans
+

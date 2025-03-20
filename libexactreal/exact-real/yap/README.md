@@ -26,6 +26,6 @@ all has to live in header files and we do not get the compilation firewall that
 we got elsewhere in this library.
 
 Finally, note that all of this is opt-in. If you don't want to use any of this,
-only inclode the `exact-real/arb.hpp` header and create `Arb x` to get C++
+only include the `exact-real/arb.hpp` header and create `Arb x` to get C++
 style memory management and manipulate the underlying `arb_t` directly with
 `x.arb_t()`.

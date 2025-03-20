@@ -122,7 +122,7 @@ class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>, boost::totally_or
   // A const reference to the underlying arf_t element for direct usage in Arb
   const ::arf_t& arf_t() const noexcept;
 
-  // Syntactic sugar for Yap, so that expresions such as x += y(64, Arf::Rount::NEAR) work.
+  // Syntactic sugar for Yap, so that expressions such as x += y(64, Arf::Rount::NEAR) work.
   template <typename... Args>
   decltype(auto) operator()(Args&&...) const noexcept LIBEXACTREAL_LOCAL;
 
