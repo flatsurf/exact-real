@@ -17,8 +17,8 @@ jobs:
         with: { pixi-version: v0.42.1 }
       - name: make check
         run: |
-          pixi run -e env-coverage test-libeantic
-          pixi run -e env-coverage test-pyeantic
+          pixi run -e env-coverage test-libexactreal
+          pixi run -e env-coverage test-pyexactreal
       - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
       - name: create & post coverage report
