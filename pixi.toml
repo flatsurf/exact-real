@@ -209,6 +209,7 @@ gmp = "*"
 libflint = "*"
 boost-cpp = "*"
 libeantic = "*"
+benchmark = "*"
 
 [feature.pyexactreal.dependencies]
 python = "*"
@@ -231,7 +232,6 @@ sagelib = "==10.3"
 codespell = "*"
 clangdev = "*"
 compiledb = "*"
-benchmark = "*"
 
 [feature.dev.target.linux.dependencies]
 # A recent functioning valgrind is only available on conda-forge linux builds.
