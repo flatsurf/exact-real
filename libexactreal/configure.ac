@@ -16,6 +16,14 @@ AC_SUBST([libexactreal_version_info], [11:0:0])
 
 AC_CANONICAL_HOST
 
+case "${host_os}" in
+  linux*) OS_LINUX=yes ;;
+  darwin*) OS_MACOS=yes ;;
+esac
+
+AM_CONDITIONAL([OS_LINUX], [test x$OS_LINUX = xyes])
+AM_CONDITIONAL([OS_MACOS], [test x$OS_MACOS = xyes])
+
 dnl Find C++ Compiler
 AC_PROG_CXX
 
