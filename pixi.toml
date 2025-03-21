@@ -232,6 +232,10 @@ sagelib = "==10.3"
 codespell = "*"
 clangdev = "*"
 compiledb = "*"
+asv = ">=0.6.4,<0.7"
+
+[feature.dev.pypi-dependencies]
+cppasv = { git = "https://github.com/flatsurf/cppasv.git" }
 
 [feature.dev.target.linux.dependencies]
 # A recent functioning valgrind is only available on conda-forge linux builds.

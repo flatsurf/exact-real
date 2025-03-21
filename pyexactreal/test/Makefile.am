@@ -16,7 +16,7 @@ element.py: test-env.sh bin/python
 @VALGRIND_CHECK_RULES@
 
 BUILT_SOURCES = test-env.sh bin/python python-doctest.sh sage-doctest.sh
-EXTRA_DIST += test-env.sh.in bin/python.in python-doctest.sh.in sage-doctest.sh.in disable-pytest/pytest.py
+EXTRA_DIST += test-env.sh.in bin/python.in bin/pyexactreal-sage python-doctest.sh.in sage-doctest.sh.in disable-pytest/pytest.py
 CLEANFILES = test-env.sh bin/python python-doctest.sh sage-doctest.sh
 
 $(builddir)/test-env.sh: $(srcdir)/test-env.sh.in Makefile
@@ -28,9 +28,9 @@ $(builddir)/bin/python: $(srcdir)/bin/python.in Makefile
 	chmod +x $@
 
 $(builddir)/python-doctest.sh: $(srcdir)/python-doctest.sh.in Makefile
-	sed -e 's,[@]srcdir[@],$(srcdir),g' -e 's,[@]builddir[@],$(builddir),g' < $< > $@
+	sed -e 's,[@]abs_srcdir[@],$(abs_srcdir),g' -e 's,[@]abs_builddir[@],$(abs_builddir),g' < $< > $@
 	chmod +x $@
 
 $(builddir)/sage-doctest.sh: $(srcdir)/sage-doctest.sh.in Makefile
-	sed -e 's,[@]abs_srcdir[@],$(abs_srcdir),g' -e 's,[@]srcdir[@],$(srcdir),g' -e 's,[@]builddir[@],$(builddir),g' < $< > $@
+	sed -e 's,[@]abs_srcdir[@],$(abs_srcdir),g' -e 's,[@]abs_builddir[@],$(abs_builddir),g' < $< > $@
 	chmod +x $@
