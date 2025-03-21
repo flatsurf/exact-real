@@ -188,8 +188,8 @@ TEMPLATE_TEST_CASE("Element", "[element]", IntegerRing, RationalField, NumberFie
 
     CAPTURE(x);
 
-    for (size_t g = 0; g < M.rank(); g++) {
-      for (size_t i = 0; i < M.rank(); i++) {
+    for (size g = 0; g < M.rank(); g++) {
+      for (size i = 0; i < M.rank(); i++) {
         CAPTURE(g, i);
 
         if (x == M.gen(g)) {

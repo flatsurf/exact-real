@@ -57,11 +57,11 @@ struct ElementGenerator : public Catch::Generators::IGenerator<exactreal::Elemen
   bool next() override {
     auto coefficients = current.coefficients();
 
-    const std::function<bool(int)> increment = [&](int c) -> bool {
+    const std::function<bool(int)> increment = [&](size_t c) -> bool {
       if (c == coefficients.size())
         return false;
 
-      for (int i = 0; i < this->coefficients.size() - 1; i++) {
+      for (size_t i = 0; i + 1 < this->coefficients.size(); i++) {
         if (coefficients[c] == this->coefficients[i]) {
           coefficients[c] = this->coefficients[i + 1];
           return true;

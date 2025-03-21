@@ -42,7 +42,7 @@ class ElementBenchmark : public benchmark::Fixture {
   Element<Ring> monomial(std::vector<long> degrees, const std::vector<std::shared_ptr<const RealNumber>>& gens) {
     Element<Ring> x = Module<Ring>::make({RealNumber::rational(1)})->gen(0);
 
-    for (int i = 0; i < degrees.size(); i++)
+    for (size_t i = 0; i < degrees.size(); i++)
       while (degrees[i]--)
         x *= *gens[i];
 
