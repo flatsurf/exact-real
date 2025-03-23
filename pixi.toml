@@ -221,6 +221,7 @@ sagelib = "*"
 pyeantic = "*"
 # Some extra dependencies that are needed by SageMath doctesting here.
 ipywidgets = "*"
+sympy = "*"
 
 [feature.pyexactreal.pypi-dependencies]
 pyexactreal = { path = "pyexactreal/src", editable = true }
