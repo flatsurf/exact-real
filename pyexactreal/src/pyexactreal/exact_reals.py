@@ -54,7 +54,7 @@ import gmpxxyy
 
 from sage.all import QQ, UniqueRepresentation, ZZ, IntegralDomains, Morphism, Hom, CommutativeRing, coerce
 from sage.structure.element import IntegralDomainElement, coerce_binop
-from pyexactreal import exactreal, QQModule, NumberFieldModule
+from pyexactreal import exactreal, ZZModule, QQModule, NumberFieldModule
 from pyeantic import eantic, RealEmbeddedNumberField
 
 
@@ -494,7 +494,9 @@ class ExactRealElement(IntegralDomainElement):
         base = self.parent().base()
         if base.has_coerce_map_from(c.parent()):
             c = coerce(base, c)
-            if base is QQ:
+            if base is ZZ:
+                c = cppyy.gbl.mpz_class(str(c))
+            elif base is QQ:
                 c = cppyy.gbl.mpq_class(str(c))
             else:
                 c = c.renf_elem
@@ -677,6 +679,8 @@ class ExactReals(UniqueRepresentation, CommutativeRing):
         sage: from pyexactreal import ExactReals
         sage: R = ExactReals(); R
         Real Numbers as (Rational Field)-Module
+        sage: RZ = ExactReals(ZZ); RZ
+        Real Numbers as (Integer Ring)-Module
         sage: K.<a> = NumberField(x^2 - 2, embedding=AA(sqrt(2)))
         sage: RK = ExactReals(K); RK
         Real Numbers as (Real Embedded Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?)-Module
@@ -686,6 +690,7 @@ class ExactReals(UniqueRepresentation, CommutativeRing):
         sage: R.one()._test_pickling() # first run prints some warnings from third-party C++ header files
         ...
         sage: TestSuite(R).run(skip=["_test_fraction_field"])
+        sage: TestSuite(RZ).run(skip=["_test_fraction_field"])
         sage: TestSuite(RK).run(skip=["_test_fraction_field"])
 
     ::
@@ -711,7 +716,11 @@ class ExactReals(UniqueRepresentation, CommutativeRing):
         return super(ExactReals, cls).__classcall__(cls, base, category)
 
     def __init__(self, base=None, category=None):
-        if base is QQ:
+        if base is ZZ:
+            self._element_factory = exactreal.Element[type(exactreal.IntegerRing())]
+            self._module_factory = lambda gens: ZZModule(*gens)
+            self._number_field = ZZ
+        elif base is QQ:
             self._element_factory = exactreal.Element[type(exactreal.RationalField())]
             self._module_factory = lambda gens: QQModule(*gens)
             self._number_field = QQ
