@@ -16,6 +16,14 @@ AC_SUBST([libexactreal_version_info], [11:0:0])
 
 AC_CANONICAL_HOST
 
+case "${host_os}" in
+  linux*) OS_LINUX=yes ;;
+  darwin*) OS_MACOS=yes ;;
+esac
+
+AM_CONDITIONAL([OS_LINUX], [test x$OS_LINUX = xyes])
+AM_CONDITIONAL([OS_MACOS], [test x$OS_MACOS = xyes])
+
 dnl Find C++ Compiler
 AC_PROG_CXX
 
@@ -39,7 +47,6 @@ AX_CXX_COMPILE_STDCXX(17)
 
 AC_CHECK_HEADERS([flint/arb.h], [
   dnl We are building against FLINT 3 (which ships Arb.)
-  AC_CHECK_HEADERS([flint/arb.h], , AC_MSG_ERROR([Arb headers not found]))
   AC_CHECK_LIB([flint], [arb_load_str], , AC_MSG_ERROR([FLINT library >=3 not found]), [-lgmp -lmpfr -lflint])
 ], [
   dnl We are building against FLINT 2 (which does not ship Arb yet.)

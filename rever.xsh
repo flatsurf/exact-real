@@ -1,7 +1,7 @@
 ######################################################################
 #  This file is part of exact-real.
 #
-#        Copyright (C) 2020 Julian Rüth
+#        Copyright (C) 2020-2025 Julian Rüth
 #
 #  exact-real is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -24,16 +24,28 @@ try:
 except KeyboardInterrupt:
   sys.exit(1)
 
-sys.path.insert(0, 'tools/rever')
-
-import autodist
+@activity
+def dist():
+    r"""
+    Run make dist and collect the resulting tarball.
+    """
+    from tempfile import TemporaryDirectory
+    from xonsh.dirstack import DIRSTACK
+    with TemporaryDirectory() as tmp:
+        ./bootstrap
+        pushd @(tmp)
+        @(DIRSTACK[-1])/configure
+        make dist
+        mv *.tar.gz @(DIRSTACK[-1])
+        popd
+    return True
 
 $PROJECT = 'exact-real'
 
 $ACTIVITIES = [
     'version_bump',
     'changelog',
-    'autodist',
+    'dist',
     'tag',
     'push_tag',
     'ghrelease',
@@ -43,12 +55,7 @@ $VERSION_BUMP_PATTERNS = [
     ('configure.ac', r'AC_INIT', r'AC_INIT([exact-real], [$VERSION], [julian.rueth@fsfe.org])'),
     ('libexactreal/configure.ac', r'AC_INIT', r'AC_INIT([libexactreal], [$VERSION], [julian.rueth@fsfe.org])'),
     ('pyexactreal/configure.ac', r'AC_INIT', r'AC_INIT([pyexactreal], [$VERSION], [julian.rueth@fsfe.org])'),
-    ('libexactreal/recipe/meta.yaml', r"\{% set version =", r"{% set version = '$VERSION' %}"),
-    ('libexactreal/recipe/meta.yaml', r"\{% set build_number =", r"{% set build_number = '0' %}"),
-    ('pyexactreal/recipe/meta.yaml', r"\{% set version =", r"{% set version = '$VERSION' %}"),
-    ('pyexactreal/recipe/meta.yaml', r"\{% set build_number =", r"{% set build_number = '0' %}"),
-    ('README.md', r'\* \*\*libexactreal*\* \[!\[Binder\]', r'* **libexactreal* [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/exact-real/$VERSION?filepath=binder%2FSample.libexactreal.ipynb)'),
-    ('README.md', r'\* \*\*pyexactreal\*\* \[!\[Binder\]', r'* **pyexactreal** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/flatsurf/exact-real/$VERSION?filepath=binder%2FSample.pyexactreal.ipynb)'),
+    ('pyexactreal/src/setup.py', r'version=', r"version='$VERSION'"),
 ]
 
 $CHANGELOG_FILENAME = 'ChangeLog'

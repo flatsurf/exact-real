@@ -39,8 +39,7 @@
 
 namespace exactreal {
 template <typename Ring>
-class Module<Ring>::Implementation {
- public:
+struct Module<Ring>::Implementation {
   using Basis = typename Module<Ring>::Basis;
 
   Implementation() : basis({}), parameters(trivial()) {}

@@ -775,7 +775,7 @@ class ExactReals(UniqueRepresentation, CommutativeRing):
 
     def _repr_(self):
         r"""
-        Return a printable represntation of this parent.
+        Return a printable representation of this parent.
 
         EXAMPLES::
 

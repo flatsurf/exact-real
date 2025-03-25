@@ -261,7 +261,7 @@ class Key {
         } else if constexpr (std::is_same_v<L, Factors> && std::is_same_v<R, MonomialsExponents>) {
           return eq(lhs, rhs);
         } else {
-          static_assert(false_t<L> && false_t<R>, "Unsuported cache key types.");
+          static_assert(false_t<L> && false_t<R>, "Unsupported cache key types.");
         }
       }
     }, this->data, rhs.data);

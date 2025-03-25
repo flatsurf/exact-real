@@ -162,7 +162,7 @@ class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
   // Return whether elements have the same midpoint and radius.
   bool equal(const Arb&) const noexcept;
 
-  // Syntactic sugar for Yap, so that expresions such as x += y(64, Arf::Rount::NEAR) work.
+  // Syntactic sugar for Yap, so that expressions such as x += y(64, Arf::Rount::NEAR) work.
   template <typename... Args>
   decltype(auto) operator()(Args&&...) const noexcept LIBEXACTREAL_LOCAL;
 
