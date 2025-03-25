@@ -114,8 +114,7 @@ bool gt(const Element<Ring>& lhs, const RHS& rhs) {
 
 namespace exactreal {
 template <typename Ring>
-class Element<Ring>::Implementation : public ElementImplementation<Ring> {
- public:
+struct Element<Ring>::Implementation : public ElementImplementation<Ring> {
   using ElementImplementation<Ring>::ElementImplementation;
 };
 
@@ -176,8 +175,8 @@ std::vector<mpq_class> Element<Ring>::rationalCoefficients() const {
         entry.canonicalize();
         ret.push_back(std::move(entry));
       }
-      LIBEXACTREAL_ASSERT(nums.size() <= impl->parent->ring().parameters->degree(), "rational coefficient list cannot be larger than absolute degree of number field");
-      for (size_t i = nums.size(); i < impl->parent->ring().parameters->degree(); i++) {
+      LIBEXACTREAL_ASSERT(static_cast<size>(nums.size()) <= impl->parent->ring().parameters->degree(), "rational coefficient list cannot be larger than absolute degree of number field");
+      for (size i = nums.size(); i < impl->parent->ring().parameters->degree(); i++) {
         ret.push_back(0);
       }
     }
@@ -746,7 +745,7 @@ template <typename Ring>
 Element<Ring>::operator std::optional<mpq_class>() const {
   mpq_class ret;
 
-  for (size_t i = 0; i < module()->rank(); i++) {
+  for (int i = 0; i < module()->rank(); i++) {
     const auto& coefficient = impl->coefficients[i];
     if (coefficient) {
       const auto rational = static_cast<std::optional<mpq_class>>(*module()->basis()[i]);
@@ -785,7 +784,7 @@ bool Element<Ring>::operator==(const RealNumber& rhs) const {
   LIBEXACTREAL_CHECK_ARGUMENT(it != end(gens), "not implemented - equality of Element " << *this << " with unrelated RealNumber " << rhs);
 
   const size at = it - begin(gens);
-  for (size_t i = 0; i < impl->parent->rank(); i++) {
+  for (int i = 0; i < impl->parent->rank(); i++) {
     if (impl->coefficients[i] == 0) {
       if (i == at) {
         return false;
@@ -911,7 +910,7 @@ Element<Ring>& Element<Ring>::simplify() {
       gens.push_back(*gen);
   }
 
-  if (gens.size() == impl->parent->rank())
+  if (static_cast<size>(gens.size()) == impl->parent->rank())
     return *this;
 
   const auto parent = Module<Ring>::make(gens, impl->parent->ring());

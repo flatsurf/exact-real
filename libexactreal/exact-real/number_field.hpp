@@ -35,8 +35,7 @@ namespace exactreal {
 
 // Implements e-antic number field arithmetic for coefficients in expressions
 // making up an Element.
-class LIBEXACTREAL_API NumberField : boost::equality_comparable<NumberField> {
- public:
+struct LIBEXACTREAL_API NumberField : boost::equality_comparable<NumberField> {
   NumberField();
   NumberField(const eantic::renf_class&);
   NumberField(boost::intrusive_ptr<const eantic::renf_class>);

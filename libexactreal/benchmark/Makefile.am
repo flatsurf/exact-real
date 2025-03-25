@@ -6,5 +6,8 @@ AM_CPPFLAGS = -I $(srcdir)/.. -I $(builddir)/..
 AM_LDFLAGS = $(builddir)/../src/libexactreal.la
 AM_LDFLAGS += -lgmp
 # Google Benchmark and its dependencies
+if OS_LINUX
 AM_LDFLAGS += -lbenchmark -lrt -lpthread
-
+else
+AM_LDFLAGS += -lbenchmark -lpthread
+endif

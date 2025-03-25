@@ -44,7 +44,7 @@ dnl dependency before hitting it as an error in the build later.
 dnl
 dnl @category C++
 dnl @author Guido U. Draheim
-dnl @vesion 2006-12-18
+dnl @version 2006-12-18
 dnl @author Julian Rüth
 dnl @version 2019-03-01
 

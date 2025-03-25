@@ -9,46 +9,13 @@ concurrency:
 
 jobs:
   lint:
-    runs-on: ubuntu-20.04
-    steps:
-    - uses: actions/checkout@v2
-    - uses: DoozyX/clang-format-lint-action@v0.11
-      with:
-        source: libexactreal
-        clangFormatVersion: 10
-        extensions: cc,hpp,ipp,h,h.in,hpp.in
-        inplace: true
-    - uses: EndBug/add-and-commit@v4
-      with:
-        author_name: clang-format bot
-        author_email: bot@flatsurf.org
-        message: 'clang-format source code'
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  compiler-warnings:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
-        cxxflags:
-          - -UNDEBUG
-          - -DNDEBUG
+        task: ["codespell", "compiler-warnings-clang", "compiler-warnings-gcc"]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with: { submodules: recursive }
-      - uses: conda-incubator/setup-miniconda@v2
-        with: { miniforge-variant: "Mambaforge", miniforge-version: "latest" }
-      - name: install dependencies
-        shell: bash -l {0}
-        run: |
-          mamba env update --quiet -n test -f libexactreal/environment.yml
-          conda list
-      - name: make
-        shell: bash -l {0}
-        run: |
-          cd libexactreal
-          ./bootstrap
-          ./configure --prefix="$PREFIX" --without-benchmark
-
-          # Build library and its tests (but do not run any tests.)
-          make check TESTS= CXXFLAGS="$CXXFLAGS ${{ matrix.cxxflags }} -Werror -Wall -Wextra -pedantic -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wno-sign-compare -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wold-style-cast -Woverloaded-virtual -Wno-redundant-decls -Wsign-promo -Wstrict-null-sentinel -Wundef -fdiagnostics-show-option -Wconversion -Wshadow-compatible-local -Wno-deprecated -Wno-deprecated-declarations"
-    
+      - uses: prefix-dev/setup-pixi@v0.8.1
+        with: { pixi-version: v0.42.1 }
+      - run: pixi run -e dev ${{ matrix.task }}

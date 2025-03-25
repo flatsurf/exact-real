@@ -23,7 +23,8 @@
 
 namespace exactreal {
 
-struct Seed {
+class Seed {
+ public:
   Seed();
   Seed(unsigned int seed);
 

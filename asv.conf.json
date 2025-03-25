@@ -6,35 +6,10 @@
   "show_commit_url": "https://github.com/flatsurf/exact-real/commit/",
   "repo": ".",
   "environment_type": "conda",
-  "matrix": {
-    "automake": [],
-    "benchmark==1.5.0": [],
-    "boost-cpp": [],
-    "ccache": [],
-    "coreutils": [],
-    "pip+cppasv": [],
-    "cppyy": ["2.4.2"],
-    "cppyythonizations": [],
-    "cxx-compiler": [],
-    "libeantic": ["1.0.3"],
-    "gmp": [],
-    "gmpxxll": [],
-    "gmpxxyy": [],
-    "libflint": [],
-    "libtool": [],
-    "make": [],
-    "ppl": [],
-    "pytest": [],
-    "python": [],
-    "setuptools": []
-  },
-  "conda_channels": ["conda-forge", "default"],
+  "matrix": {},
+  "conda_channels": ["conda-forge"],
   "repo_subdir": "libexactreal",
-  "build_command": [
-    "autoreconf -ivf",
-    "/bin/sh configure CXX='ccache c++'",
-    "make"
-  ],
+  "build_command": [],
   "install_command": [],
   "uninstall_command": [],
   "benchmark_dir": "tools/asv",
@@ -42,5 +17,3 @@
   "results_dir": ".asv/results",
   "html_dir": ".asv/html"
 }
-
-

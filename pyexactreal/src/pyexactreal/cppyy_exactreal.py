@@ -5,7 +5,7 @@ Note that pyexactreal offers a better interface to work with exact-real. Use
 `pyexactreal.exactreal` if you need to directly manipulate the underlying C++
 objects::
 
->>> from pyexactreal import exactreal
+>>> from pyexactreal import exactreal  # random output due to deprecation warnings in cppyy
 >>> exactreal.Module[exactreal.IntegerRing].make([])
 ℤ-Module()
 
@@ -416,7 +416,7 @@ def QQModule(*gens):
 
     EXAMPLES::
 
-        >>> from pyexactreal import ZZModule, RealNumber
+        >>> from pyexactreal import QQModule, RealNumber
         >>> QQModule(RealNumber.rational(1), RealNumber.random())
         ℚ-Module(1, ℝ(...))
 
@@ -429,7 +429,7 @@ def NumberFieldModule(K, *gens):
 
     EXAMPLES::
 
-        >>> from pyexactreal import ZZModule, RealNumber, NumberField
+        >>> from pyexactreal import NumberFieldModule, RealNumber, NumberField
         >>> K = NumberField("x^2 - 2", "x", "1.4 +/- 1")
         >>> NumberFieldModule(K, RealNumber.rational(1), RealNumber.random())
         K-Module(1, ℝ(...))

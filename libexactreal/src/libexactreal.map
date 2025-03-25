@@ -141,7 +141,7 @@ LIBEXACTREAL_3.0.0 {
       "exactreal::Element<exactreal::IntegerRing>::operator<(long long) const";
       "exactreal::Element<exactreal::IntegerRing>::operator<(long) const";
       "exactreal::Element<exactreal::IntegerRing>::operator<(short) const";
-      "exactreal::Element<exactreal::IntegerRing>::operator<(unsiged int) const";
+      "exactreal::Element<exactreal::IntegerRing>::operator<(unsigned int) const";
       "exactreal::Element<exactreal::IntegerRing>::operator<(unsigned long long) const";
       "exactreal::Element<exactreal::IntegerRing>::operator<(unsigned long) const";
       "exactreal::Element<exactreal::IntegerRing>::operator<(unsigned short) const";
@@ -166,7 +166,7 @@ LIBEXACTREAL_3.0.0 {
       "exactreal::Element<exactreal::IntegerRing>::operator>(long long) const";
       "exactreal::Element<exactreal::IntegerRing>::operator>(long) const";
       "exactreal::Element<exactreal::IntegerRing>::operator>(short) const";
-      "exactreal::Element<exactreal::IntegerRing>::operator>(unsiged int) const";
+      "exactreal::Element<exactreal::IntegerRing>::operator>(unsigned int) const";
       "exactreal::Element<exactreal::IntegerRing>::operator>(unsigned long long) const";
       "exactreal::Element<exactreal::IntegerRing>::operator>(unsigned long) const";
       "exactreal::Element<exactreal::IntegerRing>::operator>(unsigned short) const";
@@ -228,7 +228,7 @@ LIBEXACTREAL_3.0.0 {
       "exactreal::Element<exactreal::NumberField>::operator<(long long) const";
       "exactreal::Element<exactreal::NumberField>::operator<(long) const";
       "exactreal::Element<exactreal::NumberField>::operator<(short) const";
-      "exactreal::Element<exactreal::NumberField>::operator<(unsiged int) const";
+      "exactreal::Element<exactreal::NumberField>::operator<(unsigned int) const";
       "exactreal::Element<exactreal::NumberField>::operator<(unsigned long long) const";
       "exactreal::Element<exactreal::NumberField>::operator<(unsigned long long) const";
       "exactreal::Element<exactreal::NumberField>::operator<(unsigned long) const";
@@ -255,7 +255,7 @@ LIBEXACTREAL_3.0.0 {
       "exactreal::Element<exactreal::NumberField>::operator>(long long) const";
       "exactreal::Element<exactreal::NumberField>::operator>(long) const";
       "exactreal::Element<exactreal::NumberField>::operator>(short) const";
-      "exactreal::Element<exactreal::NumberField>::operator>(unsiged int) const";
+      "exactreal::Element<exactreal::NumberField>::operator>(unsigned int) const";
       "exactreal::Element<exactreal::NumberField>::operator>(unsigned long long) const";
       "exactreal::Element<exactreal::NumberField>::operator>(unsigned long long) const";
       "exactreal::Element<exactreal::NumberField>::operator>(unsigned long) const";
@@ -313,7 +313,7 @@ LIBEXACTREAL_3.0.0 {
       "exactreal::Element<exactreal::RationalField>::operator<(long long) const";
       "exactreal::Element<exactreal::RationalField>::operator<(long) const";
       "exactreal::Element<exactreal::RationalField>::operator<(short) const";
-      "exactreal::Element<exactreal::RationalField>::operator<(unsiged int) const";
+      "exactreal::Element<exactreal::RationalField>::operator<(unsigned int) const";
       "exactreal::Element<exactreal::RationalField>::operator<(unsigned long) const";
       "exactreal::Element<exactreal::RationalField>::operator<(unsigned short) const";
       "exactreal::Element<exactreal::RationalField>::operator==(__gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&) const";
@@ -335,7 +335,7 @@ LIBEXACTREAL_3.0.0 {
       "exactreal::Element<exactreal::RationalField>::operator>(int) const";
       "exactreal::Element<exactreal::RationalField>::operator>(long) const";
       "exactreal::Element<exactreal::RationalField>::operator>(short) const";
-      "exactreal::Element<exactreal::RationalField>::operator>(unsiged int) const";
+      "exactreal::Element<exactreal::RationalField>::operator>(unsigned int) const";
       "exactreal::Element<exactreal::RationalField>::operator>(unsigned long) const";
       "exactreal::Element<exactreal::RationalField>::operator>(unsigned short) const";
       "exactreal::Element<exactreal::RationalField>::operator[](long) const";
