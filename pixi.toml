@@ -239,6 +239,7 @@ codespell = "*"
 clangdev = "*"
 compiledb = "*"
 asv = ">=0.6.4,<0.7"
+rever = "*"
 
 [feature.dev.pypi-dependencies]
 cppasv = { git = "https://github.com/flatsurf/cppasv.git" }
