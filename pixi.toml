@@ -16,7 +16,7 @@ pyexactreal-sagemath-102 = ["libexactreal", "pyexactreal", "sagemath-102"]
 pyexactreal-sagemath-103 = ["libexactreal", "pyexactreal", "sagemath-103"]
 pyexactreal-sagemath-104 = ["libexactreal", "pyexactreal", "sagemath-104"]
 pyexactreal-sagemath-105 = ["libexactreal", "pyexactreal", "sagemath-105"]
-dev = ["dev", "libexactreal", "pyexactreal"]
+dev = ["dev", "doc", "libexactreal", "pyexactreal"]
 env-address-sanitizer = ["address-sanitizer", "libexactreal", "pyexactreal"]
 env-undefined-sanitizer = ["undefined-sanitizer", "libexactreal", "pyexactreal"]
 env-coverage = ["coverage", "libexactreal", "pyexactreal"]
@@ -53,8 +53,8 @@ CXXFLAGS = "-coverage -O0 -UNDEBUG"
 #########
 [tasks.bootstrap]
 cmd = "./bootstrap"
-inputs = ["configure.ac", "{libexactreal,pyexactreal}/configure.ac", "Makefile.am", "{libexactreal,pyexactreal}/**/Makefile.am"]
-outputs = ["configure", "{libexactreal,pyexactreal}/configure", "Makefile.in", "{libexactreal,pyexactreal}/**/*.in"]
+inputs = ["configure.ac", "{libexactreal,pyexactreal,doc}/configure.ac", "Makefile.am", "{libexactreal,pyexactreal,doc}/**/Makefile.am"]
+outputs = ["configure", "{libexactreal,pyexactreal,doc}/configure", "Makefile.in", "{libexactreal,pyexactreal,doc}/**/*.in"]
 
 [feature.libexactreal.tasks.configure-libexactreal]
 cmd = './configure --prefix="$CONDA_PREFIX"'
@@ -141,8 +141,8 @@ dev-compile-commands = { cwd = "libexactreal", cmd = "compiledb make -n check TE
 
 [feature.dev.tasks.configure]
 cmd = './configure --prefix="$CONDA_PREFIX"'
-inputs = ["configure", "{libexactreal,pyexactreal}/configure", "Makefile.in", "{libexactreal,pyexactreal}/**/*.in"]
-outputs = ["Makefile", "{libexactreal,pyexactreal}/**/Makefile"]
+inputs = ["configure", "{libexactreal,pyexactreal,doc}/configure", "Makefile.in", "{libexactreal,pyexactreal,doc}/**/*.in"]
+outputs = ["Makefile", "{libexactreal,pyexactreal,doc}/**/Makefile"]
 depends-on = ["bootstrap"]
 
 [feature.dev.tasks.distcheck]
@@ -197,6 +197,56 @@ cmd = './configure --prefix="$CONDA_PREFIX"'
 cwd = "libexactreal"
 depends-on = ["bootstrap"]
 inputs = ["libexactreal/configure", "libexactreal/**/*.in"]
+
+[feature.doc.tasks.configure-doc]
+cmd = './configure --prefix="$CONDA_PREFIX"'
+cwd = "doc"
+depends-on = ["bootstrap"]
+inputs = ["doc/configure", "doc/**/*.in"]
+
+[feature.doc.tasks.build-doc]
+cmd = "make"
+cwd = "doc"
+depends-on = ["configure-doc", "build-libexactreal", "build-pyexactreal"]
+
+[feature.doc.tasks.doc]
+cmd = "pixi run dev-doc"
+
+[feature.doc.tasks.dev-doc]
+cmd = """
+sh -c '
+python -m http.server $PORT --bind localhost --directory manual/generated/html &
+SERVER_PID=$!
+trap "kill $SERVER_PID" EXIT
+
+sleep 1
+
+echo "Preview the documentation at http://localhost:$PORT/"
+echo "Press Ctrl-C to continue"
+
+wait $SERVER_PID
+'
+"""
+cwd = "doc"
+depends-on = ["build-doc"]
+env = { PORT = "8880" }
+
+[feature.doc.tasks.test-doc-linkchecker]
+cmd = """
+sh -c '
+python -m http.server $PORT --bind localhost --directory manual/generated/html &
+SERVER_PID=$!
+trap "kill $SERVER_PID" EXIT
+
+sleep 1
+
+# Ignore broken links on gmplib.org, they seem to be rate limiting GitHub.
+linkchecker --check-extern http://localhost:$PORT/ --no-warnings --ignore gmplib.org
+'
+"""
+cwd = "doc"
+depends-on = ["build-doc"]
+env = { PORT = "8880" }
 
 ################
 # DEPENDENCIES #
@@ -257,6 +307,15 @@ gxx = ">=14.2"
 # Work around https://github.com/actions/runner-images/issues/9491
 gcc = ">=14.2"
 gxx = ">=14.2"
+
+[feature.doc.dependencies]
+sphinx = "7.*"
+sphinx-book-theme = "*"
+# Work around https://github.com/executablebooks/sphinx-book-theme/issues/865
+pydata-sphinx-theme= "<0.16"
+linkchecker = "*"
+breathe = ">=4.35.0"
+doxygen = "*"
 
 [feature.flint-29.dependencies]
 libflint = "2.9.*"
