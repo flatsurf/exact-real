@@ -39,7 +39,9 @@
 namespace exactreal {
 
 template <typename Ring>
-class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
+class LIBEXACTREAL_API Element
+/// @cond INTERNAL
+                               : boost::additive<Element<Ring>>,
                                  boost::multipliable<Element<Ring>>,
                                  boost::totally_ordered<Element<Ring>>,
                                  // Element can be <= compared with many other
@@ -76,7 +78,9 @@ class LIBEXACTREAL_API Element : boost::additive<Element<Ring>>,
                                    boost::multiplicative<Element<Ring>, long>,
                                    boost::multiplicative<Element<Ring>, unsigned long>,
                                    boost::multiplicative<Element<Ring>, long long>,
-                                   boost::multiplicative<Element<Ring>, unsigned long long>>> {
+                                   boost::multiplicative<Element<Ring>, unsigned long long>>>
+/// @endcond
+{
  public:
   Element();
   Element(const std::shared_ptr<const Module<Ring>>& parent, const std::vector<typename Ring::ElementClass>& coefficients);

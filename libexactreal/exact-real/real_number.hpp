@@ -125,6 +125,7 @@ class LIBEXACTREAL_API RealNumber : public std::enable_shared_from_this<RealNumb
   static std::shared_ptr<const RealNumber> e();
 };
 
+/// @cond INTERNAL
 template <typename Integer>
 std::enable_if_t<std::is_integral_v<Integer>, bool> RealNumber::operator<(Integer rhs) const noexcept {
   return this->operator<(Arf(rhs));
@@ -139,6 +140,7 @@ template <typename Integer>
 std::enable_if_t<std::is_integral_v<Integer>, bool> RealNumber::operator==(Integer rhs) const noexcept {
   return this->operator==(Arf(rhs));
 }
+/// @endcond
 
 }  // namespace exactreal
 

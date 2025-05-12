@@ -39,40 +39,44 @@
 #include "arf.hpp"
 
 namespace exactreal {
-// After some discussion with the Arb author, it seems that 64 and 128 are good
-// default precisions for which Arb should be particularly fast. We use this
-// only when we need some random precision to at which to start an algorithm.
-// For callers of the library, this should not have any effect other than
-// changing the performance of certain calls slightly.
+/// After some discussion with the Arb author, it seems that 64 and 128 are good
+/// default precisions for which Arb should be particularly fast. We use this
+/// only when we need some random precision to at which to start an algorithm.
+/// For callers of the library, this should not have any effect other than
+/// changing the performance of certain calls slightly.
 inline constexpr const prec ARB_PRECISION_FAST = 64;
 
-// A wrapper for arb_t elements so we get C++ style memory management.
-// We use some Yap magic to get nice operators (which is tricky otherwise
-// because we cannot pass the additional prec and rnd parameters to operators
-// in C++.)
-//
-// If you don't like that magic and only want memory management, just create
-// elements
-//
-//   Arb x, y;
-//
-// and then use the Arb functions directly:
-//
-//   arb_add(x.arb_t(), x.arb_t(), y.arb_t(), 64);
-//
-// Using yap this can be rewritten as any of the following:
-//
-//   #include <exact-real/yap/arb.hpp>
-//
-//   x += y(64);
-//   x = (x + y)(64);
-//
-// Note that the latter might use an additional temporary Arb. See the
-// yap/arb.hpp header for more details.
-//
-// Note that methods here are usually named as their counterparts in arb.h with
-// the leading arb_ removed.
-class LIBEXACTREAL_API Arb : yap::Terminal<Arb, yap::ArbExpr> {
+/// A wrapper for arb_t elements so we get C++ style memory management.
+/// We use some Yap magic to get nice operators (which is tricky otherwise
+/// because we cannot pass the additional prec and rnd parameters to operators
+/// in C++.)
+///
+/// If you don't like that magic and only want memory management, just create
+/// elements
+///
+///   Arb x, y;
+///
+/// and then use the Arb functions directly:
+///
+///   arb_add(x.arb_t(), x.arb_t(), y.arb_t(), 64);
+///
+/// Using yap this can be rewritten as any of the following:
+///
+///   include <exact-real/yap/arb.hpp>
+///
+///   x += y(64);
+///   x = (x + y)(64);
+///
+/// Note that the latter might use an additional temporary Arb. See the
+/// yap/arb.hpp header for more details.
+///
+/// Note that methods here are usually named as their counterparts in arb.h with
+/// the leading arb_ removed.
+class LIBEXACTREAL_API Arb
+/// @cond
+  : yap::Terminal<Arb, yap::ArbExpr>
+/// @endcond
+{
  public:
   // An exact zero element
   Arb() noexcept;

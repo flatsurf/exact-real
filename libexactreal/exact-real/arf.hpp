@@ -36,34 +36,46 @@
 
 #include "yap/terminal.hpp"
 
+
 namespace exactreal {
-// A wrapper for arf_t elements so we get C++ style memory management.
-// We use some Yap magic to get nice operators (which is tricky otherwise
-// because we cannot pass the additional prec and rnd parameters to operators
-// in C++.)
-//
-// If you don't like that magic and only want memory management, just create
-// elements
-//
-//   Arf x, y;
-//
-// and then use the Arf functions directly:
-//
-//   arf_add(x.arb_t(), x.arb_t(), y.arb_t(), 64, ARF_RND_NEAR);
-//
-// Using yap this can be rewritten as any of the following:
-//
-//   #include <exact-real/yap/arb.hpp>
-//
-//   x += y(64)(Arf::Round::NEAR);
-//   x = (x + y)(64, Arf::Round::NEAR);
-//
-// Note that the latter might use an additional temporary Arf. See the
-// yap/arf.hpp header for more details.
-//
-// Note that methods here are usually named as their counterparts in arf.h with
-// the leading arf_ removed.
-class LIBEXACTREAL_API Arf : yap::Terminal<Arf, yap::ArfExpr>, boost::totally_ordered<Arf>, boost::totally_ordered<Arf, long>, boost::shiftable<Arf, long> {
+
+/// A wrapper for arf_t elements so we get C++ style memory management.
+/// We use some Yap magic to get nice operators (which is tricky otherwise
+/// because we cannot pass the additional prec and rnd parameters to operators
+/// in C++.)
+///
+/// If you don't like that magic and only want memory management, just create
+/// elements
+///
+/// ```
+/// Arf x, y;
+/// ```
+///
+/// and then use the Arf functions directly:
+///
+/// ```
+/// arf_add(x.arb_t(), x.arb_t(), y.arb_t(), 64, ARF_RND_NEAR);
+/// ```
+///
+/// Using yap this can be rewritten as any of the following:
+///
+/// ```
+/// #include <exact-real/yap/arb.hpp>
+///
+/// x += y(64)(Arf::Round::NEAR);
+/// x = (x + y)(64, Arf::Round::NEAR);
+/// ```
+///
+/// Note that the latter might use an additional temporary Arf. See the
+/// yap/arf.hpp header for more details.
+///
+/// Note that methods here are usually named as their counterparts in arf.h with
+/// the leading arf_ removed.
+class LIBEXACTREAL_API Arf
+/// @cond
+  : yap::Terminal<Arf, yap::ArfExpr>, boost::totally_ordered<Arf>, boost::totally_ordered<Arf, long>, boost::shiftable<Arf, long>
+/// @endcond
+{
  public:
   enum class Round {
     NEAR = ARF_RND_NEAR,
