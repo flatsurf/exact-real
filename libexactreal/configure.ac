@@ -69,6 +69,22 @@ AC_COMPILE_IFELSE(
    [[#include <e-antic/renfxx.h>]],
    [[const eantic::renf_class& K = eantic::renf_elem_class().parent();]])], , AC_MSG_ERROR([[E-ANTIC library incompatible, probably too old]]))
 
+dnl We test C++ code snippets with byexample which requires cppyy.
+AC_ARG_WITH([byexample], AS_HELP_STRING([--without-byexample], [Do not test C/C++ code snippets with byexample]))
+AS_IF([test "x$with_byexample" != "xno"],
+      [
+       AC_MSG_CHECKING([for byexample])
+       AS_IF([byexample --version 2> /dev/null],
+             [
+              AC_MSG_RESULT([yes])
+              with_byexample=yes
+             ], [
+              AC_MSG_RESULT([no])
+              AS_IF([test "x$with_byexample" = "xyes"], AC_MSG_ERROR([byexample for make check not found]), AC_MSG_WARN([byexample not found; disabled byexample in make check]))
+             ])
+      ], [])
+AM_CONDITIONAL([HAVE_BYEXAMPLE], [test "x$with_byexample" = "xyes"])
+
 dnl Our benchmarks use Google's C++ benchmark library.
 dnl We fail if they cannot be found but let the user disable it explicitly.
 AC_ARG_WITH([benchmark], AS_HELP_STRING([--without-benchmark], [Do not build C++ benchmarks that require google/benchmark]))
@@ -83,6 +99,6 @@ AC_ARG_WITH([version-script], AS_HELP_STRING([--with-version-script], [Only expo
 AM_CONDITIONAL([HAVE_VERSION_SCRIPT], [test "x$with_version_script" = "xyes"])
 
 AC_CONFIG_HEADERS([exact-real/config.h])
-AC_CONFIG_FILES([Makefile src/Makefile test/Makefile benchmark/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile test/Makefile benchmark/Makefile test/byexample/Makefile])
 
 AC_OUTPUT

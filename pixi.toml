@@ -180,13 +180,13 @@ cwd = "libexactreal"
 depends-on = "configure-libexactreal"
 
 [feature.dev.tasks.configure-libexactreal]
-cmd = './configure --prefix="$CONDA_PREFIX" --with-benchmark'
+cmd = './configure --prefix="$CONDA_PREFIX" --with-byexample --with-benchmark'
 cwd = "libexactreal"
 depends-on = ["bootstrap"]
 inputs = ["libexactreal/configure", "libexactreal/**/*.in"]
 
 [feature.dev.target.linux.tasks.configure-libexactreal]
-cmd = './configure --prefix="$CONDA_PREFIX" --with-benchmark --with-version-script'
+cmd = './configure --prefix="$CONDA_PREFIX" --with-byexample --with-benchmark --with-version-script'
 cwd = "libexactreal"
 depends-on = ["bootstrap"]
 inputs = ["libexactreal/configure", "libexactreal/**/*.in"]
@@ -282,14 +282,15 @@ sympy = "*"
 pyexactreal = { path = "pyexactreal/src", editable = true }
 
 [feature.dev.dependencies]
+asv = ">=0.6.4,<0.7"
+byexample = "*"
+clangdev = "*"
+codespell = "*"
+compiledb = "*"
 libflint = "3.*"
 py = "*"
-sagelib = "==10.3"
-codespell = "*"
-clangdev = "*"
-compiledb = "*"
-asv = ">=0.6.4,<0.7"
 rever = "*"
+sagelib = "==10.3"
 
 [feature.dev.pypi-dependencies]
 cppasv = { git = "https://github.com/flatsurf/cppasv.git" }
