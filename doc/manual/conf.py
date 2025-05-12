@@ -7,6 +7,7 @@ BUILDDIR = Path(os.environ.get('ABS_BUILDDIR', '.')).absolute()
 
 project = 'pyexactreal'
 copyright = '2019-2025, the exact-real authors'
+author = ''
 
 release = '4.0.1'
 
