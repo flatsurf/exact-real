@@ -72,8 +72,10 @@ class MarkdownHppDelimiter(ZoneDelimiter):
 
     @constant
     def zone_regex(self):
-        return re.compile(r'''
-            # Begin with a Markdown fenced-code marker
+        import regex
+        return regex.compile(r'''
+            # Examples can be given with fenced code markers, i.e., ```
+            (
             ^[ ]*
                 (?:
                     (?P<marker>///[ ]```(?:``)*)$ # fenced-code marker (backticks)
@@ -83,10 +85,31 @@ class MarkdownHppDelimiter(ZoneDelimiter):
             # finally, the end marker
             (?(marker)
                   ^[ ]*(?P=marker) # we must match the same amount of backticks
+            ))|(
+            # Examples can be given as indented blocks.
+                (?P<zone>(^[ ]*///[ ][ ]{4}[^\n]*$\n?)*)
+                # (?=(^[ ]*///[ ][^ ])|\Z)
             )
             ''', re.DOTALL | re.MULTILINE | re.VERBOSE)
 
-    def __repr__(self): return "/// ``` ... ```"
+    def __repr__(self): return "/// ``` ... ``` or ///     indented code"
+
+
+class RSTCppDelimiter(ZoneDelimiter):
+    r"""
+    Detects C/C++ examples in reStructuredText.
+    """
+    target = {'.rst'}
+
+    @constant
+    def zone_regex(self):
+        return re.compile(r'''
+            ^\.\.[ ]code-block::[ ](c|cpp)$  # start with a .. code-block:: c(pp) marker
+            (?P<zone>.*?)
+            (?=^\S)  # the block ends when the indentation ends
+            ''', re.DOTALL | re.MULTILINE | re.VERBOSE)
+
+    def __repr__(self): return ".. code-block:: c or .. code-block:: cpp"
 
 
 class CxxPromptFinder(byexample.modules.cpp.CppPromptFinder):
@@ -130,7 +153,7 @@ class CxxPromptFinder(byexample.modules.cpp.CppPromptFinder):
 
     def _remove_expected(self, snippet):
         marker = "// -> "
-        lines = snippet.split("\n")
+        lines = [line.strip() for line in snippet.split("\n")]
         lines = [line[len(marker):] if line.startswith(marker) else line for line in lines]
         return '\n'.join(lines)
 
@@ -155,7 +178,7 @@ class CxxInterpreter(byexample.runner.ExampleRunner):
             except EOFError:
                 return
 
-            lines = source.split('\n')
+            lines = [line.strip() for line in source.split('\n')]
             definitions = [line for line in lines if line.startswith('#')]
             executables = [line for line in lines if not line.startswith('#') and line]
 

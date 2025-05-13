@@ -284,6 +284,7 @@ pyexactreal = { path = "pyexactreal/src", editable = true }
 [feature.dev.dependencies]
 asv = ">=0.6.4,<0.7"
 byexample = "*"
+regex = "*"
 clangdev = "*"
 codespell = "*"
 compiledb = "*"

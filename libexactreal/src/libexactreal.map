@@ -490,3 +490,9 @@ LIBEXACTREAL_3.0.0 {
       "std::ostream& exactreal::operator<< <exactreal::RationalField>(std::ostream&, exactreal::Module<exactreal::RationalField> const&)";
     };
 };
+LIBEXACTREAL_4.1.0 {
+  global:
+    extern "C++" {
+      "exactreal::swap(exactreal::Arb&, exactreal::Arb&)";
+    };
+} LIBEXACTREAL_3.0.0;
