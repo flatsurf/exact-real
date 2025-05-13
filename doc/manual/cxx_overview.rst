@@ -12,8 +12,8 @@ your module will live. Currently implemented are the
 
 To create a module over this coefficient ring, you need to select generators
 for your module. The most important such generators are a fixed
-:cpp:member:`rational number <exactreal::RealNumber::rational>` such as 1 and
-:cpp:member:`random transcendental numbers <exactreal::RealNumber::random>`.
+:cpp:func:`rational number <exactreal::RealNumber::rational>` such as 1 and
+:cpp:func:`random transcendental numbers <exactreal::RealNumber::random>`.
 
 Once a coefficient ring and the generators have been selected, elements can be
 created and arithmetic with them can be performed.
@@ -33,7 +33,7 @@ include the required headers and create our coefficient ring:
 
     exactreal::RationalField Q;
 
-We fix our generators, one is a :cpp:member:`random real number
+We fix our generators, one is a :cpp:func:`random real number
 <exactreal::RealNumber::random>` in the interval (0, 1).
 
 .. code-block:: cpp
@@ -49,7 +49,7 @@ reals:
     auto M = exactreal::Module<exactreal::RationalField>::make({a, b}, Q);
 
 We construct some :cpp:class:`elements <exactreal::Element>` in this module, namely
-its :cpp:member:`generators <exactreal::Module::gen>`:
+its :cpp:func:`generators <exactreal::Module::gen>`:
 
 .. code-block:: cpp
 
@@ -66,7 +66,7 @@ We perform some arithmetic in this module:
     y + x - y == x
     // -> true
 
-Note that we can also :cpp:member:`multiply elements
+Note that we can also :cpp:func:`multiply elements
 <exactreal::Element::operator*=>`, however the result then typically lives in a
 larger module:
 
@@ -75,7 +75,7 @@ larger module:
     (y * y).module() == M
     // -> false
 
-:cpp:member:`Divisions <exactreal::Element::truediv>` are supported when the
+:cpp:func:`Divisions <exactreal::Element::truediv>` are supported when the
 result can be determined exactly:
 
 .. code-block:: cpp
@@ -83,7 +83,7 @@ result can be determined exactly:
     (y * y).truediv(y) == y
     // -> true
 
-Otherwise, only :cpp:member;`floor division <exactreal::Element::floordiv>` is
+Otherwise, only :cpp:func;`floor division <exactreal::Element::floordiv>` is
 possible:
 
 .. code-block:: cpp
