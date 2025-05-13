@@ -4,9 +4,15 @@ export ABS_BUILDDIR=$(abs_builddir)
 generated/html/index.html: generated/doxygen/xml/index.xml flint.inv $(srcdir)/*.rst $(srcdir)/conf.py $(srcdir)/_static/extra.css
 	$(MAKE) -C ../../pyexactreal/test test-env.sh bin/python
 	$(MAKE) -C ../../libexactreal/src
+	$(MAKE) sphinx
+	cp $(srcdir)/robots.txt generated/html/
+
+# Rebuild documentation without rebuilding libexactreal.
+# This is a convenient target to make when making changes to documentation
+# comments in the header files.
+sphinx: generated/doxygen/xml/index.xml
 	source ../../pyexactreal/test/test-env.sh && \
 	python $(SPHINXBUILD) -b html $(srcdir) $(builddir)/generated/html
-	cp $(srcdir)/robots.txt generated/html/
 
 generated/doxygen/xml/index.xml: $(srcdir)/Doxyfile $(srcdir)/../../libexactreal/exact-real/*.hpp
 	mkdir -p generated/doxygen
@@ -16,6 +22,9 @@ flint.inv:
 	wget -O $@ https://flintlib.org/doc/objects.inv
 
 CLEANFILES = flint.inv
+
+.PHONY:
+	sphinx
 
 all: generated/html/index.html
 

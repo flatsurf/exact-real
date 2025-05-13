@@ -68,6 +68,7 @@ constexpr bool false_t = false;
 
 #endif  // __CLING__
 
+#ifndef DOXYGEN_DOCUMENTATION_BUILD
 // Visibility Macros to separate API from non-API and inline template code.
 // See, https://gcc.gnu.org/wiki/Visibility.
 #if defined _WIN32 || defined __CYGWIN__
@@ -87,5 +88,7 @@ constexpr bool false_t = false;
 #define LIBEXACTREAL_API LIBEXACTREAL_LIBRARY_IMPORT
 #define LIBEXACTREAL_LOCAL
 #endif
+
+#endif  // DOXYGEN_DOCUMENTATION_BUILD
 
 #endif  // LIBEXACTREAL_EXACTREAL_HPP
