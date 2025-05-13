@@ -120,6 +120,11 @@ Arf& Arf::operator=(long rhs) noexcept {
   return *this;
 }
 
+Arf& Arf::operator=(double rhs) noexcept {
+  arf_set_d(t, rhs);
+  return *this;
+}
+
 Arf& Arf::operator<<=(const long rhs) noexcept {
   arf_mul_2exp_si(t, t, rhs);
   return *this;
@@ -209,6 +214,10 @@ ostream& operator<<(ostream& os, const Arf& self) {
   os << static_cast<double>(self) << "=" << self.mantissa() << "p" << self.exponent();
 
   return os;
+}
+
+void swap(Arf& a, Arf& b) {
+  arf_swap(a.arf_t(), b.arf_t());
 }
 
 }  // namespace exactreal

@@ -56,6 +56,8 @@ BOOST_YAP_USER_BINARY_OPERATOR(multiplies, yap::ArfExpr, yap::ArfExpr)
 BOOST_YAP_USER_BINARY_OPERATOR(divides, yap::ArfExpr, yap::ArfExpr)
 BOOST_YAP_USER_UNARY_OPERATOR(negate, yap::ArfExpr, yap::ArfExpr)
 
+#ifndef DOXYGEN_DOCUMENTATION_BUILD
+
 template <boost::yap::expr_kind Kind, typename Tuple>
 Arf::Arf(const yap::ArfExpr<Kind, Tuple>& expr) noexcept : Arf() {
   *this = expr;
@@ -95,6 +97,9 @@ template <typename... Args>
 decltype(auto) Arf::operator()(Args&&... args) const noexcept {
   return boost::yap::as_expr<yap::ArfExpr>(*this)(std::forward<Args>(args)...);
 }
+
+#endif  // DOXYGEN_DOCUMENTATION_BUILD
+
 }  // namespace exactreal
 
 #endif

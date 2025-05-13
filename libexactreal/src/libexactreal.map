@@ -494,5 +494,7 @@ LIBEXACTREAL_4.1.0 {
   global:
     extern "C++" {
       "exactreal::swap(exactreal::Arb&, exactreal::Arb&)";
+      "exactreal::swap(exactreal::Arf&, exactreal::Arf&)";
+      "exactreal::Arf::operator=(double)";
     };
 } LIBEXACTREAL_3.0.0;
