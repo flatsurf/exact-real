@@ -367,8 +367,8 @@ class LIBEXACTREAL_API Arf
 #endif
 
  private:
-  /// The underlying \rst{:c:type:`arf_t`; use :cpp:func:`arf_t()
-  /// <exactreal::Arb::arf_t>`} to get a reference to it.
+  /// The underlying \rst{:c:type:`arf_t`;} use \ref arf_t to get a reference to
+  /// it.
   ::arf_t t;
 };
 
