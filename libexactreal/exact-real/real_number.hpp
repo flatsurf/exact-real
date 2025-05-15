@@ -255,16 +255,19 @@ class LIBEXACTREAL_API RealNumber
   /// Return the product of this real number and \p rhs.
   ///
   ///     const auto x = exactreal::RealNumber::rational(mpq_class{1, 3});
+  ///
   ///     const auto xx = *x * *x;
   ///     *xx
   ///     // -> 1/9
   ///
   ///     const auto y = exactreal::RealNumber::random();
+  ///
   ///     const auto yy = *y * *y;
   ///     *yy
   ///     // -> ℝ(<...>)^2
   ///
   ///     const auto z = exactreal::RealNumber::random();
+  ///
   ///     const auto yz = *y * *z;
   ///     *yz
   ///     // -> ℝ(<...>)*ℝ(<...>)
@@ -276,6 +279,7 @@ class LIBEXACTREAL_API RealNumber
   /// Returns an `std::nullopt` when the exact quotient cannot be represented.
   ///
   ///     const auto y = exactreal::RealNumber::random();
+  ///
   ///     const auto z = (*y) * (*y);
   ///
   ///     auto quo = *z / *z;
