@@ -60,7 +60,8 @@ html_static_path = ['_static']
 html_css_files = ['extra.css']
 
 intersphinx_mapping = {
-    "flint": ('https://flintlib.org/doc/', str(BUILDDIR / 'flint.inv'))
+    "flint": ('https://flintlib.org/doc/', str(BUILDDIR / 'flint.inv')),
+    "e-antic": ('https://flatsurf.github.io/e-antic/', str(BUILDDIR / 'eantic.inv')),
 }
 
 breathe_projects = {"libexactreal": str(BUILDDIR / "generated/doxygen/xml")}

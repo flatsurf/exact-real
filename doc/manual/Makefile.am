@@ -21,7 +21,10 @@ generated/doxygen/xml/index.xml: $(srcdir)/Doxyfile $(srcdir)/../../libexactreal
 flint.inv:
 	wget -O $@ https://flintlib.org/doc/objects.inv
 
-CLEANFILES = flint.inv
+eantic.inv:
+	wget -O $@ https://flatsurf.github.io/e-antic/objects.inv
+
+CLEANFILES = flint.inv eantic.inv
 
 .PHONY:
 	sphinx
