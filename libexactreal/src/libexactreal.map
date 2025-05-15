@@ -496,5 +496,12 @@ LIBEXACTREAL_4.1.0 {
       "exactreal::swap(exactreal::Arb&, exactreal::Arb&)";
       "exactreal::swap(exactreal::Arf&, exactreal::Arf&)";
       "exactreal::Arf::operator=(double)";
+      "exactreal::RealNumber::operator<(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&) const";
+      "exactreal::RealNumber::operator>(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&) const";
+      "exactreal::RealNumber::operator==(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&) const";
+      "exactreal::RealNumber::operator<(__gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&) const";
+      "exactreal::RealNumber::operator>(__gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&) const";
+      "exactreal::Seed()";
+      "exactreal::Seed(unsigned int)";
     };
 } LIBEXACTREAL_3.0.0;
