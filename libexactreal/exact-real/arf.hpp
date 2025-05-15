@@ -107,6 +107,7 @@ class LIBEXACTREAL_API Arf
   ///     // -> 0
   ///
   Arf() noexcept;
+
   /// Create a copy of an element.
   ///
   ///     exactreal::Arf x{1};
@@ -115,6 +116,7 @@ class LIBEXACTREAL_API Arf
   ///     // -> 1
   ///
   Arf(const Arf&) noexcept;
+
   /// Create an element from another one.
   ///
   ///     exactreal::Arf x{1};
@@ -123,6 +125,7 @@ class LIBEXACTREAL_API Arf
   ///     // -> 1
   ///
   Arf(Arf&&) noexcept;
+
   /// Create the element `mantissa * 2^exponent` where `mantissa` is an integer
   /// written in `base`.
   ///
@@ -131,6 +134,7 @@ class LIBEXACTREAL_API Arf
   ///     // -> 10.7344=687p-6
   ///
   Arf(const std::string& mantissa, int base, long exponent);
+
   /// Create the element `mantissa * 2^exponent`.
   ///
   ///     exactreal::Arf x{2748, -8};
