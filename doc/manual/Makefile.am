@@ -41,4 +41,3 @@ EXTRA_DIST += python_overview.rst python_cppyy.rst python_exact_reals.rst
 
 mostlyclean-local:
 	[[ ! -d generated ]] || (chmod -R u+w generated && rm -rf generated)
-
