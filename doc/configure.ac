@@ -25,4 +25,3 @@ AC_SUBST([DOXYGEN], [$ac_cv_path_DOXYGEN])
 AC_CONFIG_FILES([Makefile manual/Makefile])
 
 AC_OUTPUT
-
