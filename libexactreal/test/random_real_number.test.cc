@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C)      2019 Vincent Delecroix
+ *        Copyright (C) 2019-2025 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ TEST_CASE("Random Real", "[real_number]") {
     }
   }
 
-  SECTION("Comparison") {
+  SECTION("Comparison of Real Numbers") {
     auto rnd0 = RealNumber::random();
     auto rnd1 = RealNumber::random();
     REQUIRE(*rnd0 != *rnd1);
@@ -72,6 +72,28 @@ TEST_CASE("Random Real", "[real_number]") {
 
     REQUIRE(*rnd0 < *rnd1);
     REQUIRE(*rnd1 > *rnd0);
+  }
+
+  SECTION("Comparison with Integers") {
+    auto x = RealNumber::random();
+    
+    REQUIRE(*x != mpz_class{0});
+    REQUIRE(!(*x == mpz_class{0}));
+    REQUIRE(*x >= mpz_class{0});
+    REQUIRE(*x > mpz_class{0});
+    REQUIRE(*x <= mpz_class{1});
+    REQUIRE(*x < mpz_class{1});
+  }
+
+  SECTION("Comparison with Rationals") {
+    auto x = RealNumber::random();
+    
+    REQUIRE(*x != mpq_class{0, 1});
+    REQUIRE(!(*x == mpq_class{0, 1}));
+    REQUIRE(*x >= mpq_class{0, 1});
+    REQUIRE(*x > mpq_class{0, 1});
+    REQUIRE(*x <= mpq_class{1, 1});
+    REQUIRE(*x < mpq_class{1, 1});
   }
 }
 

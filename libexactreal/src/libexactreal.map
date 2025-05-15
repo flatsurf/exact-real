@@ -493,6 +493,8 @@ LIBEXACTREAL_3.0.0 {
 LIBEXACTREAL_4.1.0 {
   global:
     extern "C++" {
+      "exactreal::Arb::Arb(__gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&)";
+      "exactreal::Arb::Arb(eantic::renf_elem_class const&)";
       "exactreal::Arb::operator Arf() const";
       "exactreal::Arb::unit_interval()";
       "exactreal::Arb::zero_pm_one()";
