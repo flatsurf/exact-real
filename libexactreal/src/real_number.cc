@@ -117,6 +117,18 @@ bool RealNumber::operator==(const RealNumber& rhs) const {
   return this == &rhs;
 }
 
+bool RealNumber::operator<(const mpz_class& rhs) const noexcept {
+  return this->operator<(Arf(rhs, 0));
+}
+
+bool RealNumber::operator>(const mpz_class& rhs) const noexcept {
+  return this->operator>(Arf(rhs, 0));
+}
+
+bool RealNumber::operator==(const mpz_class& rhs) const noexcept {
+  return this->operator==(Arf(rhs, 0));
+}
+
 bool RealNumber::operator<(const Arf& rhs) const {
   if (this->operator==(rhs)) {
     return false;
@@ -146,6 +158,34 @@ bool RealNumber::operator==(const Arf& arf) const {
 
   Arf num = (arf * Arf(rat->get_den(), 0))(ARF_PREC_EXACT, Arf::Round::NEAR);
   return num == Arf(rat->get_num(), 0);
+}
+
+bool RealNumber::operator<(const mpq_class& rat) const {
+  const auto maybe_rational = static_cast<std::optional<mpq_class>>(*this);
+  if (maybe_rational) {
+    return *maybe_rational < rat;
+  }
+
+  for (long prec = ARB_PRECISION_FAST;; prec *= 2) {
+    const auto maybe = this->arb(prec) < rat;
+    if (maybe) {
+      return *maybe;
+    }
+  }
+}
+
+bool RealNumber::operator>(const mpq_class& rat) const {
+  const auto maybe_rational = static_cast<std::optional<mpq_class>>(*this);
+  if (maybe_rational) {
+    return *maybe_rational > rat;
+  }
+
+  for (long prec = ARB_PRECISION_FAST;; prec *= 2) {
+    const auto maybe = this->arb(prec) > rat;
+    if (maybe) {
+      return *maybe;
+    }
+  }
 }
 
 bool RealNumber::operator==(const mpq_class& rat) const {
