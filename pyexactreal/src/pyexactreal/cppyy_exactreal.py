@@ -5,9 +5,9 @@ Note that pyexactreal offers a better interface to work with exact-real. Use
 `pyexactreal.exactreal` if you need to directly manipulate the underlying C++
 objects::
 
->>> from pyexactreal import exactreal  # random output due to deprecation warnings in cppyy
->>> exactreal.Module[exactreal.IntegerRing].make([])
-ℤ-Module()
+    >>> from pyexactreal import exactreal  # random output due to deprecation warnings in cppyy
+    >>> exactreal.Module[exactreal.IntegerRing].make([])
+    ℤ-Module()
 
 """
 # ********************************************************************

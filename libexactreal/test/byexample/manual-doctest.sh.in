@@ -27,3 +27,4 @@ set -ex
 # the Python binary to run pytest which keeps our environment intact on macOS.
 
 python -c 'from byexample.byexample import main; exit(main())' -vvv -m @abs_srcdir@/extensions -l cpp @abs_srcdir@/../../../doc/manual/*.rst @abs_srcdir@/../../exact-real/*.hpp
+python -c 'from byexample.byexample import main; exit(main())' -vvv -l python @abs_srcdir@/../../../doc/manual/*.rst

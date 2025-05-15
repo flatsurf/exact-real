@@ -106,7 +106,7 @@ class RSTCppDelimiter(ZoneDelimiter):
         return re.compile(r'''
             ^\.\.[ ]code-block::[ ](c|cpp)$  # start with a .. code-block:: c(pp) marker
             (?P<zone>.*?)
-            (?=^\S)  # the block ends when the indentation ends
+            (?=(^\S)|\Z)  # the block ends when the indentation ends
             ''', re.DOTALL | re.MULTILINE | re.VERBOSE)
 
     def __repr__(self): return ".. code-block:: c or .. code-block:: cpp"

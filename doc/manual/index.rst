@@ -1,5 +1,5 @@
 .. toctree::
-   :caption: libeanticxx
+   :caption: C++ Interface
    :maxdepth: 1
    :hidden:
 
@@ -16,11 +16,19 @@
 
 .. toctree::
    :maxdepth: 1
-   :caption: pyeantic
+   :caption: Python Interface
    :hidden:
 
    python_overview
-   Interface with SageMath <python_sage>
+   python_cppyy_exactreal
+
+.. toctree::
+   :maxdepth: 1
+   :caption: SageMath Interface
+   :hidden:
+
+   sage_overview
+   sage_exact_reals
 
 exact-real: Exact Computations with Real Numbers
 ================================================

@@ -12,6 +12,7 @@ author = ''
 release = '4.0.1'
 
 extensions = [
+    'sphinx.ext.doctest',
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
