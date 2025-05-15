@@ -126,10 +126,10 @@ extern template std::ostream &exactreal::operator<<<exactreal::IntegerRing>(std:
 extern template std::ostream &exactreal::operator<<<exactreal::RationalField>(std::ostream &, const exactreal::Element<exactreal::RationalField> &);
 extern template std::ostream &exactreal::operator<<<exactreal::NumberField>(std::ostream &, const exactreal::Element<exactreal::NumberField> &);
 
-/// @cond INTERNAL
+#ifndef DOXYGEN_DOCUMENTATION_BUILD
 extern template std::shared_ptr<const exactreal::Module<exactreal::IntegerRing>> exactreal::Module<exactreal::IntegerRing>::make(const std::vector<std::shared_ptr<const exactreal::RealNumber>> &, const exactreal::IntegerRing &);
 extern template std::shared_ptr<const exactreal::Module<exactreal::RationalField>> exactreal::Module<exactreal::RationalField>::make(const std::vector<std::shared_ptr<const exactreal::RealNumber>> &, const exactreal::RationalField &);
 extern template std::shared_ptr<const exactreal::Module<exactreal::NumberField>> exactreal::Module<exactreal::NumberField>::make(const std::vector<std::shared_ptr<const exactreal::RealNumber>> &, const exactreal::NumberField &);
-/// @endcond
+#endif
 
 #endif

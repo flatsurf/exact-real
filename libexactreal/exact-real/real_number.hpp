@@ -308,7 +308,7 @@ class LIBEXACTREAL_API RealNumber
   static void save(ICerealizer&, const std::shared_ptr<const RealNumber>&);
 };
 
-/// @cond INTERNAL
+#ifndef DOXYGEN_DOCUMENTATION_BUILD
 template <typename Integer>
 std::enable_if_t<std::is_integral_v<Integer>, bool> RealNumber::operator<(Integer rhs) const noexcept {
   return this->operator<(Arf(rhs));
@@ -323,7 +323,7 @@ template <typename Integer>
 std::enable_if_t<std::is_integral_v<Integer>, bool> RealNumber::operator==(Integer rhs) const noexcept {
   return this->operator==(Arf(rhs));
 }
-/// @endcond
+#endif
 
 }  // namespace exactreal
 
