@@ -154,7 +154,7 @@ class LIBEXACTREAL_API Arb
   ///
   ///     exactreal::Arb x{mpq_class{1, 2}, 256};
   ///     x
-  ///     // -> 0.50000000000000000000000000000000
+  ///     // -> 0.500000
   ///
   ///     exactreal::Arb y{mpq_class{1, 3}, 256};
   ///     std::cout << std::setprecision(32) << y;
@@ -174,7 +174,7 @@ class LIBEXACTREAL_API Arb
   ///
   ///     exactreal::Arb x{a};
   ///     x
-  ///     // -> [0.41421356237309504876378807303183 +/- 1.09e-19]
+  ///     // -> [0.414214 +/- 4.38e-7]
   ///
   explicit Arb(const eantic::renf_elem_class&) noexcept;
 
@@ -209,11 +209,11 @@ class LIBEXACTREAL_API Arb
   ///     exactreal::Arf lower{0}, upper{1};
   ///     exactreal::Arb x{std::pair{lower, upper}};
   ///     x
-  ///     // -> [0.50000000000000000000000000000000 +/- 0.501]
+  ///     // -> [0.500000 +/- 0.501]
   ///
   ///     exactreal::Arb y{std::pair{lower, upper}, 64};
   ///     y
-  ///     // -> [0.50000000000000000000000000000000 +/- 0.501]
+  ///     // -> [0.500000 +/- 0.501]
   ///
   explicit Arb(const std::pair<Arf, Arf>&, const prec = ARF_PREC_EXACT);
 
@@ -225,7 +225,7 @@ class LIBEXACTREAL_API Arb
   ///     exactreal::Arf x{1};
   ///     exactreal::Arb y{x};
   ///     y
-  ///     // -> 1.0000000000000000000000000000000
+  ///     // -> 1.00000
   ///
   explicit Arb(const Arf& midpoint);
 
@@ -233,7 +233,7 @@ class LIBEXACTREAL_API Arb
   ///
   ///     exactreal::Arb x{1};
   ///     x
-  ///     // -> 1.0000000000000000000000000000000
+  ///     // -> 1.00000
   ///
   template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
   explicit Arb(Integer) noexcept;
@@ -242,7 +242,7 @@ class LIBEXACTREAL_API Arb
   ///
   ///     exactreal::Arb x{"[3.25 +/- 0.0001]", 64};
   ///     x
-  ///     // -> [3.2500000000000000000000000000000 +/- 1.01e-4]
+  ///     // -> [3.25000 +/- 1.01e-4]
   ///
   explicit Arb(const std::string&, const prec);
 
@@ -254,15 +254,15 @@ class LIBEXACTREAL_API Arb
   ///     exactreal::Arb x{1}, y;
   ///     y = std::move(x);
   ///     y
-  ///     // -> 1.0000000000000000000000000000000
+  ///     // -> 1.00000
   ///
   ///     x = y;
   ///     y
-  ///     // -> 1.0000000000000000000000000000000
+  ///     // -> 1.00000
   ///
   ///     x = 1;
   ///     x
-  ///     // -> 1.0000000000000000000000000000000
+  ///     // -> 1.00000
   ///
   ///@{
   Arb& operator=(const Arb&) noexcept;
@@ -278,7 +278,7 @@ class LIBEXACTREAL_API Arb
   ///
   ///     exactreal::Arb x{1};
   ///     -x
-  ///     // -> -1.0000000000000000000000000000000
+  ///     // -> -1.00000
   ///
   Arb operator-() const noexcept;
 
@@ -363,7 +363,7 @@ class LIBEXACTREAL_API Arb
   ///     exactreal::Arb x{mpq_class{1, 3}};
   ///     auto bounds = static_cast<std::pair<exactreal::Arf, exactreal::Arf>>(x);
   ///     std::cout << bounds.first << ", " << bounds.second;
-  ///     // -> 0.33333333333333331482961625624739=1537228672809129301p-62, 0.33333333333333331482961625624739=3074457345618258603p-63
+  ///     // -> 0.333333=1537228672809129301p-62, 0.333333=3074457345618258603p-63
   ///
   explicit operator std::pair<Arf, Arf>() const noexcept;
 
@@ -372,7 +372,7 @@ class LIBEXACTREAL_API Arb
   ///
   ///     exactreal::Arb x{mpq_class{1, 3}};
   ///     static_cast<double>(x)
-  ///     // -> 0.33333333333333331482961625624739
+  ///     // -> 0.333333
   ///
   explicit operator double() const noexcept;
   
@@ -382,7 +382,7 @@ class LIBEXACTREAL_API Arb
   ///
   ///     exactreal::Arb x{mpq_class{1, 3}};
   ///     static_cast<exactreal::Arf>(x)
-  ///     // -> 0.33333333333333331482961625624739=6148914691236517205p-64
+  ///     // -> 0.333333=6148914691236517205p-64
   ///
   explicit operator Arf() const noexcept;
 
@@ -401,7 +401,7 @@ class LIBEXACTREAL_API Arb
   /// Return an exact zero element, i.e., the ball of radius zero centered at
   /// zero.
   ///
-  ///     eactreal::Arb::zero()
+  ///     exactreal::Arb::zero()
   ///     // -> 0
   ///
   static Arb zero() noexcept;
@@ -410,7 +410,7 @@ class LIBEXACTREAL_API Arb
   /// one.
   ///
   ///     exactreal::Arb::one()
-  ///     // -> 1.0000000000000000000000000000000
+  ///     // -> 1.00000
   ///
   static Arb one() noexcept;
 
@@ -466,7 +466,7 @@ class LIBEXACTREAL_API Arb
   /// https://github.com/fredrik-johansson/arb/issues/391
   ///
   ///     exactreal::Arb::unit_interval()
-  ///     // -> [0.50000000000000000000000000000000 +/- 0.501]
+  ///     // -> [0.500000 +/- 0.501]
   ///
   static Arb unit_interval() noexcept;
 
@@ -530,11 +530,11 @@ class LIBEXACTREAL_API Arb
 ///
 ///     exactreal::Arb a{1}, b;
 ///     std::cout << "a = " << a << ", b = " << b;
-///     // -> a = 1.0000000000000000000000000000000, b = 0
+///     // -> a = 1.00000, b = 0
 ///
 ///     swap(a, b);
 ///     std::cout << "a = " << a << ", b = " << b;
-///     // -> a = 0, b = 1.0000000000000000000000000000000
+///     // -> a = 0, b = 1.00000
 ///
 void LIBEXACTREAL_API swap(Arb& lhs, Arb& rhs);
 }  // namespace exactreal

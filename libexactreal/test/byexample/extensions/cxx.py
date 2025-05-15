@@ -184,7 +184,7 @@ class CxxInterpreter(byexample.runner.ExampleRunner):
 
             if executables and not executables[-1].endswith(';'):
                 definitions.append("#include <iostream>")
-                executables[-1] = f"std::cout << std::boolalpha << ({executables[-1]});"
+                executables[-1] = f"std::cout << std::boolalpha << std::setprecision(6) << ({executables[-1]});"
 
             exception = None
 
