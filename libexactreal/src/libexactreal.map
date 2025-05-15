@@ -493,15 +493,18 @@ LIBEXACTREAL_3.0.0 {
 LIBEXACTREAL_4.1.0 {
   global:
     extern "C++" {
-      "exactreal::swap(exactreal::Arb&, exactreal::Arb&)";
-      "exactreal::swap(exactreal::Arf&, exactreal::Arf&)";
+      "exactreal::Arb::operator Arf() const";
+      "exactreal::Arb::unit_interval()";
+      "exactreal::Arb::zero_pm_one()";
       "exactreal::Arf::operator=(double)";
-      "exactreal::RealNumber::operator<(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&) const";
-      "exactreal::RealNumber::operator>(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&) const";
-      "exactreal::RealNumber::operator==(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&) const";
       "exactreal::RealNumber::operator<(__gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&) const";
+      "exactreal::RealNumber::operator<(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&) const";
+      "exactreal::RealNumber::operator==(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&) const";
       "exactreal::RealNumber::operator>(__gmp_expr<__mpq_struct [1], __mpq_struct [1]> const&) const";
+      "exactreal::RealNumber::operator>(__gmp_expr<__mpz_struct [1], __mpz_struct [1]> const&) const";
       "exactreal::Seed()";
       "exactreal::Seed(unsigned int)";
+      "exactreal::swap(exactreal::Arb&, exactreal::Arb&)";
+      "exactreal::swap(exactreal::Arf&, exactreal::Arf&)";
     };
 } LIBEXACTREAL_3.0.0;
