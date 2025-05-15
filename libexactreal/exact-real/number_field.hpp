@@ -33,13 +33,10 @@
 
 namespace exactreal {
 
-/// A Number Field embedded into the Reals
-///
-/// A \ref NumberField struct models some features of a number field with an
-/// embedding into the real. In practice you won't be using this struct
-/// directly, but just pass it into the \ref exactreal::Module::make "factory"
-/// of \ref exactreal::Module to specify that the module should be considered
-/// over a certain number field.
+/// Models some features of a number field with an embedding into the real. In
+/// practice you won't be using this struct directly, but just pass it into the
+/// \ref exactreal::Module::make "factory" of \ref exactreal::Module to specify
+/// that the module should be considered over a certain number field.
 ///
 ///     #include <exact-real/number_field.hpp>
 ///     #include <exact-real/module.hpp>
@@ -51,7 +48,7 @@ namespace exactreal {
 ///     auto K = eantic::renf_class::make("x^2 - 2", "x", "1.4 +/- 1");
 ///     auto M = exactreal::Module<exactreal::NumberField>::make({exactreal::RealNumber::rational(1)}, exactreal::NumberField{K});
 ///     *M->ring().parameters
-///     // -> NumberField(x^2 - 2, [1.414213562373095048801688724209698 +/- 1.96e-34])-Module(1)
+///     // -> NumberField(x^2 - 2, [1.414213562373095048801688724209698 +/- 1.96e-34])
 ///
 struct LIBEXACTREAL_API NumberField
 #ifndef DOXYGEN_DOCUMENTATION_BUILD

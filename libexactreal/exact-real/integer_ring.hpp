@@ -71,7 +71,7 @@ struct LIBEXACTREAL_API IntegerRing
   /// The internal representation of element of this ring, i.e., GMP integers.
   typedef mpz_class ElementClass;
 
-  /// Whether this ring contains the rational number, i.e., `false`.
+  /// Whether this ring contains the rational numbers, i.e., `false`.
   static constexpr bool contains_rationals = false;
 
   /// Convert the integer argument into this integer ring, i.e., just return
