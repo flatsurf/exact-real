@@ -44,7 +44,11 @@ Installation
 
 The preferred way to install exact-real is to use your package manager (e.g.,
 ``apt-get`` on Debian or Ubuntu, ``pacman`` on Arch Linux, ``brew`` on MacOS, etc).
-See `repology for exact-real <https://repology.org/project/exact-real/packages>`_.
+
+..
+    See `repology for exact-real <https://repology.org/project/exact-real/packages>`_.
+    We do not mention repology currently. exact-real is probably not available anywhere at the moment and also repology.org is down right now.
+
 
 The following describe alternative ways of installing exact-real:
 
