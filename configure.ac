@@ -9,6 +9,6 @@ AM_INIT_AUTOMAKE([1.14.1 tar-pax foreign])
 
 AC_CONFIG_FILES([Makefile])
 
-AC_CONFIG_SUBDIRS([libexactreal pyexactreal])
+AC_CONFIG_SUBDIRS([libexactreal pyexactreal doc])
 
 AC_OUTPUT

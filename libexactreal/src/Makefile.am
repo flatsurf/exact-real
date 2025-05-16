@@ -37,7 +37,6 @@ nobase_pkginclude_HEADERS =                                  \
     ../exact-real/integer_ring.hpp                           \
     ../exact-real/module.hpp                                 \
     ../exact-real/number_field.hpp                           \
-    ../exact-real/number_field_ideal.hpp                     \
     ../exact-real/rational_field.hpp                         \
     ../exact-real/real_number.hpp                            \
     ../exact-real/seed.hpp                                   \

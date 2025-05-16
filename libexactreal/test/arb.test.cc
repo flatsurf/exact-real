@@ -2,7 +2,7 @@
  *  This file is part of exact-real.
  *
  *        Copyright (C)      2019 Vincent Delecroix
- *        Copyright (C) 2019-2022 Julian Rüth
+ *        Copyright (C) 2019-2025 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -59,6 +59,7 @@ TEST_CASE("Initialization from Number Field", "[arb]") {
   const auto a = K->gen();
 
   REQUIRE(((Arb(a, 64) > Arb()) && *(Arb(a, 64) > Arb())));
+  REQUIRE(((Arb(a) > Arb()) && *(Arb(a) > Arb())));
 }
 
 TEST_CASE("Relational Operators with Arb", "[arb]") {
@@ -112,7 +113,9 @@ TEST_CASE("Unary Minus of Arb", "[arb]") {
 }
 
 TEST_CASE("Exactness of Arb", "[arb]") {
+  REQUIRE(Arb(mpq_class(1, 2)).is_exact());
   REQUIRE(Arb(mpq_class(1, 2), 2).is_exact());
+  REQUIRE(!Arb(mpq_class(1, 3)).is_exact());
   REQUIRE(!Arb(mpq_class(1, 3), 2).is_exact());
 }
 
@@ -130,6 +133,7 @@ TEST_CASE("Cast to Arf", "[arb][arf]") {
 
   REQUIRE(static_cast<std::pair<Arf, Arf>>(x).first == Arf(.5));
   REQUIRE(static_cast<std::pair<Arf, Arf>>(x).second == Arf(.5));
+  REQUIRE(static_cast<Arf>(x) == Arf(.5));
 }
 
 TEST_CASE("Zero", "[arb][zero]") {
@@ -157,6 +161,30 @@ TEST_CASE("Indeterminate Value", "[arb][indeterminate]") {
 
   REQUIRE(!(x >= 0));
   REQUIRE(!(x <= 0));
+}
+
+TEST_CASE("Real Line", "[arb][zero_pm_inf]") {
+  Arb x = Arb::zero_pm_inf();
+
+  REQUIRE(!(x >= 0));
+  REQUIRE(!(x <= 0));
+}
+
+TEST_CASE("Unit Interval", "[arb][zero_pm_one]") {
+  Arb x = Arb::zero_pm_one();
+
+  REQUIRE(*(x >= -1));
+  REQUIRE(*(x <= 1));
+}
+
+TEST_CASE("Swap Elements", "[arb][swap]") {
+  Arb x = Arb::zero();
+  Arb y = Arb::one();
+
+  swap(x, y);
+
+  REQUIRE(*(x == 1));
+  REQUIRE(*(y == 0));
 }
 
 }  // namespace exactreal::test

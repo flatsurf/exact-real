@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C)      2019 Vincent Delecroix
+ *        Copyright (C) 2019-2025 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -51,6 +51,8 @@ BOOST_YAP_USER_BINARY_OPERATOR(multiplies, yap::ArbExpr, yap::ArbExpr)
 BOOST_YAP_USER_BINARY_OPERATOR(divides, yap::ArbExpr, yap::ArbExpr)
 BOOST_YAP_USER_UNARY_OPERATOR(negate, yap::ArbExpr, yap::ArbExpr)
 
+#if !defined(DOXYGEN_DOCUMENTATION_BUILD)
+
 template <boost::yap::expr_kind Kind, typename Tuple>
 Arb::Arb(const yap::ArbExpr<Kind, Tuple>& expr) noexcept : Arb() {
   *this = expr;
@@ -85,6 +87,8 @@ template <typename... Args>
 decltype(auto) Arb::operator()(Args&&... args) const noexcept {
   return boost::yap::as_expr<yap::ArbExpr>(*this)(std::forward<Args>(args)...);
 }
+
+#endif
 
 }  // namespace exactreal
 

@@ -1,8 +1,8 @@
 /**********************************************************************
  *  This file is part of exact-real.
  *
- *        Copyright (C) 2019 Vincent Delecroix
- *        Copyright (C) 2019 Julian Rüth
+ *        Copyright (C)      2019 Vincent Delecroix
+ *        Copyright (C) 2019-2025 Julian Rüth
  *
  *  exact-real is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -29,6 +29,14 @@ using std::string;
 namespace exactreal::test {
 
 TEST_CASE("Create & Destroy Arf", "[arf]") { delete new Arf(); }
+
+TEST_CASE("Create Arf from double", "[arf]") {
+  Arf x(1.);
+
+  x = 0.;
+
+  REQUIRE(x == 0);
+}
 
 TEST_CASE("Relations of Arf", "[arf]") {
   Arf x(-1), y(1);
@@ -58,6 +66,16 @@ TEST_CASE("Floor & Ceil", "[arf]") {
   REQUIRE(Arf(.4).ceil() == 1);
   REQUIRE(Arf(.6).floor() == 0);
   REQUIRE(Arf(.6).ceil() == 1);
+}
+
+TEST_CASE("Swap Elements", "[arf][swap]") {
+  Arf x(0);
+  Arf y(1);
+
+  swap(x, y);
+
+  REQUIRE(x == 1);
+  REQUIRE(y == 0);
 }
 
 }  // namespace exactreal::test

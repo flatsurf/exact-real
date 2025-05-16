@@ -1,0 +1,4 @@
+# generated files
+test-env.sh
+manual-doctest.sh
+*.trs

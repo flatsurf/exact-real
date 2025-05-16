@@ -80,6 +80,8 @@ Arb::Arb(const Arf& midpoint) : Arb() {
   arb_set_arf(arb_t(), midpoint.arf_t());
 }
 
+Arb::Arb(const mpq_class& rat) noexcept : Arb(rat, ARB_PRECISION_FAST) {}
+
 Arb::Arb(const mpq_class& rat, const mp_limb_signed_t precision) noexcept : Arb() {
   fmpq_t x;
   fmpq_init_set_readonly(x, rat.get_mpq_t());
@@ -95,6 +97,8 @@ Arb::Arb(const mpz_class& value) noexcept : Arb() {
 }
 
 Arb::Arb(const std::string& value, const prec precision) : Arb() { arb_set_str(arb_t(), value.c_str(), precision); }
+
+Arb::Arb(const eantic::renf_elem_class& renf) noexcept : Arb(renf, ARB_PRECISION_FAST) {}
 
 Arb::Arb(const renf_elem_class& renf, const mp_limb_signed_t precision) noexcept : Arb() {
   renf_refine_embedding(renf.parent().renf_t(), precision);
@@ -132,6 +136,12 @@ Arb Arb::neg_inf() noexcept {
   return Arb(Arf(-1. / 0.));
 }
 
+Arb Arb::zero_pm_one() noexcept {
+  Arb ret;
+  arb_zero_pm_one(ret.arb_t());
+  return ret;
+}
+
 Arb Arb::zero_pm_inf() noexcept {
   Arb ret;
   arb_zero_pm_inf(ret.arb_t());
@@ -141,6 +151,12 @@ Arb Arb::zero_pm_inf() noexcept {
 Arb Arb::indeterminate() noexcept {
   Arb ret;
   arb_indeterminate(ret.arb_t());
+  return ret;
+}
+
+Arb Arb::unit_interval() noexcept {
+  Arb ret;
+  arb_unit_interval(ret.arb_t());
   return ret;
 }
 
@@ -303,6 +319,16 @@ Arb::operator std::pair<Arf, Arf>() const noexcept {
 }
 
 Arb::operator double() const noexcept { return arf_get_d(arb_midref(arb_t()), ARF_RND_NEAR); }
+
+Arb::operator Arf() const noexcept {
+  Arf midpoint;
+  arf_set(midpoint.arf_t(), arb_midref(arb_t()));
+  return midpoint;
+}
+
+void swap(Arb& a, Arb& b) {
+  arb_swap(a.arb_t(), b.arb_t());
+}
 
 ostream& operator<<(ostream& os, const Arb& self) {
   // ARB_STR_MORE is essential. Otherwise, arb prints things such as [1.5 +/- .6]

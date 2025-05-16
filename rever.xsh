@@ -58,6 +58,8 @@ $VERSION_BUMP_PATTERNS = [
     ('libexactreal/configure.ac', r'AC_INIT', r'AC_INIT([libexactreal], [$VERSION], [julian.rueth@fsfe.org])'),
     ('pyexactreal/configure.ac', r'AC_INIT', r'AC_INIT([pyexactreal], [$VERSION], [julian.rueth@fsfe.org])'),
     ('pyexactreal/src/setup.py', r'version=', r"version='$VERSION'"),
+    ('doc/configure.ac', r'AC_INIT', r'AC_INIT([exact-real-doc], [$VERSION], [julian.rueth@fsfe.org])'),
+    ('doc/manual/conf.py', r'release =', "release = '$VERSION'"),
 ]
 
 $CHANGELOG_FILENAME = 'ChangeLog'
