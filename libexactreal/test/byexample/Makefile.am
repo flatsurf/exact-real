@@ -1,6 +1,6 @@
 TESTS = manual-doctest.sh
 
-EXTRA_DIST = $(TESTS)
+EXTRA_DIST = $(TESTS) extensions/cxx.py
 
 AM_TESTS_ENVIRONMENT = . $(builddir)/test-env.sh;
 

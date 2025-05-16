@@ -9,14 +9,14 @@
 # directly and pass a script to it as a parameter to keep DYLD_LIBRARY_PATH
 # alive.
 
-# Resolve #include <e-antic/*.h> relative to libeantic in the source tree and
-# resolve #include "local.h" relative to e-antic/e-antic in the build tree.
-export EXTRA_CLING_ARGS="-I@abs_srcdir@/../.. -I@abs_builddir@/../../e-antic -std=c++17 -Wno-unused-comparison $EXTRA_CLING_ARGS"
+# Resolve #include <exact-real/*.hpp> relative to libexactreal in the source tree and
+# resolve #include "local.h" relative to libexactreal/exact-real in the build tree.
+export EXTRA_CLING_ARGS="-I@abs_srcdir@/../.. -I@abs_builddir@/../../exact-real -std=c++17 -Wno-unused-comparison $EXTRA_CLING_ARGS"
 
-# Load libeantic.so and libeanticxx.so from our build tree.
+# Load libexactreal.so from our build tree.
 export LD_LIBRARY_PATH="@abs_builddir@/../../src/.libs/:@abs_builddir@/../../srcxx/.libs/:$LD_LIBRARY_PATH"
 
-# Load libeantic.dylib and libeanticxx.dylib from our build tree.
+# Load libeaxactreal.dylib from our build tree.
 export DYLD_LIBRARY_PATH="@abs_builddir@/../../src/.libs/:@abs_builddir@/../../srcxx/.libs/:$DYLD_LIBRARY_PATH"
 
 exec python3 "$@"
