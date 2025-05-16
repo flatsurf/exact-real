@@ -35,7 +35,7 @@ EXTRA_DIST = README.md
 EXTRA_DIST += robots.txt _static/extra.css
 EXTRA_DIST += Doxyfile
 EXTRA_DIST += conf.py index.rst
-EXTRA_DIST += cxx_overview.rst cxx_arb.rst cxx_arf.rst cxx_element.rst cxx_integer_ring.rst cxx_module.rst cxx_number_field.rst cxx_ration_field.rst cxx_real_number.rst cxx_seed.rst
+EXTRA_DIST += cxx_overview.rst cxx_arb.rst cxx_arf.rst cxx_element.rst cxx_integer_ring.rst cxx_module.rst cxx_number_field.rst cxx_rational_field.rst cxx_real_number.rst cxx_seed.rst
 EXTRA_DIST += python_overview.rst python_cppyy_exactreal.rst
 EXTRA_DIST += sage_overview.rst sage_exact_reals.rst
 
