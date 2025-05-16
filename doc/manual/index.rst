@@ -61,15 +61,15 @@ C++ Library
 * :doc:`Tour of the C++ Interface <cxx_overview>`
 * Reference Manual
 
-  * `arb.hpp <cxx_arb>`_
-  * `arf.hpp <cxx_arf>`_
-  * `element.hpp <cxx_element>`_
-  * `integer_ring.hpp <cxx_integer_ring>`_
-  * `module.hpp <cxx_module>`_
-  * `number_field.hpp <cxx_number_field>`_
-  * `rational_field.hpp <cxx_rational_field>`_
-  * `real_number.hpp <cxx_real_number>`_
-  * `seed.hpp <cxx_seed>`_
+  * :doc:`arb.hpp <cxx_arb>`
+  * :doc:`arf.hpp <cxx_arf>`
+  * :doc:`element.hpp <cxx_element>`
+  * :doc:`integer_ring.hpp <cxx_integer_ring>`
+  * :doc:`module.hpp <cxx_module>`
+  * :doc:`number_field.hpp <cxx_number_field>`
+  * :doc:`rational_field.hpp <cxx_rational_field>`
+  * :doc:`real_number.hpp <cxx_real_number>`
+  * :doc:`seed.hpp <cxx_seed>`
 
 Python Interface
 ----------------
