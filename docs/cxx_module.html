@@ -1,0 +1,719 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>module.hpp - Submodules of the Reals &#8212; pyexactreal 4.0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/extra.css?v=14226158" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=1a34d25d"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'cxx_module';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="number_field.hpp - Number Fields" href="cxx_number_field.html" />
+    <link rel="prev" title="integer_ring.hpp - Integers" href="cxx_integer_ring.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="https://github.com/flatsurf/exact-real/raw/master/logo.svg?sanitize=true" class="logo__image only-light" alt="pyexactreal 4.0.1 documentation - Home"/>
+    <script>document.write(`<img src="https://github.com/flatsurf/exact-real/raw/master/logo.svg?sanitize=true" class="logo__image only-dark" alt="pyexactreal 4.0.1 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://flatsurf.github.io" title="flatsurf" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://flatsurf.github.io/assets/logo.svg" class="icon-link-image" alt="flatsurf"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/flatsurf/exact-real" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://sagemath.zulipchat.com/#narrow/channel/271193-flatsurf" title="Zulip" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-regular fa-comments fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Zulip</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">C++ Interface</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="cxx_overview.html">Tour of the C++ Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_arb.html">arb.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_arf.html">arf.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_element.html">element.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_integer_ring.html">integer_ring.hpp</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">module.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_number_field.html">number_field.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_rational_field.html">rational_field.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_real_number.html">real_number.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_seed.html">seed.hpp</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python Interface</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="python_overview.html">Tour of the Python Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python_cppyy_exactreal.html">cppyy_exactreal</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SageMath Interface</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="sage_overview.html">Tour of the SageMath Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sage_exact_reals.html">exact_reals</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/flatsurf/exact-real/edit/master/doc/manual/cxx_module.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button"
+   title="Suggest edit"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/cxx_module.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>module.hpp - Submodules of the Reals</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0EN9exactreal6ModuleE"><code class="docutils literal notranslate"><span class="pre">exactreal::Module</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal6Module5BasisE"><code class="docutils literal notranslate"><span class="pre">Basis</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal6Module4ringEv"><code class="docutils literal notranslate"><span class="pre">ring()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal6Module4rankEv"><code class="docutils literal notranslate"><span class="pre">rank()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal6Module9submoduleERK6Module"><code class="docutils literal notranslate"><span class="pre">submodule()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal6Module5basisEv"><code class="docutils literal notranslate"><span class="pre">basis()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal6Module3genE4size"><code class="docutils literal notranslate"><span class="pre">gen()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal6Module4zeroEv"><code class="docutils literal notranslate"><span class="pre">zero()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal6Module3oneEv"><code class="docutils literal notranslate"><span class="pre">one()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal6ModuleeqERK6ModuleI4RingE"><code class="docutils literal notranslate"><span class="pre">operator==()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal6Module4makeERK5Basis"><code class="docutils literal notranslate"><span class="pre">make()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal6Module4makeERK5BasisRK4Ring"><code class="docutils literal notranslate"><span class="pre">make()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal6Module4spanERKNSt10shared_ptrIK6ModuleI4RingEEERKNSt10shared_ptrIK6ModuleI4RingEEE"><code class="docutils literal notranslate"><span class="pre">span()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0EN9exactreal6ModulelsERNSt7ostreamERNSt7ostreamERK6ModuleI1RE"><code class="docutils literal notranslate"><span class="pre">operator&lt;&lt;</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-hpp-submodules-of-the-reals">
+<h1>module.hpp - Submodules of the Reals<a class="headerlink" href="#module-hpp-submodules-of-the-reals" title="Link to this heading">#</a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN9exactreal6ModuleE">
+<span id="_CPPv3I0EN9exactreal6ModuleE"></span><span id="_CPPv2I0EN9exactreal6ModuleE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Ring</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classexactreal_1_1Module"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Module</span></span></span><a class="headerlink" href="#_CPPv4I0EN9exactreal6ModuleE" title="Link to this definition">#</a><br /></dt>
+<dd><p>A submodule of the real numbers.</p>
+<p>Use <a class="reference internal" href="#classexactreal_1_1Module_1ae017f31e3af65c7e7380a2cf6125ac39"><span class="std std-ref">make</span></a> to create a module. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;exact-real/module.hpp&gt;</span>
+<span class="c1">#include &lt;exact-real/real_number.hpp&gt;</span>
+<span class="c1">#include &lt;exact-real/element.hpp&gt;</span>
+<span class="c1">#include &lt;exact-real/integer_ring.hpp&gt;</span>
+<span class="c1">#include &lt;exact-real/rational_field.hpp&gt;</span>
+<span class="c1">#include &lt;exact-real/number_field.hpp&gt;</span>
+
+<span class="n">auto</span> <span class="n">M</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">Module</span><span class="o">&lt;</span><span class="n">exactreal</span><span class="p">::</span><span class="n">IntegerRing</span><span class="o">&gt;</span><span class="p">::</span><span class="n">make</span><span class="p">({</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">rational</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">random</span><span class="p">()});</span>
+<span class="o">*</span><span class="n">M</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">ℤ</span><span class="o">-</span><span class="n">Module</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ℝ</span><span class="p">(</span><span class="o">&lt;...&gt;</span><span class="p">))</span>
+</pre></div>
+</div>
+</p>
+<p>Note that modules are always wrapped in a shared pointer so that elements can keep their module alive. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal6Module5BasisE">
+<span id="_CPPv3N9exactreal6Module5BasisE"></span><span id="_CPPv2N9exactreal6Module5BasisE"></span><span class="target" id="classexactreal_1_1Module_1a9aa7f0778440cc31e2436d33c699fb61"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Basis</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="cxx_real_number.html#_CPPv4N9exactreal10RealNumberE" title="exactreal::RealNumber"><span class="n"><span class="pre">RealNumber</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N9exactreal6Module5BasisE" title="Link to this definition">#</a><br /></dt>
+<dd><p>The generators of a module are (independent) <a class="reference internal" href="cxx_real_number.html#classexactreal_1_1RealNumber"><span class="std std-ref">real numbers</span></a>. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal6Module4ringEv">
+<span id="_CPPv3NK9exactreal6Module4ringEv"></span><span id="_CPPv2NK9exactreal6Module4ringEv"></span><span id="exactreal::Module::ringC"></span><span class="target" id="classexactreal_1_1Module_1ad14fe9e59d0deb0c297deb8139668ac9"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN9exactreal6ModuleE" title="exactreal::Module::Ring"><span class="n"><span class="pre">Ring</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">ring</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9exactreal6Module4ringEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return the <code class="docutils literal notranslate"><span class="pre">Ring</span></code> underlying this module. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4 +/- 1&quot;</span><span class="p">);</span>
+<span class="n">auto</span> <span class="n">M</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">Module</span><span class="o">&lt;</span><span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="o">&gt;</span><span class="p">::</span><span class="n">make</span><span class="p">({</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">rational</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">random</span><span class="p">()},</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="p">{</span><span class="n">K</span><span class="p">});</span>
+<span class="o">*</span><span class="n">M</span><span class="o">-&gt;</span><span class="n">ring</span><span class="p">()</span><span class="o">.</span><span class="n">parameters</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.414213562373095048801688724209698</span> <span class="o">+/-</span> <span class="mf">1.96e-34</span><span class="p">])</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal6Module4rankEv">
+<span id="_CPPv3NK9exactreal6Module4rankEv"></span><span id="_CPPv2NK9exactreal6Module4rankEv"></span><span id="exactreal::Module::rankC"></span><span class="target" id="classexactreal_1_1Module_1a3d9aed6c586bb33a39588ff3f604abfb"></span><span class="n"><span class="pre">size</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rank</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9exactreal6Module4rankEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return the rank of this module, i.e., the number of generators. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">auto</span> <span class="n">M</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">Module</span><span class="o">&lt;</span><span class="n">exactreal</span><span class="p">::</span><span class="n">RationalField</span><span class="o">&gt;</span><span class="p">::</span><span class="n">make</span><span class="p">({</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">rational</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">random</span><span class="p">()});</span>
+<span class="n">M</span><span class="o">-&gt;</span><span class="n">rank</span><span class="p">()</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal6Module9submoduleERK6Module">
+<span id="_CPPv3NK9exactreal6Module9submoduleERK6Module"></span><span id="_CPPv2NK9exactreal6Module9submoduleERK6Module"></span><span id="exactreal::Module::submodule__ModuleCRC"></span><span class="target" id="classexactreal_1_1Module_1a7c10321df87eaee0518bd354654a3d9d"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">submodule</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN9exactreal6ModuleE" title="exactreal::Module"><span class="n"><span class="pre">Module</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9exactreal6Module9submoduleERK6Module" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return whether this module is trivially a submodule of <code class="docutils literal notranslate"><span class="pre">other</span></code> i.e., whether all the generators of this module are also generators of <code class="docutils literal notranslate"><span class="pre">other</span></code>. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">auto</span> <span class="n">M</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">Module</span><span class="o">&lt;</span><span class="n">exactreal</span><span class="p">::</span><span class="n">RationalField</span><span class="o">&gt;</span><span class="p">::</span><span class="n">make</span><span class="p">({</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">rational</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">random</span><span class="p">()});</span>
+<span class="n">auto</span> <span class="n">N</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">Module</span><span class="o">&lt;</span><span class="n">exactreal</span><span class="p">::</span><span class="n">RationalField</span><span class="o">&gt;</span><span class="p">::</span><span class="n">make</span><span class="p">({</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">rational</span><span class="p">(</span><span class="mi">1</span><span class="p">)});</span>
+<span class="n">M</span><span class="o">-&gt;</span><span class="n">submodule</span><span class="p">(</span><span class="o">*</span><span class="n">N</span><span class="p">)</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">false</span>
+
+<span class="n">N</span><span class="o">-&gt;</span><span class="n">submodule</span><span class="p">(</span><span class="o">*</span><span class="n">M</span><span class="p">)</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">true</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal6Module5basisEv">
+<span id="_CPPv3NK9exactreal6Module5basisEv"></span><span id="_CPPv2NK9exactreal6Module5basisEv"></span><span id="exactreal::Module::basisC"></span><span class="target" id="classexactreal_1_1Module_1a13780f02de4c88e9c382022731f8b59b"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal6Module5BasisE" title="exactreal::Module::Basis"><span class="n"><span class="pre">Basis</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">basis</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9exactreal6Module5basisEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return the generators of this module. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">auto</span> <span class="n">M</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">Module</span><span class="o">&lt;</span><span class="n">exactreal</span><span class="p">::</span><span class="n">RationalField</span><span class="o">&gt;</span><span class="p">::</span><span class="n">make</span><span class="p">({</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">rational</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">random</span><span class="p">()});</span>
+<span class="n">M</span><span class="o">-&gt;</span><span class="n">basis</span><span class="p">()</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal6Module3genE4size">
+<span id="_CPPv3NK9exactreal6Module3genE4size"></span><span id="_CPPv2NK9exactreal6Module3genE4size"></span><span id="exactreal::Module::gen__sizeC"></span><span class="target" id="classexactreal_1_1Module_1a85419055d318bccddd3fbed348e3c619"></span><a class="reference internal" href="cxx_element.html#_CPPv4I0EN9exactreal7ElementE" title="exactreal::Element"><span class="n"><span class="pre">Element</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN9exactreal6ModuleE" title="exactreal::Module::Ring"><span class="n"><span class="pre">Ring</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gen</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9exactreal6Module3genE4size" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return the i-th generator of this module. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">auto</span> <span class="n">M</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">Module</span><span class="o">&lt;</span><span class="n">exactreal</span><span class="p">::</span><span class="n">RationalField</span><span class="o">&gt;</span><span class="p">::</span><span class="n">make</span><span class="p">({</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">rational</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">random</span><span class="p">()});</span>
+<span class="n">M</span><span class="o">-&gt;</span><span class="n">gen</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal6Module4zeroEv">
+<span id="_CPPv3NK9exactreal6Module4zeroEv"></span><span id="_CPPv2NK9exactreal6Module4zeroEv"></span><span id="exactreal::Module::zeroC"></span><span class="target" id="classexactreal_1_1Module_1a1ae1cbf813f41fa10390fea3994c6316"></span><a class="reference internal" href="cxx_element.html#_CPPv4I0EN9exactreal7ElementE" title="exactreal::Element"><span class="n"><span class="pre">Element</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN9exactreal6ModuleE" title="exactreal::Module::Ring"><span class="n"><span class="pre">Ring</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zero</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9exactreal6Module4zeroEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return the zero element in this module. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">auto</span> <span class="n">M</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">Module</span><span class="o">&lt;</span><span class="n">exactreal</span><span class="p">::</span><span class="n">RationalField</span><span class="o">&gt;</span><span class="p">::</span><span class="n">make</span><span class="p">({</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">rational</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">random</span><span class="p">()});</span>
+<span class="n">M</span><span class="o">-&gt;</span><span class="n">zero</span><span class="p">()</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal6Module3oneEv">
+<span id="_CPPv3NK9exactreal6Module3oneEv"></span><span id="_CPPv2NK9exactreal6Module3oneEv"></span><span id="exactreal::Module::oneC"></span><span class="target" id="classexactreal_1_1Module_1a6f2847aa08e0a633c0e8c320b57e7d6d"></span><a class="reference internal" href="cxx_element.html#_CPPv4I0EN9exactreal7ElementE" title="exactreal::Element"><span class="n"><span class="pre">Element</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN9exactreal6ModuleE" title="exactreal::Module::Ring"><span class="n"><span class="pre">Ring</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">one</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9exactreal6Module3oneEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return a one element in this module. If there is no such element, an exception is raised. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">auto</span> <span class="n">M</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">Module</span><span class="o">&lt;</span><span class="n">exactreal</span><span class="p">::</span><span class="n">RationalField</span><span class="o">&gt;</span><span class="p">::</span><span class="n">make</span><span class="p">({</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">rational</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">random</span><span class="p">()});</span>
+<span class="n">M</span><span class="o">-&gt;</span><span class="n">one</span><span class="p">()</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal6ModuleeqERK6ModuleI4RingE">
+<span id="_CPPv3NK9exactreal6ModuleeqERK6ModuleI4RingE"></span><span id="_CPPv2NK9exactreal6ModuleeqERK6ModuleI4RingE"></span><span id="exactreal::Module::eq-operator__Module:Ring:CRC"></span><span class="target" id="classexactreal_1_1Module_1a9e92764a394ba321f73f2c9223724203"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN9exactreal6ModuleE" title="exactreal::Module"><span class="n"><span class="pre">Module</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN9exactreal6ModuleE" title="exactreal::Module::Ring"><span class="n"><span class="pre">Ring</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rhs</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9exactreal6ModuleeqERK6ModuleI4RingE" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return whether two modules are indistinguishable, i.e., they have the same generators in the same order and are defined over the same ring. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">auto</span> <span class="n">M</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">Module</span><span class="o">&lt;</span><span class="n">exactreal</span><span class="p">::</span><span class="n">RationalField</span><span class="o">&gt;</span><span class="p">::</span><span class="n">make</span><span class="p">({</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">rational</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">random</span><span class="p">()});</span>
+<span class="n">auto</span> <span class="n">N</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">Module</span><span class="o">&lt;</span><span class="n">exactreal</span><span class="p">::</span><span class="n">RationalField</span><span class="o">&gt;</span><span class="p">::</span><span class="n">make</span><span class="p">({</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">rational</span><span class="p">(</span><span class="mi">1</span><span class="p">)});</span>
+
+<span class="o">*</span><span class="n">M</span> <span class="o">==</span> <span class="o">*</span><span class="n">N</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">false</span>
+
+<span class="o">*</span><span class="n">M</span> <span class="o">!=</span> <span class="o">*</span><span class="n">N</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">true</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal6Module4makeERK5Basis">
+<span id="_CPPv3N9exactreal6Module4makeERK5Basis"></span><span id="_CPPv2N9exactreal6Module4makeERK5Basis"></span><span id="exactreal::Module::make__BasisCR"></span><span class="target" id="classexactreal_1_1Module_1ae017f31e3af65c7e7380a2cf6125ac39"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN9exactreal6ModuleE" title="exactreal::Module"><span class="n"><span class="pre">Module</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN9exactreal6ModuleE" title="exactreal::Module::Ring"><span class="n"><span class="pre">Ring</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal6Module5BasisE" title="exactreal::Module::Basis"><span class="n"><span class="pre">Basis</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal6Module4makeERK5Basis" title="Link to this definition">#</a><br /></dt>
+<dd><p>Create a module with the given generators over the trivial <code class="docutils literal notranslate"><span class="pre">Ring</span></code>.</p>
+<p>This function is meant to be used with rings that are not parametrized, such as the integer or the rationals. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">auto</span> <span class="n">M</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">Module</span><span class="o">&lt;</span><span class="n">exactreal</span><span class="p">::</span><span class="n">RationalField</span><span class="o">&gt;</span><span class="p">::</span><span class="n">make</span><span class="p">({</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">rational</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">random</span><span class="p">()});</span>
+<span class="o">*</span><span class="n">M</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">ℚ</span><span class="o">-</span><span class="n">Module</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ℝ</span><span class="p">(</span><span class="o">&lt;...&gt;</span><span class="p">))</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal6Module4makeERK5BasisRK4Ring">
+<span id="_CPPv3N9exactreal6Module4makeERK5BasisRK4Ring"></span><span id="_CPPv2N9exactreal6Module4makeERK5BasisRK4Ring"></span><span id="exactreal::Module::make__BasisCR.RingCR"></span><span class="target" id="classexactreal_1_1Module_1ae65be7bad05ec9ad6f2abe005a1fda00"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN9exactreal6ModuleE" title="exactreal::Module"><span class="n"><span class="pre">Module</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN9exactreal6ModuleE" title="exactreal::Module::Ring"><span class="n"><span class="pre">Ring</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal6Module5BasisE" title="exactreal::Module::Basis"><span class="n"><span class="pre">Basis</span></span></a><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN9exactreal6ModuleE" title="exactreal::Module::Ring"><span class="n"><span class="pre">Ring</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal6Module4makeERK5BasisRK4Ring" title="Link to this definition">#</a><br /></dt>
+<dd><p>Create a module with the given generators over the given <code class="docutils literal notranslate"><span class="pre">Ring</span></code>. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;e-antic/renf_class.hpp&gt;</span>
+<span class="c1">#include &lt;e-antic/renf_elem_class.hpp&gt;</span>
+<span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4 +/- 1&quot;</span><span class="p">);</span>
+<span class="n">auto</span> <span class="n">M</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">Module</span><span class="o">&lt;</span><span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="o">&gt;</span><span class="p">::</span><span class="n">make</span><span class="p">({</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">rational</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+  <span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">random</span><span class="p">()},</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="p">{</span><span class="n">K</span><span class="p">});</span>
+<span class="o">*</span><span class="n">M</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">K</span><span class="o">-</span><span class="n">Module</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ℝ</span><span class="p">(</span><span class="o">&lt;...&gt;</span><span class="p">))</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal6Module4spanERKNSt10shared_ptrIK6ModuleI4RingEEERKNSt10shared_ptrIK6ModuleI4RingEEE">
+<span id="_CPPv3N9exactreal6Module4spanERKNSt10shared_ptrIK6ModuleI4RingEEERKNSt10shared_ptrIK6ModuleI4RingEEE"></span><span id="_CPPv2N9exactreal6Module4spanERKNSt10shared_ptrIK6ModuleI4RingEEERKNSt10shared_ptrIK6ModuleI4RingEEE"></span><span id="exactreal::Module::span__std::shared_ptr:Module:Ring:C:CR.std::shared_ptr:Module:Ring:C:CR"></span><span class="target" id="classexactreal_1_1Module_1a9c22308fe4817209c3c23befacff12b7"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN9exactreal6ModuleE" title="exactreal::Module"><span class="n"><span class="pre">Module</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN9exactreal6ModuleE" title="exactreal::Module::Ring"><span class="n"><span class="pre">Ring</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">span</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN9exactreal6ModuleE" title="exactreal::Module"><span class="n"><span class="pre">Module</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN9exactreal6ModuleE" title="exactreal::Module::Ring"><span class="n"><span class="pre">Ring</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN9exactreal6ModuleE" title="exactreal::Module"><span class="n"><span class="pre">Module</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN9exactreal6ModuleE" title="exactreal::Module::Ring"><span class="n"><span class="pre">Ring</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal6Module4spanERKNSt10shared_ptrIK6ModuleI4RingEEERKNSt10shared_ptrIK6ModuleI4RingEEE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-friends">Friends</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN9exactreal6ModulelsERNSt7ostreamERNSt7ostreamERK6ModuleI1RE">
+<span id="_CPPv3I0EN9exactreal6ModulelsERNSt7ostreamERK6ModuleI1RE"></span><span id="_CPPv2I0EN9exactreal6ModulelsERNSt7ostreamERK6ModuleI1RE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">R</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classexactreal_1_1Module_1a7bc6c27fb11dd8eb78495af3c5775dc6"></span><span class="k"><span class="pre">friend</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN9exactreal6ModuleE" title="exactreal::Module"><span class="n"><span class="pre">Module</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN9exactreal6ModulelsERNSt7ostreamERNSt7ostreamERK6ModuleI1RE" title="exactreal::Module::operator&lt;&lt;::R"><span class="n"><span class="pre">R</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN9exactreal6ModulelsERNSt7ostreamERNSt7ostreamERK6ModuleI1RE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="cxx_integer_ring.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">integer_ring.hpp - Integers</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="cxx_number_field.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">number_field.hpp - Number Fields</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0EN9exactreal6ModuleE"><code class="docutils literal notranslate"><span class="pre">exactreal::Module</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal6Module5BasisE"><code class="docutils literal notranslate"><span class="pre">Basis</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal6Module4ringEv"><code class="docutils literal notranslate"><span class="pre">ring()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal6Module4rankEv"><code class="docutils literal notranslate"><span class="pre">rank()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal6Module9submoduleERK6Module"><code class="docutils literal notranslate"><span class="pre">submodule()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal6Module5basisEv"><code class="docutils literal notranslate"><span class="pre">basis()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal6Module3genE4size"><code class="docutils literal notranslate"><span class="pre">gen()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal6Module4zeroEv"><code class="docutils literal notranslate"><span class="pre">zero()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal6Module3oneEv"><code class="docutils literal notranslate"><span class="pre">one()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal6ModuleeqERK6ModuleI4RingE"><code class="docutils literal notranslate"><span class="pre">operator==()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal6Module4makeERK5Basis"><code class="docutils literal notranslate"><span class="pre">make()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal6Module4makeERK5BasisRK4Ring"><code class="docutils literal notranslate"><span class="pre">make()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal6Module4spanERKNSt10shared_ptrIK6ModuleI4RingEEERKNSt10shared_ptrIK6ModuleI4RingEEE"><code class="docutils literal notranslate"><span class="pre">span()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0EN9exactreal6ModulelsERNSt7ostreamERNSt7ostreamERK6ModuleI1RE"><code class="docutils literal notranslate"><span class="pre">operator&lt;&lt;</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2019-2025, the exact-real authors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

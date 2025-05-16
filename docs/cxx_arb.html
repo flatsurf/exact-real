@@ -1,0 +1,1195 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>arb.hpp - C++ Wrapper for FLINT Ball Arithmetic &#8212; pyexactreal 4.0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/extra.css?v=14226158" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=1a34d25d"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'cxx_arb';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="arf.hpp - C++ Wrapper for FLINT Floating-Point Numbers" href="cxx_arf.html" />
+    <link rel="prev" title="Tour of the C++ Interface" href="cxx_overview.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="https://github.com/flatsurf/exact-real/raw/master/logo.svg?sanitize=true" class="logo__image only-light" alt="pyexactreal 4.0.1 documentation - Home"/>
+    <script>document.write(`<img src="https://github.com/flatsurf/exact-real/raw/master/logo.svg?sanitize=true" class="logo__image only-dark" alt="pyexactreal 4.0.1 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://flatsurf.github.io" title="flatsurf" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://flatsurf.github.io/assets/logo.svg" class="icon-link-image" alt="flatsurf"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/flatsurf/exact-real" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://sagemath.zulipchat.com/#narrow/channel/271193-flatsurf" title="Zulip" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-regular fa-comments fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Zulip</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">C++ Interface</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="cxx_overview.html">Tour of the C++ Interface</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">arb.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_arf.html">arf.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_element.html">element.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_integer_ring.html">integer_ring.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_module.html">module.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_number_field.html">number_field.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_rational_field.html">rational_field.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_real_number.html">real_number.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_seed.html">seed.hpp</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python Interface</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="python_overview.html">Tour of the Python Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python_cppyy_exactreal.html">cppyy_exactreal</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SageMath Interface</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="sage_overview.html">Tour of the SageMath Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sage_exact_reals.html">exact_reals</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/flatsurf/exact-real/edit/master/doc/manual/cxx_arb.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button"
+   title="Suggest edit"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/cxx_arb.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>arb.hpp - C++ Wrapper for FLINT Ball Arithmetic</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3ArbE"><code class="docutils literal notranslate"><span class="pre">exactreal::Arb</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3ArbEv"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3ArbERK3Arb"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3ArbERR3Arb"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3ArbERK9mpz_class"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3ArbERK9mpq_class"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3ArbERK9mpq_classK4prec"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3ArbERKN6eantic15renf_elem_classE"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3ArbERKN6eantic15renf_elem_classEK4prec"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3ArbERKNSt4pairI3Arf3ArfEEK4prec"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3ArbERK3Arf"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEEN9exactreal3Arb3ArbE7Integer"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3ArbERKNSt6stringEK4prec"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3ArbD0Ev"><code class="docutils literal notranslate"><span class="pre">~Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3ArbaSERK3Arb"><code class="docutils literal notranslate"><span class="pre">operator=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3ArbaSERR3Arb"><code class="docutils literal notranslate"><span class="pre">operator=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEEN9exactreal3ArbaSER3Arb7Integer"><code class="docutils literal notranslate"><span class="pre">operator=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3ArbaSERK9mpz_class"><code class="docutils literal notranslate"><span class="pre">operator=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbeqERK3Arb"><code class="docutils literal notranslate"><span class="pre">operator==()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbneERK3Arb"><code class="docutils literal notranslate"><span class="pre">operator!=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbltERK3Arb"><code class="docutils literal notranslate"><span class="pre">operator&lt;()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbgtERK3Arb"><code class="docutils literal notranslate"><span class="pre">operator&gt;()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbleERK3Arb"><code class="docutils literal notranslate"><span class="pre">operator&lt;=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbgeERK3Arb"><code class="docutils literal notranslate"><span class="pre">operator&gt;=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbltENSt8optionalIbEE7Integer"><code class="docutils literal notranslate"><span class="pre">operator&lt;()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbgtENSt8optionalIbEE7Integer"><code class="docutils literal notranslate"><span class="pre">operator&gt;()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbleENSt8optionalIbEE7Integer"><code class="docutils literal notranslate"><span class="pre">operator&lt;=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbgeENSt8optionalIbEE7Integer"><code class="docutils literal notranslate"><span class="pre">operator&gt;=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbeqENSt8optionalIbEE7Integer"><code class="docutils literal notranslate"><span class="pre">operator==()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbneENSt8optionalIbEE7Integer"><code class="docutils literal notranslate"><span class="pre">operator!=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbltERK9mpq_class"><code class="docutils literal notranslate"><span class="pre">operator&lt;()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbgtERK9mpq_class"><code class="docutils literal notranslate"><span class="pre">operator&gt;()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbleERK9mpq_class"><code class="docutils literal notranslate"><span class="pre">operator&lt;=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbgeERK9mpq_class"><code class="docutils literal notranslate"><span class="pre">operator&gt;=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbeqERK9mpq_class"><code class="docutils literal notranslate"><span class="pre">operator==()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbneERK9mpq_class"><code class="docutils literal notranslate"><span class="pre">operator!=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbmiEv"><code class="docutils literal notranslate"><span class="pre">operator-()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3Arb8is_exactEv"><code class="docutils literal notranslate"><span class="pre">is_exact()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3Arb9is_finiteEv"><code class="docutils literal notranslate"><span class="pre">is_finite()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbcvNSt4pairI3Arf3ArfEEEv"><code class="docutils literal notranslate"><span class="pre">operator</span> <span class="pre">std::pair&lt;</span> <span class="pre">Arf,</span> <span class="pre">Arf</span> <span class="pre">&gt;()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbcvdEv"><code class="docutils literal notranslate"><span class="pre">operator</span> <span class="pre">double()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3Arbcv3ArfEv"><code class="docutils literal notranslate"><span class="pre">operator</span> <span class="pre">Arf()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb5arb_tEv"><code class="docutils literal notranslate"><span class="pre">arb_t()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3Arb5arb_tEv"><code class="docutils literal notranslate"><span class="pre">arb_t()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3Arb5equalERK3Arb"><code class="docutils literal notranslate"><span class="pre">equal()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb4zeroEv"><code class="docutils literal notranslate"><span class="pre">zero()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3oneEv"><code class="docutils literal notranslate"><span class="pre">one()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb7pos_infEv"><code class="docutils literal notranslate"><span class="pre">pos_inf()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb7neg_infEv"><code class="docutils literal notranslate"><span class="pre">neg_inf()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb11zero_pm_infEv"><code class="docutils literal notranslate"><span class="pre">zero_pm_inf()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb13indeterminateEv"><code class="docutils literal notranslate"><span class="pre">indeterminate()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb11zero_pm_oneEv"><code class="docutils literal notranslate"><span class="pre">zero_pm_one()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb13unit_intervalEv"><code class="docutils literal notranslate"><span class="pre">unit_interval()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb8randtestE12flint_rand_t4prec4prec"><code class="docutils literal notranslate"><span class="pre">randtest()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb14randtest_exactE12flint_rand_t4prec4prec"><code class="docutils literal notranslate"><span class="pre">randtest_exact()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3ArblsERNSt7ostreamERK3Arb"><code class="docutils literal notranslate"><span class="pre">operator&lt;&lt;</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="arb-hpp-c-wrapper-for-flint-ball-arithmetic">
+<h1>arb.hpp - C++ Wrapper for FLINT Ball Arithmetic<a class="headerlink" href="#arb-hpp-c-wrapper-for-flint-ball-arithmetic" title="Link to this heading">#</a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3ArbE">
+<span id="_CPPv3N9exactreal3ArbE"></span><span id="_CPPv2N9exactreal3ArbE"></span><span id="exactreal::Arb"></span><span class="target" id="classexactreal_1_1Arb"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Arb</span></span></span><a class="headerlink" href="#_CPPv4N9exactreal3ArbE" title="Link to this definition">#</a><br /></dt>
+<dd><p>A wrapper for <span> <a class="reference external" href="https://flintlib.org/doc/arb.html#c.arb_t" title="(in FLINT v3.3)"><code class="xref c c-type docutils literal notranslate"><span class="pre">arb_t</span></code></a> </span> elements so we get C++ style memory management.</p>
+<p>We use some Yap magic to get nice operators (which is tricky otherwise because we cannot pass the additional prec and rnd parameters to operators in C++.)</p>
+<p>If you don’t like that magic and only want memory management, just create elements</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mi">2</span>
+</pre></div>
+</div>
+ <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;exact-real/arb.hpp&gt;</span>
+<span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
+</pre></div>
+</div>
+</p>
+<p>and then use the Arb functions directly: <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">arb_add</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">arb_t</span><span class="p">(),</span> <span class="n">x</span><span class="o">.</span><span class="n">arb_t</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">arb_t</span><span class="p">(),</span> <span class="mi">64</span><span class="p">);</span>
+</pre></div>
+</div>
+</p>
+<p>Using yap this can be rewritten as any of the following: <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;exact-real/yap/arb.hpp&gt;</span>
+
+<span class="n">x</span> <span class="o">+=</span> <span class="n">y</span><span class="p">(</span><span class="mi">64</span><span class="p">);</span>
+<span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">)(</span><span class="mi">64</span><span class="p">);</span>
+</pre></div>
+</div>
+</p>
+<p>Note that the latter might use an additional temporary Arb. See the yap/arb.hpp header for more details.</p>
+<p>Note that methods here are usually named as their counterparts in <span> <a class="reference external" href="https://flintlib.org/doc/arb.html#arb" title="(in FLINT v3.3)"><span class="xref std std-ref">arb.h</span></a> </span> with the leading arb_ removed.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We do not really recommend that you use the yap interface. We are considering to remove it because it is not terribly useful in practice and annoying to maintain.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This class has nothing to do with exact-real but should be implemented by FLINT itself. Eventually we would like to migrate these classes into a proper C++ wrapper that provides C++ memory management for FLINT. </p>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-arb(…)">Arb(…)</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3Arb3ArbEv">
+<span id="_CPPv3N9exactreal3Arb3ArbEv"></span><span id="_CPPv2N9exactreal3Arb3ArbEv"></span><span id="exactreal::Arb::Arb"></span><span class="target" id="classexactreal_1_1Arb_1a22f357147dfda20269e32fa2a9bc39b7"></span><span class="sig-name descname"><span class="n"><span class="pre">Arb</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3Arb3ArbEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Create an exact zero element. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">x</span><span class="p">;</span>
+<span class="n">x</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3Arb3ArbERK3Arb">
+<span id="_CPPv3N9exactreal3Arb3ArbERK3Arb"></span><span id="_CPPv2N9exactreal3Arb3ArbERK3Arb"></span><span id="exactreal::Arb::Arb__ArbCR"></span><span class="target" id="classexactreal_1_1Arb_1a1cfd78e06cd4e2958830c63e178e846d"></span><span class="sig-name descname"><span class="n"><span class="pre">Arb</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal3Arb3ArbERK3Arb" title="exactreal::Arb::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3Arb3ArbERK3Arb" title="Link to this definition">#</a><br /></dt>
+<dd><p>Create a copy of <code class="docutils literal notranslate"><span class="pre">x</span></code>. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">x</span><span class="p">{</span><span class="mi">1337</span><span class="p">};</span>
+<span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">y</span><span class="p">{</span><span class="n">x</span><span class="p">};</span>
+<span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">true</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">true</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3Arb3ArbERR3Arb">
+<span id="_CPPv3N9exactreal3Arb3ArbERR3Arb"></span><span id="_CPPv2N9exactreal3Arb3ArbERR3Arb"></span><span id="exactreal::Arb::Arb__ArbRR"></span><span class="target" id="classexactreal_1_1Arb_1ad344939b87b364e00773e2ef4082b5df"></span><span class="sig-name descname"><span class="n"><span class="pre">Arb</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N9exactreal3Arb3ArbERR3Arb" title="exactreal::Arb::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3Arb3ArbERR3Arb" title="Link to this definition">#</a><br /></dt>
+<dd><p>Create a new element from <code class="docutils literal notranslate"><span class="pre">x</span></code>. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">x</span><span class="p">{</span><span class="mi">1337</span><span class="p">};</span>
+<span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">y</span><span class="p">{</span><span class="n">std</span><span class="p">::</span><span class="n">move</span><span class="p">(</span><span class="n">x</span><span class="p">)};</span>
+<span class="n">y</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mf">1337.00</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3Arb3ArbERK9mpz_class">
+<span id="_CPPv3N9exactreal3Arb3ArbERK9mpz_class"></span><span id="_CPPv2N9exactreal3Arb3ArbERK9mpz_class"></span><span id="exactreal::Arb::Arb__mpz_classCR"></span><span class="target" id="classexactreal_1_1Arb_1a27b246879888d62d339e9f4fb70562b9"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Arb</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mpz_class</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3Arb3ArbERK9mpz_class" title="Link to this definition">#</a><br /></dt>
+<dd><p>Create an exact element equal to this integer. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;gmpxx.h&gt;</span>
+
+<span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">x</span><span class="p">{</span><span class="n">mpz_class</span><span class="p">{</span><span class="mi">1337</span><span class="p">}};</span>
+<span class="n">x</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mf">1337.00</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3Arb3ArbERK9mpq_class">
+<span id="_CPPv3N9exactreal3Arb3ArbERK9mpq_class"></span><span id="_CPPv2N9exactreal3Arb3ArbERK9mpq_class"></span><span id="exactreal::Arb::Arb__mpq_classCR"></span><span class="target" id="classexactreal_1_1Arb_1a952350086a952fa1d8b8aade178317ad"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Arb</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mpq_class</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3Arb3ArbERK9mpq_class" title="Link to this definition">#</a><br /></dt>
+<dd><p>Create an element containing this rational. Typically, the result won’t be exact, in particular not if the rational cannot be represented exactly in base 2. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">x</span><span class="p">{</span><span class="n">mpq_class</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">}};</span>
+<span class="n">x</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mf">0.500000</span>
+
+<span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">y</span><span class="p">{</span><span class="n">mpq_class</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">}};</span>
+<span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="p">::</span><span class="n">setprecision</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">y</span><span class="p">;</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="mf">0.33333333333333333331526329712524</span> <span class="o">+/-</span> <span class="mf">2.72e-20</span><span class="p">]</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3Arb3ArbERK9mpq_classK4prec">
+<span id="_CPPv3N9exactreal3Arb3ArbERK9mpq_classK4prec"></span><span id="_CPPv2N9exactreal3Arb3ArbERK9mpq_classK4prec"></span><span id="exactreal::Arb::Arb__mpq_classCR.precC"></span><span class="target" id="classexactreal_1_1Arb_1a23e82c1682a22cd720254338fed3ae81"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Arb</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mpq_class</span></span><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">prec</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3Arb3ArbERK9mpq_classK4prec" title="Link to this definition">#</a><br /></dt>
+<dd><p>Create an element containing this rational using <span> <a class="reference external" href="https://flintlib.org/doc/arb.html#c.arb_set_fmpq" title="(in FLINT v3.3)"><code class="xref c c-func docutils literal notranslate"><span class="pre">arb_set_fmpq()</span></code></a>, i.e., </span> by performing the division of numerator and denominator with precision <code class="docutils literal notranslate"><span class="pre">prec</span></code>. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">x</span><span class="p">{</span><span class="n">mpq_class</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">},</span> <span class="mi">256</span><span class="p">};</span>
+<span class="n">x</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mf">0.500000</span>
+
+<span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">y</span><span class="p">{</span><span class="n">mpq_class</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span> <span class="mi">256</span><span class="p">};</span>
+<span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="p">::</span><span class="n">setprecision</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">y</span><span class="p">;</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="mf">0.33333333333333333333333333333333</span> <span class="o">+/-</span> <span class="mf">3.34e-33</span><span class="p">]</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3Arb3ArbERKN6eantic15renf_elem_classE">
+<span id="_CPPv3N9exactreal3Arb3ArbERKN6eantic15renf_elem_classE"></span><span id="_CPPv2N9exactreal3Arb3ArbERKN6eantic15renf_elem_classE"></span><span id="exactreal::Arb::Arb__eantic::renf_elem_classCR"></span><span class="target" id="classexactreal_1_1Arb_1ab431f3de57246cf978ba584b56dfbc0f"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Arb</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">eantic</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">renf_elem_class</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3Arb3ArbERKN6eantic15renf_elem_classE" title="Link to this definition">#</a><br /></dt>
+<dd><p>Create an element containing this number field element. The precision of the Arb ball, depends on the internal representation of the number field element. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;e-antic/renf_class.hpp&gt;</span>
+<span class="c1">#include &lt;e-antic/renf_elem_class.hpp&gt;</span>
+
+<span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4 +/- 1&quot;</span><span class="p">);</span>
+<span class="n">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_elem_class</span><span class="p">(</span><span class="o">*</span><span class="n">K</span><span class="p">,</span> <span class="n">std</span><span class="p">::</span><span class="n">vector</span><span class="p">{</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">});</span>
+
+<span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">x</span><span class="p">{</span><span class="n">a</span><span class="p">};</span>
+<span class="n">x</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="mf">0.414214</span> <span class="o">+/-</span> <span class="mf">4.38e-7</span><span class="p">]</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3Arb3ArbERKN6eantic15renf_elem_classEK4prec">
+<span id="_CPPv3N9exactreal3Arb3ArbERKN6eantic15renf_elem_classEK4prec"></span><span id="_CPPv2N9exactreal3Arb3ArbERKN6eantic15renf_elem_classEK4prec"></span><span id="exactreal::Arb::Arb__eantic::renf_elem_classCR.precC"></span><span class="target" id="classexactreal_1_1Arb_1ae41261f41d25eff22360a80e3ffb4ca3"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Arb</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">eantic</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">renf_elem_class</span></span><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">prec</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3Arb3ArbERKN6eantic15renf_elem_classEK4prec" title="Link to this definition">#</a><br /></dt>
+<dd><p>Create an element containing this number field element in a ball of precision at least <code class="docutils literal notranslate"><span class="pre">prec</span></code>. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;e-antic/renf_class.hpp&gt;</span>
+<span class="c1">#include &lt;e-antic/renf_elem_class.hpp&gt;</span>
+
+<span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4 +/- 1&quot;</span><span class="p">);</span>
+<span class="n">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_elem_class</span><span class="p">(</span><span class="o">*</span><span class="n">K</span><span class="p">,</span> <span class="n">std</span><span class="p">::</span><span class="n">vector</span><span class="p">{</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">});</span>
+
+<span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">x</span><span class="p">{</span><span class="n">a</span><span class="p">,</span> <span class="mi">8</span><span class="p">};</span>
+<span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="p">::</span><span class="n">setprecision</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">x</span><span class="p">;</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="mf">0.41406250000000000000000000000000</span> <span class="o">+/-</span> <span class="mf">7.82e-3</span><span class="p">]</span>
+
+<span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">y</span><span class="p">{</span><span class="n">a</span><span class="p">,</span> <span class="mi">256</span><span class="p">};</span>
+<span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="p">::</span><span class="n">setprecision</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">y</span><span class="p">;</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="mf">0.41421356237309504880168872420970</span> <span class="o">+/-</span> <span class="mf">1.93e-33</span><span class="p">]</span>
+
+<span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">z</span><span class="p">{</span><span class="n">a</span><span class="p">,</span> <span class="mi">8</span><span class="p">};</span>
+<span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="p">::</span><span class="n">setprecision</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">z</span><span class="p">;</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="mf">0.41406250000000000000000000000000</span> <span class="o">+/-</span> <span class="mf">7.82e-3</span><span class="p">]</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3Arb3ArbERKNSt4pairI3Arf3ArfEEK4prec">
+<span id="_CPPv3N9exactreal3Arb3ArbERKNSt4pairI3Arf3ArfEEK4prec"></span><span id="_CPPv2N9exactreal3Arb3ArbERKNSt4pairI3Arf3ArfEEK4prec"></span><span id="exactreal::Arb::Arb__std::pair:Arf.Arf:CR.precC"></span><span class="target" id="classexactreal_1_1Arb_1a8cb7f9261f85b9756a4229b0c456484c"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Arb</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="cxx_arf.html#_CPPv4N9exactreal3ArfE" title="exactreal::Arf"><span class="n"><span class="pre">Arf</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="cxx_arf.html#_CPPv4N9exactreal3ArfE" title="exactreal::Arf"><span class="n"><span class="pre">Arf</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">prec</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">ARF_PREC_EXACT</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal3Arb3ArbERKNSt4pairI3Arf3ArfEEK4prec" title="Link to this definition">#</a><br /></dt>
+<dd><p>Create an Arb ball with lower and upper bound as given by the pair, see <span> <a class="reference external" href="https://flintlib.org/doc/arb.html#c.arb_set_interval_arf" title="(in FLINT v3.3)"><code class="xref c c-func docutils literal notranslate"><span class="pre">arb_set_interval_arf()</span></code></a>. </span> <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;exact-real/arf.hpp&gt;</span>
+
+<span class="n">exactreal</span><span class="p">::</span><span class="n">Arf</span> <span class="n">lower</span><span class="p">{</span><span class="mi">0</span><span class="p">},</span> <span class="n">upper</span><span class="p">{</span><span class="mi">1</span><span class="p">};</span>
+<span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">x</span><span class="p">{</span><span class="n">std</span><span class="p">::</span><span class="n">pair</span><span class="p">{</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">}};</span>
+<span class="n">x</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="mf">0.500000</span> <span class="o">+/-</span> <span class="mf">0.501</span><span class="p">]</span>
+
+<span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">y</span><span class="p">{</span><span class="n">std</span><span class="p">::</span><span class="n">pair</span><span class="p">{</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">},</span> <span class="mi">64</span><span class="p">};</span>
+<span class="n">y</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="mf">0.500000</span> <span class="o">+/-</span> <span class="mf">0.501</span><span class="p">]</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3Arb3ArbERK3Arf">
+<span id="_CPPv3N9exactreal3Arb3ArbERK3Arf"></span><span id="_CPPv2N9exactreal3Arb3ArbERK3Arf"></span><span id="exactreal::Arb::Arb__ArfCR"></span><span class="target" id="classexactreal_1_1Arb_1a279a96af06ab354997e0a859aed07a48"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Arb</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="cxx_arf.html#_CPPv4N9exactreal3ArfE" title="exactreal::Arf"><span class="n"><span class="pre">Arf</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">midpoint</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal3Arb3ArbERK3Arf" title="Link to this definition">#</a><br /></dt>
+<dd><p>Create an exact element equal to the given floating point element, see <span> <a class="reference external" href="https://flintlib.org/doc/arb.html#c.arb_set_arf" title="(in FLINT v3.3)"><code class="xref c c-func docutils literal notranslate"><span class="pre">arb_set_arf()</span></code></a>. </span> <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;exact-real/arf.hpp&gt;</span>
+
+<span class="n">exactreal</span><span class="p">::</span><span class="n">Arf</span> <span class="n">x</span><span class="p">{</span><span class="mi">1</span><span class="p">};</span>
+<span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">y</span><span class="p">{</span><span class="n">x</span><span class="p">};</span>
+<span class="n">y</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mf">1.00000</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEEN9exactreal3Arb3ArbE7Integer">
+<span id="_CPPv3I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEEN9exactreal3Arb3ArbE7Integer"></span><span id="_CPPv2I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEEN9exactreal3Arb3ArbE7Integer"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Integer</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_integral_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEEN9exactreal3Arb3ArbE7Integer" title="exactreal::Arb::Arb::Integer"><span class="n"><span class="pre">Integer</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classexactreal_1_1Arb_1a327e3cdb3518af1ee3c40ae2a927dfb8"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Arb</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEEN9exactreal3Arb3ArbE7Integer" title="exactreal::Arb::Arb::Integer"><span class="n"><span class="pre">Integer</span></span></a><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEEN9exactreal3Arb3ArbE7Integer" title="Link to this definition">#</a><br /></dt>
+<dd><p>Create an exact element, equal to this integer. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">x</span><span class="p">{</span><span class="mi">1</span><span class="p">};</span>
+<span class="n">x</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mf">1.00000</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3Arb3ArbERKNSt6stringEK4prec">
+<span id="_CPPv3N9exactreal3Arb3ArbERKNSt6stringEK4prec"></span><span id="_CPPv2N9exactreal3Arb3ArbERKNSt6stringEK4prec"></span><span id="exactreal::Arb::Arb__ssCR.precC"></span><span class="target" id="classexactreal_1_1Arb_1a8ecdea6376edd51bdb05a8a1ac0554de"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Arb</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal3Arb3ArbERKNSt6stringEK4prec" title="Link to this definition">#</a><br /></dt>
+<dd><p>Create an element from this string, see <span> <a class="reference external" href="https://flintlib.org/doc/arb.html#c.arb_set_str" title="(in FLINT v3.3)"><code class="xref c c-func docutils literal notranslate"><span class="pre">arb_set_str()</span></code></a>. </span> <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">x</span><span class="p">{</span><span class="s2">&quot;[3.25 +/- 0.0001]&quot;</span><span class="p">,</span> <span class="mi">64</span><span class="p">};</span>
+<span class="n">x</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="mf">3.25000</span> <span class="o">+/-</span> <span class="mf">1.01e-4</span><span class="p">]</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3ArbD0Ev">
+<span id="_CPPv3N9exactreal3ArbD0Ev"></span><span id="_CPPv2N9exactreal3ArbD0Ev"></span><span id="exactreal::Arb::~Arb"></span><span class="target" id="classexactreal_1_1Arb_1a9e5e44c078ae583c819c77c99f87123e"></span><span class="sig-name descname"><span class="n"><span class="pre">~Arb</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3ArbD0Ev" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-operator=">operator=</p>
+<p>Reset this element to the one given. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">x</span><span class="p">{</span><span class="mi">1</span><span class="p">},</span> <span class="n">y</span><span class="p">;</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">std</span><span class="p">::</span><span class="n">move</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<span class="n">y</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mf">1.00000</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">y</span><span class="p">;</span>
+<span class="n">y</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mf">1.00000</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="n">x</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mf">1.00000</span>
+</pre></div>
+</div>
+</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3ArbaSERK3Arb">
+<span id="_CPPv3N9exactreal3ArbaSERK3Arb"></span><span id="_CPPv2N9exactreal3ArbaSERK3Arb"></span><span id="exactreal::Arb::assign-operator__ArbCR"></span><span class="target" id="classexactreal_1_1Arb_1aed20ec961406dbc68e4af1465098b08e"></span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3ArbaSERK3Arb" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3ArbaSERR3Arb">
+<span id="_CPPv3N9exactreal3ArbaSERR3Arb"></span><span id="_CPPv2N9exactreal3ArbaSERR3Arb"></span><span id="exactreal::Arb::assign-operator__ArbRR"></span><span class="target" id="classexactreal_1_1Arb_1a1a2d986a3e7154ea8d502e8552f5a1ee"></span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3ArbaSERR3Arb" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEEN9exactreal3ArbaSER3Arb7Integer">
+<span id="_CPPv3I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEEN9exactreal3ArbaSE7Integer"></span><span id="_CPPv2I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEEN9exactreal3ArbaSE7Integer"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Integer</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_integral_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEEN9exactreal3ArbaSER3Arb7Integer" title="exactreal::Arb::operator=::Integer"><span class="n"><span class="pre">Integer</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classexactreal_1_1Arb_1ad07315d6ad1c9161724f0b42db211613"></span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEEN9exactreal3ArbaSER3Arb7Integer" title="exactreal::Arb::operator=::Integer"><span class="n"><span class="pre">Integer</span></span></a><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEEN9exactreal3ArbaSER3Arb7Integer" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3ArbaSERK9mpz_class">
+<span id="_CPPv3N9exactreal3ArbaSERK9mpz_class"></span><span id="_CPPv2N9exactreal3ArbaSERK9mpz_class"></span><span id="exactreal::Arb::assign-operator__mpz_classCR"></span><span class="target" id="classexactreal_1_1Arb_1aec5c081a125ff899f883d2548a7166c1"></span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mpz_class</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3ArbaSERK9mpz_class" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-comparison-operators">Comparison Operators</p>
+<p>The comparison operators return a value if the relation is true for all elements in the ball described by the element, e.g., x &lt; y, returns true if the relation is true for every element in x and y, they return false if the relation is false for every element in x and y, and nothing otherwise. Note that this is different from the semantic in Arb where false is returned in both of the latter cases. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">x</span><span class="p">{</span><span class="n">mpq_class</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">}};</span>
+<span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">has_value</span><span class="p">()</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">true</span>
+
+<span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">true</span>
+
+<span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">has_value</span><span class="p">()</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">false</span>
+</pre></div>
+</div>
+</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal3ArbeqERK3Arb">
+<span id="_CPPv3NK9exactreal3ArbeqERK3Arb"></span><span id="_CPPv2NK9exactreal3ArbeqERK3Arb"></span><span id="exactreal::Arb::eq-operator__ArbCRC"></span><span class="target" id="classexactreal_1_1Arb_1a9735344be18b269dc2f3e652d6a33f30"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK9exactreal3ArbeqERK3Arb" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal3ArbneERK3Arb">
+<span id="_CPPv3NK9exactreal3ArbneERK3Arb"></span><span id="_CPPv2NK9exactreal3ArbneERK3Arb"></span><span id="exactreal::Arb::neq-operator__ArbCRC"></span><span class="target" id="classexactreal_1_1Arb_1a3298fa0a30a33844d8f559d7d2f5a3f7"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">!=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK9exactreal3ArbneERK3Arb" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal3ArbltERK3Arb">
+<span id="_CPPv3NK9exactreal3ArbltERK3Arb"></span><span id="_CPPv2NK9exactreal3ArbltERK3Arb"></span><span id="exactreal::Arb::lt-operator__ArbCRC"></span><span class="target" id="classexactreal_1_1Arb_1a5fec031a2c0dc05651b9a660464e516e"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK9exactreal3ArbltERK3Arb" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal3ArbgtERK3Arb">
+<span id="_CPPv3NK9exactreal3ArbgtERK3Arb"></span><span id="_CPPv2NK9exactreal3ArbgtERK3Arb"></span><span id="exactreal::Arb::gt-operator__ArbCRC"></span><span class="target" id="classexactreal_1_1Arb_1ac9710acebfa38170a450176076287f3f"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&gt;</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK9exactreal3ArbgtERK3Arb" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal3ArbleERK3Arb">
+<span id="_CPPv3NK9exactreal3ArbleERK3Arb"></span><span id="_CPPv2NK9exactreal3ArbleERK3Arb"></span><span id="exactreal::Arb::lte-operator__ArbCRC"></span><span class="target" id="classexactreal_1_1Arb_1ac65b346aec566d08ee0198e75d1a4064"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK9exactreal3ArbleERK3Arb" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal3ArbgeERK3Arb">
+<span id="_CPPv3NK9exactreal3ArbgeERK3Arb"></span><span id="_CPPv2NK9exactreal3ArbgeERK3Arb"></span><span id="exactreal::Arb::gte-operator__ArbCRC"></span><span class="target" id="classexactreal_1_1Arb_1a1231e27783971e1b53fa314bfeb291f6"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&gt;=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK9exactreal3ArbgeERK3Arb" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbltENSt8optionalIbEE7Integer">
+<span id="_CPPv3I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbltE7Integer"></span><span id="_CPPv2I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbltE7Integer"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Integer</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_integral_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbltENSt8optionalIbEE7Integer" title="exactreal::Arb::operator&lt;::Integer"><span class="n"><span class="pre">Integer</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classexactreal_1_1Arb_1af41fbb07548b54af134799f4c4262abd"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbltENSt8optionalIbEE7Integer" title="exactreal::Arb::operator&lt;::Integer"><span class="n"><span class="pre">Integer</span></span></a><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbltENSt8optionalIbEE7Integer" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbgtENSt8optionalIbEE7Integer">
+<span id="_CPPv3I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbgtE7Integer"></span><span id="_CPPv2I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbgtE7Integer"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Integer</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_integral_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbgtENSt8optionalIbEE7Integer" title="exactreal::Arb::operator&gt;::Integer"><span class="n"><span class="pre">Integer</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classexactreal_1_1Arb_1afd9f2b79eb2ffbc896d176f0cd0f58af"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&gt;</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbgtENSt8optionalIbEE7Integer" title="exactreal::Arb::operator&gt;::Integer"><span class="n"><span class="pre">Integer</span></span></a><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbgtENSt8optionalIbEE7Integer" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbleENSt8optionalIbEE7Integer">
+<span id="_CPPv3I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbleE7Integer"></span><span id="_CPPv2I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbleE7Integer"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Integer</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_integral_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbleENSt8optionalIbEE7Integer" title="exactreal::Arb::operator&lt;=::Integer"><span class="n"><span class="pre">Integer</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classexactreal_1_1Arb_1ae008bfd9ad26f7a1ceeeef6fafc30623"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbleENSt8optionalIbEE7Integer" title="exactreal::Arb::operator&lt;=::Integer"><span class="n"><span class="pre">Integer</span></span></a><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbleENSt8optionalIbEE7Integer" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbgeENSt8optionalIbEE7Integer">
+<span id="_CPPv3I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbgeE7Integer"></span><span id="_CPPv2I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbgeE7Integer"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Integer</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_integral_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbgeENSt8optionalIbEE7Integer" title="exactreal::Arb::operator&gt;=::Integer"><span class="n"><span class="pre">Integer</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classexactreal_1_1Arb_1aec120ba6ee8a91145fadd72b027a8d51"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&gt;=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbgeENSt8optionalIbEE7Integer" title="exactreal::Arb::operator&gt;=::Integer"><span class="n"><span class="pre">Integer</span></span></a><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbgeENSt8optionalIbEE7Integer" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbeqENSt8optionalIbEE7Integer">
+<span id="_CPPv3I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbeqE7Integer"></span><span id="_CPPv2I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbeqE7Integer"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Integer</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_integral_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbeqENSt8optionalIbEE7Integer" title="exactreal::Arb::operator==::Integer"><span class="n"><span class="pre">Integer</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classexactreal_1_1Arb_1a38deffcd207b5b79d9ece3daaf16780c"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbeqENSt8optionalIbEE7Integer" title="exactreal::Arb::operator==::Integer"><span class="n"><span class="pre">Integer</span></span></a><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbeqENSt8optionalIbEE7Integer" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbneENSt8optionalIbEE7Integer">
+<span id="_CPPv3I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbneE7Integer"></span><span id="_CPPv2I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbneE7Integer"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Integer</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_integral_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbneENSt8optionalIbEE7Integer" title="exactreal::Arb::operator!=::Integer"><span class="n"><span class="pre">Integer</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classexactreal_1_1Arb_1ac848cf1c11004898b8ba9e843cc521c4"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">!=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbneENSt8optionalIbEE7Integer" title="exactreal::Arb::operator!=::Integer"><span class="n"><span class="pre">Integer</span></span></a><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbneENSt8optionalIbEE7Integer" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal3ArbltERK9mpq_class">
+<span id="_CPPv3NK9exactreal3ArbltERK9mpq_class"></span><span id="_CPPv2NK9exactreal3ArbltERK9mpq_class"></span><span id="exactreal::Arb::lt-operator__mpq_classCRC"></span><span class="target" id="classexactreal_1_1Arb_1a38cecd7658c324f38416c29552665254"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mpq_class</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK9exactreal3ArbltERK9mpq_class" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal3ArbgtERK9mpq_class">
+<span id="_CPPv3NK9exactreal3ArbgtERK9mpq_class"></span><span id="_CPPv2NK9exactreal3ArbgtERK9mpq_class"></span><span id="exactreal::Arb::gt-operator__mpq_classCRC"></span><span class="target" id="classexactreal_1_1Arb_1a06ef435bc704a9fcb2020150bc49a3b6"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&gt;</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mpq_class</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK9exactreal3ArbgtERK9mpq_class" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal3ArbleERK9mpq_class">
+<span id="_CPPv3NK9exactreal3ArbleERK9mpq_class"></span><span id="_CPPv2NK9exactreal3ArbleERK9mpq_class"></span><span id="exactreal::Arb::lte-operator__mpq_classCRC"></span><span class="target" id="classexactreal_1_1Arb_1ab46e61d897503217ea8cbb2ebaaa326c"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mpq_class</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK9exactreal3ArbleERK9mpq_class" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal3ArbgeERK9mpq_class">
+<span id="_CPPv3NK9exactreal3ArbgeERK9mpq_class"></span><span id="_CPPv2NK9exactreal3ArbgeERK9mpq_class"></span><span id="exactreal::Arb::gte-operator__mpq_classCRC"></span><span class="target" id="classexactreal_1_1Arb_1add25de0f35839ab4bcbd4207a06e4bef"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&gt;=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mpq_class</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK9exactreal3ArbgeERK9mpq_class" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal3ArbeqERK9mpq_class">
+<span id="_CPPv3NK9exactreal3ArbeqERK9mpq_class"></span><span id="_CPPv2NK9exactreal3ArbeqERK9mpq_class"></span><span id="exactreal::Arb::eq-operator__mpq_classCRC"></span><span class="target" id="classexactreal_1_1Arb_1a8c82010cbcd0b9b625b5ea8a49bba7fa"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mpq_class</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK9exactreal3ArbeqERK9mpq_class" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal3ArbneERK9mpq_class">
+<span id="_CPPv3NK9exactreal3ArbneERK9mpq_class"></span><span id="_CPPv2NK9exactreal3ArbneERK9mpq_class"></span><span id="exactreal::Arb::neq-operator__mpq_classCRC"></span><span class="target" id="classexactreal_1_1Arb_1ac84b07defb6fa933ed764dcc559713cd"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">!=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mpq_class</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK9exactreal3ArbneERK9mpq_class" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal3ArbmiEv">
+<span id="_CPPv3NK9exactreal3ArbmiEv"></span><span id="_CPPv2NK9exactreal3ArbmiEv"></span><span id="exactreal::Arb::sub-operatorC"></span><span class="target" id="classexactreal_1_1Arb_1a424700037d3a7ef9a02ed4f6279f5613"></span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK9exactreal3ArbmiEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return the negative of this element. This method returns a ball whose lower and upper bound is the negative of the upper and lower bound, respectively. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">x</span><span class="p">{</span><span class="mi">1</span><span class="p">};</span>
+<span class="o">-</span><span class="n">x</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="o">-</span><span class="mf">1.00000</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal3Arb8is_exactEv">
+<span id="_CPPv3NK9exactreal3Arb8is_exactEv"></span><span id="_CPPv2NK9exactreal3Arb8is_exactEv"></span><span id="exactreal::Arb::is_exactC"></span><span class="target" id="classexactreal_1_1Arb_1a2f12de0f73f72bb2b953b5b379241700"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_exact</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK9exactreal3Arb8is_exactEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return whether this Arb element exactly represents a floating point number, i.e., whether its radius is zero, see <span> <a class="reference external" href="https://flintlib.org/doc/arb.html#c.arb_is_exact" title="(in FLINT v3.3)"><code class="xref c c-func docutils literal notranslate"><span class="pre">arb_is_exact()</span></code></a>. </span> <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">x</span><span class="p">{</span><span class="mi">1</span><span class="p">};</span>
+<span class="n">x</span><span class="o">.</span><span class="n">is_exact</span><span class="p">()</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">true</span>
+
+<span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">y</span><span class="p">{</span><span class="n">mpq_class</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">}};</span>
+<span class="n">y</span><span class="o">.</span><span class="n">is_exact</span><span class="p">()</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">false</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal3Arb9is_finiteEv">
+<span id="_CPPv3NK9exactreal3Arb9is_finiteEv"></span><span id="_CPPv2NK9exactreal3Arb9is_finiteEv"></span><span id="exactreal::Arb::is_finiteC"></span><span class="target" id="classexactreal_1_1Arb_1a9c253dde284bf26fbc9917d2411256a1"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_finite</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK9exactreal3Arb9is_finiteEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return whether this Arb element does contain neither plus nor minus infinity, see <span> <a class="reference external" href="https://flintlib.org/doc/arb.html#c.arb_is_finite" title="(in FLINT v3.3)"><code class="xref c c-func docutils literal notranslate"><span class="pre">arb_is_finite()</span></code></a>. </span> <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">x</span><span class="p">{</span><span class="mi">1</span><span class="p">};</span>
+<span class="n">x</span><span class="o">.</span><span class="n">is_finite</span><span class="p">()</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">true</span>
+
+<span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">y</span><span class="p">{</span><span class="mi">1</span><span class="p">};</span>
+<span class="n">arb_div_si</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">arb_t</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">arb_t</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
+<span class="n">y</span><span class="o">.</span><span class="n">is_finite</span><span class="p">()</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">false</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal3ArbcvNSt4pairI3Arf3ArfEEEv">
+<span id="_CPPv3NK9exactreal3ArbcvNSt4pairI3Arf3ArfEEEv"></span><span id="_CPPv2NK9exactreal3ArbcvNSt4pairI3Arf3ArfEEEv"></span><span id="exactreal::Arb::castto-std::pair:Arf.Arf:-operatorC"></span><span class="target" id="classexactreal_1_1Arb_1aeafc60e8184901360310e80fdb0b7ed5"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="cxx_arf.html#_CPPv4N9exactreal3ArfE" title="exactreal::Arf"><span class="n"><span class="pre">Arf</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="cxx_arf.html#_CPPv4N9exactreal3ArfE" title="exactreal::Arf"><span class="n"><span class="pre">Arf</span></span></a><span class="p"><span class="pre">&gt;</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK9exactreal3ArbcvNSt4pairI3Arf3ArfEEEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return the lower and the upper bound of this ball. See <span> <a class="reference external" href="https://flintlib.org/doc/arb.html#c.arb_get_interval_arf" title="(in FLINT v3.3)"><code class="xref c c-func docutils literal notranslate"><span class="pre">arb_get_interval_arf()</span></code></a>. </span> <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">x</span><span class="p">{</span><span class="n">mpq_class</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">}};</span>
+<span class="n">auto</span> <span class="n">bounds</span> <span class="o">=</span> <span class="n">static_cast</span><span class="o">&lt;</span><span class="n">std</span><span class="p">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arf</span><span class="p">,</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">Arf</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">bounds</span><span class="o">.</span><span class="n">first</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;, &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">bounds</span><span class="o">.</span><span class="n">second</span><span class="p">;</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mf">0.333333</span><span class="o">=</span><span class="mi">1537228672809129301</span><span class="n">p</span><span class="o">-</span><span class="mi">62</span><span class="p">,</span> <span class="mf">0.333333</span><span class="o">=</span><span class="mi">3074457345618258603</span><span class="n">p</span><span class="o">-</span><span class="mi">63</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal3ArbcvdEv">
+<span id="_CPPv3NK9exactreal3ArbcvdEv"></span><span id="_CPPv2NK9exactreal3ArbcvdEv"></span><span id="exactreal::Arb::castto-double-operatorC"></span><span class="target" id="classexactreal_1_1Arb_1a2b0389e41d0e0d85a03cd2a2e6934bea"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK9exactreal3ArbcvdEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return the midpoint of this ball rounded to the closest double. Note that ties are rounded to even. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">x</span><span class="p">{</span><span class="n">mpq_class</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">}};</span>
+<span class="n">static_cast</span><span class="o">&lt;</span><span class="n">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mf">0.333333</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal3Arbcv3ArfEv">
+<span id="_CPPv3NK9exactreal3Arbcv3ArfEv"></span><span id="_CPPv2NK9exactreal3Arbcv3ArfEv"></span><span id="exactreal::Arb::castto-Arf-operatorC"></span><span class="target" id="classexactreal_1_1Arb_1a5e524622d303278908be29ae85f2b77d"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="w"> </span><a class="reference internal" href="cxx_arf.html#_CPPv4N9exactreal3ArfE" title="exactreal::Arf"><span class="n"><span class="pre">Arf</span></span></a></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK9exactreal3Arbcv3ArfEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return the exact midpoint of this ball. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;exact-real/arf.hpp&gt;</span>
+
+<span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">x</span><span class="p">{</span><span class="n">mpq_class</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">}};</span>
+<span class="n">static_cast</span><span class="o">&lt;</span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arf</span><span class="o">&gt;</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mf">0.333333</span><span class="o">=</span><span class="mi">6148914691236517205</span><span class="n">p</span><span class="o">-</span><span class="mi">64</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3Arb5arb_tEv">
+<span id="_CPPv3N9exactreal3Arb5arb_tEv"></span><span id="_CPPv2N9exactreal3Arb5arb_tEv"></span><span id="exactreal::Arb::arb_t"></span><span class="target" id="classexactreal_1_1Arb_1aef56774f79993ed452b6ae3c8f435e44"></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">arb_t</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3Arb5arb_tEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return a reference to the underlying <span> <a class="reference external" href="https://flintlib.org/doc/arb.html#c.arb_t" title="(in FLINT v3.3)"><code class="xref c c-type docutils literal notranslate"><span class="pre">arb_t</span></code></a> </span> element for direct manipulation with the C API of Arb. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal3Arb5arb_tEv">
+<span id="_CPPv3NK9exactreal3Arb5arb_tEv"></span><span id="_CPPv2NK9exactreal3Arb5arb_tEv"></span><span id="exactreal::Arb::arb_tC"></span><span class="target" id="classexactreal_1_1Arb_1a2848ef374022330ebfa5c62740c44386"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">arb_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">arb_t</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK9exactreal3Arb5arb_tEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return a const reference to the underlying <span> <a class="reference external" href="https://flintlib.org/doc/arb.html#c.arb_t" title="(in FLINT v3.3)"><code class="xref c c-type docutils literal notranslate"><span class="pre">arb_t</span></code></a> </span> element for direct manipulation with the C API of Arb. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal3Arb5equalERK3Arb">
+<span id="_CPPv3NK9exactreal3Arb5equalERK3Arb"></span><span id="_CPPv2NK9exactreal3Arb5equalERK3Arb"></span><span id="exactreal::Arb::equal__ArbCRC"></span><span class="target" id="classexactreal_1_1Arb_1a831edb0556029e58d35100ad529420c2"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">equal</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK9exactreal3Arb5equalERK3Arb" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return whether elements have the same midpoint and radius. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span> <span class="n">a</span><span class="p">;</span>
+<span class="n">a</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">true</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3Arb4zeroEv">
+<span id="_CPPv3N9exactreal3Arb4zeroEv"></span><span id="_CPPv2N9exactreal3Arb4zeroEv"></span><span id="exactreal::Arb::zero"></span><span class="target" id="classexactreal_1_1Arb_1a8dee18d7db4af05f3b185b37263afa8f"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zero</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3Arb4zeroEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return an exact zero element, i.e., the ball of radius zero centered at zero. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span><span class="p">::</span><span class="n">zero</span><span class="p">()</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3Arb3oneEv">
+<span id="_CPPv3N9exactreal3Arb3oneEv"></span><span id="_CPPv2N9exactreal3Arb3oneEv"></span><span id="exactreal::Arb::one"></span><span class="target" id="classexactreal_1_1Arb_1a6226a27915674b7b3197a13dd98a099a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">one</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3Arb3oneEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return an exact one element, i.e., the ball of radius zero centered at one. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span><span class="p">::</span><span class="n">one</span><span class="p">()</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mf">1.00000</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3Arb7pos_infEv">
+<span id="_CPPv3N9exactreal3Arb7pos_infEv"></span><span id="_CPPv2N9exactreal3Arb7pos_infEv"></span><span id="exactreal::Arb::pos_inf"></span><span class="target" id="classexactreal_1_1Arb_1a6d6e281430986530b8d7e025eb93b39f"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pos_inf</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3Arb7pos_infEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return plus infinity, i.e., the ball of radius zero centered at plus infinity, see <span> <a class="reference external" href="https://flintlib.org/doc/arb.html#c.arb_pos_inf" title="(in FLINT v3.3)"><code class="xref c c-func docutils literal notranslate"><span class="pre">arb_pos_inf()</span></code></a> </span>. Note that the result is printed as <code class="docutils literal notranslate"><span class="pre">[+/-</span> <span class="pre">inf]</span></code> unfortunately, see <a class="github reference external" href="https://github.com/fredrik-johansson/arb/issues/332">fredrik-johansson/arb#332</a>. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span><span class="p">::</span><span class="n">pos_inf</span><span class="p">()</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="o">+/-</span> <span class="n">inf</span><span class="p">]</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3Arb7neg_infEv">
+<span id="_CPPv3N9exactreal3Arb7neg_infEv"></span><span id="_CPPv2N9exactreal3Arb7neg_infEv"></span><span id="exactreal::Arb::neg_inf"></span><span class="target" id="classexactreal_1_1Arb_1ad150654781ac4d772022e800f259c129"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">neg_inf</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3Arb7neg_infEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return minus infinity, i.e., the ball of radius zero centered at minus infinity, see [arb_neg_inf](). Note that the result is printed as <code class="docutils literal notranslate"><span class="pre">[+/-</span> <span class="pre">inf]</span></code> unfortunately, see <a class="github reference external" href="https://github.com/fredrik-johansson/arb/issues/332">fredrik-johansson/arb#332</a>. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span><span class="p">::</span><span class="n">neg_inf</span><span class="p">()</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="o">+/-</span> <span class="n">inf</span><span class="p">]</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3Arb11zero_pm_infEv">
+<span id="_CPPv3N9exactreal3Arb11zero_pm_infEv"></span><span id="_CPPv2N9exactreal3Arb11zero_pm_infEv"></span><span id="exactreal::Arb::zero_pm_inf"></span><span class="target" id="classexactreal_1_1Arb_1a1fd49ee741c005a40072909864d8c6e2"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zero_pm_inf</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3Arb11zero_pm_infEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return the extended real line, i.e., the interval [-∞,∞], see <span> <a class="reference external" href="https://flintlib.org/doc/arb.html#c.arb_zero_pm_inf" title="(in FLINT v3.3)"><code class="xref c c-func docutils literal notranslate"><span class="pre">arb_zero_pm_inf()</span></code></a>. </span> <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span><span class="p">::</span><span class="n">zero_pm_inf</span><span class="p">()</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="o">+/-</span> <span class="n">inf</span><span class="p">]</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3Arb13indeterminateEv">
+<span id="_CPPv3N9exactreal3Arb13indeterminateEv"></span><span id="_CPPv2N9exactreal3Arb13indeterminateEv"></span><span id="exactreal::Arb::indeterminate"></span><span class="target" id="classexactreal_1_1Arb_1ad3466261ecaf22aefbbc1646592dbb86"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">indeterminate</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3Arb13indeterminateEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return an indeterminate, i.e., [NaN±∞] see <span> <a class="reference external" href="https://flintlib.org/doc/arb.html#c.arb_indeterminate" title="(in FLINT v3.3)"><code class="xref c c-func docutils literal notranslate"><span class="pre">arb_indeterminate()</span></code></a>. </span> <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span><span class="p">::</span><span class="n">indeterminate</span><span class="p">()</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">nan</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3Arb11zero_pm_oneEv">
+<span id="_CPPv3N9exactreal3Arb11zero_pm_oneEv"></span><span id="_CPPv2N9exactreal3Arb11zero_pm_oneEv"></span><span id="exactreal::Arb::zero_pm_one"></span><span class="target" id="classexactreal_1_1Arb_1ad74513e436c337706a41eb563226f711"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zero_pm_one</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3Arb11zero_pm_oneEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return the interval [-1, 1], i.e., the ball of radius one centered at zero, see <span> <a class="reference external" href="https://flintlib.org/doc/arb.html#c.arb_zero_pm_one" title="(in FLINT v3.3)"><code class="xref c c-func docutils literal notranslate"><span class="pre">arb_zero_pm_one()</span></code></a>. </span> Note that this prints as <code class="docutils literal notranslate"><span class="pre">[+/-</span> <span class="pre">1.01]</span></code> instead of <code class="docutils literal notranslate"><span class="pre">[+/-</span> <span class="pre">1.00]</span></code>, see <a class="github reference external" href="https://github.com/fredrik-johansson/arb/issues/391">fredrik-johansson/arb#391</a> <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span><span class="p">::</span><span class="n">zero_pm_one</span><span class="p">()</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="o">+/-</span> <span class="mf">1.01</span><span class="p">]</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3Arb13unit_intervalEv">
+<span id="_CPPv3N9exactreal3Arb13unit_intervalEv"></span><span id="_CPPv2N9exactreal3Arb13unit_intervalEv"></span><span id="exactreal::Arb::unit_interval"></span><span class="target" id="classexactreal_1_1Arb_1a321c16d7d9e680289f8fc7e9c6c9e7ea"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">unit_interval</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3Arb13unit_intervalEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return the unit interval [0, 1], i.e., the ball of radius 1/2 centered at 1/2, see <span> <a class="reference external" href="https://flintlib.org/doc/arb.html#c.arb_unit_interval" title="(in FLINT v3.3)"><code class="xref c c-func docutils literal notranslate"><span class="pre">arb_unit_interval()</span></code></a>. </span> Note that that this does not print as <code class="docutils literal notranslate"><span class="pre">[0.5</span> <span class="pre">+/-</span> <span class="pre">0.5]</span></code>, see <a class="github reference external" href="https://github.com/fredrik-johansson/arb/issues/391">fredrik-johansson/arb#391</a> <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span><span class="p">::</span><span class="n">unit_interval</span><span class="p">()</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="mf">0.500000</span> <span class="o">+/-</span> <span class="mf">0.501</span><span class="p">]</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3Arb8randtestE12flint_rand_t4prec4prec">
+<span id="_CPPv3N9exactreal3Arb8randtestE12flint_rand_t4prec4prec"></span><span id="_CPPv2N9exactreal3Arb8randtestE12flint_rand_t4prec4prec"></span><span id="exactreal::Arb::randtest__flint_rand_t.prec.prec"></span><span class="target" id="classexactreal_1_1Arb_1a99fc1cc12aac74ba187a621769c95bc9"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">randtest</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">flint_rand_t</span></span>, <span class="n"><span class="pre">prec</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">precision</span></span>, <span class="n"><span class="pre">prec</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">magbits</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3Arb8randtestE12flint_rand_t4prec4prec" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return a random element, see <span> <a class="reference external" href="https://flintlib.org/doc/arb.html#c.arb_randtest" title="(in FLINT v3.3)"><code class="xref c c-func docutils literal notranslate"><span class="pre">arb_randtest()</span></code></a>. </span> <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;flint/flint.h&gt;</span>
+<span class="n">flint_rand_t</span> <span class="n">rnd</span><span class="p">;</span>
+<span class="n">flint_randinit</span><span class="p">(</span><span class="n">rnd</span><span class="p">);</span>
+
+<span class="n">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span><span class="p">::</span><span class="n">randtest</span><span class="p">(</span><span class="n">rnd</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+<span class="n">auto</span> <span class="n">b</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span><span class="p">::</span><span class="n">randtest</span><span class="p">(</span><span class="n">rnd</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+<span class="n">a</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">false</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3Arb14randtest_exactE12flint_rand_t4prec4prec">
+<span id="_CPPv3N9exactreal3Arb14randtest_exactE12flint_rand_t4prec4prec"></span><span id="_CPPv2N9exactreal3Arb14randtest_exactE12flint_rand_t4prec4prec"></span><span id="exactreal::Arb::randtest_exact__flint_rand_t.prec.prec"></span><span class="target" id="classexactreal_1_1Arb_1aea19ee82fb4a153a94cc0bb9b9ef6e59"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">randtest_exact</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">flint_rand_t</span></span>, <span class="n"><span class="pre">prec</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">precision</span></span>, <span class="n"><span class="pre">prec</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">magbits</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N9exactreal3Arb14randtest_exactE12flint_rand_t4prec4prec" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return a random element, see <span> <a class="reference external" href="https://flintlib.org/doc/arb.html#c.arb_randtest_exact" title="(in FLINT v3.3)"><code class="xref c c-func docutils literal notranslate"><span class="pre">arb_randtest_exact()</span></code></a>. </span> <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span><span class="p">::</span><span class="n">randtest_exact</span><span class="p">(</span><span class="n">rnd</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+<span class="n">auto</span> <span class="n">b</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">Arb</span><span class="p">::</span><span class="n">randtest_exact</span><span class="p">(</span><span class="n">rnd</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+<span class="n">a</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">false</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-friends">Friends</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal3ArblsERNSt7ostreamERK3Arb">
+<span id="_CPPv3N9exactreal3ArblsERNSt7ostreamERK3Arb"></span><span id="_CPPv2N9exactreal3ArblsERNSt7ostreamERK3Arb"></span><span id="exactreal::Arb::lshift-operator__osR.ArbCR"></span><span class="target" id="classexactreal_1_1Arb_1ade34524c5063c983f845ace23ff6815c"></span><span class="k"><span class="pre">friend</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal3ArblsERNSt7ostreamERK3Arb" title="Link to this definition">#</a><br /></dt>
+<dd><p>Write this element to the output stream, see. </p>
+<p><span> <a class="reference external" href="https://flintlib.org/doc/arb.html#c.arb_get_str" title="(in FLINT v3.3)"><code class="xref c c-func docutils literal notranslate"><span class="pre">arb_get_str()</span></code></a>. </span></p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="cxx_overview.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Tour of the C++ Interface</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="cxx_arf.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">arf.hpp - C++ Wrapper for FLINT Floating-Point Numbers</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3ArbE"><code class="docutils literal notranslate"><span class="pre">exactreal::Arb</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3ArbEv"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3ArbERK3Arb"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3ArbERR3Arb"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3ArbERK9mpz_class"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3ArbERK9mpq_class"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3ArbERK9mpq_classK4prec"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3ArbERKN6eantic15renf_elem_classE"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3ArbERKN6eantic15renf_elem_classEK4prec"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3ArbERKNSt4pairI3Arf3ArfEEK4prec"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3ArbERK3Arf"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEEN9exactreal3Arb3ArbE7Integer"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3ArbERKNSt6stringEK4prec"><code class="docutils literal notranslate"><span class="pre">Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3ArbD0Ev"><code class="docutils literal notranslate"><span class="pre">~Arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3ArbaSERK3Arb"><code class="docutils literal notranslate"><span class="pre">operator=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3ArbaSERR3Arb"><code class="docutils literal notranslate"><span class="pre">operator=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEEN9exactreal3ArbaSER3Arb7Integer"><code class="docutils literal notranslate"><span class="pre">operator=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3ArbaSERK9mpz_class"><code class="docutils literal notranslate"><span class="pre">operator=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbeqERK3Arb"><code class="docutils literal notranslate"><span class="pre">operator==()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbneERK3Arb"><code class="docutils literal notranslate"><span class="pre">operator!=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbltERK3Arb"><code class="docutils literal notranslate"><span class="pre">operator&lt;()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbgtERK3Arb"><code class="docutils literal notranslate"><span class="pre">operator&gt;()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbleERK3Arb"><code class="docutils literal notranslate"><span class="pre">operator&lt;=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbgeERK3Arb"><code class="docutils literal notranslate"><span class="pre">operator&gt;=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbltENSt8optionalIbEE7Integer"><code class="docutils literal notranslate"><span class="pre">operator&lt;()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbgtENSt8optionalIbEE7Integer"><code class="docutils literal notranslate"><span class="pre">operator&gt;()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbleENSt8optionalIbEE7Integer"><code class="docutils literal notranslate"><span class="pre">operator&lt;=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbgeENSt8optionalIbEE7Integer"><code class="docutils literal notranslate"><span class="pre">operator&gt;=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbeqENSt8optionalIbEE7Integer"><code class="docutils literal notranslate"><span class="pre">operator==()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0_NSt11enable_if_tINSt13is_integral_vI7IntegerEEiEEENK9exactreal3ArbneENSt8optionalIbEE7Integer"><code class="docutils literal notranslate"><span class="pre">operator!=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbltERK9mpq_class"><code class="docutils literal notranslate"><span class="pre">operator&lt;()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbgtERK9mpq_class"><code class="docutils literal notranslate"><span class="pre">operator&gt;()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbleERK9mpq_class"><code class="docutils literal notranslate"><span class="pre">operator&lt;=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbgeERK9mpq_class"><code class="docutils literal notranslate"><span class="pre">operator&gt;=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbeqERK9mpq_class"><code class="docutils literal notranslate"><span class="pre">operator==()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbneERK9mpq_class"><code class="docutils literal notranslate"><span class="pre">operator!=()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbmiEv"><code class="docutils literal notranslate"><span class="pre">operator-()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3Arb8is_exactEv"><code class="docutils literal notranslate"><span class="pre">is_exact()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3Arb9is_finiteEv"><code class="docutils literal notranslate"><span class="pre">is_finite()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbcvNSt4pairI3Arf3ArfEEEv"><code class="docutils literal notranslate"><span class="pre">operator</span> <span class="pre">std::pair&lt;</span> <span class="pre">Arf,</span> <span class="pre">Arf</span> <span class="pre">&gt;()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3ArbcvdEv"><code class="docutils literal notranslate"><span class="pre">operator</span> <span class="pre">double()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3Arbcv3ArfEv"><code class="docutils literal notranslate"><span class="pre">operator</span> <span class="pre">Arf()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb5arb_tEv"><code class="docutils literal notranslate"><span class="pre">arb_t()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3Arb5arb_tEv"><code class="docutils literal notranslate"><span class="pre">arb_t()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal3Arb5equalERK3Arb"><code class="docutils literal notranslate"><span class="pre">equal()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb4zeroEv"><code class="docutils literal notranslate"><span class="pre">zero()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb3oneEv"><code class="docutils literal notranslate"><span class="pre">one()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb7pos_infEv"><code class="docutils literal notranslate"><span class="pre">pos_inf()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb7neg_infEv"><code class="docutils literal notranslate"><span class="pre">neg_inf()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb11zero_pm_infEv"><code class="docutils literal notranslate"><span class="pre">zero_pm_inf()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb13indeterminateEv"><code class="docutils literal notranslate"><span class="pre">indeterminate()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb11zero_pm_oneEv"><code class="docutils literal notranslate"><span class="pre">zero_pm_one()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb13unit_intervalEv"><code class="docutils literal notranslate"><span class="pre">unit_interval()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb8randtestE12flint_rand_t4prec4prec"><code class="docutils literal notranslate"><span class="pre">randtest()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3Arb14randtest_exactE12flint_rand_t4prec4prec"><code class="docutils literal notranslate"><span class="pre">randtest_exact()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal3ArblsERNSt7ostreamERK3Arb"><code class="docutils literal notranslate"><span class="pre">operator&lt;&lt;</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2019-2025, the exact-real authors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

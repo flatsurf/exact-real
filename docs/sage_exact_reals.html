@@ -1,0 +1,976 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>exact_reals &#8212; pyexactreal 4.0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/extra.css?v=14226158" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=1a34d25d"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'sage_exact_reals';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Tour of the SageMath Interface" href="sage_overview.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="https://github.com/flatsurf/exact-real/raw/master/logo.svg?sanitize=true" class="logo__image only-light" alt="pyexactreal 4.0.1 documentation - Home"/>
+    <script>document.write(`<img src="https://github.com/flatsurf/exact-real/raw/master/logo.svg?sanitize=true" class="logo__image only-dark" alt="pyexactreal 4.0.1 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://flatsurf.github.io" title="flatsurf" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://flatsurf.github.io/assets/logo.svg" class="icon-link-image" alt="flatsurf"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/flatsurf/exact-real" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://sagemath.zulipchat.com/#narrow/channel/271193-flatsurf" title="Zulip" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-regular fa-comments fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Zulip</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">C++ Interface</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="cxx_overview.html">Tour of the C++ Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_arb.html">arb.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_arf.html">arf.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_element.html">element.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_integer_ring.html">integer_ring.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_module.html">module.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_number_field.html">number_field.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_rational_field.html">rational_field.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_real_number.html">real_number.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_seed.html">seed.hpp</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python Interface</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="python_overview.html">Tour of the Python Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python_cppyy_exactreal.html">cppyy_exactreal</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SageMath Interface</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="sage_overview.html">Tour of the SageMath Interface</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">exact_reals</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/flatsurf/exact-real/edit/master/doc/manual/sage_exact_reals.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button"
+   title="Suggest edit"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/sage_exact_reals.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>exact_reals</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.CoercionExactRealsNumberField"><code class="docutils literal notranslate"><span class="pre">CoercionExactRealsNumberField</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactRealElement"><code class="docutils literal notranslate"><span class="pre">ExactRealElement</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactRealElement.ceil"><code class="docutils literal notranslate"><span class="pre">ExactRealElement.ceil()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactRealElement.divides"><code class="docutils literal notranslate"><span class="pre">ExactRealElement.divides()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactRealElement.floor"><code class="docutils literal notranslate"><span class="pre">ExactRealElement.floor()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactRealElement.gcd"><code class="docutils literal notranslate"><span class="pre">ExactRealElement.gcd()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactRealElement.is_square"><code class="docutils literal notranslate"><span class="pre">ExactRealElement.is_square()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactRealElement.is_unit"><code class="docutils literal notranslate"><span class="pre">ExactRealElement.is_unit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactRealElement.module"><code class="docutils literal notranslate"><span class="pre">ExactRealElement.module()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactRealElement.simplify"><code class="docutils literal notranslate"><span class="pre">ExactRealElement.simplify()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactReals"><code class="docutils literal notranslate"><span class="pre">ExactReals</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactReals.Element"><code class="docutils literal notranslate"><span class="pre">ExactReals.Element</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactReals.an_element"><code class="docutils literal notranslate"><span class="pre">ExactReals.an_element()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactReals.characteristic"><code class="docutils literal notranslate"><span class="pre">ExactReals.characteristic()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactReals.fraction_field"><code class="docutils literal notranslate"><span class="pre">ExactReals.fraction_field()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactReals.is_field"><code class="docutils literal notranslate"><span class="pre">ExactReals.is_field()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactReals.is_integral_domain"><code class="docutils literal notranslate"><span class="pre">ExactReals.is_integral_domain()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactReals.random_element"><code class="docutils literal notranslate"><span class="pre">ExactReals.random_element()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactReals.rational"><code class="docutils literal notranslate"><span class="pre">ExactReals.rational()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactReals.some_elements"><code class="docutils literal notranslate"><span class="pre">ExactReals.some_elements()</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-pyexactreal.exact_reals">
+<span id="exact-reals"></span><h1>exact_reals<a class="headerlink" href="#module-pyexactreal.exact_reals" title="Link to this heading">#</a></h1>
+<p>Finitely Generated Modules in the Real Numbers with Number Field Coefficients</p>
+<p>The classes in this module wrap libexactreal for use in SageMath. They provide
+<a class="reference internal" href="#pyexactreal.exact_reals.ExactReals" title="pyexactreal.exact_reals.ExactReals"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactReals</span></code></a>, finitely generated submodules of the real modules over a
+fixd real embedded number field.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyexactreal</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExactReals</span>  <span class="c1"># random output by cppyy on macOS if xcode is not installed</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span> <span class="o">=</span> <span class="n">ExactReals</span><span class="p">();</span> <span class="n">R</span>
+<span class="n">Real</span> <span class="n">Numbers</span> <span class="k">as</span> <span class="p">(</span><span class="n">Rational</span> <span class="n">Field</span><span class="p">)</span><span class="o">-</span><span class="n">Module</span>
+</pre></div>
+</div>
+<p>Typically, you want to fix some generators of your module. Here we take a
+random number, modeling a transcendental real:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sage: g = R.random_element(); g
+ℝ(0.303644…)
+</pre></div>
+</div>
+<p>Mostly, you do not need to worry about the module structure of exact reals.
+The module is automatically enlarged as needed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sage: g.module()
+ℚ-Module(ℝ(0.303644…))
+
+sage: (g * g).module()
+ℚ-Module(ℝ(0.303644…)^2)
+
+sage: (g + 1137).module()
+ℚ-Module(1, ℝ(0.303644…))
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyexactreal.exact_reals.CoercionExactRealsNumberField">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyexactreal.exact_reals.</span></span><span class="sig-name descname"><span class="pre">CoercionExactRealsNumberField</span></span><a class="headerlink" href="#pyexactreal.exact_reals.CoercionExactRealsNumberField" title="Link to this definition">#</a></dt>
+<dd><p>Coercion morphism from a number field to the exact reals over that number
+field.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyexactreal</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExactReals</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span> <span class="o">=</span> <span class="n">ExactReals</span><span class="p">(</span><span class="n">QQ</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span><span class="o">.</span><span class="n">coerce_map_from</span><span class="p">(</span><span class="n">QQ</span><span class="p">)</span>
+<span class="n">Generic</span> <span class="n">morphism</span><span class="p">:</span>
+  <span class="n">From</span><span class="p">:</span> <span class="n">Rational</span> <span class="n">Field</span>
+  <span class="n">To</span><span class="p">:</span>   <span class="n">Real</span> <span class="n">Numbers</span> <span class="k">as</span> <span class="p">(</span><span class="n">Rational</span> <span class="n">Field</span><span class="p">)</span><span class="o">-</span><span class="n">Module</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyexactreal.exact_reals.ExactRealElement">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyexactreal.exact_reals.</span></span><span class="sig-name descname"><span class="pre">ExactRealElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyexactreal.exact_reals.ExactRealElement" title="Link to this definition">#</a></dt>
+<dd><p>An element of <a class="reference internal" href="#pyexactreal.exact_reals.ExactReals" title="pyexactreal.exact_reals.ExactReals"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactReals</span></code></a></p>
+<p>This is a simple wrapper of an <code class="docutils literal notranslate"><span class="pre">exactreal::Element</span></code> from libexactreal to
+make it work in the Parent/Element framework of SageMath.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sage: from pyexactreal import ExactReals
+sage: r = ExactReals().random_element(); r
+ℝ(0.120809…)
+</pre></div>
+</div>
+<p>TESTS:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyexactreal.exact_reals</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExactRealElement</span>
+<span class="n">sage</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">ExactRealElement</span><span class="p">)</span>
+<span class="kc">True</span>
+</pre></div>
+</div>
+<p>Check that zero elements can be created that are not in the trivial module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">zero</span> <span class="o">=</span> <span class="n">ExactReals</span><span class="p">()</span><span class="o">.</span><span class="n">random_element</span><span class="p">()</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">module</span><span class="p">()</span><span class="o">.</span><span class="n">zero</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">ExactReals</span><span class="p">()(</span><span class="n">zero</span><span class="p">)</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">module</span><span class="p">()</span>
+<span class="n">ℚ</span><span class="o">-</span><span class="n">Module</span><span class="p">(</span><span class="n">ℝ</span><span class="p">(</span><span class="mf">0.</span><span class="o">..</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyexactreal.exact_reals.ExactRealElement.ceil">
+<span class="sig-name descname"><span class="pre">ceil</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyexactreal.exact_reals.ExactRealElement.ceil" title="Link to this definition">#</a></dt>
+<dd><p>Return the integer ceil of this real number.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyexactreal</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExactReals</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span> <span class="o">=</span> <span class="n">ExactReals</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">random_element</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">ceil</span><span class="p">()</span>
+<span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyexactreal.exact_reals.ExactRealElement.divides">
+<span class="sig-name descname"><span class="pre">divides</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyexactreal.exact_reals.ExactRealElement.divides" title="Link to this definition">#</a></dt>
+<dd><p>Return whether this element divides <code class="docutils literal notranslate"><span class="pre">other</span></code> in the module generated by their generators.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyexactreal</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExactReals</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span> <span class="o">=</span> <span class="n">ExactReals</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">random_element</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">y</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">random_element</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">divides</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">divides</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="kc">False</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">divides</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span>
+<span class="kc">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyexactreal.exact_reals.ExactRealElement.floor">
+<span class="sig-name descname"><span class="pre">floor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyexactreal.exact_reals.ExactRealElement.floor" title="Link to this definition">#</a></dt>
+<dd><p>Return the integer floor of this real number.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyexactreal</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExactReals</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span> <span class="o">=</span> <span class="n">ExactReals</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">random_element</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">floor</span><span class="p">()</span>
+<span class="mi">0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyexactreal.exact_reals.ExactRealElement.gcd">
+<span class="sig-name descname"><span class="pre">gcd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyexactreal.exact_reals.ExactRealElement.gcd" title="Link to this definition">#</a></dt>
+<dd><p>Return the greatest common divisor of this element and <code class="docutils literal notranslate"><span class="pre">other</span></code> in the
+module generated by their generators.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyexactreal</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExactReals</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span> <span class="o">=</span> <span class="n">ExactReals</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">random_element</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">gcd</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="n">x</span>
+<span class="kc">True</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">gcd</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="kc">True</span>
+</pre></div>
+</div>
+<p>Note that this not yet implemented for non-trivial cases:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">y</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">random_element</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">gcd</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+<span class="o">...</span>
+<span class="ne">NotImplementedError</span><span class="p">:</span> <span class="n">gcd</span><span class="p">()</span> <span class="ow">not</span> <span class="n">implemented</span> <span class="k">for</span> <span class="n">non</span><span class="o">-</span><span class="n">trivial</span> <span class="n">elements</span> <span class="n">yet</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyexactreal.exact_reals.ExactRealElement.is_square">
+<span class="sig-name descname"><span class="pre">is_square</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyexactreal.exact_reals.ExactRealElement.is_square" title="Link to this definition">#</a></dt>
+<dd><p>Return whether this element is a square in its parent.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is only implemented in trivial cases.</p>
+</div>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyexactreal</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExactReals</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span> <span class="o">=</span> <span class="n">ExactReals</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">random_element</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">is_square</span><span class="p">()</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+<span class="o">...</span>
+<span class="ne">NotImplementedError</span><span class="p">:</span> <span class="n">is_square</span><span class="p">()</span> <span class="n">only</span> <span class="n">implemented</span> <span class="k">for</span> <span class="n">algebraic</span> <span class="n">elements</span>
+<span class="n">sage</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">is_square</span><span class="p">()</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+<span class="o">...</span>
+<span class="ne">NotImplementedError</span><span class="p">:</span> <span class="n">is_square</span><span class="p">()</span> <span class="n">only</span> <span class="n">implemented</span> <span class="k">for</span> <span class="n">algebraic</span> <span class="n">elements</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">K</span><span class="o">.&lt;</span><span class="n">a</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">QuadraticField</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span> <span class="o">=</span> <span class="n">ExactReals</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">random_element</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">is_square</span><span class="p">()</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+<span class="o">...</span>
+<span class="ne">NotImplementedError</span><span class="p">:</span> <span class="n">is_square</span><span class="p">()</span> <span class="n">only</span> <span class="n">implemented</span> <span class="k">for</span> <span class="n">algebraic</span> <span class="n">elements</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">is_square</span><span class="p">()</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+<span class="o">...</span>
+<span class="ne">NotImplementedError</span><span class="p">:</span> <span class="n">is_square</span><span class="p">()</span> <span class="n">only</span> <span class="n">implemented</span> <span class="k">for</span> <span class="n">algebraic</span> <span class="n">elements</span>
+<span class="n">sage</span><span class="p">:</span> <span class="p">(</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">is_square</span><span class="p">()</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+<span class="o">...</span>
+<span class="ne">NotImplementedError</span><span class="p">:</span> <span class="n">is_square</span><span class="p">()</span> <span class="n">only</span> <span class="n">implemented</span> <span class="k">for</span> <span class="n">algebraic</span> <span class="n">elements</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">is_square</span><span class="p">()</span>
+<span class="kc">True</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">is_square</span><span class="p">()</span>
+<span class="kc">False</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyexactreal.exact_reals.ExactRealElement.is_unit">
+<span class="sig-name descname"><span class="pre">is_unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyexactreal.exact_reals.ExactRealElement.is_unit" title="Link to this definition">#</a></dt>
+<dd><p>Return whether this element is a unit in its containing module.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyexactreal</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExactReals</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span> <span class="o">=</span> <span class="n">ExactReals</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span><span class="o">.</span><span class="n">random_element</span><span class="p">()</span><span class="o">.</span><span class="n">is_unit</span><span class="p">()</span>
+<span class="kc">False</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">is_unit</span><span class="p">()</span>
+<span class="kc">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyexactreal.exact_reals.ExactRealElement.module">
+<span class="sig-name descname"><span class="pre">module</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyexactreal.exact_reals.ExactRealElement.module" title="Link to this definition">#</a></dt>
+<dd><p>Return the <code class="docutils literal notranslate"><span class="pre">exactreal::Module</span></code> this element lives in.</p>
+<p>This is the actual underlying implementation from C++ and not a
+SageMath type. You usually should not have to use this.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyexactreal</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExactReals</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">ExactReals</span><span class="p">()(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">module</span><span class="p">()</span>
+<span class="n">ℚ</span><span class="o">-</span><span class="n">Module</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>TESTS:</p>
+<p>Since modules are internally shared pointers they are not unique:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">R</span> <span class="o">=</span> <span class="n">ExactReals</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">module</span><span class="p">()</span> <span class="o">==</span> <span class="n">R</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">module</span><span class="p">()</span>
+<span class="kc">True</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">module</span><span class="p">()</span> <span class="ow">is</span> <span class="n">R</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">module</span><span class="p">()</span>
+<span class="kc">False</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">g</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">random_element</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span><span class="p">(</span><span class="n">g</span><span class="p">)</span><span class="o">.</span><span class="n">module</span><span class="p">()</span> <span class="o">==</span> <span class="n">R</span><span class="p">(</span><span class="n">g</span><span class="p">)</span><span class="o">.</span><span class="n">module</span><span class="p">()</span>
+<span class="kc">True</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span><span class="p">(</span><span class="n">g</span><span class="p">)</span><span class="o">.</span><span class="n">module</span><span class="p">()</span> <span class="ow">is</span> <span class="n">R</span><span class="p">(</span><span class="n">g</span><span class="p">)</span><span class="o">.</span><span class="n">module</span><span class="p">()</span>
+<span class="kc">False</span>
+</pre></div>
+</div>
+<p>However, the objects backing these shared pointers are unique:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">M</span><span class="p">,</span><span class="n">N</span> <span class="o">=</span> <span class="n">R</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">module</span><span class="p">(),</span> <span class="n">R</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">module</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">M</span><span class="o">.</span><span class="n">__smartptr__</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="ow">is</span> <span class="n">N</span><span class="o">.</span><span class="n">__smartptr__</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="kc">True</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">M</span><span class="p">,</span><span class="n">N</span> <span class="o">=</span> <span class="n">R</span><span class="p">(</span><span class="n">g</span><span class="p">)</span><span class="o">.</span><span class="n">module</span><span class="p">(),</span> <span class="n">R</span><span class="p">(</span><span class="n">g</span><span class="p">)</span><span class="o">.</span><span class="n">module</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">M</span><span class="o">.</span><span class="n">__smartptr__</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="ow">is</span> <span class="n">N</span><span class="o">.</span><span class="n">__smartptr__</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="kc">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyexactreal.exact_reals.ExactRealElement.simplify">
+<span class="sig-name descname"><span class="pre">simplify</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyexactreal.exact_reals.ExactRealElement.simplify" title="Link to this definition">#</a></dt>
+<dd><p>Remove unnecessary generators from the internal representation of this
+element and return this element.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyexactreal</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExactReals</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span> <span class="o">=</span> <span class="n">ExactReals</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">random_element</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">module</span><span class="p">()</span>
+<span class="n">ℚ</span><span class="o">-</span><span class="n">Module</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ℝ</span><span class="p">(</span><span class="o">...</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span>
+<span class="o">-</span><span class="mi">1</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">module</span><span class="p">()</span>
+<span class="n">ℚ</span><span class="o">-</span><span class="n">Module</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that this happens automatically for some arithmetic operations:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">/</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">module</span><span class="p">()</span>
+<span class="n">ℚ</span><span class="o">-</span><span class="n">Module</span><span class="p">(</span><span class="n">ℝ</span><span class="p">(</span><span class="o">...</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyexactreal.exact_reals.ExactReals">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyexactreal.exact_reals.</span></span><span class="sig-name descname"><span class="pre">ExactReals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyexactreal.exact_reals.ExactReals" title="Link to this definition">#</a></dt>
+<dd><p>The Real Numbers as a module over the number field <code class="docutils literal notranslate"><span class="pre">base</span></code>.</p>
+<p>This serves as a common parent for all exact-real elements, i.e., elements
+in a finite module with transcendental or rational generators.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sage: from pyexactreal import ExactReals
+sage: R = ExactReals(); R
+Real Numbers as (Rational Field)-Module
+sage: RZ = ExactReals(ZZ); RZ
+Real Numbers as (Integer Ring)-Module
+sage: K.&lt;a&gt; = NumberField(x^2 - 2, embedding=AA(sqrt(2)))
+sage: RK = ExactReals(K); RK
+Real Numbers as (Real Embedded Number Field in a with defining polynomial x^2 - 2 with a = 1.414213562373095?)-Module
+</pre></div>
+</div>
+<p>TESTS:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">R</span><span class="o">.</span><span class="n">one</span><span class="p">()</span><span class="o">.</span><span class="n">_test_pickling</span><span class="p">()</span> <span class="c1"># first run prints some warnings from third-party C++ header files</span>
+<span class="o">...</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">TestSuite</span><span class="p">(</span><span class="n">R</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">skip</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;_test_fraction_field&quot;</span><span class="p">])</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">TestSuite</span><span class="p">(</span><span class="n">RZ</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">skip</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;_test_fraction_field&quot;</span><span class="p">])</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">TestSuite</span><span class="p">(</span><span class="n">RK</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">skip</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;_test_fraction_field&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">R</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">Ambient</span> <span class="n">free</span> <span class="n">module</span> <span class="n">of</span> <span class="n">rank</span> <span class="mi">2</span> <span class="n">over</span> <span class="n">the</span> <span class="n">integral</span> <span class="n">domain</span> <span class="n">Real</span> <span class="n">Numbers</span> <span class="k">as</span> <span class="p">(</span><span class="n">Rational</span> <span class="n">Field</span><span class="p">)</span><span class="o">-</span><span class="n">Module</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyexactreal.exact_reals.ExactReals.Element">
+<span class="sig-name descname"><span class="pre">Element</span></span><a class="headerlink" href="#pyexactreal.exact_reals.ExactReals.Element" title="Link to this definition">#</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pyexactreal.exact_reals.ExactRealElement" title="pyexactreal.exact_reals.ExactRealElement"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExactRealElement</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyexactreal.exact_reals.ExactReals.an_element">
+<span class="sig-name descname"><span class="pre">an_element</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyexactreal.exact_reals.ExactReals.an_element" title="Link to this definition">#</a></dt>
+<dd><p>Return a typical element of a finitely generated module.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyexactreal</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExactReals</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">ExactReals</span><span class="p">()</span><span class="o">.</span><span class="n">an_element</span><span class="p">()</span>
+<span class="mi">0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyexactreal.exact_reals.ExactReals.characteristic">
+<span class="sig-name descname"><span class="pre">characteristic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyexactreal.exact_reals.ExactReals.characteristic" title="Link to this definition">#</a></dt>
+<dd><p>Return zero, the characteristic of the reals.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyexactreal</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExactReals</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">ExactReals</span><span class="p">()</span><span class="o">.</span><span class="n">characteristic</span><span class="p">()</span>
+<span class="mi">0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyexactreal.exact_reals.ExactReals.fraction_field">
+<span class="sig-name descname"><span class="pre">fraction_field</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyexactreal.exact_reals.ExactReals.fraction_field" title="Link to this definition">#</a></dt>
+<dd><p>Return the field of fractions; not implemented.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyexactreal</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExactReals</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">ExactReals</span><span class="p">()</span><span class="o">.</span><span class="n">fraction_field</span><span class="p">()</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+<span class="o">...</span>
+<span class="ne">NotImplementedError</span><span class="p">:</span> <span class="n">ExactReals</span><span class="o">.</span><span class="n">fraction_field</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">implemented</span> <span class="n">yet</span> <span class="n">because</span> <span class="n">gcd</span><span class="p">()</span> <span class="ow">is</span> <span class="n">incomplete</span> <span class="ow">and</span> <span class="fm">__floordiv__</span> <span class="n">rounds</span> <span class="n">to</span> <span class="n">integers</span> <span class="n">instead</span> <span class="n">of</span> <span class="n">performing</span> <span class="n">exact</span> <span class="n">division</span> <span class="k">as</span> <span class="n">expected</span> <span class="n">by</span> <span class="n">SageMath</span><span class="s1">&#39;s FractionField_generic.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyexactreal.exact_reals.ExactReals.is_field">
+<span class="sig-name descname"><span class="pre">is_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proof</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyexactreal.exact_reals.ExactReals.is_field" title="Link to this definition">#</a></dt>
+<dd><p>Return whether this module is a field, i.e., return <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<p>In principle, when defined over a number field, one could argue this
+structure is a field since the inverse of any transcendental could show
+up as a <a class="reference internal" href="#pyexactreal.exact_reals.ExactReals.random_element" title="pyexactreal.exact_reals.ExactReals.random_element"><code class="xref py py-meth docutils literal notranslate"><span class="pre">random_element()</span></code></a>. However, since no field operations on
+the elements are possible, we do not claim this to be a field.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyexactreal</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExactReals</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">ExactReals</span><span class="p">()</span><span class="o">.</span><span class="n">is_field</span><span class="p">()</span>
+<span class="kc">False</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyexactreal.exact_reals.ExactReals.is_integral_domain">
+<span class="sig-name descname"><span class="pre">is_integral_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proof</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyexactreal.exact_reals.ExactReals.is_integral_domain" title="Link to this definition">#</a></dt>
+<dd><p>Return whether this module is an integral domain, i.e., return <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyexactreal</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExactReals</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">ExactReals</span><span class="p">()</span><span class="o">.</span><span class="n">is_integral_domain</span><span class="p">()</span>
+<span class="kc">True</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">ExactReals</span><span class="p">()</span> <span class="ow">in</span> <span class="n">IntegralDomains</span><span class="p">()</span>
+<span class="kc">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyexactreal.exact_reals.ExactReals.random_element">
+<span class="sig-name descname"><span class="pre">random_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">approximation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyexactreal.exact_reals.ExactReals.random_element" title="Link to this definition">#</a></dt>
+<dd><p>Return a random real element.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sage: from pyexactreal import ExactReals
+sage: ExactReals().random_element() # random output
+ℝ(0.303644…)
+</pre></div>
+</div>
+<p>Random elements can be created with a prescribe double approximation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sage: ExactReals().random_element(3.141) # random output
+ℝ(3.141=14485305783880426147p-62 + ℝ(0.778995…)p-62)
+</pre></div>
+</div>
+<p>Note that elements which approximate a double zero are extremely small
+and might not be what you want:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sage: ExactReals().random_element(0) # random output
+ℝ(-0=-7703581330722908899p-1139 + ℝ(0.707557…)p-1139)
+</pre></div>
+</div>
+<p>We can also specify a range of doubles which should contain a random
+real:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sage: ExactReals().random_element([1.414, 3.141]) # random output
+ℝ(2.34463=10559275352730893p-52 + ℝ(0.884672…)p-52)
+</pre></div>
+</div>
+<p>TESTS:</p>
+<p>Verify that the automatic seed works:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">R</span> <span class="o">=</span> <span class="n">ExactReals</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span><span class="o">.</span><span class="n">random_element</span><span class="p">()</span> <span class="o">!=</span> <span class="n">R</span><span class="o">.</span><span class="n">random_element</span><span class="p">()</span>
+<span class="kc">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyexactreal.exact_reals.ExactReals.rational">
+<span class="sig-name descname"><span class="pre">rational</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyexactreal.exact_reals.ExactReals.rational" title="Link to this definition">#</a></dt>
+<dd><p>Return the rational <code class="docutils literal notranslate"><span class="pre">q</span></code> as the element generating the module
+generated by <code class="docutils literal notranslate"><span class="pre">q</span></code>. Note that this is not the same as <code class="docutils literal notranslate"><span class="pre">q</span></code> times the
+generator of the module generated by <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyexactreal</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExactReals</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span> <span class="o">=</span> <span class="n">ExactReals</span><span class="p">()</span><span class="o">.</span><span class="n">rational</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span> <span class="n">x</span>
+<span class="mi">2</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ExactReals</span><span class="p">()</span><span class="o">.</span><span class="n">rational</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span> <span class="n">y</span>
+<span class="mi">3</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+<span class="o">...</span>
+<span class="ne">TypeError</span><span class="p">:</span> <span class="o">...</span>
+    <span class="n">logic_error</span><span class="p">:</span> <span class="n">at</span> <span class="n">most</span> <span class="n">one</span> <span class="n">generator</span> <span class="n">can</span> <span class="n">be</span> <span class="n">rational</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyexactreal.exact_reals.ExactReals.some_elements">
+<span class="sig-name descname"><span class="pre">some_elements</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyexactreal.exact_reals.ExactReals.some_elements" title="Link to this definition">#</a></dt>
+<dd><p>Return some typical elements of this ring.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sage: from pyexactreal import ExactReals
+sage: ExactReals().some_elements()
+[0,
+ 1,
+ 1,
+ ℝ(0...…),
+ ℝ(0...…) + 1,
+ ℝ(0...…) + 1,
+ ℝ(0...…) + ℝ(0...…),
+ ℝ(0...…)*ℝ(0...…),
+ ℝ(0...…)^2]
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="sage_overview.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Tour of the SageMath Interface</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.CoercionExactRealsNumberField"><code class="docutils literal notranslate"><span class="pre">CoercionExactRealsNumberField</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactRealElement"><code class="docutils literal notranslate"><span class="pre">ExactRealElement</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactRealElement.ceil"><code class="docutils literal notranslate"><span class="pre">ExactRealElement.ceil()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactRealElement.divides"><code class="docutils literal notranslate"><span class="pre">ExactRealElement.divides()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactRealElement.floor"><code class="docutils literal notranslate"><span class="pre">ExactRealElement.floor()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactRealElement.gcd"><code class="docutils literal notranslate"><span class="pre">ExactRealElement.gcd()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactRealElement.is_square"><code class="docutils literal notranslate"><span class="pre">ExactRealElement.is_square()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactRealElement.is_unit"><code class="docutils literal notranslate"><span class="pre">ExactRealElement.is_unit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactRealElement.module"><code class="docutils literal notranslate"><span class="pre">ExactRealElement.module()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactRealElement.simplify"><code class="docutils literal notranslate"><span class="pre">ExactRealElement.simplify()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactReals"><code class="docutils literal notranslate"><span class="pre">ExactReals</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactReals.Element"><code class="docutils literal notranslate"><span class="pre">ExactReals.Element</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactReals.an_element"><code class="docutils literal notranslate"><span class="pre">ExactReals.an_element()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactReals.characteristic"><code class="docutils literal notranslate"><span class="pre">ExactReals.characteristic()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactReals.fraction_field"><code class="docutils literal notranslate"><span class="pre">ExactReals.fraction_field()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactReals.is_field"><code class="docutils literal notranslate"><span class="pre">ExactReals.is_field()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactReals.is_integral_domain"><code class="docutils literal notranslate"><span class="pre">ExactReals.is_integral_domain()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactReals.random_element"><code class="docutils literal notranslate"><span class="pre">ExactReals.random_element()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactReals.rational"><code class="docutils literal notranslate"><span class="pre">ExactReals.rational()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyexactreal.exact_reals.ExactReals.some_elements"><code class="docutils literal notranslate"><span class="pre">ExactReals.some_elements()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2019-2025, the exact-real authors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,649 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>rational_field.hpp - Rationals &#8212; pyexactreal 4.0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/extra.css?v=14226158" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=1a34d25d"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'cxx_rational_field';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="real_number.hpp - Generators of Modules" href="cxx_real_number.html" />
+    <link rel="prev" title="number_field.hpp - Number Fields" href="cxx_number_field.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="https://github.com/flatsurf/exact-real/raw/master/logo.svg?sanitize=true" class="logo__image only-light" alt="pyexactreal 4.0.1 documentation - Home"/>
+    <script>document.write(`<img src="https://github.com/flatsurf/exact-real/raw/master/logo.svg?sanitize=true" class="logo__image only-dark" alt="pyexactreal 4.0.1 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://flatsurf.github.io" title="flatsurf" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://flatsurf.github.io/assets/logo.svg" class="icon-link-image" alt="flatsurf"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/flatsurf/exact-real" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://sagemath.zulipchat.com/#narrow/channel/271193-flatsurf" title="Zulip" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-regular fa-comments fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Zulip</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">C++ Interface</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="cxx_overview.html">Tour of the C++ Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_arb.html">arb.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_arf.html">arf.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_element.html">element.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_integer_ring.html">integer_ring.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_module.html">module.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_number_field.html">number_field.hpp</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">rational_field.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_real_number.html">real_number.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_seed.html">seed.hpp</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python Interface</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="python_overview.html">Tour of the Python Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python_cppyy_exactreal.html">cppyy_exactreal</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SageMath Interface</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="sage_overview.html">Tour of the SageMath Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sage_exact_reals.html">exact_reals</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/flatsurf/exact-real/edit/master/doc/manual/cxx_rational_field.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button"
+   title="Suggest edit"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/cxx_rational_field.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>rational_field.hpp - Rationals</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal13RationalFieldE"><code class="docutils literal notranslate"><span class="pre">exactreal::RationalField</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal13RationalField12ElementClassE"><code class="docutils literal notranslate"><span class="pre">ElementClass</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal13RationalField13RationalFieldEv"><code class="docutils literal notranslate"><span class="pre">RationalField()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal13RationalField13RationalFieldERK9mpq_class"><code class="docutils literal notranslate"><span class="pre">RationalField()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal13RationalField6coerceERK12ElementClass"><code class="docutils literal notranslate"><span class="pre">coerce()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal13RationalFieldeqERK13RationalField"><code class="docutils literal notranslate"><span class="pre">operator==()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal13RationalField10compositumERK13RationalFieldRK13RationalField"><code class="docutils literal notranslate"><span class="pre">compositum()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal13RationalField4unitERK12ElementClass"><code class="docutils literal notranslate"><span class="pre">unit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal13RationalField3arbERK12ElementClassl"><code class="docutils literal notranslate"><span class="pre">arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal13RationalField5floorERK12ElementClass"><code class="docutils literal notranslate"><span class="pre">floor()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal13RationalField8rationalERK12ElementClass"><code class="docutils literal notranslate"><span class="pre">rational()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0EN9exactreal13RationalField4imulER12ElementClassR12ElementClassRK1T"><code class="docutils literal notranslate"><span class="pre">imul()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0EN9exactreal13RationalField4idivER12ElementClassR12ElementClassRK1T"><code class="docutils literal notranslate"><span class="pre">idiv()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal13RationalField18contains_rationalsE"><code class="docutils literal notranslate"><span class="pre">contains_rationals</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal13RationalField7isFieldE"><code class="docutils literal notranslate"><span class="pre">isField</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="rational-field-hpp-rationals">
+<h1>rational_field.hpp - Rationals<a class="headerlink" href="#rational-field-hpp-rationals" title="Link to this heading">#</a></h1>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal13RationalFieldE">
+<span id="_CPPv3N9exactreal13RationalFieldE"></span><span id="_CPPv2N9exactreal13RationalFieldE"></span><span id="exactreal::RationalField"></span><span class="target" id="structexactreal_1_1RationalField"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RationalField</span></span></span><a class="headerlink" href="#_CPPv4N9exactreal13RationalFieldE" title="Link to this definition">#</a><br /></dt>
+<dd><p>Models some features of a number field with an embedding into the real. In practice you won’t be using instances of this but just use it as a type parameter to specify that a module should be considered over the rationals. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;exact-real/rational_field.hpp&gt;</span>
+<span class="c1">#include &lt;exact-real/module.hpp&gt;</span>
+<span class="c1">#include &lt;exact-real/real_number.hpp&gt;</span>
+<span class="c1">#include &lt;gmpxx.h&gt;</span>
+
+<span class="n">auto</span> <span class="n">M</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">Module</span><span class="o">&lt;</span><span class="n">exactreal</span><span class="p">::</span><span class="n">RationalField</span><span class="o">&gt;</span><span class="p">::</span><span class="n">make</span><span class="p">({</span><span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">rational</span><span class="p">(</span><span class="n">mpq_class</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">})},</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">RationalField</span><span class="p">{});</span>
+</pre></div>
+</div>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal13RationalField12ElementClassE">
+<span id="_CPPv3N9exactreal13RationalField12ElementClassE"></span><span id="_CPPv2N9exactreal13RationalField12ElementClassE"></span><span id="exactreal::RationalField::ElementClass"></span><span class="target" id="structexactreal_1_1RationalField_1ab206e1c4692de02ba276361ab1e4acdb"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">mpq_class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ElementClass</span></span></span><a class="headerlink" href="#_CPPv4N9exactreal13RationalField12ElementClassE" title="Link to this definition">#</a><br /></dt>
+<dd><p>The internal representation of element of this ring, i.e., GMP rationals. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal13RationalField13RationalFieldEv">
+<span id="_CPPv3N9exactreal13RationalField13RationalFieldEv"></span><span id="_CPPv2N9exactreal13RationalField13RationalFieldEv"></span><span id="exactreal::RationalField::RationalField"></span><span class="target" id="structexactreal_1_1RationalField_1aee949c107de8b745646e750ac6522852"></span><span class="sig-name descname"><span class="n"><span class="pre">RationalField</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal13RationalField13RationalFieldEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Create the rational field. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal13RationalField13RationalFieldERK9mpq_class">
+<span id="_CPPv3N9exactreal13RationalField13RationalFieldERK9mpq_class"></span><span id="_CPPv2N9exactreal13RationalField13RationalFieldERK9mpq_class"></span><span id="exactreal::RationalField::RationalField__mpq_classCR"></span><span class="target" id="structexactreal_1_1RationalField_1aa24d4d01b41acada7a25ebee5ac39b31"></span><span class="sig-name descname"><span class="n"><span class="pre">RationalField</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mpq_class</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal13RationalField13RationalFieldERK9mpq_class" title="Link to this definition">#</a><br /></dt>
+<dd><p>Create “a” rational field that contains the argument.</p>
+<p>This is identical to <a class="reference internal" href="#structexactreal_1_1RationalField_1aee949c107de8b745646e750ac6522852"><span class="std std-ref">RationalField::RationalField()</span></a> but other rings, say number fields, have different rings and need to be able to construct the smallest ring that contains a certain element. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal13RationalField6coerceERK12ElementClass">
+<span id="_CPPv3NK9exactreal13RationalField6coerceERK12ElementClass"></span><span id="_CPPv2NK9exactreal13RationalField6coerceERK12ElementClass"></span><span id="exactreal::RationalField::coerce__ElementClassCRC"></span><span class="target" id="structexactreal_1_1RationalField_1a7bf756229a38f9c783e958d352506ece"></span><a class="reference internal" href="#_CPPv4N9exactreal13RationalField12ElementClassE" title="exactreal::RationalField::ElementClass"><span class="n"><span class="pre">ElementClass</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">coerce</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal13RationalField12ElementClassE" title="exactreal::RationalField::ElementClass"><span class="n"><span class="pre">ElementClass</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9exactreal13RationalField6coerceERK12ElementClass" title="Link to this definition">#</a><br /></dt>
+<dd><p>Convert the rational argument into this rational field, i.e., just return the rational unchanged.</p>
+<p>Number fields need the equivalent of this method to convert elements between different number fields. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal13RationalFieldeqERK13RationalField">
+<span id="_CPPv3NK9exactreal13RationalFieldeqERK13RationalField"></span><span id="_CPPv2NK9exactreal13RationalFieldeqERK13RationalField"></span><span id="exactreal::RationalField::eq-operator__RationalFieldCRC"></span><span class="target" id="structexactreal_1_1RationalField_1a08ff878f2c44fcde9db3c6fb4456a387"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal13RationalFieldE" title="exactreal::RationalField"><span class="n"><span class="pre">RationalField</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9exactreal13RationalFieldeqERK13RationalField" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return whether this field is equal to another rational field, i.e., <code class="docutils literal notranslate"><span class="pre">true</span></code>. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">RationalField</span><span class="p">{}</span> <span class="o">==</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">RationalField</span><span class="p">{</span><span class="mi">1337</span><span class="p">}</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">true</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal13RationalField10compositumERK13RationalFieldRK13RationalField">
+<span id="_CPPv3N9exactreal13RationalField10compositumERK13RationalFieldRK13RationalField"></span><span id="_CPPv2N9exactreal13RationalField10compositumERK13RationalFieldRK13RationalField"></span><span id="exactreal::RationalField::compositum__RationalFieldCR.RationalFieldCR"></span><span class="target" id="structexactreal_1_1RationalField_1aa33c3b7729b201c7deabb40b2cc84b2c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal13RationalFieldE" title="exactreal::RationalField"><span class="n"><span class="pre">RationalField</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">compositum</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal13RationalFieldE" title="exactreal::RationalField"><span class="n"><span class="pre">RationalField</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">lhs</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal13RationalFieldE" title="exactreal::RationalField"><span class="n"><span class="pre">RationalField</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rhs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal13RationalField10compositumERK13RationalFieldRK13RationalField" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return the rational field that contains both arguments.</p>
+<p>This is just the <a class="reference internal" href="#structexactreal_1_1RationalField_1aee949c107de8b745646e750ac6522852"><span class="std std-ref">RationalField::RationalField()</span></a> but other rings need such functionality to compute a composite ring. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal13RationalField4unitERK12ElementClass">
+<span id="_CPPv3N9exactreal13RationalField4unitERK12ElementClass"></span><span id="_CPPv2N9exactreal13RationalField4unitERK12ElementClass"></span><span id="exactreal::RationalField::unit__ElementClassCR"></span><span class="target" id="structexactreal_1_1RationalField_1a25ce1df41259f74b227bba5189722ca0"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">unit</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal13RationalField12ElementClassE" title="exactreal::RationalField::ElementClass"><span class="n"><span class="pre">ElementClass</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal13RationalField4unitERK12ElementClass" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return whether <code class="docutils literal notranslate"><span class="pre">x</span></code> is a unit, i.e., whether it is non-zero. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal13RationalField3arbERK12ElementClassl">
+<span id="_CPPv3N9exactreal13RationalField3arbERK12ElementClassl"></span><span id="_CPPv2N9exactreal13RationalField3arbERK12ElementClassl"></span><span id="exactreal::RationalField::arb__ElementClassCR.l"></span><span class="target" id="structexactreal_1_1RationalField_1a12d1a4c7d9d05361e750ecce301475fb"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="cxx_arb.html#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">arb</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal13RationalField12ElementClassE" title="exactreal::RationalField::ElementClass"><span class="n"><span class="pre">ElementClass</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span>, <span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal13RationalField3arbERK12ElementClassl" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return an <a class="reference internal" href="cxx_arb.html#classexactreal_1_1Arb"><span class="std std-ref">Arb</span></a> approximation of the rational <code class="docutils literal notranslate"><span class="pre">x</span></code>. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;exact-real/arb.hpp&gt;</span>
+<span class="n">exactreal</span><span class="p">::</span><span class="n">RationalField</span><span class="p">::</span><span class="n">arb</span><span class="p">(</span><span class="n">mpq_class</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span> <span class="mi">64</span><span class="p">)</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="mf">0.333333</span> <span class="o">+/-</span> <span class="mf">3.34e-7</span><span class="p">]</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal13RationalField5floorERK12ElementClass">
+<span id="_CPPv3N9exactreal13RationalField5floorERK12ElementClass"></span><span id="_CPPv2N9exactreal13RationalField5floorERK12ElementClass"></span><span id="exactreal::RationalField::floor__ElementClassCR"></span><span class="target" id="structexactreal_1_1RationalField_1aa5b01eb95d8d07d1df0106b7333a48e8"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">mpz_class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">floor</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal13RationalField12ElementClassE" title="exactreal::RationalField::ElementClass"><span class="n"><span class="pre">ElementClass</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal13RationalField5floorERK12ElementClass" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return the integer floor of the rational <code class="docutils literal notranslate"><span class="pre">x</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal13RationalField8rationalERK12ElementClass">
+<span id="_CPPv3N9exactreal13RationalField8rationalERK12ElementClass"></span><span id="_CPPv2N9exactreal13RationalField8rationalERK12ElementClass"></span><span id="exactreal::RationalField::rational__ElementClassCR"></span><span class="target" id="structexactreal_1_1RationalField_1a219947e0a16126b786528409e778b3d0"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">mpq_class</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rational</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal13RationalField12ElementClassE" title="exactreal::RationalField::ElementClass"><span class="n"><span class="pre">ElementClass</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal13RationalField8rationalERK12ElementClass" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return the rational <code class="docutils literal notranslate"><span class="pre">x</span></code> as a rational number, i.e, <code class="docutils literal notranslate"><span class="pre">x</span></code> unchanged. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN9exactreal13RationalField4imulER12ElementClassR12ElementClassRK1T">
+<span id="_CPPv3I0EN9exactreal13RationalField4imulER12ElementClassRK1T"></span><span id="_CPPv2I0EN9exactreal13RationalField4imulER12ElementClassRK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structexactreal_1_1RationalField_1ad1b0853c67ebbde87610d261d7265241"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal13RationalField12ElementClassE" title="exactreal::RationalField::ElementClass"><span class="n"><span class="pre">ElementClass</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">imul</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N9exactreal13RationalField12ElementClassE" title="exactreal::RationalField::ElementClass"><span class="n"><span class="pre">ElementClass</span></span></a><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN9exactreal13RationalField4imulER12ElementClassR12ElementClassRK1T" title="exactreal::RationalField::imul::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN9exactreal13RationalField4imulER12ElementClassR12ElementClassRK1T" title="Link to this definition">#</a><br /></dt>
+<dd><p>Multiply the rational <code class="docutils literal notranslate"><span class="pre">x</span></code> with <code class="docutils literal notranslate"><span class="pre">t</span></code>.</p>
+<p>The argument may be a primitive integer, a GMP integer, or a GMP rational. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN9exactreal13RationalField4idivER12ElementClassR12ElementClassRK1T">
+<span id="_CPPv3I0EN9exactreal13RationalField4idivER12ElementClassRK1T"></span><span id="_CPPv2I0EN9exactreal13RationalField4idivER12ElementClassRK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structexactreal_1_1RationalField_1aaa0cc5340c63c9c7b67bc26f2c5ecf8e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal13RationalField12ElementClassE" title="exactreal::RationalField::ElementClass"><span class="n"><span class="pre">ElementClass</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">idiv</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N9exactreal13RationalField12ElementClassE" title="exactreal::RationalField::ElementClass"><span class="n"><span class="pre">ElementClass</span></span></a><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN9exactreal13RationalField4idivER12ElementClassR12ElementClassRK1T" title="exactreal::RationalField::idiv::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN9exactreal13RationalField4idivER12ElementClassR12ElementClassRK1T" title="Link to this definition">#</a><br /></dt>
+<dd><p>Divide the rational <code class="docutils literal notranslate"><span class="pre">x</span></code> by <code class="docutils literal notranslate"><span class="pre">t</span></code>.</p>
+<p>The argument may be a primitive integer, a GMP integer, or a GMP rational. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal13RationalField18contains_rationalsE">
+<span id="_CPPv3N9exactreal13RationalField18contains_rationalsE"></span><span id="_CPPv2N9exactreal13RationalField18contains_rationalsE"></span><span id="exactreal::RationalField::contains_rationals__b"></span><span class="target" id="structexactreal_1_1RationalField_1a14d9adb61168eb931798a73491bd79de"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">contains_rationals</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span><a class="headerlink" href="#_CPPv4N9exactreal13RationalField18contains_rationalsE" title="Link to this definition">#</a><br /></dt>
+<dd><p>Whether this ring contains the rational numbers, i.e., <code class="docutils literal notranslate"><span class="pre">true</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal13RationalField7isFieldE">
+<span id="_CPPv3N9exactreal13RationalField7isFieldE"></span><span id="_CPPv2N9exactreal13RationalField7isFieldE"></span><span id="exactreal::RationalField::isField__b"></span><span class="target" id="structexactreal_1_1RationalField_1a66a8e3b293f78bb282b53bd61fd1a09f"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isField</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span><a class="headerlink" href="#_CPPv4N9exactreal13RationalField7isFieldE" title="Link to this definition">#</a><br /></dt>
+<dd><p>Whether this ring is a field, i.e., <code class="docutils literal notranslate"><span class="pre">true</span></code>. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="cxx_number_field.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">number_field.hpp - Number Fields</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="cxx_real_number.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">real_number.hpp - Generators of Modules</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal13RationalFieldE"><code class="docutils literal notranslate"><span class="pre">exactreal::RationalField</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal13RationalField12ElementClassE"><code class="docutils literal notranslate"><span class="pre">ElementClass</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal13RationalField13RationalFieldEv"><code class="docutils literal notranslate"><span class="pre">RationalField()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal13RationalField13RationalFieldERK9mpq_class"><code class="docutils literal notranslate"><span class="pre">RationalField()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal13RationalField6coerceERK12ElementClass"><code class="docutils literal notranslate"><span class="pre">coerce()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal13RationalFieldeqERK13RationalField"><code class="docutils literal notranslate"><span class="pre">operator==()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal13RationalField10compositumERK13RationalFieldRK13RationalField"><code class="docutils literal notranslate"><span class="pre">compositum()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal13RationalField4unitERK12ElementClass"><code class="docutils literal notranslate"><span class="pre">unit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal13RationalField3arbERK12ElementClassl"><code class="docutils literal notranslate"><span class="pre">arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal13RationalField5floorERK12ElementClass"><code class="docutils literal notranslate"><span class="pre">floor()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal13RationalField8rationalERK12ElementClass"><code class="docutils literal notranslate"><span class="pre">rational()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0EN9exactreal13RationalField4imulER12ElementClassR12ElementClassRK1T"><code class="docutils literal notranslate"><span class="pre">imul()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0EN9exactreal13RationalField4idivER12ElementClassR12ElementClassRK1T"><code class="docutils literal notranslate"><span class="pre">idiv()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal13RationalField18contains_rationalsE"><code class="docutils literal notranslate"><span class="pre">contains_rationals</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal13RationalField7isFieldE"><code class="docutils literal notranslate"><span class="pre">isField</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2019-2025, the exact-real authors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

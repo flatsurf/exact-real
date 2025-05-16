@@ -1,0 +1,745 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>number_field.hpp - Number Fields &#8212; pyexactreal 4.0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/extra.css?v=14226158" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=1a34d25d"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'cxx_number_field';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="rational_field.hpp - Rationals" href="cxx_rational_field.html" />
+    <link rel="prev" title="module.hpp - Submodules of the Reals" href="cxx_module.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="https://github.com/flatsurf/exact-real/raw/master/logo.svg?sanitize=true" class="logo__image only-light" alt="pyexactreal 4.0.1 documentation - Home"/>
+    <script>document.write(`<img src="https://github.com/flatsurf/exact-real/raw/master/logo.svg?sanitize=true" class="logo__image only-dark" alt="pyexactreal 4.0.1 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://flatsurf.github.io" title="flatsurf" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://flatsurf.github.io/assets/logo.svg" class="icon-link-image" alt="flatsurf"/></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/flatsurf/exact-real" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://sagemath.zulipchat.com/#narrow/channel/271193-flatsurf" title="Zulip" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-regular fa-comments fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Zulip</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">C++ Interface</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="cxx_overview.html">Tour of the C++ Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_arb.html">arb.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_arf.html">arf.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_element.html">element.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_integer_ring.html">integer_ring.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_module.html">module.hpp</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">number_field.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_rational_field.html">rational_field.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_real_number.html">real_number.hpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cxx_seed.html">seed.hpp</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Python Interface</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="python_overview.html">Tour of the Python Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python_cppyy_exactreal.html">cppyy_exactreal</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SageMath Interface</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="sage_overview.html">Tour of the SageMath Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sage_exact_reals.html">exact_reals</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/flatsurf/exact-real/edit/master/doc/manual/cxx_number_field.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button"
+   title="Suggest edit"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/cxx_number_field.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>number_field.hpp - Number Fields</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberFieldE"><code class="docutils literal notranslate"><span class="pre">exactreal::NumberField</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField12ElementClassE"><code class="docutils literal notranslate"><span class="pre">ElementClass</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField11NumberFieldEv"><code class="docutils literal notranslate"><span class="pre">NumberField()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField11NumberFieldERKN6eantic10renf_classE"><code class="docutils literal notranslate"><span class="pre">NumberField()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField11NumberFieldEN5boost13intrusive_ptrIKN6eantic10renf_classEEE"><code class="docutils literal notranslate"><span class="pre">NumberField()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField11NumberFieldERKN6eantic15renf_elem_classE"><code class="docutils literal notranslate"><span class="pre">NumberField()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal11NumberField6coerceERK12ElementClass"><code class="docutils literal notranslate"><span class="pre">coerce()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal11NumberFieldeqERK11NumberField"><code class="docutils literal notranslate"><span class="pre">operator==()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField10parametersE"><code class="docutils literal notranslate"><span class="pre">parameters</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField10compositumERK11NumberFieldRK11NumberField"><code class="docutils literal notranslate"><span class="pre">compositum()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField4unitERK12ElementClass"><code class="docutils literal notranslate"><span class="pre">unit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField5floorERK12ElementClass"><code class="docutils literal notranslate"><span class="pre">floor()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField3arbERK12ElementClassl"><code class="docutils literal notranslate"><span class="pre">arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField8rationalERK12ElementClass"><code class="docutils literal notranslate"><span class="pre">rational()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0EN9exactreal11NumberField4imulER12ElementClassR12ElementClassRK1T"><code class="docutils literal notranslate"><span class="pre">imul()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0EN9exactreal11NumberField4idivER12ElementClassR12ElementClassRK1T"><code class="docutils literal notranslate"><span class="pre">idiv()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField18contains_rationalsE"><code class="docutils literal notranslate"><span class="pre">contains_rationals</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField7isFieldE"><code class="docutils literal notranslate"><span class="pre">isField</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="number-field-hpp-number-fields">
+<h1>number_field.hpp - Number Fields<a class="headerlink" href="#number-field-hpp-number-fields" title="Link to this heading">#</a></h1>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal11NumberFieldE">
+<span id="_CPPv3N9exactreal11NumberFieldE"></span><span id="_CPPv2N9exactreal11NumberFieldE"></span><span id="exactreal::NumberField"></span><span class="target" id="structexactreal_1_1NumberField"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NumberField</span></span></span><a class="headerlink" href="#_CPPv4N9exactreal11NumberFieldE" title="Link to this definition">#</a><br /></dt>
+<dd><p>Models some features of a number field with an embedding into the real. In practice you won’t be using this struct directly, but just pass it into the <a class="reference internal" href="cxx_module.html#classexactreal_1_1Module_1ae017f31e3af65c7e7380a2cf6125ac39"><span class="std std-ref">factory</span></a> of <a class="reference internal" href="cxx_module.html#classexactreal_1_1Module"><span class="std std-ref">exactreal::Module</span></a> to specify that the module should be considered over a certain number field. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;exact-real/number_field.hpp&gt;</span>
+<span class="c1">#include &lt;exact-real/module.hpp&gt;</span>
+<span class="c1">#include &lt;exact-real/real_number.hpp&gt;</span>
+<span class="c1">#include &lt;e-antic/renf_class.hpp&gt;</span>
+<span class="c1">#include &lt;e-antic/renf_elem_class.hpp&gt;</span>
+<span class="c1">#include &lt;gmpxx.h&gt;</span>
+
+<span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4 +/- 1&quot;</span><span class="p">);</span>
+<span class="n">auto</span> <span class="n">M</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">Module</span><span class="o">&lt;</span><span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="o">&gt;</span><span class="p">::</span><span class="n">make</span><span class="p">({</span><span class="n">exactreal</span><span class="p">::</span><span class="n">RealNumber</span><span class="p">::</span><span class="n">rational</span><span class="p">(</span><span class="mi">1</span><span class="p">)},</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="p">{</span><span class="n">K</span><span class="p">});</span>
+<span class="o">*</span><span class="n">M</span><span class="o">-&gt;</span><span class="n">ring</span><span class="p">()</span><span class="o">.</span><span class="n">parameters</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.414213562373095048801688724209698</span> <span class="o">+/-</span> <span class="mf">1.96e-34</span><span class="p">])</span>
+</pre></div>
+</div>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal11NumberField12ElementClassE">
+<span id="_CPPv3N9exactreal11NumberField12ElementClassE"></span><span id="_CPPv2N9exactreal11NumberField12ElementClassE"></span><span id="exactreal::NumberField::ElementClass"></span><span class="target" id="structexactreal_1_1NumberField_1a3f5cf8eba16c9ec7e4ca685756b4b765"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">eantic</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">renf_elem_class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ElementClass</span></span></span><a class="headerlink" href="#_CPPv4N9exactreal11NumberField12ElementClassE" title="Link to this definition">#</a><br /></dt>
+<dd><p>The type modeling the elements of this field, i.e., e-antic’s <span> <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">renf_elem_class</span></code>. </span></p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal11NumberField11NumberFieldEv">
+<span id="_CPPv3N9exactreal11NumberField11NumberFieldEv"></span><span id="_CPPv2N9exactreal11NumberField11NumberFieldEv"></span><span id="exactreal::NumberField::NumberField"></span><span class="target" id="structexactreal_1_1NumberField_1a986c1787ce6f32654387b8e887e67e61"></span><span class="sig-name descname"><span class="n"><span class="pre">NumberField</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal11NumberField11NumberFieldEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Create the trivial number field, i.e., the rational field. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span> <span class="n">Q</span><span class="p">;</span>
+<span class="o">*</span><span class="n">Q</span><span class="o">.</span><span class="n">parameters</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="o">+/-</span> <span class="mf">2.01</span><span class="p">])</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal11NumberField11NumberFieldERKN6eantic10renf_classE">
+<span id="_CPPv3N9exactreal11NumberField11NumberFieldERKN6eantic10renf_classE"></span><span id="_CPPv2N9exactreal11NumberField11NumberFieldERKN6eantic10renf_classE"></span><span id="exactreal::NumberField::NumberField__eantic::renf_classCR"></span><span class="target" id="structexactreal_1_1NumberField_1addc2c2f471cd84c6c964f36b1f06f2d6"></span><span class="sig-name descname"><span class="n"><span class="pre">NumberField</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">eantic</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">renf_class</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal11NumberField11NumberFieldERKN6eantic10renf_classE" title="Link to this definition">#</a><br /></dt>
+<dd><p>Create the number field given by an e-antic field. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="p">{</span><span class="o">*</span><span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4 +/- 1&quot;</span><span class="p">)};</span>
+<span class="o">*</span><span class="n">K</span><span class="o">.</span><span class="n">parameters</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.414213562373095048801688724209698</span> <span class="o">+/-</span> <span class="mf">1.96e-34</span><span class="p">])</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal11NumberField11NumberFieldEN5boost13intrusive_ptrIKN6eantic10renf_classEEE">
+<span id="_CPPv3N9exactreal11NumberField11NumberFieldEN5boost13intrusive_ptrIKN6eantic10renf_classEEE"></span><span id="_CPPv2N9exactreal11NumberField11NumberFieldEN5boost13intrusive_ptrIKN6eantic10renf_classEEE"></span><span id="exactreal::NumberField::NumberField__boost::intrusive_ptr:eantic::renf_classC:"></span><span class="target" id="structexactreal_1_1NumberField_1a10f91982d8a4a1dc332d75d921f31a13"></span><span class="sig-name descname"><span class="n"><span class="pre">NumberField</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">boost</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">intrusive_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">eantic</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">renf_class</span></span><span class="p"><span class="pre">&gt;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal11NumberField11NumberFieldEN5boost13intrusive_ptrIKN6eantic10renf_classEEE" title="Link to this definition">#</a><br /></dt>
+<dd><p>Create the number field given by an e-antic field. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="p">{</span><span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4 +/- 1&quot;</span><span class="p">)};</span>
+<span class="o">*</span><span class="n">K</span><span class="o">.</span><span class="n">parameters</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.414213562373095048801688724209698</span> <span class="o">+/-</span> <span class="mf">1.96e-34</span><span class="p">])</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal11NumberField11NumberFieldERKN6eantic15renf_elem_classE">
+<span id="_CPPv3N9exactreal11NumberField11NumberFieldERKN6eantic15renf_elem_classE"></span><span id="_CPPv2N9exactreal11NumberField11NumberFieldERKN6eantic15renf_elem_classE"></span><span id="exactreal::NumberField::NumberField__eantic::renf_elem_classCR"></span><span class="target" id="structexactreal_1_1NumberField_1a7282eba11868554c9653457219a1d588"></span><span class="sig-name descname"><span class="n"><span class="pre">NumberField</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">eantic</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">renf_elem_class</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal11NumberField11NumberFieldERKN6eantic15renf_elem_classE" title="Link to this definition">#</a><br /></dt>
+<dd><p>Create the number field containing this number field element. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4 +/- 1&quot;</span><span class="p">);</span>
+<span class="n">auto</span> <span class="n">N</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="p">{</span><span class="n">K</span><span class="o">-&gt;</span><span class="n">one</span><span class="p">()};</span>
+<span class="o">*</span><span class="n">N</span><span class="o">.</span><span class="n">parameters</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.414213562373095048801688724209698</span> <span class="o">+/-</span> <span class="mf">1.96e-34</span><span class="p">])</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal11NumberField6coerceERK12ElementClass">
+<span id="_CPPv3NK9exactreal11NumberField6coerceERK12ElementClass"></span><span id="_CPPv2NK9exactreal11NumberField6coerceERK12ElementClass"></span><span id="exactreal::NumberField::coerce__ElementClassCRC"></span><span class="target" id="structexactreal_1_1NumberField_1a5885d4d342f7b03e345fc37c14dff1d4"></span><a class="reference internal" href="#_CPPv4N9exactreal11NumberField12ElementClassE" title="exactreal::NumberField::ElementClass"><span class="n"><span class="pre">ElementClass</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">coerce</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal11NumberField12ElementClassE" title="exactreal::NumberField::ElementClass"><span class="n"><span class="pre">ElementClass</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9exactreal11NumberField6coerceERK12ElementClass" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return the number field element <code class="docutils literal notranslate"><span class="pre">x</span></code> as an element of this field.</p>
+<p>Note that this is only implemented in trivial cases. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="p">{</span><span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4 +/- 1&quot;</span><span class="p">)};</span>
+<span class="n">auto</span> <span class="n">L</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="p">{</span><span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;y^3 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4 +/- 1&quot;</span><span class="p">)};</span>
+<span class="n">auto</span> <span class="n">x</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">coerce</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">parameters</span><span class="o">-&gt;</span><span class="n">one</span><span class="p">());</span>
+<span class="n">x</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="o">*</span><span class="n">K</span><span class="o">.</span><span class="n">parameters</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">true</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9exactreal11NumberFieldeqERK11NumberField">
+<span id="_CPPv3NK9exactreal11NumberFieldeqERK11NumberField"></span><span id="_CPPv2NK9exactreal11NumberFieldeqERK11NumberField"></span><span id="exactreal::NumberField::eq-operator__NumberFieldCRC"></span><span class="target" id="structexactreal_1_1NumberField_1a3263b6ac0928d4c0eb819d05d0b14ed4"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal11NumberFieldE" title="exactreal::NumberField"><span class="n"><span class="pre">NumberField</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9exactreal11NumberFieldeqERK11NumberField" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return whether two number fields are identical. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="p">{</span><span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4 +/- 1&quot;</span><span class="p">)};</span>
+<span class="n">auto</span> <span class="n">L</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="p">{</span><span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;y^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4 +/- 1&quot;</span><span class="p">)};</span>
+<span class="n">K</span> <span class="o">==</span> <span class="n">L</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">false</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal11NumberField10parametersE">
+<span id="_CPPv3N9exactreal11NumberField10parametersE"></span><span id="_CPPv2N9exactreal11NumberField10parametersE"></span><span id="exactreal::NumberField::parameters__boost::intrusive_ptr:eantic::renf_classC:"></span><span class="target" id="structexactreal_1_1NumberField_1aa33240761f809cb1f7c6cb608ebedb3f"></span><span class="n"><span class="pre">boost</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">intrusive_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">eantic</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">renf_class</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">parameters</span></span></span><a class="headerlink" href="#_CPPv4N9exactreal11NumberField10parametersE" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return the e-antic number field underlying this number field. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4 +/- 1&quot;</span><span class="p">);</span>
+<span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="p">{</span><span class="n">K</span><span class="p">}</span><span class="o">.</span><span class="n">parameters</span> <span class="o">==</span> <span class="n">K</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">true</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal11NumberField10compositumERK11NumberFieldRK11NumberField">
+<span id="_CPPv3N9exactreal11NumberField10compositumERK11NumberFieldRK11NumberField"></span><span id="_CPPv2N9exactreal11NumberField10compositumERK11NumberFieldRK11NumberField"></span><span id="exactreal::NumberField::compositum__NumberFieldCR.NumberFieldCR"></span><span class="target" id="structexactreal_1_1NumberField_1a61974c1e007681f7615bd024c7f35fb3"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal11NumberFieldE" title="exactreal::NumberField"><span class="n"><span class="pre">NumberField</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">compositum</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal11NumberFieldE" title="exactreal::NumberField"><span class="n"><span class="pre">NumberField</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">lhs</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal11NumberFieldE" title="exactreal::NumberField"><span class="n"><span class="pre">NumberField</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rhs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal11NumberField10compositumERK11NumberFieldRK11NumberField" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return the smallest number field containing <code class="docutils literal notranslate"><span class="pre">lhs</span></code> and <code class="docutils literal notranslate"><span class="pre">rhs</span></code>.</p>
+<p>Note that this method is only implemented in trivial cases currently. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="p">{</span><span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4 +/- 1&quot;</span><span class="p">)};</span>
+<span class="n">auto</span> <span class="n">L</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="p">{};</span>
+
+<span class="n">auto</span> <span class="n">M</span> <span class="o">=</span> <span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="p">::</span><span class="n">compositum</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">L</span><span class="p">);</span>
+<span class="o">*</span><span class="n">M</span><span class="o">.</span><span class="n">parameters</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.414213562373095048801688724209698</span> <span class="o">+/-</span> <span class="mf">1.96e-34</span><span class="p">])</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal11NumberField4unitERK12ElementClass">
+<span id="_CPPv3N9exactreal11NumberField4unitERK12ElementClass"></span><span id="_CPPv2N9exactreal11NumberField4unitERK12ElementClass"></span><span id="exactreal::NumberField::unit__ElementClassCR"></span><span class="target" id="structexactreal_1_1NumberField_1ad763128d67247f7549fc3643526325b7"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">unit</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal11NumberField12ElementClassE" title="exactreal::NumberField::ElementClass"><span class="n"><span class="pre">ElementClass</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal11NumberField4unitERK12ElementClass" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return whether the element <code class="docutils literal notranslate"><span class="pre">x</span></code> is a unit, i.e., whether it is non-zero. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4 +/- 1&quot;</span><span class="p">);</span>
+<span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="p">::</span><span class="n">unit</span><span class="p">(</span><span class="n">K</span><span class="o">-&gt;</span><span class="n">gen</span><span class="p">())</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">true</span>
+
+<span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="p">::</span><span class="n">unit</span><span class="p">(</span><span class="n">K</span><span class="o">-&gt;</span><span class="n">zero</span><span class="p">())</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">false</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal11NumberField5floorERK12ElementClass">
+<span id="_CPPv3N9exactreal11NumberField5floorERK12ElementClass"></span><span id="_CPPv2N9exactreal11NumberField5floorERK12ElementClass"></span><span id="exactreal::NumberField::floor__ElementClassCR"></span><span class="target" id="structexactreal_1_1NumberField_1a13d7b25189a1d109d136ec5cc0ac430a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">mpz_class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">floor</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal11NumberField12ElementClassE" title="exactreal::NumberField::ElementClass"><span class="n"><span class="pre">ElementClass</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal11NumberField5floorERK12ElementClass" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return the integer floor of this number field element. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4 +/- 1&quot;</span><span class="p">);</span>
+<span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="p">::</span><span class="n">floor</span><span class="p">(</span><span class="n">K</span><span class="o">-&gt;</span><span class="n">gen</span><span class="p">())</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal11NumberField3arbERK12ElementClassl">
+<span id="_CPPv3N9exactreal11NumberField3arbERK12ElementClassl"></span><span id="_CPPv2N9exactreal11NumberField3arbERK12ElementClassl"></span><span id="exactreal::NumberField::arb__ElementClassCR.l"></span><span class="target" id="structexactreal_1_1NumberField_1a1403214cbbb6b27ed834884a8e7c82a6"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="cxx_arb.html#_CPPv4N9exactreal3ArbE" title="exactreal::Arb"><span class="n"><span class="pre">Arb</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">arb</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal11NumberField12ElementClassE" title="exactreal::NumberField::ElementClass"><span class="n"><span class="pre">ElementClass</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span>, <span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal11NumberField3arbERK12ElementClassl" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return an approximation to the number field element <code class="docutils literal notranslate"><span class="pre">x</span></code> in ball arithmetic. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;exact-real/arb.hpp&gt;</span>
+<span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4 +/- 1&quot;</span><span class="p">);</span>
+<span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="p">::</span><span class="n">arb</span><span class="p">(</span><span class="n">K</span><span class="o">-&gt;</span><span class="n">gen</span><span class="p">(),</span> <span class="mi">64</span><span class="p">)</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="mf">1.41421</span> <span class="o">+/-</span> <span class="mf">3.57e-6</span><span class="p">]</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal11NumberField8rationalERK12ElementClass">
+<span id="_CPPv3N9exactreal11NumberField8rationalERK12ElementClass"></span><span id="_CPPv2N9exactreal11NumberField8rationalERK12ElementClass"></span><span id="exactreal::NumberField::rational__ElementClassCR"></span><span class="target" id="structexactreal_1_1NumberField_1adea89955d9e9b4853e94760728f372ac"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">mpq_class</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rational</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal11NumberField12ElementClassE" title="exactreal::NumberField::ElementClass"><span class="n"><span class="pre">ElementClass</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9exactreal11NumberField8rationalERK12ElementClass" title="Link to this definition">#</a><br /></dt>
+<dd><p>Return the number field element <code class="docutils literal notranslate"><span class="pre">x</span></code> as a rational number, if possible. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">auto</span> <span class="n">K</span> <span class="o">=</span> <span class="n">eantic</span><span class="p">::</span><span class="n">renf_class</span><span class="p">::</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;x^2 - 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4 +/- 1&quot;</span><span class="p">);</span>
+<span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="p">::</span><span class="n">rational</span><span class="p">(</span><span class="n">K</span><span class="o">-&gt;</span><span class="n">gen</span><span class="p">())</span><span class="o">.</span><span class="n">has_value</span><span class="p">()</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="n">false</span>
+
+<span class="n">exactreal</span><span class="p">::</span><span class="n">NumberField</span><span class="p">::</span><span class="n">rational</span><span class="p">(</span><span class="n">K</span><span class="o">-&gt;</span><span class="n">one</span><span class="p">())</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
+<span class="o">//</span> <span class="o">-&gt;</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN9exactreal11NumberField4imulER12ElementClassR12ElementClassRK1T">
+<span id="_CPPv3I0EN9exactreal11NumberField4imulER12ElementClassRK1T"></span><span id="_CPPv2I0EN9exactreal11NumberField4imulER12ElementClassRK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structexactreal_1_1NumberField_1a640783b791d56ddb5fba22f3558c8b40"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal11NumberField12ElementClassE" title="exactreal::NumberField::ElementClass"><span class="n"><span class="pre">ElementClass</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">imul</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N9exactreal11NumberField12ElementClassE" title="exactreal::NumberField::ElementClass"><span class="n"><span class="pre">ElementClass</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN9exactreal11NumberField4imulER12ElementClassR12ElementClassRK1T" title="exactreal::NumberField::imul::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN9exactreal11NumberField4imulER12ElementClassR12ElementClassRK1T" title="Link to this definition">#</a><br /></dt>
+<dd><p>Multiply the number field element <code class="docutils literal notranslate"><span class="pre">x</span></code> with <code class="docutils literal notranslate"><span class="pre">t</span></code>.</p>
+<p>The argument may be a primitive integer, a GMP integer, a GMP rational, or another number field element. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN9exactreal11NumberField4idivER12ElementClassR12ElementClassRK1T">
+<span id="_CPPv3I0EN9exactreal11NumberField4idivER12ElementClassRK1T"></span><span id="_CPPv2I0EN9exactreal11NumberField4idivER12ElementClassRK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structexactreal_1_1NumberField_1accf7fdfb5169056ab44f84addfc9d4da"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9exactreal11NumberField12ElementClassE" title="exactreal::NumberField::ElementClass"><span class="n"><span class="pre">ElementClass</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">idiv</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N9exactreal11NumberField12ElementClassE" title="exactreal::NumberField::ElementClass"><span class="n"><span class="pre">ElementClass</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN9exactreal11NumberField4idivER12ElementClassR12ElementClassRK1T" title="exactreal::NumberField::idiv::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN9exactreal11NumberField4idivER12ElementClassR12ElementClassRK1T" title="Link to this definition">#</a><br /></dt>
+<dd><p>Divide the number field element <code class="docutils literal notranslate"><span class="pre">x</span></code> by <code class="docutils literal notranslate"><span class="pre">t</span></code>.</p>
+<p>The argument may be a primitive integer, a GMP integer, a GMP rational, or another number field element. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal11NumberField18contains_rationalsE">
+<span id="_CPPv3N9exactreal11NumberField18contains_rationalsE"></span><span id="_CPPv2N9exactreal11NumberField18contains_rationalsE"></span><span id="exactreal::NumberField::contains_rationals__b"></span><span class="target" id="structexactreal_1_1NumberField_1a150b45b69c3563f0abe15b5402373f52"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">contains_rationals</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span><a class="headerlink" href="#_CPPv4N9exactreal11NumberField18contains_rationalsE" title="Link to this definition">#</a><br /></dt>
+<dd><p>Whether this number field contains the rational field, i.e., <code class="docutils literal notranslate"><span class="pre">true</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9exactreal11NumberField7isFieldE">
+<span id="_CPPv3N9exactreal11NumberField7isFieldE"></span><span id="_CPPv2N9exactreal11NumberField7isFieldE"></span><span id="exactreal::NumberField::isField__b"></span><span class="target" id="structexactreal_1_1NumberField_1a198368fcecb410b757dd05d0c775456c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isField</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span><a class="headerlink" href="#_CPPv4N9exactreal11NumberField7isFieldE" title="Link to this definition">#</a><br /></dt>
+<dd><p>Whether this number field is a field, i.e., <code class="docutils literal notranslate"><span class="pre">true</span></code>. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="cxx_module.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">module.hpp - Submodules of the Reals</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="cxx_rational_field.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">rational_field.hpp - Rationals</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberFieldE"><code class="docutils literal notranslate"><span class="pre">exactreal::NumberField</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField12ElementClassE"><code class="docutils literal notranslate"><span class="pre">ElementClass</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField11NumberFieldEv"><code class="docutils literal notranslate"><span class="pre">NumberField()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField11NumberFieldERKN6eantic10renf_classE"><code class="docutils literal notranslate"><span class="pre">NumberField()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField11NumberFieldEN5boost13intrusive_ptrIKN6eantic10renf_classEEE"><code class="docutils literal notranslate"><span class="pre">NumberField()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField11NumberFieldERKN6eantic15renf_elem_classE"><code class="docutils literal notranslate"><span class="pre">NumberField()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal11NumberField6coerceERK12ElementClass"><code class="docutils literal notranslate"><span class="pre">coerce()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK9exactreal11NumberFieldeqERK11NumberField"><code class="docutils literal notranslate"><span class="pre">operator==()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField10parametersE"><code class="docutils literal notranslate"><span class="pre">parameters</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField10compositumERK11NumberFieldRK11NumberField"><code class="docutils literal notranslate"><span class="pre">compositum()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField4unitERK12ElementClass"><code class="docutils literal notranslate"><span class="pre">unit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField5floorERK12ElementClass"><code class="docutils literal notranslate"><span class="pre">floor()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField3arbERK12ElementClassl"><code class="docutils literal notranslate"><span class="pre">arb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField8rationalERK12ElementClass"><code class="docutils literal notranslate"><span class="pre">rational()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0EN9exactreal11NumberField4imulER12ElementClassR12ElementClassRK1T"><code class="docutils literal notranslate"><span class="pre">imul()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0EN9exactreal11NumberField4idivER12ElementClassR12ElementClassRK1T"><code class="docutils literal notranslate"><span class="pre">idiv()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField18contains_rationalsE"><code class="docutils literal notranslate"><span class="pre">contains_rationals</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N9exactreal11NumberField7isFieldE"><code class="docutils literal notranslate"><span class="pre">isField</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2019-2025, the exact-real authors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
