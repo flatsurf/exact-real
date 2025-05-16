@@ -59,8 +59,25 @@ C++ Library
 -----------
 
 * :doc:`Tour of the C++ Interface <cxx_overview>`
+* Reference Manual
+
+  * :doc:`arb.hpp <cxx_arb>`
+  * :doc:`arf.hpp <cxx_arf>`
+  * :doc:`element.hpp <cxx_element>`
+  * :doc:`integer_ring.hpp <cxx_integer_ring>`
+  * :doc:`module.hpp <cxx_module>`
+  * :doc:`number_field.hpp <cxx_number_field>`
+  * :doc:`rational_field.hpp <cxx_rational_field>`
+  * :doc:`real_number.hpp <cxx_real_number>`
+  * :doc:`seed.hpp <cxx_seed>`
 
 Python Interface
 ----------------
 
 * :doc:`Tour of the Python Interface <python_overview>`
+* :doc:`The pyexactreal.cppyy_exactreal Module <python_cppyy_exactreal>`
+
+SageMath Interface
+
+* :doc:`Tour of the SageMath Interface <sage_overview>`
+* :doc:`The pyexactreal.exact_reals Module <sage_exact_reals>`
