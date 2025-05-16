@@ -3,6 +3,14 @@ Tour of the SageMath Interface
 
 We want to construct a module over the field of rational real numbers. Unlike in the C++ and pure Python case, we do not have to fix our generators, but just the base ring:
 
+..
+    We cannot use ``sage:`` syntax in the examples below because then the
+    state, i.e., the variables, would not be carried over from one code block
+    to the next and sage -t fails on this file. We could use a Jupyter notebook
+    to work around but instead we just use byexample on this Python file
+    instead. The only downside is that we have to write y*y instead of y^2
+    below.
+
 .. testcode::
     :hide:
 
