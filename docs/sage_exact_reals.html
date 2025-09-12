@@ -708,6 +708,14 @@ Real Numbers as (Real Embedded Number Field in a with defining polynomial x^2 - 
 <span class="n">Ambient</span> <span class="n">free</span> <span class="n">module</span> <span class="n">of</span> <span class="n">rank</span> <span class="mi">2</span> <span class="n">over</span> <span class="n">the</span> <span class="n">integral</span> <span class="n">domain</span> <span class="n">Real</span> <span class="n">Numbers</span> <span class="k">as</span> <span class="p">(</span><span class="n">Rational</span> <span class="n">Field</span><span class="p">)</span><span class="o">-</span><span class="n">Module</span>
 </pre></div>
 </div>
+<p>Verify that <a class="github reference external" href="https://github.com/flatsurf/exact-real/issues/162">flatsurf/exact-real#162</a> has been resolved:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">K</span> <span class="o">=</span> <span class="n">NumberField</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">embedding</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="n">AA</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">E</span> <span class="o">=</span> <span class="n">ExactReals</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">F</span> <span class="o">=</span> <span class="n">ExactReals</span><span class="p">(</span><span class="n">E</span><span class="o">.</span><span class="n">base_ring</span><span class="p">()</span><span class="o">.</span><span class="n">renf</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">E</span> <span class="ow">is</span> <span class="n">F</span>
+<span class="kc">True</span>
+</pre></div>
+</div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyexactreal.exact_reals.ExactReals.Element">
 <span class="sig-name descname"><span class="pre">Element</span></span><a class="headerlink" href="#pyexactreal.exact_reals.ExactReals.Element" title="Link to this definition">#</a></dt>
