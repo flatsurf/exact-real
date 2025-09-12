@@ -698,6 +698,14 @@ class ExactReals(UniqueRepresentation, CommutativeRing):
         sage: R ** 2
         Ambient free module of rank 2 over the integral domain Real Numbers as (Rational Field)-Module
 
+    Verify that https://github.com/flatsurf/exact-real/issues/162 has been resolved::
+
+        sage: K = NumberField(x**2 - 2, 'a', embedding=sqrt(AA(2)))
+        sage: E = ExactReals(K)
+        sage: F = ExactReals(E.base_ring().renf)
+        sage: E is F
+        True
+
     """
     @staticmethod
     def __classcall__(cls, base=None, category=None):
@@ -712,6 +720,8 @@ class ExactReals(UniqueRepresentation, CommutativeRing):
 
         """
         base = base or QQ
+        if base not in [ZZ, QQ]:
+            base = RealEmbeddedNumberField(base).renf
         category = category or IntegralDomains(base).Infinite()
         return super(ExactReals, cls).__classcall__(cls, base, category)
 
