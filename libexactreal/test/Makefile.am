@@ -32,8 +32,8 @@ EXTRA_DIST += external/catch2/single_include/catch2/catch.hpp
 @VALGRIND_CHECK_RULES@
 
 AM_CPPFLAGS = -I $(srcdir)/../src/ -I $(builddir)/../src/ -isystem $(srcdir)/external/cereal/include
-AM_LDFLAGS = $(builddir)/../src/libexactreal.la
+LDADD = $(builddir)/../src/libexactreal.la
 # arb.hpp & arf.hpp use gmpxx; it appears that we need to link gmp in explicitly as well to make gmpxx happy
-AM_LDFLAGS += -lgmpxx -lgmp
+LDADD += -lgmpxx -lgmp
 # arb.hpp & arf.hpp use flint
-AM_LDFLAGS += -lflint
+LDADD += -lflint
