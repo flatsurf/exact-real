@@ -72,3 +72,9 @@ jobs:
         run: pixi run -e ${{ matrix.environment }} ${{ matrix.task }}
       - uses: flatsurf/actions/show-logs@main
         if: ${{ always() }}
+      - name: Allow debugging if tests fail
+        if: failure()
+        uses: namespacelabs/breakpoint-action@v0
+        with:
+          duration: 2h
+          authorized-users: saraedum
