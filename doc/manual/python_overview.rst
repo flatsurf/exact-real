@@ -29,7 +29,7 @@ our generators, one is a :cpp:func:`random real number
 
 .. code-block:: python
 
-   >>> from pyexactreal import RealNumber, QQModule  # byexample: +timeout=30
+   >>> from pyexactreal import RealNumber, QQModule  # random output due to deprecation warnings  # byexample: +pass
 
    >>> a = RealNumber.rational(1)
    >>> b = RealNumber.random()
