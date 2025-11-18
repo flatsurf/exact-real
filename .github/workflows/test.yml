@@ -14,27 +14,51 @@ jobs:
       matrix:
         include:
         - { task: "test-libexactreal", environment: "libexactreal-flint-29", on: "ubuntu-24.04" }
-        - { task: "test-libexactreal", environment: "libexactreal-flint-29", on: "macos-13" }
+        - { task: "test-libexactreal", environment: "libexactreal-flint-29", on: "macos-15-intel" }
+        - { task: "test-libexactreal", environment: "libexactreal-flint-29", on: "macos-15" }
         - { task: "test-libexactreal", environment: "libexactreal-flint-30", on: "ubuntu-24.04" }
-        - { task: "test-libexactreal", environment: "libexactreal-flint-30", on: "macos-13" }
+        - { task: "test-libexactreal", environment: "libexactreal-flint-30", on: "macos-15-intel" }
+        - { task: "test-libexactreal", environment: "libexactreal-flint-30", on: "macos-15" }
         - { task: "test-libexactreal", environment: "env-address-sanitizer", on: "ubuntu-24.04" }
         - { task: "test-libexactreal", environment: "env-undefined-sanitizer", on: "ubuntu-24.04" }
         - { task: "test-libexactreal-valgrind", environment: "dev", on: "ubuntu-24.04" }
         - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-100", on: "ubuntu-24.04" }
-        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-100", on: "macos-13" }
+        # The latest build of cppyy-cling is not compatible with the xcode that comes with macos 15 yet.
+        # There is no runner available on GitHub anymore that supports a sufficiently old xcode.
+        # - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-100", on: "macos-15-intel" }
+        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-100", on: "macos-14" }
         - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-101", on: "ubuntu-24.04" }
-        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-101", on: "macos-13" }
+        # The latest build of cppyy-cling is not compatible with the xcode that comes with macos 15 yet.
+        # There is no runner available on GitHub anymore that supports a sufficiently old xcode.
+        # - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-101", on: "macos-15-intel" }
+        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-101", on: "macos-14" }
         - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-102", on: "ubuntu-24.04" }
-        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-102", on: "macos-13" }
+        # The latest build of cppyy-cling is not compatible with the xcode that comes with macos 15 yet.
+        # There is no runner available on GitHub anymore that supports a sufficiently old xcode.
+        # - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-102", on: "macos-15-intel" }
+        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-102", on: "macos-14" }
         - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-103", on: "ubuntu-24.04" }
-        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-103", on: "macos-13" }
+        # The latest build of cppyy-cling is not compatible with the xcode that comes with macos 15 yet.
+        # There is no runner available on GitHub anymore that supports a sufficiently old xcode.
+        # - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-103", on: "macos-15-intel" }
+        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-103", on: "macos-14" }
         - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-104", on: "ubuntu-24.04" }
-        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-104", on: "macos-13" }
+        # The latest build of cppyy-cling is not compatible with the xcode that comes with macos 15 yet.
+        # There is no runner available on GitHub anymore that supports a sufficiently old xcode.
+        # - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-104", on: "macos-15-intel" }
+        # SageMath 10.4 is not functional on Silicon due to https://github.com/conda-forge/sagelib-feedstock/issues/209
+        # - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-104", on: "macos-14" }
         - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-105", on: "ubuntu-24.04" }
-        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-105", on: "macos-13" }
+        # The latest build of cppyy-cling is not compatible with the xcode that comes with macos 15 yet.
+        # There is no runner available on GitHub anymore that supports a sufficiently old xcode.
+        # - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-105", on: "macos-15-intel" }
+        - { task: "test-pyexactreal", environment: "pyexactreal-sagemath-105", on: "macos-14" }
         - { task: "test-pyexactreal-valgrind", environment: "dev", on: "ubuntu-24.04" }
         - { task: "distcheck", environment: "dev", on: "ubuntu-24.04" }
-        - { task: "distcheck", environment: "dev", on: "macos-13" }
+        # The latest build of cppyy-cling is not compatible with the xcode that comes with macos 15 yet.
+        # There is no runner available on GitHub anymore that supports a sufficiently old xcode.
+        # - { task: "distcheck", environment: "dev", on: "macos-15-intel" }
+        - { task: "distcheck", environment: "dev", on: "macos-14" }
     steps:
       - uses: actions/checkout@v4
         with: { submodules: recursive }

@@ -5,7 +5,7 @@
 channels = ["conda-forge"]
 description = "Exact Computations with Real Numbers"
 name = "exact-real"
-platforms = ["linux-64", "osx-64"]
+platforms = ["linux-64", "osx-64", "osx-arm64"]
 
 [environments]
 libexactreal-flint-29 = ["libexactreal", "flint-29"]
@@ -30,6 +30,11 @@ CFLAGS = "-g3"
 CXXFLAGS = "-g3 -fvisibility=hidden -fvisibility-inlines-hidden"
 
 [target.osx-64.activation.env]
+# Cppyy still uses clang-17 symbols so we need to build libexactreal with such
+# symbols so cppyy can find templates that contain enable_if.
+CXXFLAGS = "-g3 -fvisibility=hidden -fvisibility-inlines-hidden -fclang-abi-compat=17"
+
+[target.osx-arm64.activation.env]
 # Cppyy still uses clang-17 symbols so we need to build libexactreal with such
 # symbols so cppyy can find templates that contain enable_if.
 CXXFLAGS = "-g3 -fvisibility=hidden -fvisibility-inlines-hidden -fclang-abi-compat=17"
