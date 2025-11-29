@@ -9,6 +9,9 @@ AM_INIT_AUTOMAKE([1.14.1 tar-pax foreign])
 
 AC_CONFIG_FILES([Makefile])
 
-AC_CONFIG_SUBDIRS([libexactreal pyexactreal doc])
+AC_CONFIG_SUBDIRS([libexactreal pyexactreal])
+
+AC_ARG_WITH([doc], AS_HELP_STRING([--without-doc], [Do not build the exact-real documentation]))
+AS_IF([test "x$with_doc" != "xno"], [AC_CONFIG_SUBDIRS([doc])])
 
 AC_OUTPUT
