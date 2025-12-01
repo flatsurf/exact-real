@@ -1,7 +1,7 @@
 # This file describes the [pixi](https://pixi.sh) interface to exact-real, see
 # the README for how to use pixi with exact-real.
 
-[project]
+[workspace]
 channels = ["conda-forge"]
 description = "Exact Computations with Real Numbers"
 name = "exact-real"
