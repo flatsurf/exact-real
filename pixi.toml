@@ -1,7 +1,7 @@
 # This file describes the [pixi](https://pixi.sh) interface to exact-real, see
 # the README for how to use pixi with exact-real.
 
-[project]
+[workspace]
 channels = ["conda-forge"]
 description = "Exact Computations with Real Numbers"
 name = "exact-real"
@@ -28,16 +28,6 @@ env-coverage = ["coverage", "libexactreal", "pyexactreal"]
 MAKEFLAGS = "-j$(nproc)"
 CFLAGS = "-g3"
 CXXFLAGS = "-g3 -fvisibility=hidden -fvisibility-inlines-hidden"
-
-[target.osx-64.activation.env]
-# Cppyy still uses clang-17 symbols so we need to build libexactreal with such
-# symbols so cppyy can find templates that contain enable_if.
-CXXFLAGS = "-g3 -fvisibility=hidden -fvisibility-inlines-hidden -fclang-abi-compat=17"
-
-[target.osx-arm64.activation.env]
-# Cppyy still uses clang-17 symbols so we need to build libexactreal with such
-# symbols so cppyy can find templates that contain enable_if.
-CXXFLAGS = "-g3 -fvisibility=hidden -fvisibility-inlines-hidden -fclang-abi-compat=17"
 
 [feature.address-sanitizer.activation.env]
 CFLAGS = "-fsanitize=address -fno-sanitize-recover -fno-omit-frame-pointer"

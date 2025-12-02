@@ -235,7 +235,7 @@ class LIBEXACTREAL_API Arb
   ///     x
   ///     // -> 1.00000
   ///
-  template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
+  template <typename Integer, typename = std::enable_if_t<std::is_integral_v<Integer>>>
   explicit Arb(Integer) noexcept;
 
   /// Create an element from this string, see \rst{:c:func:`arb_set_str`.}
@@ -267,7 +267,7 @@ class LIBEXACTREAL_API Arb
   ///@{
   Arb& operator=(const Arb&) noexcept;
   Arb& operator=(Arb&&) noexcept;
-  template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
+  template <typename Integer, typename = std::enable_if_t<std::is_integral_v<Integer>>>
   Arb& operator=(Integer) noexcept;
   Arb& operator=(const mpz_class&) noexcept;
   ///@}
@@ -308,17 +308,17 @@ class LIBEXACTREAL_API Arb
   std::optional<bool> operator<=(const Arb&) const noexcept;
   std::optional<bool> operator>=(const Arb&) const noexcept;
 
-  template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
+  template <typename Integer, typename = std::enable_if_t<std::is_integral_v<Integer>, int>>
   std::optional<bool> operator<(Integer) const noexcept;
-  template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
+  template <typename Integer, typename = std::enable_if_t<std::is_integral_v<Integer>, int>>
   std::optional<bool> operator>(Integer) const noexcept;
-  template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
+  template <typename Integer, typename = std::enable_if_t<std::is_integral_v<Integer>, int>>
   std::optional<bool> operator<=(Integer) const noexcept;
-  template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
+  template <typename Integer, typename = std::enable_if_t<std::is_integral_v<Integer>, int>>
   std::optional<bool> operator>=(Integer) const noexcept;
-  template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
+  template <typename Integer, typename = std::enable_if_t<std::is_integral_v<Integer>, int>>
   std::optional<bool> operator==(Integer) const noexcept;
-  template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int> = 0>
+  template <typename Integer, typename = std::enable_if_t<std::is_integral_v<Integer>, int>>
   std::optional<bool> operator!=(Integer) const noexcept;
 
   std::optional<bool> operator<(const mpq_class&) const noexcept;

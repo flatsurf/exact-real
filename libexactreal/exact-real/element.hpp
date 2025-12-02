@@ -153,7 +153,7 @@ class LIBEXACTREAL_API Element
   ///     std::cout << *b.module();
   ///     // -> ℚ-Module(1, ℝ(<...>))
   ///
-  template <bool Enabled = !std::is_same_v<Ring, IntegerRing>, std::enable_if_t<Enabled, bool> = true>
+  template <bool Enabled = !std::is_same_v<Ring, IntegerRing>, typename = std::enable_if_t<Enabled>>
   Element(const Element<IntegerRing>& value);
 
   /// Create an element equal to \p value with coefficients in a \p Ring, i.e.,
@@ -168,7 +168,7 @@ class LIBEXACTREAL_API Element
   ///     std::cout << *b.module();
   ///     // -> K-Module(1, ℝ(<...>))
   ///
-  template <bool Enabled = !std::is_same_v<Ring, RationalField> && Ring::contains_rationals, std::enable_if_t<Enabled, bool> = true>
+  template <bool Enabled = !std::is_same_v<Ring, RationalField> && Ring::contains_rationals, typename = std::enable_if_t<Enabled>>
   Element(const Element<RationalField>& value);
   ///@}
 
@@ -407,7 +407,7 @@ class LIBEXACTREAL_API Element
   /// arithmetic operator with the underlying base ring if they are not already
   /// one of the above ones, i.e., `mpz_class` or `mpq_class` (since C++ does
   /// not want us to define the same function twice.)
-  template <bool Enabled = !std::is_same_v<typename Ring::ElementClass, mpz_class> && !std::is_same_v<typename Ring::ElementClass, mpq_class>, std::enable_if_t<Enabled, bool> = true>
+  template <bool Enabled = !std::is_same_v<typename Ring::ElementClass, mpz_class> && !std::is_same_v<typename Ring::ElementClass, mpq_class>, typename = std::enable_if_t<Enabled>>
   Element& operator*=(const typename Ring::ElementClass&);
 
   Element& operator/=(short);
@@ -425,7 +425,7 @@ class LIBEXACTREAL_API Element
   /// arithmetic operator with the underlying base ring if they are not already
   /// one of the above ones, i.e., `mpz_class` or `mpq_class` (since C++ does
   /// not want us to define the same function twice.)
-  template <bool Enabled = !std::is_same_v<typename Ring::ElementClass, mpz_class> && !std::is_same_v<typename Ring::ElementClass, mpq_class>, std::enable_if_t<Enabled, bool> = true>
+  template <bool Enabled = !std::is_same_v<typename Ring::ElementClass, mpz_class> && !std::is_same_v<typename Ring::ElementClass, mpq_class>, typename = std::enable_if_t<Enabled>>
   Element& operator/=(const typename Ring::ElementClass&);
   ///@}
 
