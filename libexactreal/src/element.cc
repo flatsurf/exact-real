@@ -126,7 +126,7 @@ Element<Ring>::Element(const shared_ptr<const Module<Ring>>& parent, const vecto
     : impl(spimpl::make_impl<Element<Ring>::Implementation>(parent, coefficients)) {}
 
 template <typename Ring>
-template <bool Enabled, std::enable_if_t<Enabled, bool>>
+template <bool, typename>
 Element<Ring>::Element(const Element<IntegerRing>& value)
     : impl(spimpl::make_impl<Element<Ring>::Implementation>(
           Module<Ring>::make(value.module()->basis()),
@@ -135,7 +135,7 @@ Element<Ring>::Element(const Element<IntegerRing>& value)
           }(value.coefficients()))) {}
 
 template <typename Ring>
-template <bool Enabled, std::enable_if_t<Enabled, bool>>
+template <bool, typename>
 Element<Ring>::Element(const Element<RationalField>& value)
     : impl(spimpl::make_impl<Element<Ring>::Implementation>(
           Module<Ring>::make(value.module()->basis()),
@@ -342,7 +342,7 @@ Element<Ring>& Element<Ring>::operator*=(const mpq_class& rhs) {
 }
 
 template <typename Ring>
-template <bool Enabled, std::enable_if_t<Enabled, bool>>
+template <bool, typename>
 Element<Ring>& Element<Ring>::operator*=(const typename Ring::ElementClass& rhs) {
   (*impl) *= rhs;
   return *this;
@@ -409,7 +409,7 @@ Element<Ring>& Element<Ring>::operator/=(const mpq_class& rhs) {
 }
 
 template <typename Ring>
-template <bool Enabled, std::enable_if_t<Enabled, bool>>
+template <bool, typename>
 Element<Ring>& Element<Ring>::operator/=(const typename Ring::ElementClass& rhs) {
   (*impl) /= rhs;
   return *this;

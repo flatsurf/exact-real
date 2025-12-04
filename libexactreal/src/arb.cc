@@ -60,7 +60,7 @@ auto to_supported_integer(Integer value) noexcept {
 
 Arb::Arb() noexcept { arb_init(arb_t()); }
 
-template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
+template <typename Integer, typename>
 Arb::Arb(const Integer x) noexcept : Arb() {
   *this = to_supported_integer(x);
 }
@@ -233,22 +233,22 @@ std::optional<bool> Arb::operator!=(const Arb& rhs) const noexcept {
 
 bool Arb::equal(const Arb& rhs) const noexcept { return arb_equal(arb_t(), rhs.arb_t()); }
 
-template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
+template <typename Integer, typename>
 std::optional<bool> Arb::operator<(const Integer rhs) const noexcept { return *this < Arb(rhs); }
 
-template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
+template <typename Integer, typename>
 std::optional<bool> Arb::operator>(const Integer rhs) const noexcept { return *this > Arb(rhs); }
 
-template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
+template <typename Integer, typename>
 std::optional<bool> Arb::operator<=(const Integer rhs) const noexcept { return *this <= Arb(rhs); }
 
-template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
+template <typename Integer, typename>
 std::optional<bool> Arb::operator>=(const Integer rhs) const noexcept { return *this >= Arb(rhs); }
 
-template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
+template <typename Integer, typename>
 std::optional<bool> Arb::operator==(const Integer rhs) const noexcept { return *this == Arb(rhs); }
 
-template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
+template <typename Integer, typename>
 std::optional<bool> Arb::operator!=(const Integer rhs) const noexcept { return *this != Arb(rhs); }
 
 std::optional<bool> Arb::operator==(const mpq_class& rhs) const noexcept {
@@ -291,7 +291,7 @@ Arb& Arb::operator=(Arb&& rhs) noexcept {
   return *this;
 }
 
-template <typename Integer, typename std::enable_if_t<std::is_integral_v<Integer>, int>>
+template <typename Integer, typename>
 Arb& Arb::operator=(Integer rhs) noexcept {
   auto y = to_supported_integer(rhs);
   if constexpr (std::is_same_v<decltype(y), slong>) {
