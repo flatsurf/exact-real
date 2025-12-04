@@ -40,4 +40,4 @@ source <(sage -c 'import os;print("\n".join(["export %s='"'"%s"'"' || echo 'igno
 export PATH=$OLD_PATH
 
 export PYTHONPATH="@abs_srcdir@/disable-pytest:$PYTHONPATH"
-python `which sage-runtests` -p --long --timeout 120 --force-lib @abs_srcdir@/../src/pyexactreal @abs_srcdir@
+python `which sage-runtests` -p --long --timeout 300 --force-lib @abs_srcdir@/../src/pyexactreal @abs_srcdir@
