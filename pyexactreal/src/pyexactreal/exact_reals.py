@@ -893,11 +893,12 @@ class ExactReals(UniqueRepresentation, CommutativeRing):
             2
             sage: y = ExactReals().rational(3); y
             3
-            sage: x + y
-            Traceback (most recent call last):
-            ...
-            TypeError: ...
-                logic_error: at most one generator can be rational
+            sage: import cppyy
+            sage: try:
+            ....:     x + y
+            ....: except (TypeError, cppyy.gbl.std.logic_error) as exc:  # cppyy < 3.5.0 throws a TypeError, otherwise we get a logic_error
+            ....:     'at most one generator can be rational' in str(exc)
+            True
 
         """
         module = self._module_factory([exactreal.RealNumber.rational(q)])
