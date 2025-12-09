@@ -68,7 +68,7 @@ class LIBEXACTREAL_API Element
                                  // types. We need to deduplicate these
                                  // comparisons since ElementClass might be
                                  // mpz_class or mpq_class.
-                                 boost::mp11::mp_unique<boost::mp11::mp_inherit<
+                                 boost::mp11::mp_apply<boost::mp11::mp_inherit, boost::mp11::mp_unique<boost::mp11::mp_list<
                                    boost::totally_ordered<Element<Ring>, RealNumber>,
                                    boost::totally_ordered<Element<Ring>, typename Ring::ElementClass>,
                                    boost::totally_ordered<Element<Ring>, mpq_class>,
@@ -80,14 +80,14 @@ class LIBEXACTREAL_API Element
                                    boost::totally_ordered<Element<Ring>, long>,
                                    boost::totally_ordered<Element<Ring>, unsigned long>,
                                    boost::totally_ordered<Element<Ring>, long long>,
-                                   boost::totally_ordered<Element<Ring>, unsigned long long>>>,
+                                   boost::totally_ordered<Element<Ring>, unsigned long long>>>>,
                                  boost::multipliable<Element<Ring>, RealNumber>,
                                  // Element supports multiplication and
                                  // division  with many other types. We need to
                                  // deduplicate these operators since
                                  // ElementClass might be mpz_class or
                                  // mpq_class.
-                                 boost::mp11::mp_unique<boost::mp11::mp_inherit<
+                                 boost::mp11::mp_apply<boost::mp11::mp_inherit, boost::mp11::mp_unique<boost::mp11::mp_list<
                                    boost::multiplicative<Element<Ring>, typename Ring::ElementClass>,
                                    boost::multiplicative<Element<Ring>, mpz_class>,
                                    boost::multiplicative<Element<Ring>, mpq_class>,
@@ -98,7 +98,7 @@ class LIBEXACTREAL_API Element
                                    boost::multiplicative<Element<Ring>, long>,
                                    boost::multiplicative<Element<Ring>, unsigned long>,
                                    boost::multiplicative<Element<Ring>, long long>,
-                                   boost::multiplicative<Element<Ring>, unsigned long long>>>
+                                   boost::multiplicative<Element<Ring>, unsigned long long>>>>
 #endif
 {
  public:
