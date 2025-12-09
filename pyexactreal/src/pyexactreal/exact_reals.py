@@ -893,11 +893,15 @@ class ExactReals(UniqueRepresentation, CommutativeRing):
             2
             sage: y = ExactReals().rational(3); y
             3
+
+        TESTS::
+
             sage: import cppyy
-            sage: try:
+            sage: try:  # random output due to "uncaught exception in JIT is rethrown" warnings
             ....:     x + y
             ....: except (TypeError, cppyy.gbl.std.logic_error) as exc:  # cppyy < 3.5.0 throws a TypeError, otherwise we get a logic_error
-            ....:     'at most one generator can be rational' in str(exc)
+            ....:     passed = 'at most one generator can be rational' in str(exc)
+            sage: passed
             True
 
         """
